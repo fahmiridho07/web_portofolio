@@ -1,0 +1,58 @@
+---
+import { focusItems, profile } from "@data/profile";
+---
+
+<aside class="focus-panel surface" aria-labelledby="focus-title">
+  <div>
+    <p class="eyebrow">Contact</p>
+    <h2 id="focus-title">Open to data, ML, analytics, and backend/data-systems internship roles.</h2>
+  </div>
+
+  <ul>
+    {focusItems.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <a class="button button-primary" href={`mailto:${profile.email}`}>Contact</a>
+</aside>
+
+<style>
+  .focus-panel {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.15rem, 3vw, 1.6rem);
+  }
+
+  h2 {
+    max-width: 680px;
+    margin: 0.75rem 0 0;
+    color: var(--text);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  ul {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    border-top: 1px solid var(--line);
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.72;
+    padding-block: 0.7rem;
+  }
+
+  li:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  a {
+    justify-self: start;
+  }
+</style>

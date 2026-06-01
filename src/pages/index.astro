@@ -1,0 +1,622 @@
+---
+import FocusPanel from "@components/FocusPanel.astro";
+import ProjectCard from "@components/ProjectCard.astro";
+import ProjectRail from "@components/ProjectRail.astro";
+import {
+  education,
+  experiences,
+  profile,
+  projectCategories,
+  proofPoints,
+  roleTargets,
+} from "@data/profile";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getFeaturedProjects, getProjectsByCategory } from "@lib/projects";
+
+const featuredProjects = await getFeaturedProjects();
+const projectGroups = (await getProjectsByCategory()).filter(
+  (group) => group.projects.length > 0,
+);
+const flagshipProject =
+  featuredProjects.find((project) => project.data.slug === "la-crime-type-prediction") ??
+  featuredProjects[0];
+---
+
+<BaseLayout
+  title="Achmad Fahmi Ainur Ridho Portfolio"
+  description="Portfolio of Achmad Fahmi Ainur Ridho, a final-year Information Systems student building practical data products across machine learning, analytics, and backend workflows."
+>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="section-label">{profile.name}</p>
+        <h1 class="display">I build practical data products from models, dashboards, and backend workflows.</h1>
+      </div>
+
+      <div class="hero-summary">
+        <div class="proof-board">
+          <div class="logo-orbit" aria-hidden="true">
+            {projectCategories.map((category) => <img src={category.logo} alt="" loading="eager" />)}
+          </div>
+
+          <p>
+            Final-year Information Systems student at ITS. Best fit for data,
+            ML, analytics, and data-systems internships.
+          </p>
+
+          <dl aria-label="Recruiter scan facts">
+            <div>
+              <dt>Best fit</dt>
+              <dd>Data / ML Engineering</dd>
+            </div>
+            <div>
+              <dt>Graduation</dt>
+              <dd>Expected 2026</dd>
+            </div>
+            <div>
+              <dt>Signal</dt>
+              <dd>Models to systems</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero-actions" aria-label="Primary actions">
+          <a class="button button-primary" href="/projects/">View work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block divider">
+    <div class="container section-grid">
+      <header>
+        <p class="section-label">Best fit</p>
+        <h2>Three roles I make sense for.</h2>
+      </header>
+
+      <div class="fit-grid">
+        {
+          roleTargets.map((role) => (
+            <article>
+              <span>{role.title}</span>
+              <p>{role.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {
+    flagshipProject && (
+      <section class="section-block divider">
+        <div class="container flagship">
+          <div class="flagship-copy">
+            <p class="section-label">Flagship project</p>
+            <h2>{flagshipProject.data.title}</h2>
+            <p>{flagshipProject.data.summary}</p>
+
+            <ul aria-label="Flagship proof points">
+              {proofPoints.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+
+            <a class="button button-primary" href={`/projects/${flagshipProject.data.slug}/`}>
+              Read case study
+            </a>
+          </div>
+
+          <a class="flagship-cover" href={`/projects/${flagshipProject.data.slug}/`}>
+            <span>{flagshipProject.data.metric ?? flagshipProject.data.status}</span>
+            <img src={flagshipProject.data.coverImage} alt="" loading="eager" />
+            <small>{flagshipProject.data.stack.slice(0, 5).join(" / ")}</small>
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <ProjectRail projects={featuredProjects} />
+
+  <section class="section-block divider">
+    <div class="container section-grid">
+      <header>
+        <p class="section-label">Hiring signals</p>
+        <h2>One core lane, supported by adjacent proof.</h2>
+      </header>
+
+      <div class="area-list">
+        {
+          projectCategories.map((category) => (
+            <a href={`/projects/#${category.id}`}>
+              <span>
+                <img src={category.logo} alt="" loading="lazy" />
+                <strong>{category.title}</strong>
+              </span>
+              <p>{category.intro}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block divider">
+    <div class="container section-grid">
+      <header>
+        <p class="section-label">Evidence</p>
+        <h2>Projects grouped by problem type.</h2>
+      </header>
+
+      <div class="project-groups">
+        {
+          projectGroups.map((group) => (
+            <section class="project-group" aria-labelledby={`${group.id}-title`}>
+              <div class="group-heading">
+                <h3 id={`${group.id}-title`}>{group.title}</h3>
+                <span>{group.projects.length} item{group.projects.length > 1 ? "s" : ""}</span>
+              </div>
+
+              <div>
+                {group.projects.map((project) => <ProjectCard project={project} />)}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block divider">
+    <div class="container section-grid">
+      <header>
+        <p class="section-label">Background</p>
+        <h2>Signals outside project work.</h2>
+      </header>
+
+      <div class="timeline">
+        <article>
+          <span>{education.period}</span>
+          <h3>{education.degree}</h3>
+          <p>{education.institution} - GPA {education.gpa}</p>
+        </article>
+
+        {
+          experiences.map((item) => (
+            <article>
+              <span>{item.organization}</span>
+              <h3>{item.role}</h3>
+              <p>{item.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block divider">
+    <div class="container">
+      <FocusPanel />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(3.5rem, 8vw, 5.5rem) clamp(3rem, 6vw, 4rem);
+  }
+
+  .hero-grid,
+  .section-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .hero-summary {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .hero-summary p,
+  .area-list p,
+  .timeline p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .proof-board {
+    display: grid;
+    gap: 1rem;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, rgba(236, 253, 245, 0.62), rgba(255, 247, 237, 0.5) 46%, rgba(239, 246, 255, 0.65)),
+      rgba(246, 246, 244, 0.72);
+    background-size: 180% 180%;
+    box-shadow: 0 18px 48px rgba(24, 24, 27, 0.06);
+    padding: clamp(1rem, 3vw, 1.25rem);
+    animation: proof-flow 12s ease-in-out infinite alternate;
+  }
+
+  .logo-orbit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+
+  .logo-orbit img {
+    width: 2.55rem;
+    height: 2.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.58);
+    box-shadow:
+      0 12px 26px rgba(24, 24, 27, 0.09),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    transform: translate3d(0, 0, 0);
+    transition:
+      box-shadow 150ms ease-out,
+      transform 150ms ease-out;
+    animation: soft-float 5.6s ease-in-out infinite;
+  }
+
+  .logo-orbit img:nth-child(2) {
+    animation-delay: -1.4s;
+  }
+
+  .logo-orbit img:nth-child(3) {
+    animation-delay: -2.8s;
+  }
+
+  .logo-orbit img:nth-child(4) {
+    animation-delay: -4.2s;
+  }
+
+  .proof-board:hover .logo-orbit img {
+    box-shadow:
+      0 14px 32px rgba(5, 150, 105, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  }
+
+  dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  dl div {
+    display: grid;
+    gap: 0.25rem;
+    border-right: 1px solid var(--line);
+    padding: 0.75rem 0.85rem 0.75rem 0;
+  }
+
+  dl div:last-child {
+    border-right: 0;
+  }
+
+  dt,
+  .timeline span,
+  .group-heading span {
+    color: var(--text-soft);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .fit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .fit-grid article {
+    min-height: 10.5rem;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background:
+      linear-gradient(145deg, rgba(236, 253, 245, 0.48), rgba(246, 246, 244, 0.78)),
+      rgba(246, 246, 244, 0.72);
+    box-shadow: 0 14px 34px rgba(24, 24, 27, 0.05);
+    padding: 1rem;
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out,
+      transform 150ms ease-out;
+  }
+
+  .fit-grid article:hover {
+    border-color: rgba(5, 150, 105, 0.22);
+    box-shadow: 0 18px 42px rgba(5, 150, 105, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .fit-grid span {
+    display: block;
+    color: var(--text);
+    font-size: 0.96rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .fit-grid p {
+    margin: 0.8rem 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.68;
+  }
+
+  .flagship {
+    display: grid;
+    grid-template-columns: minmax(0, 0.52fr) minmax(18rem, 0.48fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .flagship-copy {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .flagship-copy h2 {
+    max-width: 36rem;
+    margin: 0;
+    font-size: clamp(1.7rem, 4vw, 2.65rem);
+    line-height: 1.02;
+  }
+
+  .flagship-copy p {
+    max-width: 34rem;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.78;
+  }
+
+  .flagship-copy ul {
+    display: grid;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .flagship-copy li {
+    position: relative;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.55;
+    padding-left: 1.1rem;
+  }
+
+  .flagship-copy li::before {
+    position: absolute;
+    top: 0.62em;
+    left: 0;
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: var(--accent);
+    content: "";
+  }
+
+  .flagship-cover {
+    display: grid;
+    gap: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    background:
+      linear-gradient(145deg, #ecfdf5, #eff6ff 52%, #fff7ed),
+      var(--surface);
+    box-shadow: 0 24px 56px rgba(24, 24, 27, 0.09);
+    overflow: hidden;
+    padding: 0.85rem;
+    transition:
+      border-color 150ms ease-out,
+      box-shadow 150ms ease-out,
+      transform 150ms ease-out;
+  }
+
+  .flagship-cover:hover {
+    border-color: rgba(5, 150, 105, 0.24);
+    box-shadow: 0 30px 68px rgba(24, 24, 27, 0.12);
+    transform: translateY(-3px) rotate(-0.4deg);
+  }
+
+  .flagship-cover span,
+  .flagship-cover small {
+    color: rgba(63, 63, 70, 0.72);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  .flagship-cover img {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    border-radius: 15px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  }
+
+  .section-block {
+    padding-block: clamp(3rem, 6vw, 4rem);
+  }
+
+  h2 {
+    max-width: 18rem;
+    margin: 0.7rem 0 0;
+    color: var(--text);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .area-list {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .area-list a {
+    display: grid;
+    grid-template-columns: minmax(12rem, 0.36fr) 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-block: 1rem;
+    transition:
+      background 150ms ease-out,
+      padding-inline 150ms ease-out;
+  }
+
+  .area-list a:hover {
+    background: linear-gradient(90deg, rgba(236, 253, 245, 0.46), rgba(244, 244, 245, 0.5));
+    padding-inline: 0.65rem;
+  }
+
+  .area-list strong,
+  .timeline h3,
+  .group-heading h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .area-list span {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .area-list img {
+    width: 2.15rem;
+    height: 2.15rem;
+    flex: 0 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.54);
+    box-shadow: 0 10px 24px rgba(24, 24, 27, 0.07);
+    transition: transform 150ms ease-out;
+  }
+
+  .area-list a:hover img {
+    transform: rotate(-3deg) translateY(-1px);
+  }
+
+  .project-groups {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .project-group {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .group-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .timeline {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .timeline article {
+    display: grid;
+    gap: 0.35rem;
+    border-bottom: 1px solid var(--line);
+    padding-block: 1rem;
+    transition:
+      background 150ms ease-out,
+      padding-inline 150ms ease-out;
+  }
+
+  .timeline article:hover {
+    background: rgba(244, 244, 245, 0.52);
+    padding-inline: 0.65rem;
+  }
+
+  @keyframes proof-flow {
+    from {
+      background-position: 0% 50%;
+    }
+
+    to {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes soft-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero-grid,
+    .section-grid,
+    .area-list a,
+    .flagship {
+      grid-template-columns: 1fr;
+    }
+
+    .fit-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    dl {
+      grid-template-columns: 1fr;
+    }
+
+    dl div {
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+      padding-block: 0.75rem;
+    }
+
+    dl div:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proof-board,
+    .logo-orbit img {
+      animation: none;
+    }
+  }
+</style>

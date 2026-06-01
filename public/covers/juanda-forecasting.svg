@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="Juanda airport forecasting cover">
+  <rect width="960" height="640" fill="#07100f"/>
+  <path d="M0 520c151-87 261-37 392-99 171-82 274-209 568-184v403H0z" fill="#8fe8c2" fill-opacity=".07"/>
+  <rect x="86" y="94" width="788" height="420" rx="28" fill="#101c1a" stroke="#eef8f3" stroke-opacity=".12"/>
+  <path d="M138 416c86-119 165-36 246-109 88-80 142-118 245-61 61 34 100-2 185-89" fill="none" stroke="#8fe8c2" stroke-width="13" stroke-linecap="round"/>
+  <path d="M156 449h642" stroke="#eef8f3" stroke-opacity=".16" stroke-width="4"/>
+  <path d="M180 398v51M278 365v84M376 390v59M474 310v139M572 272v177M670 304v145M768 232v217" stroke="#89a7ff" stroke-opacity=".55" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="624" cy="244" r="16" fill="#f3c46f"/>
+  <text x="128" y="160" fill="#eef8f3" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800">Juanda Forecasting</text>
+  <text x="128" y="207" fill="#a9bab4" font-family="Inter, Arial, sans-serif" font-size="26">CNN-LSTM vs baseline models</text>
+  <text x="690" y="156" fill="#8fe8c2" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="800">RMSE</text>
+</svg>

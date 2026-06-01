@@ -1,0 +1,164 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+const href = `/projects/${project.data.slug}/`;
+const stackLine = project.data.stack.slice(0, 4).join(" / ");
+const resultLine = project.data.result ?? project.data.proof?.[0];
+---
+
+<article class="project-row">
+  <a href={href} aria-label={`Read case study: ${project.data.title}`}>
+    <div class="project-thumb" aria-hidden="true">
+      <img src={project.data.coverImage} alt="" loading="lazy" />
+    </div>
+
+    <div class="project-main">
+      <h3>{project.data.title}</h3>
+      <p>{project.data.summary}</p>
+      {resultLine && <span>{resultLine}</span>}
+    </div>
+
+    <div class="project-meta" aria-label={`Metadata for ${project.data.title}`}>
+      <span>{project.data.year}</span>
+      <span>{project.data.metric ?? project.data.status}</span>
+      <span>{stackLine}</span>
+    </div>
+  </a>
+</article>
+
+<style>
+  .project-row {
+    border-top: 1px solid var(--line);
+  }
+
+  .project-row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  a {
+    display: grid;
+    grid-template-columns: 5.8rem minmax(0, 1fr) minmax(13rem, 0.34fr);
+    gap: clamp(0.9rem, 3vw, 2rem);
+    align-items: center;
+    margin-inline: -0.65rem;
+    padding: 0.8rem 0.65rem;
+    border-radius: 14px;
+    transition:
+      background 150ms ease-out,
+      box-shadow 150ms ease-out,
+      transform 150ms ease-out;
+  }
+
+  a:hover {
+    background:
+      linear-gradient(90deg, rgba(236, 253, 245, 0.44), rgba(244, 244, 245, 0.62)),
+      rgba(244, 244, 245, 0.72);
+    box-shadow: inset 3px 0 0 rgba(5, 150, 105, 0.24);
+    transform: translateX(3px);
+  }
+
+  .project-thumb {
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-radius: 14px;
+    background: rgba(246, 246, 244, 0.72);
+    box-shadow: 0 12px 28px rgba(24, 24, 27, 0.06);
+    overflow: hidden;
+  }
+
+  .project-thumb img {
+    width: 100%;
+    aspect-ratio: 1.25;
+    object-fit: cover;
+    transition: transform 180ms ease-out;
+  }
+
+  a:hover .project-thumb img {
+    transform: scale(1.045);
+  }
+
+  .project-main {
+    display: grid;
+    gap: 0.42rem;
+  }
+
+  h3 {
+    margin: 0;
+    color: #27272a;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.25;
+    transition: color 150ms ease-out;
+  }
+
+  a:hover h3 {
+    color: #047857;
+  }
+
+  p {
+    max-width: 42rem;
+    margin: 0;
+    color: #52525b;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  .project-main span {
+    width: fit-content;
+    border: 1px solid rgba(167, 243, 208, 0.72);
+    border-radius: 999px;
+    background: rgba(236, 253, 245, 0.64);
+    color: #047857;
+    font-size: 12px;
+    line-height: 1.25;
+    padding: 0.36rem 0.55rem;
+  }
+
+  .project-meta {
+    display: grid;
+    justify-items: end;
+    gap: 0.32rem;
+    color: var(--text-soft);
+    font-family:
+      "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    text-align: right;
+    transition: color 150ms ease-out;
+  }
+
+  a:hover .project-meta {
+    color: #71717a;
+  }
+
+  @media (max-width: 760px) {
+    a {
+      grid-template-columns: 4.8rem 1fr;
+      gap: 0.8rem;
+    }
+
+    .project-meta {
+      grid-column: 2;
+      justify-items: start;
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 520px) {
+    a {
+      grid-template-columns: 1fr;
+    }
+
+    .project-thumb {
+      max-width: 8rem;
+    }
+
+    .project-meta {
+      grid-column: auto;
+    }
+  }
+</style>

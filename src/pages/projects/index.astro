@@ -1,0 +1,150 @@
+---
+import ProjectCard from "@components/ProjectCard.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getProjectsByCategory, getSortedProjects } from "@lib/projects";
+
+const projects = await getSortedProjects();
+const projectGroups = (await getProjectsByCategory()).filter(
+  (group) => group.projects.length > 0,
+);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Focused project index for data products, predictive modeling, decision support, analytics, and deployment proof."
+>
+  <section class="section page-hero">
+    <div class="container">
+      <p class="eyebrow">Project Index</p>
+      <h1 class="display">Evidence for data and ML engineering roles.</h1>
+      <p class="lead">
+        A focused archive of projects that show modeling, evaluation, dashboarding,
+        optimization, and system delivery.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Hiring signals"
+        title={`${projects.length} case studies across ${projectGroups.length} proof areas.`}
+        description="The strongest signal is practical data work: turning raw inputs into evaluated models, dashboards, and deployable workflows."
+      />
+
+      <div class="category-nav" aria-label="Project categories">
+        {
+          projectGroups.map((group) => (
+            <a class="pill" href={`#${group.id}`}>
+              <img src={group.logo} alt="" loading="lazy" />
+              <span>{group.title}</span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="project-sections">
+        {
+          projectGroups.map((group) => (
+            <section id={group.id} class="project-section" aria-labelledby={`${group.id}-title`}>
+              <div class="project-section-head">
+                <img src={group.logo} alt="" loading="lazy" />
+                <div>
+                  <h2 id={`${group.id}-title`}>{group.title}</h2>
+                  <p>{group.intro}</p>
+                </div>
+              </div>
+
+              <div class="project-grid">
+                {group.projects.map((project) => <ProjectCard project={project} />)}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .category-nav a {
+    min-height: 2.35rem;
+    transition: all 150ms ease-out;
+  }
+
+  .category-nav a:hover {
+    border-color: rgba(167, 243, 208, 0.9);
+    background: rgba(236, 253, 245, 0.68);
+  }
+
+  .category-nav img {
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 6px;
+  }
+
+  .project-sections {
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
+  .project-section {
+    scroll-margin-top: 6rem;
+  }
+
+  .project-section-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+    max-width: 680px;
+    margin-bottom: 0.7rem;
+  }
+
+  .project-section-head img {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.045em;
+  }
+
+  .project-section-head p {
+    margin: 0.65rem 0 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.72;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (max-width: 760px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

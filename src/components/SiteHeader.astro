@@ -1,0 +1,95 @@
+---
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/about/", label: "About" },
+];
+
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? pathname === href : pathname.startsWith(href);
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <nav aria-label="Primary navigation">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--line);
+    background: rgba(251, 251, 250, 0.86);
+    backdrop-filter: blur(18px);
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 3.6rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.28rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(244, 244, 245, 0.72);
+    box-shadow: 0 12px 32px rgba(24, 24, 27, 0.06);
+    list-style: none;
+  }
+
+  nav a {
+    display: inline-flex;
+    min-height: 2.2rem;
+    align-items: center;
+    border-radius: 999px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.56rem 0.86rem;
+    transition:
+      background 150ms ease-out,
+      color 150ms ease-out,
+      transform 150ms ease-out,
+      box-shadow 150ms ease-out;
+  }
+
+  nav a:hover,
+  nav a[aria-current="page"] {
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(24, 24, 27, 0.06);
+    color: var(--text);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 520px) {
+    nav ul {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+</style>

@@ -1,0 +1,69 @@
+---
+title: "Predicting Crime Types using LA Crime Dataset"
+slug: "la-crime-type-prediction"
+summary: "A supervised machine learning project to predict crime types from historical LA crime records using time, location, and victim attributes."
+category: "machine-learning-data-science"
+status: "Completed"
+year: 2025
+role: "Machine learning practitioner"
+stack:
+  - Python
+  - Scikit-learn
+  - Pandas
+  - TensorFlow
+  - Random Forest
+  - Decision Tree
+  - Logistic Regression
+  - SVM
+  - Naive Bayes
+  - MLP
+  - SMOTE
+links:
+  - label: "Project link"
+    href: "https://its.id/m/PredictiveAnalyticsCrimeLA"
+featured: true
+coverImage: "/covers/la-crime-ml.svg"
+logo: "/assets/logos/ai-data.svg"
+result: "Compared classical ML and neural models using Accuracy, Precision, Recall, F1-score, and ROC-AUC."
+metric: "ROC-AUC"
+proof:
+  - "Imbalanced classification workflow"
+  - "Model comparison across six algorithms"
+  - "Evaluation with Precision, Recall, F1, ROC-AUC"
+priority: 1
+---
+
+## Context
+
+Crime data can reveal patterns across time, geography, and victim context. This project used historical LA crime data as a supervised learning problem, turning structured records into features that could support crime type prediction.
+
+## Problem
+
+The dataset contains multiple signals with imbalanced classes. The challenge was not only to train a model, but to compare model behavior under imbalance handling and evaluate the trade-off between accuracy and recall-oriented metrics.
+
+## My Role
+
+I worked on data preparation, model comparison, imbalance handling, and evaluation design.
+
+## Approach
+
+- Prepared features from event time, geographic location, and victim characteristics.
+- Compared Decision Tree, Random Forest, Logistic Regression, SVM, Naive Bayes, and MLP models.
+- Tested imbalance strategies including SMOTE, RandomOverSampler, and UnderSampler.
+- Evaluated results using Accuracy, Precision, Recall, F1-score, and ROC-AUC.
+
+## Key Decisions
+
+The project compared several model families instead of relying on a single high-level score. That made it easier to understand how different algorithms responded to class imbalance and feature structure.
+
+## Tech Stack
+
+Python, Pandas, Scikit-learn, TensorFlow, Random Forest, Decision Tree, Logistic Regression, SVM, Naive Bayes, MLP, SMOTE, RandomOverSampler, and UnderSampler.
+
+## Result
+
+The work produced a reproducible supervised learning comparison with evaluation across common classification metrics, giving a clearer view of model trade-offs for crime type prediction.
+
+## What I'd Improve
+
+I would add stronger feature explainability, document confusion-matrix patterns per crime category, and include a clearer error analysis section for classes that remain difficult to predict.

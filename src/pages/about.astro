@@ -1,0 +1,349 @@
+---
+import FocusPanel from "@components/FocusPanel.astro";
+import SectionHeader from "@components/SectionHeader.astro";
+import {
+  coursesAndCertificates,
+  education,
+  experiences,
+  profile,
+  skillGroups,
+} from "@data/profile";
+import BaseLayout from "@layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About"
+  description="About Achmad Fahmi Ainur Ridho, a final-year Information Systems student at ITS focused on practical data products, machine learning, analytics, and backend workflows."
+>
+  <section class="section about-hero">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">About</p>
+        <h1 class="display">Information Systems student building practical data products.</h1>
+      </div>
+      <p class="lead">
+        I focus on machine learning, analytics, and backend workflows: the parts
+        that turn messy data and business problems into usable systems.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container profile-card surface">
+      <div class="portrait">
+        <img src="/assets/profile/profile_photo.png" alt="Portrait of Achmad Fahmi Ainur Ridho" />
+      </div>
+      <div class="profile-copy">
+        <p class="eyebrow">Positioning</p>
+        <h2>{profile.headline}</h2>
+        <p>
+          My strongest work sits where data needs to become a usable artifact:
+          an evaluated model, a dashboard, a deployed workflow, or a decision
+          support system.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container two-col">
+      <SectionHeader eyebrow="Education" title="Academic foundation." />
+
+      <div class="info-panel">
+        <h2>{education.degree}</h2>
+        <p>{education.institution}</p>
+        <dl>
+          <div>
+            <dt>Period</dt>
+            <dd>{education.period}</dd>
+          </div>
+          <div>
+            <dt>GPA</dt>
+            <dd>{education.gpa}</dd>
+          </div>
+          <div>
+            <dt>Focus</dt>
+            <dd>{education.focus}</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container">
+      <SectionHeader
+        eyebrow="Experience"
+        title="Experience that supports data-product work."
+      />
+
+      <div class="experience-list">
+        {
+          experiences.map((item) => (
+            <article>
+              <span>{item.organization}</span>
+              <h3>{item.role}</h3>
+              <p>{item.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container">
+      <SectionHeader eyebrow="Skills" title="Tools grouped around the target role." />
+
+      <div class="skill-grid">
+        {
+          skillGroups.map((group) => (
+            <article>
+              <h3>{group.title}</h3>
+              <ul>
+                {group.items.map((item) => <li>{item}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container workflow-grid">
+      <div>
+        <p class="eyebrow">Enterprise Systems</p>
+        <h2>Workflow proof beyond project cards.</h2>
+      </div>
+      <div class="workflow-panels">
+        <article>
+          <h3>Odoo ERP teaching support</h3>
+          <p>
+            Guided students through Sales, Inventory, Human Resources, and
+            Accounting modules while reviewing implementation projects.
+          </p>
+        </article>
+        <article>
+          <h3>Operational documentation</h3>
+          <p>
+            HMSI R&D work included SOPs, internal process optimization,
+            supervision, documentation, and project delivery coordination.
+          </p>
+        </article>
+        <article>
+          <h3>Courses & applied evidence</h3>
+          <ul>
+            {coursesAndCertificates.map((item) => <li>{item}</li>)}
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight divider">
+    <div class="container">
+      <FocusPanel />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 32rem);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+
+  .profile-card {
+    display: grid;
+    grid-template-columns: minmax(16rem, 24rem) 1fr;
+    overflow: hidden;
+  }
+
+  .portrait {
+    min-height: 22rem;
+    border-right: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 64% 18%, rgba(16, 185, 129, 0.14), transparent 13rem),
+      linear-gradient(145deg, #ecfdf5, #f4f4f5 62%, #fff7ed);
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 64%;
+  }
+
+  .profile-copy {
+    display: grid;
+    align-content: center;
+    padding: clamp(1.2rem, 4vw, 2.4rem);
+  }
+
+  .profile-copy h2,
+  .workflow-grid h2 {
+    max-width: 760px;
+    margin: 0.75rem 0 0;
+    color: var(--text);
+    font-size: clamp(1.7rem, 3vw, 2.8rem);
+    line-height: 1.04;
+    letter-spacing: 0;
+  }
+
+  .profile-copy p:not(.eyebrow) {
+    max-width: 680px;
+    margin: 1rem 0 0;
+    color: var(--text-muted);
+  }
+
+  .two-col {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .info-panel {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(246, 246, 244, 0.72);
+    padding: clamp(1rem, 3vw, 1.6rem);
+  }
+
+  .info-panel h2,
+  .experience-list h3,
+  .skill-grid h3,
+  .workflow-panels h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.15rem;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .info-panel > p {
+    margin: 0.55rem 0 1rem;
+    color: var(--text-muted);
+  }
+
+  dl {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+
+  dl div {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    border-top: 1px solid var(--line);
+    padding-block: 0.9rem;
+  }
+
+  dt,
+  .experience-list span {
+    color: var(--text-soft);
+    font-size: 0.74rem;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+    font-weight: 650;
+  }
+
+  .experience-list,
+  .skill-grid,
+  .workflow-panels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .experience-list article,
+  .skill-grid article,
+  .workflow-panels article {
+    min-height: 15rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(246, 246, 244, 0.56);
+    padding: clamp(1rem, 2vw, 1.35rem);
+  }
+
+  .experience-list h3 {
+    margin-top: 0.7rem;
+  }
+
+  .experience-list p,
+  .workflow-panels p {
+    margin: 0.8rem 0 0;
+    color: var(--text-muted);
+  }
+
+  .skill-grid ul,
+  .workflow-panels ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .skill-grid li,
+  .workflow-panels li {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(143, 232, 194, 0.07);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0.42rem 0.62rem;
+  }
+
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.35fr) 1fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .about-grid,
+    .profile-card,
+    .workflow-grid,
+    .experience-list,
+    .skill-grid,
+    .workflow-panels {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      min-height: 18rem;
+      border-right: 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .experience-list article,
+    .skill-grid article,
+    .workflow-panels article {
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 620px) {
+    dl div {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+  }
+</style>

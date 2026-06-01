@@ -1,0 +1,386 @@
+---
+import ProjectCard from "@components/ProjectCard.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCategoryMeta } from "@lib/projects";
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const category = getCategoryMeta(project.data.category);
+const stackLine = project.data.stack.slice(0, 6).join(" / ");
+const proofItems = project.data.proof ?? [
+  project.data.metric,
+  project.data.result,
+  stackLine,
+].filter((item): item is string => Boolean(item));
+const { Content, headings } = await render(project);
+const toc = headings.filter((heading) => heading.depth === 2);
+const allProjects = await getCollection("projects");
+const relatedProjects = allProjects
+  .filter((entry) => entry.data.slug !== project.data.slug)
+  .sort((a, b) => {
+    if (a.data.category === project.data.category && b.data.category !== project.data.category) {
+      return -1;
+    }
+
+    if (a.data.category !== project.data.category && b.data.category === project.data.category) {
+      return 1;
+    }
+
+    return a.data.priority - b.data.priority;
+  })
+  .slice(0, 2);
+---
+
+<BaseLayout title={project.data.title} description={project.data.summary}>
+  <article>
+    <header class="project-hero section">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">{category.title}</p>
+          <h1 class="display">{project.data.title}</h1>
+          <p class="lead">{project.data.summary}</p>
+
+          <div class="link-row">
+            <a class="button button-primary" href="#case-study">Read case study</a>
+            {
+              project.data.links.map((link) => (
+                <a class="button button-secondary" href={link.href} target="_blank" rel="noreferrer">
+                  {link.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <aside class="project-facts surface" aria-label="Project facts">
+          <div class="artifact-preview">
+            <span>{project.data.metric ?? project.data.status}</span>
+            <img src={project.data.coverImage} alt={`Preview visual for ${project.data.title}`} />
+          </div>
+
+          <div class="proof-chips" aria-label="Project proof points">
+            {proofItems.slice(0, 3).map((item) => <span>{item}</span>)}
+          </div>
+
+          <dl>
+            <div>
+              <dt>Area</dt>
+              <dd>{category.title}</dd>
+            </div>
+            <div>
+              <dt>Year</dt>
+              <dd>{project.data.year}</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd>{project.data.status}</dd>
+            </div>
+            {
+              project.data.metric && (
+                <div>
+                  <dt>Metric</dt>
+                  <dd>{project.data.metric}</dd>
+                </div>
+              )
+            }
+            <div>
+              <dt>Role</dt>
+              <dd>{project.data.role}</dd>
+            </div>
+            {
+              project.data.result && (
+                <div>
+                  <dt>Result</dt>
+                  <dd>{project.data.result}</dd>
+                </div>
+              )
+            }
+          </dl>
+          <pre aria-label="Project metadata snippet"><code>{`project:
+  category: ${project.data.category}
+  metric: ${project.data.metric ?? "n/a"}
+  stack: ${stackLine}`}</code></pre>
+        </aside>
+      </div>
+    </header>
+
+    <section id="case-study" class="section-tight divider">
+      <div class="container case-grid">
+        <aside class="case-nav" aria-label="Case study sections">
+          <p>Case Study</p>
+          <nav>
+            {toc.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+          </nav>
+        </aside>
+
+        <div>
+          <div class="stack-panel" aria-label="Technology stack">
+            <span>Tech stack</span>
+            <ul>
+              {project.data.stack.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+
+          <div class="prose">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+
+  {
+    relatedProjects.length > 0 && (
+      <section class="section-tight divider">
+        <div class="container">
+          <div class="related-heading">
+            <p class="eyebrow">More Work</p>
+            <h2>Other case studies</h2>
+          </div>
+          <div class="related-grid">
+            {relatedProjects.map((entry) => <ProjectCard project={entry} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style>
+  .project-hero {
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(18rem, 25rem);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+
+  .link-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .project-facts {
+    overflow: hidden;
+  }
+
+  .artifact-preview {
+    position: relative;
+    display: grid;
+    gap: 0.65rem;
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(145deg, rgba(236, 253, 245, 0.72), rgba(239, 246, 255, 0.72) 52%, rgba(255, 247, 237, 0.72)),
+      var(--surface);
+    padding: 0.8rem;
+  }
+
+  .artifact-preview span {
+    width: fit-content;
+    border: 1px solid rgba(167, 243, 208, 0.8);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.6);
+    color: #047857;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1;
+    padding: 0.38rem 0.56rem;
+  }
+
+  .artifact-preview img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    border-radius: 16px;
+    box-shadow: 0 18px 42px rgba(24, 24, 27, 0.08);
+  }
+
+  .proof-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    border-bottom: 1px solid var(--line);
+    padding: 0.85rem 1rem;
+  }
+
+  .proof-chips span {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.48);
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1;
+    padding: 0.42rem 0.58rem;
+  }
+
+  dl {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0.3rem 1rem 1rem;
+  }
+
+  pre {
+    margin: 0;
+    overflow-x: auto;
+    border-top: 1px solid var(--line);
+    padding: 0.9rem 1rem;
+  }
+
+  code {
+    color: var(--text-muted);
+    font-family:
+      "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.75;
+  }
+
+  dl div {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-block: 0.8rem;
+  }
+
+  dl div:last-child {
+    border-bottom: 0;
+  }
+
+  dt,
+  .stack-panel span,
+  .case-nav p {
+    color: var(--text-soft);
+    font-size: 0.74rem;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+    font-weight: 650;
+  }
+
+  .case-grid {
+    display: grid;
+    grid-template-columns: minmax(12rem, 15rem) minmax(0, 760px);
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .case-nav {
+    position: sticky;
+    top: 6rem;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .case-nav p {
+    margin: 0;
+  }
+
+  .case-nav nav {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .case-nav a {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .case-nav a:hover {
+    color: var(--mint);
+  }
+
+  .stack-panel {
+    margin-bottom: 2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(246, 246, 244, 0.66);
+    padding: 1rem;
+  }
+
+  .stack-panel ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .stack-panel li {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(236, 253, 245, 0.68);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0.4rem 0.6rem;
+  }
+
+  .related-heading {
+    display: grid;
+    gap: 0.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-heading h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.7rem, 3vw, 2.5rem);
+    line-height: 1;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .case-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case-nav {
+      position: static;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 1rem;
+    }
+
+    .case-nav nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1rem;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

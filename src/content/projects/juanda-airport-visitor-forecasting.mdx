@@ -1,0 +1,64 @@
+---
+title: "Juanda Airport Visitor Forecasting"
+slug: "juanda-airport-visitor-forecasting"
+summary: "A predictive time-series project forecasting visitor counts at Juanda International Airport and comparing CNN-LSTM against baseline models."
+category: "machine-learning-data-science"
+status: "Completed"
+year: 2025
+role: "Data science practitioner"
+stack:
+  - Python
+  - TensorFlow
+  - Pandas
+  - NumPy
+  - CNN-LSTM
+  - Random Forest
+  - Linear Regression
+links: []
+featured: true
+coverImage: "/covers/juanda-forecasting.svg"
+logo: "/assets/logos/forecast.svg"
+result: "CNN-LSTM achieved lower RMSE than Random Forest and Linear Regression baselines in the provided CV notes."
+metric: "lower RMSE"
+proof:
+  - "Time-series preprocessing and normalization"
+  - "CNN-LSTM benchmarked against simpler baselines"
+  - "Forecasting evaluation with RMSE"
+priority: 2
+---
+
+## Context
+
+Airport visitor demand changes across time because of seasonality, travel patterns, and external operational factors. The project explored whether a sequence model could forecast visitor counts more effectively than simpler baselines.
+
+## Problem
+
+The core problem was to forecast future visitor counts from historical time-series data while keeping the comparison understandable and measurable.
+
+## My Role
+
+I handled preprocessing, normalization, model setup, baseline comparison, and forecasting evaluation.
+
+## Approach
+
+- Cleaned and normalized historical visitor data.
+- Explored trend and seasonal behavior before modeling.
+- Built a CNN-LSTM model to capture local sequence patterns and longer temporal dependencies.
+- Compared CNN-LSTM against Random Forest and Linear Regression baselines.
+- Evaluated model performance with RMSE.
+
+## Key Decisions
+
+The comparison included baseline models so the CNN-LSTM result could be judged against simpler alternatives, not just presented as a complex model by default.
+
+## Tech Stack
+
+Python, TensorFlow, Pandas, NumPy, CNN-LSTM, Random Forest, and Linear Regression.
+
+## Result
+
+Based on the CV notes provided, the CNN-LSTM model achieved lower RMSE than the baseline models.
+
+## What I'd Improve
+
+I would add rolling-window validation, visualize forecast intervals, and document how holidays or special travel periods affect forecast error.
