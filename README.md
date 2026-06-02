@@ -1,110 +1,156 @@
-# Achmad Fahmi Ainur Ridho Portfolio
+# Achmad Fahmi Ainur Ridho - Portfolio
 
-A static-first personal portfolio built with Astro, TypeScript, Tailwind CSS, MDX, and Astro Content Collections.
+![Astro](https://img.shields.io/badge/Astro-6.3-111827?style=flat-square&logo=astro)
+![TypeScript](https://img.shields.io/badge/TypeScript-6.0-2563eb?style=flat-square&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1-06b6d4?style=flat-square&logo=tailwindcss&logoColor=white)
+![MDX](https://img.shields.io/badge/MDX-Case_Studies-f59e0b?style=flat-square&logo=mdx&logoColor=white)
 
-## Design Direction
+A static-first portfolio website for presenting practical data products across machine learning, analytics, optimization, and backend workflows.
 
-This portfolio uses a dark-first editorial interface with muted mint accents, subtle borders, strong typography, and category-based project sections. The direction is closer to a premium technical case-study website than a generic developer template.
+This project is designed to be more than a personal site. It works as a structured proof of work: fast to scan, easy to maintain, and clear enough for recruiters or collaborators to understand the context behind each project.
 
-Applied principles:
+## Overview
 
-- Clear navigation and static routes for recruiter scanning.
-- Project cards that expose role, status, year, stack, and summary.
-- MDX case studies with consistent sections: Context, Problem, My Role, Approach, Key Decisions, Tech Stack, Result, and What I'd Improve.
-- Restrained motion and no runtime framework unless future interaction truly needs it.
-- Content collections for validated project frontmatter and long-term maintainability.
+- **Owner:** Achmad Fahmi Ainur Ridho
+- **Role focus:** Data / ML Engineering, Data Analytics, Backend / Data Systems
+- **Built with:** Astro, TypeScript, Tailwind CSS, MDX, Astro Content Collections
+- **Content style:** Case-study based portfolio with project context, role, approach, stack, result, and future improvements
+- **Deployment target:** Static hosting, optimized for Cloudflare Pages
+
+## Featured Work
+
+| Project                                 | Area                          | Signal                                                                |
+| --------------------------------------- | ----------------------------- | --------------------------------------------------------------------- |
+| LA Crime Type Prediction                | Machine Learning              | Imbalanced classification, model comparison, ROC-AUC evaluation       |
+| Juanda Airport Visitor Forecasting      | Time Series Forecasting       | CNN-LSTM benchmarked against Random Forest and Linear Regression      |
+| Orphanage Inspection Route Optimization | Operations Research           | Ant Colony Optimization with time-window and service-time constraints |
+| DevOps TaskTracker                      | Software Engineering / DevOps | Electron, TypeScript, Docker, GitHub Actions, AWS EC2, monitoring     |
+| Bank Jatim Performance Dashboard        | Business Intelligence         | Power BI dashboard mapped to IT Balanced Scorecard KPIs               |
+
+## Design Notes
+
+The interface follows a quiet editorial direction: light surface, restrained mint accent, subtle borders, compact typography, and project groups arranged by problem type.
+
+The main goal is scanability. A visitor should quickly understand:
+
+- who the portfolio represents,
+- what roles the owner is targeting,
+- which projects are strongest,
+- what technologies were used,
+- and what each project proves.
+
+## Tech Stack
+
+```txt
+Astro 6
+TypeScript
+Tailwind CSS 4
+MDX
+Astro Content Collections
+Static-first routing
+```
 
 ## Project Structure
 
-```text
+```txt
 src/
   components/            Reusable Astro UI components
-  content/projects/      MDX project case studies
-  data/                  Profile, experience, skills, categories
-  layouts/               Shared page shell
-  lib/                   Content query helpers
-  pages/                 Static and generated routes
-  styles/                Global CSS and design tokens
+  content/projects/      MDX case studies
+  data/                  Profile, skills, experience, project categories
+  layouts/               Shared layout shell
+  lib/                   Project query helpers
+  pages/                 Static and dynamic routes
+  styles/                Global styles and design tokens
+
 public/
-  assets/logos/          Small visual marks
-  assets/marks/          Personal mark
-  assets/profile/        Profile photo
-  assets/projects/       Real project screenshots and evidence
-  covers/                Generated project cover visuals
+  assets/logos/          Category and project marks
+  assets/marks/          Personal identity mark
+  assets/profile/        Profile image
+  assets/projects/       Project screenshots and evidence
+  covers/                Project cover visuals
 ```
 
-## Project Screenshots
+## Getting Started
 
-Put real screenshots, charts, dashboard captures, route maps, or deployment evidence here:
+Install dependencies:
 
-```text
-public/assets/projects/
-  la-crime-type-prediction/screenshots/
-  juanda-airport-visitor-forecasting/screenshots/
-  orphanage-inspection-route-optimization/screenshots/
-  devops-tasktracker/screenshots/
-  bank-jatim-performance-dashboard/screenshots/
+```bash
+npm install
 ```
 
-Recommended filenames:
+Run the local development server:
 
-- `overview.webp`
-- `model-comparison.webp`
-- `evaluation-metrics.webp`
-- `route-map.webp`
-- `dashboard-overview.webp`
-- `deployment-pipeline.webp`
-
-Reference them in MDX or Astro as:
-
-```md
-![Deployment pipeline](/assets/projects/devops-tasktracker/screenshots/deployment-pipeline.webp)
+```bash
+npm run dev
 ```
 
-## Add a Project
+Validate the project:
 
-Copy `docs/project-template.mdx` into `src/content/projects/`, rename it, then update the frontmatter and body.
+```bash
+npm run validate
+```
 
-Required frontmatter:
+Build for production:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## Content Workflow
+
+Projects live in `src/content/projects/` as MDX files. Each project uses frontmatter for metadata and a case-study body for the narrative.
+
+To add a project:
+
+1. Copy `docs/project-template.mdx`.
+2. Rename it inside `src/content/projects/`.
+3. Update the frontmatter.
+4. Write the case study sections.
+5. Add screenshots or evidence under `public/assets/projects/`.
+
+Required frontmatter fields:
 
 ```yaml
 title: "Project Title"
 slug: "project-title"
-summary: "One or two sentences about the problem and result."
+summary: "Short project summary."
 category: "machine-learning-data-science"
-status: "Prototype"
+status: "Completed"
 year: 2026
-role: "Your role"
+role: "Project role"
 stack:
-  - Astro
-  - TypeScript
+  - Python
+  - Scikit-learn
 links:
   - label: "Repository"
-    href: "https://example.com/project"
+    href: "https://example.com"
 featured: true
 coverImage: "/covers/project-cover.svg"
-logo: "/assets/logos/case-study.svg"
-result: "A concise result or learning from the work."
-metric: "0.94 AUC"
-priority: 4
+result: "Main result or learning."
+metric: "Key metric"
+priority: 1
 ```
 
-Then write the case study sections in the body.
+## Deployment
 
-## Local Development
+This site is static-first, so no server adapter is required.
 
-```bash
-npm install
-npm run dev
-npm run build
+Cloudflare Pages setup:
+
+```txt
+Build command: npm run build
+Build directory: dist
+Node version: 24
 ```
 
-## Cloudflare Pages
+## Why This Repo Exists
 
-Use the static build output:
+This repository documents both the final portfolio and the thinking behind it: how projects are selected, structured, and presented as evidence of real technical capability.
 
-- Build command: `npm run build`
-- Build directory: `dist`
-- Node version: `24`
-
-No Cloudflare adapter is needed because the site is static-first.
+Simple site. Clear proof. Built to be read.
