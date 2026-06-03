@@ -1,0 +1,80 @@
+---
+title: "MediMate Medicine Reminder App"
+slug: "medimate-medicine-reminder-app"
+summary: "A Flutter CRUD mobile app for managing medicine lists, dosage details, images, and daily local-notification reminders."
+category: "software-engineering-devops"
+status: "Completed"
+year: 2025
+role: "Flutter mobile app developer"
+stack:
+  - Flutter
+  - Dart
+  - Material 3
+  - Local Notifications
+  - Image Picker
+  - Permission Handler
+  - Path Provider
+  - Android
+links: []
+featured: false
+coverImage: "/assets/projects/medimate-medicine-reminder-app/screenshots/01-home.png"
+logo: "/assets/logos/flutter.svg"
+result: "Built and verified a Flutter debug APK with CRUD flows, local reminder scheduling, and portfolio screenshot tests."
+metric: "Debug APK"
+proof:
+  - "Medicine CRUD flow"
+  - "Local notification reminder storage"
+  - "Flutter analyze, test, and debug build passed"
+priority: 6
+---
+
+## Context
+
+MediMate is a simple Android-focused Flutter app for users who want to record medicine names, dosage, medicine images, and daily reminder schedules in one place.
+
+## Problem
+
+The project needed to demonstrate a complete mobile CRUD flow while staying practical: users should be able to add medicine, search the list, edit entries, view details, delete records, and manage reminder notifications without a complex backend.
+
+## My Role
+
+I worked on Flutter implementation, UI redesign, form validation, local state handling, reminder scheduling, Android notification permissions, and portfolio screenshot verification.
+
+## Evidence
+
+<div className="phone-gallery">
+  <figure>
+    <img src="/assets/projects/medimate-medicine-reminder-app/screenshots/01-home.png" alt="MediMate home screen showing medicine list, search field, and add medicine button" />
+    <figcaption>Home screen with searchable medicine list.</figcaption>
+  </figure>
+  <figure>
+    <img src="/assets/projects/medimate-medicine-reminder-app/screenshots/02-add-medicine.png" alt="MediMate add medicine form with name, dosage, time, image, cancel, and save controls" />
+    <figcaption>Add/edit form with dosage, time, and image fields.</figcaption>
+  </figure>
+  <figure>
+    <img src="/assets/projects/medimate-medicine-reminder-app/screenshots/03-detail-medicine.png" alt="MediMate medicine detail screen showing selected medicine information and actions" />
+    <figcaption>Detail page for reviewing and managing an item.</figcaption>
+  </figure>
+</div>
+
+## Approach
+
+- Built the app with Flutter and Dart using a Material 3 visual language.
+- Implemented medicine list, search, create, edit, delete, and detail flows.
+- Added image selection through `image_picker`.
+- Added daily reminder scheduling with `flutter_local_notifications` and timezone handling.
+- Stored reminder data locally as JSON so notification state could be restored.
+- Requested Android notification-related permissions through `permission_handler`.
+- Refined layout, button contrast, and form behavior so the UI fit mobile viewports cleanly.
+
+## Key Decisions
+
+The project stayed intentionally lightweight. Medicine data was handled locally in app state, while reminder schedules were persisted as JSON. That kept the scope focused on mobile UI, navigation, validation, and native plugin integration rather than backend infrastructure.
+
+## Result
+
+The final app produced a working debug APK and passed the verification flow documented in the project notes: `flutter analyze`, screenshot test generation, and Android debug build.
+
+## What I'd Improve
+
+I would persist medicine data with SQLite, Hive, or SharedPreferences, add interaction tests for add/edit/delete/reminder flows, prepare production signing for release builds, and add a custom app icon plus dark mode.

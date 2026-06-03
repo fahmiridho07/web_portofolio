@@ -8,3 +8,17 @@ dist/
 .npm-cache/
 .tmp/
 verification/
+
+# Documents
+*.pdf
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Deployment
+.vercel/
+.netlify/
+
+# Editor directories
+.idea/

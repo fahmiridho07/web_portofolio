@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="IdeKU V3 ASP.NET Core stabilization cover">
+  <rect width="960" height="640" fill="#07100f"/>
+  <rect x="84" y="78" width="792" height="448" rx="30" fill="#101c1a" stroke="#eef8f3" stroke-opacity=".12"/>
+  <rect x="126" y="120" width="210" height="330" rx="24" fill="#7d1d2c"/>
+  <rect x="158" y="158" width="106" height="22" rx="11" fill="#eef8f3" fill-opacity=".88"/>
+  <rect x="158" y="226" width="152" height="16" rx="8" fill="#eef8f3" fill-opacity=".35"/>
+  <rect x="158" y="284" width="132" height="16" rx="8" fill="#eef8f3" fill-opacity=".35"/>
+  <rect x="158" y="342" width="158" height="16" rx="8" fill="#eef8f3" fill-opacity=".35"/>
+  <rect x="386" y="120" width="416" height="130" rx="24" fill="#f8fafc"/>
+  <text x="422" y="178" fill="#8b1e32" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Help Hub</text>
+  <rect x="422" y="204" width="180" height="14" rx="7" fill="#64748b" fill-opacity=".35"/>
+  <rect x="386" y="292" width="416" height="172" rx="24" fill="#f8fafc"/>
+  <rect x="426" y="336" width="142" height="18" rx="9" fill="#8b1e32" fill-opacity=".9"/>
+  <rect x="426" y="378" width="258" height="14" rx="7" fill="#64748b" fill-opacity=".22"/>
+  <rect x="426" y="410" width="210" height="14" rx="7" fill="#64748b" fill-opacity=".22"/>
+  <circle cx="720" cy="378" r="44" fill="#8fe8c2"/>
+  <text x="692" y="392" fill="#07100f" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">BI</text>
+  <path d="M336 236h50M336 384h50" fill="none" stroke="#8fe8c2" stroke-width="10" stroke-linecap="round"/>
+  <path d="M374 232l24 4-24 4M374 380l24 4-24 4" fill="none" stroke="#8fe8c2" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="126" y="486" width="676" height="18" rx="9" fill="#eef8f3" fill-opacity=".12"/>
+  <rect x="126" y="486" width="528" height="18" rx="9" fill="#8fe8c2" fill-opacity=".72"/>
+  <text x="94" y="574" fill="#eef8f3" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">IdeKU V3 .NET Stabilization</text>
+  <text x="94" y="610" fill="#a9bab4" font-family="Inter, Arial, sans-serif" font-size="24">ASP.NET Core + RBAC + Power BI + performance</text>
+</svg>

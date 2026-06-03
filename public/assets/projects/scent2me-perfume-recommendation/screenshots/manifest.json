@@ -1,0 +1,30 @@
+{
+  "baseUrl": "https://scent2me.vercel.app",
+  "captures": [
+    {
+      "route": "/",
+      "file": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-05-31\\github-plugin-github-openai-curated-apakah\\outputs\\scent2me-screenshots\\01-scent2me-landing.png",
+      "finalUrl": "https://scent2me.vercel.app/"
+    },
+    {
+      "route": "/homepage",
+      "file": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-05-31\\github-plugin-github-openai-curated-apakah\\outputs\\scent2me-screenshots\\02-scent2me-homepage.png",
+      "finalUrl": "https://scent2me.vercel.app/homepage"
+    },
+    {
+      "route": "/explore",
+      "file": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-05-31\\github-plugin-github-openai-curated-apakah\\outputs\\scent2me-screenshots\\03-scent2me-explore.png",
+      "finalUrl": "https://scent2me.vercel.app/explore"
+    },
+    {
+      "route": "/recommendations",
+      "file": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-05-31\\github-plugin-github-openai-curated-apakah\\outputs\\scent2me-screenshots\\04-scent2me-recommendation-form.png",
+      "finalUrl": "https://scent2me.vercel.app/recommendations"
+    },
+    {
+      "route": "/recommendations/results",
+      "file": "C:\\Users\\Lenovo\\Documents\\Codex\\2026-05-31\\github-plugin-github-openai-curated-apakah\\outputs\\scent2me-screenshots\\05-scent2me-recommendation-results.png",
+      "finalUrl": "https://scent2me.vercel.app/recommendations/results"
+    }
+  ]
+}

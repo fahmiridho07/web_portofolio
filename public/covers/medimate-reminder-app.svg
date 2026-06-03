@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="MediMate medicine reminder app cover">
+  <rect width="960" height="640" fill="#07100f"/>
+  <rect x="108" y="76" width="286" height="488" rx="34" fill="#f8fbfa" stroke="#eef8f3" stroke-opacity=".28" stroke-width="8"/>
+  <rect x="132" y="108" width="238" height="118" rx="24" fill="#2c9b8c"/>
+  <text x="154" y="156" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="800">MediMate</text>
+  <rect x="154" y="178" width="94" height="22" rx="11" fill="#ffffff" fill-opacity=".24"/>
+  <rect x="132" y="250" width="238" height="62" rx="16" fill="#ffffff" stroke="#dbe8e5"/>
+  <rect x="152" y="268" width="38" height="38" rx="10" fill="#e3f6f2"/>
+  <path d="M171 278v18M162 287h18" stroke="#15796f" stroke-width="6" stroke-linecap="round"/>
+  <rect x="206" y="268" width="116" height="14" rx="7" fill="#1f2937"/>
+  <rect x="206" y="292" width="70" height="14" rx="7" fill="#2c9b8c" fill-opacity=".55"/>
+  <rect x="132" y="332" width="238" height="62" rx="16" fill="#ffffff" stroke="#dbe8e5"/>
+  <rect x="152" y="350" width="38" height="38" rx="10" fill="#e3f6f2"/>
+  <path d="M171 360v18M162 369h18" stroke="#15796f" stroke-width="6" stroke-linecap="round"/>
+  <rect x="206" y="350" width="104" height="14" rx="7" fill="#1f2937"/>
+  <rect x="206" y="374" width="82" height="14" rx="7" fill="#fca5a5" fill-opacity=".62"/>
+  <rect x="170" y="482" width="160" height="52" rx="26" fill="#2c9b8c"/>
+  <text x="204" y="516" fill="#ffffff" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800">Add Medicine</text>
+  <rect x="464" y="134" width="372" height="110" rx="22" fill="#101c1a" stroke="#8fe8c2" stroke-opacity=".22"/>
+  <rect x="500" y="170" width="56" height="56" rx="16" fill="#8fe8c2"/>
+  <path d="M528 184v28M514 198h28" stroke="#07100f" stroke-width="8" stroke-linecap="round"/>
+  <rect x="584" y="166" width="178" height="18" rx="9" fill="#eef8f3" fill-opacity=".9"/>
+  <rect x="584" y="202" width="126" height="14" rx="7" fill="#eef8f3" fill-opacity=".22"/>
+  <rect x="464" y="286" width="372" height="110" rx="22" fill="#101c1a" stroke="#f3c46f" stroke-opacity=".24"/>
+  <circle cx="528" cy="341" r="30" fill="#f3c46f"/>
+  <path d="M528 324v18l13 10" fill="none" stroke="#07100f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="584" y="318" width="156" height="18" rx="9" fill="#eef8f3" fill-opacity=".9"/>
+  <rect x="584" y="354" width="196" height="14" rx="7" fill="#eef8f3" fill-opacity=".22"/>
+  <rect x="464" y="438" width="372" height="74" rx="22" fill="#101c1a" stroke="#89a7ff" stroke-opacity=".24"/>
+  <rect x="500" y="466" width="198" height="18" rx="9" fill="#89a7ff" fill-opacity=".8"/>
+  <text x="108" y="612" fill="#eef8f3" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">MediMate Reminder App</text>
+</svg>

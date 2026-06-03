@@ -1,0 +1,96 @@
+---
+title: "Scent2Me Perfume Recommendation Platform"
+slug: "scent2me-perfume-recommendation"
+summary: "A web-based perfume recommendation platform powered by a FastAPI backend, TF-IDF similarity scoring, authentication, wishlist persistence, and split deployment."
+category: "machine-learning-data-science"
+status: "Completed"
+year: 2025
+role: "Backend developer and deployment engineer"
+stack:
+  - FastAPI
+  - Python
+  - Scikit-learn
+  - TF-IDF
+  - Cosine Similarity
+  - SQLAlchemy
+  - PostgreSQL
+  - Next.js
+  - TypeScript
+  - Railway
+  - Vercel
+links:
+  - label: "Live app"
+    href: "https://scent2me.vercel.app"
+  - label: "Frontend repository"
+    href: "https://github.com/denjear/scent2me"
+  - label: "Backend repository"
+    href: "https://github.com/fahmiridho07/scent2me-rec-service"
+featured: true
+coverImage: "/assets/projects/scent2me-perfume-recommendation/screenshots/03-results.png"
+logo: "/assets/logos/fastapi.svg"
+result: "Built the FastAPI recommendation service, auth and wishlist persistence, CORS configuration, and Railway backend deployment for a Vercel frontend."
+metric: "TF-IDF"
+proof:
+  - "Content-based perfume recommendation engine"
+  - "FastAPI REST API with auth and wishlist"
+  - "Vercel frontend connected to Railway backend"
+priority: 3
+---
+
+## Context
+
+Scent2Me is a group web application that helps users discover perfumes based on scent preferences, gender, time of use, occasion, longevity, favorite notes, and budget. The system combines an interactive Next.js frontend with a FastAPI recommendation backend.
+
+## Problem
+
+Perfume discovery is preference-heavy: users often know what kind of scent experience they want, but not the exact product name or brand. The application needed a recommendation flow that could translate structured preferences into relevant perfume options while also supporting search, trending products, authentication, and wishlist persistence.
+
+## My Role
+
+I worked as the backend developer and deployment engineer. My main contribution was building the REST API, recommendation logic, authentication and wishlist behavior, backend environment configuration, CORS setup, and Railway deployment.
+
+## Evidence
+
+<figure className="evidence-panel">
+  <img src="/assets/projects/scent2me-perfume-recommendation/screenshots/01-home.png" alt="Scent2Me homepage showing the perfume recommendation platform hero and navigation" />
+  <figcaption>Frontend evidence: Scent2Me homepage deployed on Vercel with recommendation, explore, wishlist, and login navigation.</figcaption>
+</figure>
+
+## Approach
+
+- Built a FastAPI service for search, trending products, random products, reference-based recommendations, and preference-based recommendations.
+- Implemented content-based recommendation scoring using TF-IDF vectorization and cosine similarity.
+- Loaded recommendation artifacts such as `meta.csv`, `tfidf.pkl`, and `X_tfidf.npz`.
+- Added filtering based on gender, fragrance family, time of use, occasion, longevity, notes, and price range.
+- Implemented simple authentication, password hashing, user storage, and wishlist persistence with SQLAlchemy and PostgreSQL.
+- Configured CORS through `ALLOW_ORIGINS` so the Vercel frontend could communicate with the Railway backend.
+- Prepared deployment configuration through environment variables such as `DATABASE_URL`, `ALLOW_ORIGINS`, and `ART_DIR`.
+
+## Key Decisions
+
+The application uses split deployment: the frontend runs on Vercel and the backend runs on Railway. This made the UI and recommendation service easier to maintain independently, but required careful CORS and environment-variable configuration.
+
+For recommendations, the backend combines filtering and similarity scoring. Preference filters narrow the candidate set first, then TF-IDF and cosine similarity rank products by relevance to the user's scent profile.
+
+<div className="evidence-grid evidence-grid-2">
+  <figure className="evidence-panel">
+    <img src="/assets/projects/scent2me-perfume-recommendation/screenshots/02-preferences.png" alt="Scent2Me recommendation form with gender, fragrance family, time of day, occasion, favorite notes, and budget fields" />
+    <figcaption>Preference flow: users describe scent family, usage context, performance, notes, and budget before requesting recommendations.</figcaption>
+  </figure>
+  <figure className="evidence-panel">
+    <img src="/assets/projects/scent2me-perfume-recommendation/screenshots/03-results.png" alt="Scent2Me recommendation results page showing perfume cards with ratings, notes, price, and save recommendation action" />
+    <figcaption>Recommendation output: ranked perfume cards with notes, rating, price, product links, and wishlist-saving behavior.</figcaption>
+  </figure>
+</div>
+
+## API Surface
+
+Key backend endpoints included `/health`, `/search`, `/trending`, `/random`, `/brands`, `/recommend`, `/recommend/preference`, `/auth/register`, `/auth/login`, `/auth/wishlist/add`, `/auth/wishlist`, and `/auth/wishlist/clear`.
+
+## Result
+
+The project delivered a deployed recommendation platform with a frontend/backend split, a content-based recommendation service, persistent user and wishlist data, and production-oriented backend configuration. My contribution focused on making the recommendation engine usable as an API and deployable as a separate service.
+
+## What I'd Improve
+
+I would add automated API tests, monitor recommendation latency after deployment, add structured logging for recommendation requests, improve fallback behavior when filters are too restrictive, and document model artifact regeneration.

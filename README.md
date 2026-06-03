@@ -141,7 +141,31 @@ priority: 1
 
 This site is static-first, so no server adapter is required.
 
-Cloudflare Pages setup:
+Cloudflare Pages project setup:
+
+```txt
+Project name: web-portofolio
+Production branch: main
+Build output: dist
+Production URL: https://web-portofolio.pages.dev
+```
+
+Create the Pages project with Wrangler:
+
+```bash
+npx wrangler pages project create web-portofolio --production-branch=main
+```
+
+GitHub Actions deploys prebuilt assets with Wrangler Direct Upload. Add these repository secrets before merging deployment changes:
+
+```txt
+CLOUDFLARE_ACCOUNT_ID
+CLOUDFLARE_API_TOKEN
+```
+
+The Cloudflare API token needs `Account > Cloudflare Pages > Edit` permission. The CI/CD workflow runs `npm ci` and `npm run validate` before deployment. Pushes to `main` deploy production, while pull requests from this repository create preview deployments.
+
+The equivalent static build settings are:
 
 ```txt
 Build command: npm run build

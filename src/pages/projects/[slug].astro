@@ -1,6 +1,7 @@
 ---
 import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getLogoItems } from "@lib/logos";
 import { getCategoryMeta } from "@lib/projects";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
@@ -11,23 +12,51 @@ interface Props {
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
-
-  return projects.map((project) => ({
+  const paths = projects.map((project) => ({
     params: { slug: project.data.slug },
     props: { project },
   }));
+  const kpcInternshipProject = projects.find(
+    (project) => project.data.slug === "kpc-power-automate-po-automation",
+  );
+
+  if (kpcInternshipProject) {
+    paths.push({
+      params: { slug: "kpc-internship" },
+      props: { project: kpcInternshipProject },
+    });
+  }
+
+  return paths;
 }
 
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
-const stackLine = project.data.stack.slice(0, 6).join(" / ");
-const proofItems = project.data.proof ?? [
-  project.data.metric,
-  project.data.result,
-  stackLine,
-].filter((item): item is string => Boolean(item));
-const { Content, headings } = await render(project);
-const toc = headings.filter((heading) => heading.depth === 2);
+const projectLogo = project.data.logo ?? category.logo;
+const visibleStack = getLogoItems(project.data.stack.slice(0, 6));
+const hiddenStackCount = Math.max(project.data.stack.length - visibleStack.length, 0);
+const proofItems = (
+  project.data.proof && project.data.proof.length > 0
+    ? project.data.proof
+    : [project.data.metric ?? project.data.status, project.data.status, ...project.data.stack]
+)
+  .filter(Boolean)
+  .slice(0, 3);
+const snapshotItems = [
+  {
+    label: "Result",
+    value: project.data.result ?? project.data.summary,
+  },
+  {
+    label: "Role",
+    value: project.data.role,
+  },
+  {
+    label: "Metric",
+    value: project.data.metric ?? project.data.status,
+  },
+];
+const { Content } = await render(project);
 const allProjects = await getCollection("projects");
 const relatedProjects = allProjects
   .filter((entry) => entry.data.slug !== project.data.slug)
@@ -47,97 +76,94 @@ const relatedProjects = allProjects
 
 <BaseLayout title={project.data.title} description={project.data.summary}>
   <article>
-    <header class="project-hero section">
-      <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">{category.title}</p>
-          <h1 class="display">{project.data.title}</h1>
-          <p class="lead">{project.data.summary}</p>
+    <header class="case-hero dark-section" data-dark-section>
+      <div class="container case-hero-inner">
+        <div class="case-kicker">
+          {projectLogo && <span class="case-logo"><img src={projectLogo} alt="" loading="eager" /></span>}
+          <p class="section-label">{category.title} / {project.data.year}</p>
+        </div>
+        <h1 class="display">{project.data.title}</h1>
+        <p>{project.data.result ?? project.data.summary}</p>
 
-          <div class="link-row">
-            <a class="button button-primary" href="#case-study">Read case study</a>
-            {
-              project.data.links.map((link) => (
-                <a class="button button-secondary" href={link.href} target="_blank" rel="noreferrer">
-                  {link.label}
-                </a>
-              ))
-            }
-          </div>
+        <div class="meta-pills">
+          <span>{project.data.metric ?? project.data.status}</span>
+          <span>{project.data.status}</span>
+          <span>{project.data.role}</span>
+          {
+            project.data.links.map((link) => (
+              <a href={link.href} target="_blank" rel="noreferrer">
+                {link.label} -&gt;
+              </a>
+            ))
+          }
         </div>
 
-        <aside class="project-facts surface" aria-label="Project facts">
-          <div class="artifact-preview">
-            <span>{project.data.metric ?? project.data.status}</span>
-            <img src={project.data.coverImage} alt={`Preview visual for ${project.data.title}`} />
-          </div>
-
-          <div class="proof-chips" aria-label="Project proof points">
-            {proofItems.slice(0, 3).map((item) => <span>{item}</span>)}
-          </div>
-
-          <dl>
-            <div>
-              <dt>Area</dt>
-              <dd>{category.title}</dd>
-            </div>
-            <div>
-              <dt>Year</dt>
-              <dd>{project.data.year}</dd>
-            </div>
-            <div>
-              <dt>Status</dt>
-              <dd>{project.data.status}</dd>
-            </div>
-            {
-              project.data.metric && (
-                <div>
-                  <dt>Metric</dt>
-                  <dd>{project.data.metric}</dd>
-                </div>
-              )
-            }
-            <div>
-              <dt>Role</dt>
-              <dd>{project.data.role}</dd>
-            </div>
-            {
-              project.data.result && (
-                <div>
-                  <dt>Result</dt>
-                  <dd>{project.data.result}</dd>
-                </div>
-              )
-            }
-          </dl>
-          <pre aria-label="Project metadata snippet"><code>{`project:
-  category: ${project.data.category}
-  metric: ${project.data.metric ?? "n/a"}
-  stack: ${stackLine}`}</code></pre>
-        </aside>
+        <ul class="stack-pills" aria-label="Technology stack">
+          {
+            visibleStack.map((item) => (
+              <li class:list={[item.logo && "has-logo"]}>
+                {item.logo && <img src={item.logo} alt="" loading="lazy" />}
+                <span>{item.label}</span>
+              </li>
+            ))
+          }
+          {hiddenStackCount > 0 && <li>+{hiddenStackCount} more</li>}
+        </ul>
       </div>
     </header>
 
-    <section id="case-study" class="section-tight divider">
-      <div class="container case-grid">
-        <aside class="case-nav" aria-label="Case study sections">
-          <p>Case Study</p>
-          <nav>
-            {toc.map((heading) => <a href={`#${heading.slug}`}>{heading.text}</a>)}
-          </nav>
-        </aside>
+    <div class="progress" aria-hidden="true">
+      <span data-case-progress></span>
+    </div>
 
-        <div>
-          <div class="stack-panel" aria-label="Technology stack">
-            <span>Tech stack</span>
-            <ul>
-              {project.data.stack.map((item) => <li>{item}</li>)}
+    <section id="case-study" class="case-body">
+      <div class="container case-body-inner">
+        <section class="case-snapshot" aria-label="Project snapshot">
+          <a class="snapshot-visual" href={project.data.coverImage} target="_blank" rel="noreferrer">
+            <img src={project.data.coverImage} alt="" loading="eager" decoding="async" />
+            <span>{category.title}</span>
+          </a>
+
+          <div class="snapshot-copy">
+            <div>
+              <p class="section-label">Project snapshot</p>
+              <h2>What to notice first.</h2>
+            </div>
+
+            <div class="snapshot-grid">
+              {
+                snapshotItems.map((item) => (
+                  <article>
+                    <span>{item.label}</span>
+                    <p>{item.value}</p>
+                  </article>
+                ))
+              }
+            </div>
+
+            <ul class="snapshot-proof" aria-label="Project proof points">
+              {proofItems.map((item) => <li>{item}</li>)}
             </ul>
-          </div>
 
-          <div class="prose">
-            <Content />
+            <nav class="case-quick-nav" aria-label="Case study quick navigation">
+              <a href="#evidence">Evidence</a>
+              <a href="#approach">Approach</a>
+              <a href="#result">Result</a>
+            </nav>
           </div>
+        </section>
+
+        {
+          project.data.result && (
+            <aside class="result-callout" aria-label="Project result">
+              <p class="section-label">Result</p>
+              <p>{project.data.result}</p>
+            </aside>
+          )
+        }
+
+        <div class="prose">
+          <Content />
         </div>
       </div>
     </section>
@@ -145,10 +171,10 @@ const relatedProjects = allProjects
 
   {
     relatedProjects.length > 0 && (
-      <section class="section-tight divider">
+      <section class="related-section divider">
         <div class="container">
           <div class="related-heading">
-            <p class="eyebrow">More Work</p>
+            <p class="section-label">More work</p>
             <h2>Other case studies</h2>
           </div>
           <div class="related-grid">
@@ -158,227 +184,358 @@ const relatedProjects = allProjects
       </section>
     )
   }
+
+  <script>
+    const progress = document.querySelector<HTMLElement>("[data-case-progress]");
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      progress?.style.setProperty("transform", `scaleX(${value})`);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
+
+    const anchorMap = new Map([
+      ["evidence", "evidence"],
+      ["approach", "approach"],
+      ["result", "result"],
+    ]);
+
+    document.querySelectorAll<HTMLHeadingElement>(".prose h2").forEach((heading) => {
+      const key = heading.textContent?.trim().toLowerCase();
+      const id = key ? anchorMap.get(key) : undefined;
+
+      if (id && !document.getElementById(id)) {
+        heading.id = id;
+      }
+    });
+  </script>
 </BaseLayout>
 
 <style>
-  .project-hero {
-    padding-bottom: clamp(3rem, 6vw, 5rem);
+  .dark-section {
+    background: var(--surface-base);
+    color: #ffffff;
   }
 
-  .hero-grid {
+  .case-hero {
+    padding-block: clamp(7rem, 12vw, 10rem) clamp(4rem, 8vw, 6rem);
+  }
+
+  .case-hero-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 25rem);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: end;
+    gap: 1.1rem;
   }
 
-  .link-row {
+  .case-kicker {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 2rem;
+    gap: 0.7rem;
+    align-items: center;
   }
 
-  .project-facts {
-    overflow: hidden;
-  }
-
-  .artifact-preview {
-    position: relative;
-    display: grid;
-    gap: 0.65rem;
-    border-bottom: 1px solid var(--line);
-    background:
-      linear-gradient(145deg, rgba(236, 253, 245, 0.72), rgba(239, 246, 255, 0.72) 52%, rgba(255, 247, 237, 0.72)),
-      var(--surface);
-    padding: 0.8rem;
-  }
-
-  .artifact-preview span {
-    width: fit-content;
-    border: 1px solid rgba(167, 243, 208, 0.8);
+  .case-logo {
+    display: inline-grid;
+    width: 2.1rem;
+    height: 2.1rem;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.6);
-    color: #047857;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 11px;
-    line-height: 1;
-    padding: 0.38rem 0.56rem;
+    background: rgba(255, 255, 255, 0.92);
   }
 
-  .artifact-preview img {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border: 1px solid rgba(255, 255, 255, 0.88);
-    border-radius: 16px;
-    box-shadow: 0 18px 42px rgba(24, 24, 27, 0.08);
+  .case-logo img {
+    width: 1.24rem;
+    height: 1.24rem;
+    object-fit: contain;
   }
 
-  .proof-chips {
+  .case-hero .display {
+    max-width: 900px;
+    color: #ffffff;
+  }
+
+  .case-hero-inner > p:not(.section-label) {
+    max-width: 760px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  .meta-pills,
+  .stack-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
-    border-bottom: 1px solid var(--line);
-    padding: 0.85rem 1rem;
-  }
-
-  .proof-chips span {
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.48);
-    color: var(--text-muted);
-    font-size: 0.78rem;
-    line-height: 1;
-    padding: 0.42rem 0.58rem;
-  }
-
-  dl {
-    display: grid;
-    gap: 0;
     margin: 0;
-    padding: 0.3rem 1rem 1rem;
-  }
-
-  pre {
-    margin: 0;
-    overflow-x: auto;
-    border-top: 1px solid var(--line);
-    padding: 0.9rem 1rem;
-  }
-
-  code {
-    color: var(--text-muted);
-    font-family:
-      "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 11px;
-    line-height: 1.75;
-  }
-
-  dl div {
-    display: grid;
-    grid-template-columns: 5.5rem 1fr;
-    gap: 1rem;
-    border-bottom: 1px solid var(--line);
-    padding-block: 0.8rem;
-  }
-
-  dl div:last-child {
-    border-bottom: 0;
-  }
-
-  dt,
-  .stack-panel span,
-  .case-nav p {
-    color: var(--text-soft);
-    font-size: 0.74rem;
-    text-transform: uppercase;
-  }
-
-  dd {
-    margin: 0;
-    color: var(--text);
-    font-weight: 650;
-  }
-
-  .case-grid {
-    display: grid;
-    grid-template-columns: minmax(12rem, 15rem) minmax(0, 760px);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: start;
-  }
-
-  .case-nav {
-    position: sticky;
-    top: 6rem;
-    display: grid;
-    gap: 0.9rem;
-  }
-
-  .case-nav p {
-    margin: 0;
-  }
-
-  .case-nav nav {
-    display: grid;
-    gap: 0.35rem;
-  }
-
-  .case-nav a {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  .case-nav a:hover {
-    color: var(--mint);
-  }
-
-  .stack-panel {
-    margin-bottom: 2rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(246, 246, 244, 0.66);
-    padding: 1rem;
-  }
-
-  .stack-panel ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin: 0.7rem 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .stack-panel li {
-    border: 1px solid var(--line);
+  .meta-pills span,
+  .meta-pills a {
     border-radius: 999px;
-    background: rgba(236, 253, 245, 0.68);
-    color: var(--text-muted);
-    font-size: 0.8rem;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.75rem;
     line-height: 1;
-    padding: 0.4rem 0.6rem;
+    padding: 0.5rem 0.68rem;
+  }
+
+  .meta-pills span:nth-child(n + 2) {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .stack-pills li {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.6875rem;
+    line-height: 1;
+    padding: 0.42rem 0.66rem;
+  }
+
+  .stack-pills li.has-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.32rem 0.62rem 0.32rem 0.38rem;
+  }
+
+  .stack-pills img {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    object-fit: contain;
+    padding: 0.12rem;
+  }
+
+  .progress {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    height: 2px;
+    background: transparent;
+  }
+
+  .progress span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .case-body,
+  .related-section {
+    background: var(--surface-light);
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .case-body-inner {
+    display: grid;
+    gap: clamp(1.8rem, 5vw, 3.5rem);
+  }
+
+  .case-body-inner > *,
+  .snapshot-visual,
+  .snapshot-copy,
+  .prose {
+    min-width: 0;
+  }
+
+  .case-snapshot {
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.48fr) minmax(0, 0.52fr);
+    gap: clamp(1rem, 4vw, 2rem);
+    align-items: stretch;
+  }
+
+  .snapshot-visual {
+    position: relative;
+    display: block;
+    min-height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #ffffff;
+  }
+
+  .snapshot-visual img {
+    width: 100%;
+    height: 100%;
+    min-height: 22rem;
+    object-fit: cover;
+  }
+
+  .snapshot-visual span {
+    position: absolute;
+    left: 0.85rem;
+    bottom: 0.85rem;
+    border-radius: 999px;
+    background: rgba(13, 13, 13, 0.72);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.72rem;
+    line-height: 1;
+    padding: 0.48rem 0.66rem;
+  }
+
+  .snapshot-copy {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .snapshot-copy h2 {
+    margin: 0.58rem 0 0;
+    color: var(--text);
+    font-size: clamp(1.45rem, 3vw, 2.2rem);
+    font-weight: 500;
+    line-height: 1.05;
+  }
+
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .snapshot-grid article {
+    display: grid;
+    gap: 0.55rem;
+    min-height: 9rem;
+    align-content: start;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.42);
+    padding: clamp(0.9rem, 2vw, 1.1rem);
+  }
+
+  .snapshot-grid article:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .snapshot-grid span {
+    color: var(--text-soft);
+    font-size: 0.68rem;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .snapshot-grid p {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .snapshot-proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .snapshot-proof li,
+  .case-quick-nav a {
+    border: 1px solid rgba(29, 158, 117, 0.24);
+    border-radius: 999px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.76rem;
+    line-height: 1.25;
+    padding: 0.48rem 0.66rem;
+  }
+
+  .case-quick-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .case-quick-nav a {
+    background: transparent;
+    color: var(--text);
+  }
+
+  .result-callout {
+    max-width: 900px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-dim);
+    padding: clamp(1rem, 3vw, 1.4rem);
+  }
+
+  .result-callout p {
+    margin: 0;
+  }
+
+  .result-callout p:not(.section-label) {
+    max-width: 760px;
+    color: var(--text);
+    font-size: clamp(1.18rem, 2.4vw, 1.55rem);
+    line-height: 1.45;
+  }
+
+  .prose {
+    max-width: 860px;
   }
 
   .related-heading {
     display: grid;
-    gap: 0.7rem;
+    gap: 0.65rem;
     margin-bottom: 1.5rem;
   }
 
   .related-heading h2 {
     margin: 0;
     color: var(--text);
-    font-size: clamp(1.7rem, 3vw, 2.5rem);
-    line-height: 1;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.05;
   }
 
   .related-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: clamp(1rem, 3vw, 1.5rem);
   }
 
-  @media (max-width: 900px) {
-    .hero-grid,
-    .case-grid {
+  @media (max-width: 760px) {
+    .case-hero {
+      padding-block: 6.5rem 4rem;
+    }
+
+    .case-snapshot {
       grid-template-columns: 1fr;
     }
 
-    .case-nav {
-      position: static;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 1rem;
+    .snapshot-visual img {
+      min-height: auto;
+      aspect-ratio: 4 / 3;
     }
 
-    .case-nav nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.65rem 1rem;
+    .snapshot-grid {
+      grid-template-columns: 1fr;
     }
-  }
 
-  @media (max-width: 680px) {
+    .snapshot-grid article {
+      min-height: auto;
+    }
+
+    .result-callout {
+      display: none;
+    }
+
     .related-grid {
       grid-template-columns: 1fr;
     }

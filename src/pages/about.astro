@@ -9,16 +9,33 @@ import {
   skillGroups,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getLogoItems } from "@lib/logos";
+
+const primarySkills = new Set([
+  "ASP.NET Core",
+  "Python",
+  "SQL Server",
+  "Power BI",
+  "Microsoft Power Automate",
+]);
+const profileHighlights = [
+  profile.availability,
+  `${profile.location} based`,
+  `GPA ${education.gpa}`,
+];
 ---
 
 <BaseLayout
   title="About"
   description="About Achmad Fahmi Ainur Ridho, a final-year Information Systems student at ITS focused on practical data products, machine learning, analytics, and backend workflows."
 >
-  <section class="section about-hero">
+  <section class="section about-hero dark-section" data-dark-section>
     <div class="container about-grid">
       <div>
-        <p class="eyebrow">About</p>
+        <div class="about-person">
+          <img src="/assets/profile/profile_photo.png" alt="" loading="eager" decoding="async" />
+          <p class="eyebrow">{profile.name}</p>
+        </div>
         <h1 class="display">Information Systems student building practical data products.</h1>
       </div>
       <p class="lead">
@@ -28,8 +45,8 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <section class="section-tight divider">
-    <div class="container profile-card surface">
+  <section class="section-tight profile-section">
+    <div class="container profile-card">
       <div class="portrait">
         <img src="/assets/profile/profile_photo.png" alt="Portrait of Achmad Fahmi Ainur Ridho" />
       </div>
@@ -41,6 +58,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
           an evaluated model, a dashboard, a deployed workflow, or a decision
           support system.
         </p>
+        <ul class="profile-highlights" aria-label="Profile highlights">
+          {profileHighlights.map((item) => <li>{item}</li>)}
+        </ul>
       </div>
     </div>
   </section>
@@ -97,14 +117,34 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
       <div class="skill-grid">
         {
-          skillGroups.map((group) => (
-            <article>
-              <h3>{group.title}</h3>
-              <ul>
-                {group.items.map((item) => <li>{item}</li>)}
-              </ul>
-            </article>
-          ))
+          skillGroups.map((group) => {
+            const primary = group.items.filter((item) => primarySkills.has(item));
+            const secondary = group.items.filter((item) => !primarySkills.has(item));
+            const primaryItems = getLogoItems(primary);
+
+            return (
+              <article>
+                <h3>{group.title}</h3>
+                {primary.length > 0 && (
+                  <ul class="primary-skills" aria-label={`${group.title} primary skills`}>
+                    {
+                      primaryItems.map((item) => (
+                        <li class:list={[item.logo && "has-logo"]}>
+                          {item.logo && <img src={item.logo} alt="" loading="lazy" />}
+                          <span>{item.label}</span>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                )}
+                {secondary.length > 0 && (
+                  <ul class="secondary-skills" aria-label={`${group.title} secondary skills`}>
+                    {secondary.map((item) => <li>{item}</li>)}
+                  </ul>
+                )}
+              </article>
+            );
+          })
         }
       </div>
     </div>
@@ -150,7 +190,17 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
 <style>
   .about-hero {
-    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: var(--surface-base);
+    color: #ffffff;
+    padding-block: clamp(7rem, 12vw, 10rem) clamp(4rem, 8vw, 6rem);
+  }
+
+  .about-hero .display {
+    color: #ffffff;
+  }
+
+  .about-hero .lead {
+    color: rgba(255, 255, 255, 0.58);
   }
 
   .about-grid {
@@ -160,18 +210,38 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     align-items: end;
   }
 
+  .about-person {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .about-person img {
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    object-fit: cover;
+    object-position: center 56%;
+  }
+
+  .about-person .eyebrow {
+    margin: 0;
+  }
+
   .profile-card {
     display: grid;
-    grid-template-columns: minmax(16rem, 24rem) 1fr;
-    overflow: hidden;
+    grid-template-columns: minmax(18rem, 0.42fr) 1fr;
+    gap: clamp(2rem, 6vw, 4rem);
+    align-items: center;
   }
 
   .portrait {
-    min-height: 22rem;
-    border-right: 1px solid var(--line);
-    background:
-      radial-gradient(circle at 64% 18%, rgba(16, 185, 129, 0.14), transparent 13rem),
-      linear-gradient(145deg, #ecfdf5, #f4f4f5 62%, #fff7ed);
+    min-height: clamp(26rem, 48vw, 36rem);
+    background: var(--surface);
+    overflow: hidden;
   }
 
   .portrait img {
@@ -184,7 +254,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   .profile-copy {
     display: grid;
     align-content: center;
-    padding: clamp(1.2rem, 4vw, 2.4rem);
   }
 
   .profile-copy h2,
@@ -201,6 +270,25 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     max-width: 680px;
     margin: 1rem 0 0;
     color: var(--text-muted);
+  }
+
+  .profile-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.15rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .profile-highlights li {
+    border: 1px solid rgba(29, 158, 117, 0.24);
+    border-radius: 999px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.78rem;
+    line-height: 1.25;
+    padding: 0.48rem 0.66rem;
   }
 
   .two-col {
@@ -249,7 +337,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   .experience-list span {
     color: var(--text-soft);
     font-size: 0.74rem;
-    font-weight: 800;
+    font-weight: 500;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -257,7 +345,7 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   dd {
     margin: 0;
     color: var(--text);
-    font-weight: 650;
+    font-weight: 500;
   }
 
   .experience-list,
@@ -301,13 +389,54 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
   .skill-grid li,
   .workflow-panels li {
-    border: 1px solid var(--line);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
     border-radius: 999px;
     background: rgba(143, 232, 194, 0.07);
     color: var(--text-muted);
     font-size: 0.8rem;
     line-height: 1;
     padding: 0.42rem 0.62rem;
+  }
+
+  .skill-grid li img {
+    width: 1.12rem;
+    height: 1.12rem;
+    box-sizing: content-box;
+    flex: 0 0 auto;
+    border-radius: 0;
+    background: transparent;
+    object-fit: contain;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .skill-grid .primary-skills {
+    gap: 0.5rem;
+  }
+
+  .skill-grid .primary-skills li {
+    background: rgba(236, 253, 245, 0.9);
+    color: var(--text);
+    font-size: 0.94rem;
+    font-weight: 500;
+    padding: 0.48rem 0.72rem;
+  }
+
+  .skill-grid .secondary-skills {
+    margin-top: 0.75rem;
+  }
+
+  .skill-grid .secondary-skills li {
+    background: transparent;
+    color: rgba(82, 82, 91, 0.52);
+    font-size: 0.74rem;
+    padding: 0.28rem 0;
+  }
+
+  .skill-grid .secondary-skills img {
+    display: none;
   }
 
   .workflow-grid {
@@ -329,8 +458,6 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
     .portrait {
       min-height: 18rem;
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
     }
 
     .experience-list article,
@@ -341,9 +468,70 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   }
 
   @media (max-width: 620px) {
+    .about-hero {
+      padding-block: 6rem 3.2rem;
+    }
+
+    .about-grid {
+      gap: 1.1rem;
+    }
+
+    .profile-section {
+      padding-block-start: 2.25rem;
+    }
+
+    .profile-card {
+      gap: 1.15rem;
+    }
+
+    .portrait {
+      min-height: 15rem;
+      border-radius: 8px;
+    }
+
+    .portrait img {
+      object-position: center 42%;
+    }
+
+    .profile-copy h2,
+    .workflow-grid h2 {
+      font-size: 1.55rem;
+      line-height: 1.08;
+    }
+
     dl div {
       grid-template-columns: 1fr;
       gap: 0.35rem;
+    }
+
+    .experience-list,
+    .skill-grid,
+    .workflow-panels {
+      gap: 0.75rem;
+      border: 0;
+    }
+
+    .experience-list article,
+    .skill-grid article,
+    .workflow-panels article {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.46);
+    }
+
+    .experience-list p,
+    .workflow-panels p {
+      display: -webkit-box;
+      overflow: hidden;
+      font-size: 0.9rem;
+      line-height: 1.58;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+
+    .skill-grid .secondary-skills {
+      max-height: 4.6rem;
+      overflow: hidden;
     }
   }
 </style>

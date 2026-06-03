@@ -1,0 +1,96 @@
+---
+title: "IdeKU V3 ASP.NET Core Stabilization"
+slug: "kpc-ideku-v3-dotnet-stabilization"
+summary: "A full-stack ASP.NET Core MVC project stabilizing IdeKU V3 through RBAC hardening, critical bug fixes, new business features, Power BI integration, and performance optimization."
+category: "software-engineering-devops"
+status: "Completed"
+year: 2026
+role: "Full-stack .NET intern"
+stack:
+  - ASP.NET Core MVC
+  - C#
+  - SQL Server
+  - Entity Framework
+  - JavaScript
+  - RBAC
+  - Power BI Embedded
+  - .NET Hosted Service
+  - Caching
+  - Task.WhenAll
+  - Performance Optimization
+links: []
+featured: true
+coverImage: "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report.png"
+logo: "/assets/logos/dotnet.svg"
+result: "Cleared IdeKU V3 production-readiness work with RBAC fixes, critical runtime stabilization, seven new capabilities, seven performance optimizations, and Power BI report integration."
+metric: "31 commits"
+proof:
+  - "RBAC hardening and critical bug fixing"
+  - "7 new capabilities for IdeKU V3"
+  - "7 performance optimizations across database and service layers"
+priority: 1
+---
+
+## Context
+
+IdeKU V3 is KPC's internal idea-management platform. During the internship, the platform was already live in production, but it still needed finalization, security hardening, missing feature delivery, analytics integration, and performance improvements before broader use.
+
+## Problem
+
+The system had several production-readiness issues: authorization gaps in milestone and workflow editing, anti-forgery token and session refresh problems, AJAX lookup failures, Null Reference Exceptions, submit idea errors, chart rendering issues, missing onboarding features, approval notification gaps, and slow dashboard behavior caused by N+1 queries and over-fetching.
+
+## My Role
+
+I worked as a full-stack .NET intern on the existing ASP.NET Core MVC codebase. My work covered controller, service, repository, view, JavaScript, RBAC validation, feature implementation, Power BI integration, and performance tuning.
+
+## Evidence
+
+<div className="evidence-grid evidence-grid-2">
+  <figure className="evidence-panel">
+    <img src="/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub.png" alt="IdeKU V3 Help Hub page with guide categories for idea submission, innovation exploration, and approval review" />
+    <figcaption>Help Hub grouped user guidance into business-process categories.</figcaption>
+  </figure>
+  <figure className="evidence-panel">
+    <img src="/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/02-guided-tour.png" alt="IdeKU V3 Guided Tour active on My Ideas page with contextual tooltip" />
+    <figcaption>Guided Tour highlighted UI elements with contextual step-by-step guidance.</figcaption>
+  </figure>
+  <figure className="evidence-panel">
+    <img src="/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/03-resend-approval.png" alt="IdeKU V3 Resend Approval Notification page" />
+    <figcaption>Resend Approval gave users manual control over missed approval notifications.</figcaption>
+  </figure>
+  <figure className="evidence-panel">
+    <img src="/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report.png" alt="IdeKU V3 Power BI report page embedded inside the application" />
+    <figcaption>Power BI Embedded added analytics pages directly inside IdeKU V3.</figcaption>
+  </figure>
+</div>
+
+## Delivery Signal
+
+The work moved from stabilization into shipped internal features: RBAC fixes, runtime bug fixes, onboarding support, approval controls, Power BI reporting, and a focused performance pass across data access and service layers.
+
+## Approach
+
+- Closed authorization-bypass gaps on Edit Milestone and Edit Workflow by tightening role checks and action-level authorization.
+- Fixed Set Acting flow issues around anti-forgery token handling, session and claims refresh, and permission cache synchronization.
+- Resolved AJAX user lookup failures, Null Reference Exceptions, submit idea errors, state-management inconsistencies, and chart workload issues.
+- Implemented Help Hub and Guided Tour with DOM mapping, contextual tooltips, and fallback behavior for empty-data edge cases.
+- Added Approval Reminder through a .NET Hosted Service that checks overdue pending approvals and sends reminder notifications.
+- Added Resend Approval endpoint behavior, monitoring export to Excel, Mark as Complete control, and dashboard export refinement.
+- Integrated Power BI Embedded by adding controller, ViewModel, view, and styling support for IdeKU report pages.
+- Optimized performance with database indexing, queryable filtering, lookup caching, capped user lookup, Task.WhenAll parallelization, grouped query refactors, and HashSet lookup.
+
+## Key Decisions
+
+The first priority was production stability. Security and runtime issues were handled before feature polish, because IdeKU V3 was already operating in a production environment.
+
+The feature work focused on unblockers for real users: onboarding support through Help Hub and Guided Tour, approval-cycle acceleration through reminders and resend controls, reporting through Power BI, and monitoring workflow completion through Mark as Complete.
+
+## Result
+
+The project stabilized IdeKU V3 and cleared production-readiness work. It closed RBAC and authorization gaps, fixed critical application bugs, added seven business capabilities, integrated Power BI reporting, and implemented seven performance optimizations across database and service layers.
+
+The presentation records 31 commits, production readiness cleared, and a one-sprint performance optimization push. The final report concludes that IdeKU V3 operated in a more stable, secure, complete, and scalable condition after the work.
+
+## What I'd Improve
+
+I would add unit tests for critical authorization and approval flows, run load testing before full-scale production rollout, document onboarding notes for the next developer, and add structured performance monitoring for dashboard and lookup endpoints.

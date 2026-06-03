@@ -1,12 +1,12 @@
 ---
 import ProjectCard from "@components/ProjectCard.astro";
-import SectionHeader from "@components/SectionHeader.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getProjectsByCategory, getSortedProjects } from "@lib/projects";
+import { projectCategories } from "@data/profile";
+import { getSortedProjects } from "@lib/projects";
 
 const projects = await getSortedProjects();
-const projectGroups = (await getProjectsByCategory()).filter(
-  (group) => group.projects.length > 0,
+const activeCategories = projectCategories.filter((category) =>
+  projects.some((project) => project.data.category === category.id),
 );
 ---
 
@@ -14,135 +14,143 @@ const projectGroups = (await getProjectsByCategory()).filter(
   title="Projects"
   description="Focused project index for data products, predictive modeling, decision support, analytics, and deployment proof."
 >
-  <section class="section page-hero">
+  <section class="page-hero dark-section" data-dark-section>
     <div class="container">
       <p class="eyebrow">Project Index</p>
-      <h1 class="display">Evidence for data and ML engineering roles.</h1>
+      <h1 class="display">Evidence for data products that ship.</h1>
       <p class="lead">
-        A focused archive of projects that show modeling, evaluation, dashboarding,
-        optimization, and system delivery.
+        Modeling, dashboards, workflow automation, deployment, and decision
+        support, shown through the artifacts themselves.
       </p>
     </div>
   </section>
 
-  <section class="section-tight divider">
-    <div class="container">
-      <SectionHeader
-        eyebrow="Hiring signals"
-        title={`${projects.length} case studies across ${projectGroups.length} proof areas.`}
-        description="The strongest signal is practical data work: turning raw inputs into evaluated models, dashboards, and deployable workflows."
-      />
-
-      <div class="category-nav" aria-label="Project categories">
+  <section class="project-index divider">
+    <div class="container project-work">
+      <div class="filter-tabs" aria-label="Project category filters">
+        <button type="button" data-project-filter="" aria-pressed="true">All</button>
         {
-          projectGroups.map((group) => (
-            <a class="pill" href={`#${group.id}`}>
-              <img src={group.logo} alt="" loading="lazy" />
-              <span>{group.title}</span>
-            </a>
+          activeCategories.map((category) => (
+            <button type="button" data-project-filter={category.id} aria-pressed="false">
+              {category.title}
+            </button>
           ))
         }
       </div>
 
-      <div class="project-sections">
-        {
-          projectGroups.map((group) => (
-            <section id={group.id} class="project-section" aria-labelledby={`${group.id}-title`}>
-              <div class="project-section-head">
-                <img src={group.logo} alt="" loading="lazy" />
-                <div>
-                  <h2 id={`${group.id}-title`}>{group.title}</h2>
-                  <p>{group.intro}</p>
-                </div>
-              </div>
-
-              <div class="project-grid">
-                {group.projects.map((project) => <ProjectCard project={project} />)}
-              </div>
-            </section>
-          ))
-        }
+      <div class="project-grid" data-filter-list>
+        {projects.map((project) => <ProjectCard project={project} />)}
       </div>
     </div>
   </section>
+
+  <script>
+    const filterTabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"));
+    const list = document.querySelector<HTMLElement>("[data-filter-list]");
+    const items = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const active = tab.dataset.projectFilter ?? "";
+        list?.classList.add("is-filtering");
+
+        window.setTimeout(() => {
+          filterTabs.forEach((item) => {
+            item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
+          });
+          items.forEach((item) => {
+            item.hidden = Boolean(active) && item.dataset.category !== active;
+          });
+          list?.classList.remove("is-filtering");
+        }, 120);
+      });
+    });
+  </script>
 </BaseLayout>
 
 <style>
   .page-hero {
-    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+    background: var(--surface-base);
+    color: #ffffff;
+    padding-block: clamp(7rem, 12vw, 10rem) clamp(4rem, 8vw, 6rem);
   }
 
-  .category-nav {
+  .page-hero .display {
+    max-width: 840px;
+    color: #ffffff;
+  }
+
+  .page-hero .lead {
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .project-index {
+    background: var(--surface-light);
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .project-work {
+    display: grid;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .filter-tabs {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 0.55rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
   }
 
-  .category-nav a {
-    min-height: 2.35rem;
-    transition: all 150ms ease-out;
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
   }
 
-  .category-nav a:hover {
-    border-color: rgba(167, 243, 208, 0.9);
-    background: rgba(236, 253, 245, 0.68);
-  }
-
-  .category-nav img {
-    width: 1.35rem;
-    height: 1.35rem;
-    border-radius: 6px;
-  }
-
-  .project-sections {
-    display: grid;
-    gap: clamp(2rem, 5vw, 3rem);
-  }
-
-  .project-section {
-    scroll-margin-top: 6rem;
-  }
-
-  .project-section-head {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem;
-    align-items: start;
-    max-width: 680px;
-    margin-bottom: 0.7rem;
-  }
-
-  .project-section-head img {
-    width: 3.2rem;
-    height: 3.2rem;
-    border-radius: 12px;
-    box-shadow: none;
-  }
-
-  h2 {
-    margin: 0;
-    color: var(--text);
-    font-size: 1.5rem;
+  .filter-tabs button {
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    font-size: 0.82rem;
     font-weight: 500;
-    line-height: 1.1;
-    letter-spacing: -0.045em;
+    line-height: 1;
+    padding: 0.58rem 0.72rem;
+    white-space: nowrap;
   }
 
-  .project-section-head p {
-    margin: 0.65rem 0 0;
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.72;
+  .filter-tabs button[aria-pressed="true"] {
+    background: var(--accent-dim);
+    border-color: rgba(29, 158, 117, 0.32);
+    color: var(--text);
   }
 
   .project-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.9rem, 2.5vw, 1.25rem);
+    transition: opacity 150ms ease;
+  }
+
+  .project-grid.is-filtering {
+    opacity: 0.3;
   }
 
   @media (max-width: 760px) {
+    .page-hero {
+      padding-block: 6.5rem 4rem;
+    }
+
+    .project-index {
+      padding-block: 3.25rem;
+    }
+
+    .filter-tabs {
+      margin-inline: -0.625rem;
+      padding-inline: 0.625rem;
+    }
+
     .project-grid {
       grid-template-columns: 1fr;
     }

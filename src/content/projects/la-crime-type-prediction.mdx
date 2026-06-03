@@ -1,7 +1,7 @@
 ---
-title: "Predicting Crime Types using LA Crime Dataset"
+title: "LA Crime Type Prediction"
 slug: "la-crime-type-prediction"
-summary: "A supervised machine learning project to predict crime types from historical LA crime records using time, location, and victim attributes."
+summary: "A multi-class classification case study predicting Los Angeles crime codes from time, location, premise, status, and victim attributes."
 category: "machine-learning-data-science"
 status: "Completed"
 year: 2025
@@ -10,60 +10,78 @@ stack:
   - Python
   - Scikit-learn
   - Pandas
-  - TensorFlow
-  - Random Forest
-  - Decision Tree
-  - Logistic Regression
   - SVM
+  - KNN
   - Naive Bayes
-  - MLP
-  - SMOTE
+  - Logistic Regression
+  - Decision Tree
+  - BPNN
+  - Class Balancing
 links:
   - label: "Project link"
     href: "https://its.id/m/PredictiveAnalyticsCrimeLA"
 featured: true
-coverImage: "/covers/la-crime-ml.svg"
-logo: "/assets/logos/ai-data.svg"
-result: "Compared classical ML and neural models using Accuracy, Precision, Recall, F1-score, and ROC-AUC."
-metric: "ROC-AUC"
+coverImage: "/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg"
+logo: "/assets/logos/scikitlearn.svg"
+result: "SVM with RBF kernel became the strongest deployable baseline with accuracy 0.321 and macro F1 0.303 across 138 modeled classes."
+metric: "138 classes"
 proof:
-  - "Imbalanced classification workflow"
-  - "Model comparison across six algorithms"
-  - "Evaluation with Precision, Recall, F1, ROC-AUC"
+  - "976k raw crime records"
+  - "Balanced 13,800-row modeling dataset"
+  - "SVM, KNN, Naive Bayes, Logistic Regression, Decision Tree, and BPNN comparison"
 priority: 1
 ---
 
 ## Context
 
-Crime data can reveal patterns across time, geography, and victim context. This project used historical LA crime data as a supervised learning problem, turning structured records into features that could support crime type prediction.
+Crime data can reveal patterns across time, geography, premise, case status, and victim context. This academic project used cleaned Los Angeles crime records from 2020-2024 as a supervised multi-class classification problem.
 
 ## Problem
 
-The dataset contains multiple signals with imbalanced classes. The challenge was not only to train a model, but to compare model behavior under imbalance handling and evaluate the trade-off between accuracy and recall-oriented metrics.
+The dataset was large, highly multi-class, and imbalanced. The challenge was not only to train a model, but to prepare categorical features, balance target classes, compare model behavior, and avoid overstating performance in a sensitive public-safety domain.
 
 ## My Role
 
 I worked on data preparation, model comparison, imbalance handling, and evaluation design.
 
+## Evidence
+
+<figure className="evidence-panel">
+  <img src="/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg" alt="Los Angeles crime prediction dashboard showing raw records, modeled classes, balanced records, top crime types, day-night split, zones, and top areas" />
+  <figcaption>Dataset evidence: 976k raw records, 138 modeled classes, and a balanced 13,800-row modeling dataset.</figcaption>
+</figure>
+
 ## Approach
 
-- Prepared features from event time, geographic location, and victim characteristics.
-- Compared Decision Tree, Random Forest, Logistic Regression, SVM, Naive Bayes, and MLP models.
-- Tested imbalance strategies including SMOTE, RandomOverSampler, and UnderSampler.
-- Evaluated results using Accuracy, Precision, Recall, F1-score, and ROC-AUC.
+- Prepared features from time, area, reporting district, premise, case status, day of week, month, day/night category, geographic zone, and victim attributes.
+- Removed redundant or unsafe modeling columns, then encoded categorical features for classical machine learning models.
+- Removed single-instance target classes and balanced the dataset to 100 samples per modeled class.
+- Compared KNN, Naive Bayes, Logistic Regression, SVM, Decision Tree, and BPNN.
+- Evaluated results with Accuracy, macro Precision, macro Recall, macro F1, and macro AUC ROC.
 
 ## Key Decisions
 
-The project compared several model families instead of relying on a single high-level score. That made it easier to understand how different algorithms responded to class imbalance and feature structure.
+The project compared several model families instead of relying on a single high-level score. I treated SVM with RBF kernel as the strongest deployable baseline because it led accuracy and macro F1, while the BPNN result required audit despite a high AUC value.
 
-## Tech Stack
-
-Python, Pandas, Scikit-learn, TensorFlow, Random Forest, Decision Tree, Logistic Regression, SVM, Naive Bayes, MLP, SMOTE, RandomOverSampler, and UnderSampler.
+<div className="evidence-grid">
+  <figure className="evidence-panel">
+    <img src="/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg" alt="Machine learning workflow diagram covering data preparation, exploratory analysis, model experimentation, evaluation, and model selection" />
+    <figcaption>Workflow evidence: data preparation, EDA, class balancing, model experimentation, evaluation, and selection.</figcaption>
+  </figure>
+  <figure className="evidence-panel">
+    <img src="/assets/projects/la-crime-type-prediction/la_model_comparison.svg" alt="Model comparison for LA Crime classification showing accuracy, F1, and AUC across tested models" />
+    <figcaption>Model evidence: SVM RBF led the usable baseline results with accuracy 0.321 and macro F1 0.303.</figcaption>
+  </figure>
+</div>
 
 ## Result
 
-The work produced a reproducible supervised learning comparison with evaluation across common classification metrics, giving a clearer view of model trade-offs for crime type prediction.
+SVM with RBF kernel and C = 10 became the strongest deployable baseline in the notebook, with accuracy 0.321 and macro F1 0.303 on the test set. The score is intentionally presented with context because the target space contains 138 modeled classes.
 
 ## What I'd Improve
 
-I would add stronger feature explainability, document confusion-matrix patterns per crime category, and include a clearer error analysis section for classes that remain difficult to predict.
+I would audit the BPNN label mapping, add top-k accuracy, include confusion-matrix analysis for frequent crime classes, test boosting models such as XGBoost or LightGBM, and add feature importance or SHAP-style interpretability.
+
+## Responsible Use Note
+
+This project should be read as an academic modeling exercise, not as an automated decision-making system for policing or legal action. Crime datasets can reflect reporting bias, location bias, and complex social context that model scores alone cannot resolve.

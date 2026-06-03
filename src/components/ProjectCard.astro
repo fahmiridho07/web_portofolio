@@ -1,4 +1,5 @@
 ---
+import { getCategoryMeta } from "@lib/projects";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -7,158 +8,205 @@ interface Props {
 
 const { project } = Astro.props;
 const href = `/projects/${project.data.slug}/`;
+const metric = project.data.metric ?? project.data.status;
+const category = getCategoryMeta(project.data.category);
+const projectLogo = project.data.logo ?? category.logo;
 const stackLine = project.data.stack.slice(0, 4).join(" / ");
-const resultLine = project.data.result ?? project.data.proof?.[0];
+const proofLine = project.data.proof?.[0] ?? metric;
 ---
 
-<article class="project-row">
-  <a href={href} aria-label={`Read case study: ${project.data.title}`}>
+<article class="project-card" data-category={project.data.category}>
+  <a class="project-link" href={href} aria-label={`Read case study: ${project.data.title}`}>
     <div class="project-thumb" aria-hidden="true">
-      <img src={project.data.coverImage} alt="" loading="lazy" />
+      <img src={project.data.coverImage} alt="" loading="eager" decoding="async" />
     </div>
 
     <div class="project-main">
+      <div class="project-kicker">
+        <p class="project-category">
+          {projectLogo && <img src={projectLogo} alt="" loading="eager" decoding="async" />}
+          <span>{category.title}</span>
+        </p>
+        <p>{project.data.year}</p>
+      </div>
       <h3>{project.data.title}</h3>
-      <p>{project.data.summary}</p>
-      {resultLine && <span>{resultLine}</span>}
-    </div>
+      <p class="project-summary">{project.data.summary}</p>
+      <p class="project-proof">{proofLine}</p>
 
-    <div class="project-meta" aria-label={`Metadata for ${project.data.title}`}>
-      <span>{project.data.year}</span>
-      <span>{project.data.metric ?? project.data.status}</span>
-      <span>{stackLine}</span>
+      <div class="project-footer">
+        <span class="project-metric">{metric}</span>
+        <small>{stackLine}</small>
+      </div>
     </div>
   </a>
 </article>
 
 <style>
-  .project-row {
-    border-top: 1px solid var(--line);
-  }
-
-  .project-row:last-child {
-    border-bottom: 1px solid var(--line);
-  }
-
-  a {
-    display: grid;
-    grid-template-columns: 5.8rem minmax(0, 1fr) minmax(13rem, 0.34fr);
-    gap: clamp(0.9rem, 3vw, 2rem);
-    align-items: center;
-    margin-inline: -0.65rem;
-    padding: 0.8rem 0.65rem;
-    border-radius: 14px;
+  .project-card {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.5);
     transition:
-      background 150ms ease-out,
-      box-shadow 150ms ease-out,
-      transform 150ms ease-out;
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease;
   }
 
-  a:hover {
-    background:
-      linear-gradient(90deg, rgba(236, 253, 245, 0.44), rgba(244, 244, 245, 0.62)),
-      rgba(244, 244, 245, 0.72);
-    box-shadow: inset 3px 0 0 rgba(5, 150, 105, 0.24);
-    transform: translateX(3px);
+  .project-card::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--accent);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
+  }
+
+  .project-card:hover {
+    border-color: var(--line-strong);
+    background: #ffffff;
+    transform: translateY(-2px);
+  }
+
+  .project-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .project-link {
+    display: grid;
+    height: 100%;
+    color: inherit;
   }
 
   .project-thumb {
-    border: 1px solid rgba(255, 255, 255, 0.88);
-    border-radius: 14px;
-    background: rgba(246, 246, 244, 0.72);
-    box-shadow: 0 12px 28px rgba(24, 24, 27, 0.06);
+    aspect-ratio: 16 / 10;
     overflow: hidden;
+    background: var(--surface-subtle);
   }
 
   .project-thumb img {
     width: 100%;
-    aspect-ratio: 1.25;
+    height: 100%;
     object-fit: cover;
-    transition: transform 180ms ease-out;
+    transition: transform 200ms ease;
   }
 
-  a:hover .project-thumb img {
-    transform: scale(1.045);
+  .project-card:hover .project-thumb img {
+    transform: scale(1.03);
   }
 
   .project-main {
     display: grid;
-    gap: 0.42rem;
+    align-content: start;
+    gap: 0.72rem;
+    min-width: 0;
+    padding: clamp(1rem, 2.5vw, 1.25rem);
+  }
+
+  .project-kicker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem 0.8rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .project-kicker p,
+  small {
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.6875rem;
+    line-height: 1.35;
+  }
+
+  .project-category {
+    display: inline-flex;
+    width: fit-content;
+    min-width: 0;
+    align-items: center;
+    gap: 0.38rem;
+    border-radius: 999px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 0.4rem 0.62rem;
+    line-height: 1;
+  }
+
+  .project-category img {
+    width: 0.92rem;
+    height: 0.92rem;
+    flex: 0 0 auto;
+    object-fit: contain;
   }
 
   h3 {
     margin: 0;
-    color: #27272a;
-    font-size: 1.125rem;
+    color: var(--text);
+    font-size: clamp(1.15rem, 2vw, 1.42rem);
     font-weight: 500;
-    line-height: 1.25;
-    transition: color 150ms ease-out;
+    line-height: 1.12;
+    overflow-wrap: break-word;
   }
 
-  a:hover h3 {
-    color: #047857;
-  }
-
-  p {
-    max-width: 42rem;
+  .project-summary {
+    display: -webkit-box;
     margin: 0;
-    color: #52525b;
-    font-size: 14px;
-    line-height: 1.72;
+    overflow: hidden;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .project-main span {
-    width: fit-content;
-    border: 1px solid rgba(167, 243, 208, 0.72);
-    border-radius: 999px;
-    background: rgba(236, 253, 245, 0.64);
-    color: #047857;
-    font-size: 12px;
-    line-height: 1.25;
-    padding: 0.36rem 0.55rem;
+  .project-proof {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    border-left: 2px solid var(--accent);
+    color: var(--text);
+    font-size: 0.82rem;
+    line-height: 1.42;
+    padding-left: 0.65rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .project-meta {
+  .project-footer {
     display: grid;
-    justify-items: end;
-    gap: 0.32rem;
-    color: var(--text-soft);
-    font-family:
-      "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 11px;
-    line-height: 1.45;
-    text-align: right;
-    transition: color 150ms ease-out;
+    gap: 0.6rem;
+    align-self: end;
   }
 
-  a:hover .project-meta {
-    color: #71717a;
+  .project-metric {
+    width: fit-content;
+    border-radius: 999px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.42rem 0.66rem;
   }
 
-  @media (max-width: 760px) {
-    a {
-      grid-template-columns: 4.8rem 1fr;
-      gap: 0.8rem;
-    }
-
-    .project-meta {
-      grid-column: 2;
-      justify-items: start;
-      text-align: left;
-    }
+  small {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   @media (max-width: 520px) {
-    a {
-      grid-template-columns: 1fr;
-    }
-
     .project-thumb {
-      max-width: 8rem;
+      aspect-ratio: 1.5;
     }
 
-    .project-meta {
-      grid-column: auto;
+    h3 {
+      font-size: 1.15rem;
+      line-height: 1.16;
     }
   }
 </style>

@@ -1,26 +1,32 @@
 ---
+import { profile } from "@data/profile";
+
 const navItems = [
   { href: "/", label: "Home" },
   { href: "/projects/", label: "Projects" },
   { href: "/about/", label: "About" },
+  { href: `mailto:${profile.email}`, label: "Contact" },
 ];
 
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
-  href === "/" ? pathname === href : pathname.startsWith(href);
+  href === "/" ? pathname === href : href.startsWith("/") && pathname.startsWith(href);
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container header-inner">
-    <nav aria-label="Primary navigation">
+    <a class="brand" href="/" aria-label={`${profile.name} home`}>{profile.mark}</a>
+
+    <button class="menu-toggle" type="button" data-menu-toggle aria-controls="site-menu" aria-expanded="false">
+      <span>Menu</span>
+    </button>
+
+    <nav id="site-menu" aria-label="Primary navigation" data-site-menu>
       <ul>
         {
           navItems.map((item) => (
             <li>
-              <a
-                href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
+              <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
                 {item.label}
               </a>
             </li>
@@ -29,67 +35,206 @@ const isActive = (href: string) =>
       </ul>
     </nav>
   </div>
+
+  <script>
+    const header = document.querySelector<HTMLElement>("[data-site-header]");
+    const menu = document.querySelector<HTMLElement>("[data-site-menu]");
+    const menuToggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+
+    const setHeaderMode = () => {
+      const darkSections = Array.from(document.querySelectorAll<HTMLElement>("[data-dark-section]"));
+      const onDark = darkSections.some((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top <= 44 && rect.bottom > 44;
+      });
+
+      header?.classList.toggle("is-dark", onDark);
+    };
+
+    menuToggle?.addEventListener("click", () => {
+      const open = menu?.classList.toggle("is-open") ?? false;
+      menuToggle.setAttribute("aria-expanded", String(open));
+      document.documentElement.classList.toggle("menu-open", open);
+    });
+
+    menu?.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        menu.classList.remove("is-open");
+        menuToggle?.setAttribute("aria-expanded", "false");
+        document.documentElement.classList.remove("menu-open");
+      });
+    });
+
+    setHeaderMode();
+    window.addEventListener("scroll", setHeaderMode, { passive: true });
+    window.addEventListener("resize", setHeaderMode);
+  </script>
 </header>
 
 <style>
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 50;
+    width: 100%;
     border-bottom: 1px solid var(--line);
-    background: rgba(251, 251, 250, 0.86);
+    background: rgba(247, 246, 242, 0.86);
+    color: var(--text);
     backdrop-filter: blur(18px);
+    transition:
+      background 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
+  }
+
+  .site-header.is-dark {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(13, 13, 13, 0.58);
+    color: #ffffff;
   }
 
   .header-inner {
-    display: flex;
-    min-height: 3.6rem;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    min-height: 3.8rem;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: center;
+    gap: 1rem;
+  }
+
+  .brand {
+    color: currentColor;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+  }
+
+  nav {
+    justify-self: end;
   }
 
   nav ul {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: clamp(0.9rem, 3vw, 1.6rem);
     margin: 0;
-    padding: 0.28rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgba(244, 244, 245, 0.72);
-    box-shadow: 0 12px 32px rgba(24, 24, 27, 0.06);
+    padding: 0;
     list-style: none;
   }
 
   nav a {
+    position: relative;
     display: inline-flex;
     min-height: 2.2rem;
     align-items: center;
-    border-radius: 999px;
-    color: var(--text-muted);
+    color: color-mix(in srgb, currentColor 68%, transparent);
     font-size: 0.82rem;
     font-weight: 500;
     line-height: 1;
-    padding: 0.56rem 0.86rem;
-    transition:
-      background 150ms ease-out,
-      color 150ms ease-out,
-      transform 150ms ease-out,
-      box-shadow 150ms ease-out;
+    padding-block: 0.56rem;
+  }
+
+  nav a::before {
+    position: absolute;
+    right: -0.42rem;
+    top: 50%;
+    width: 0.28rem;
+    height: 0.28rem;
+    border-radius: 999px;
+    background: var(--accent);
+    content: "";
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+
+  nav a::after {
+    position: absolute;
+    bottom: 0.32rem;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    content: "";
+    transition: width 250ms ease;
   }
 
   nav a:hover,
   nav a[aria-current="page"] {
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(24, 24, 27, 0.06);
-    color: var(--text);
-    transform: translateY(-1px);
+    color: currentColor;
   }
 
-  @media (max-width: 520px) {
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  nav a[aria-current="page"]::before {
+    opacity: 1;
+  }
+
+  .menu-toggle {
+    display: none;
+    justify-self: end;
+    border: 0;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0;
+  }
+
+  @media (max-width: 680px) {
+    .header-inner {
+      grid-template-columns: auto 1fr;
+    }
+
+    .menu-toggle {
+      display: inline-flex;
+    }
+
+    nav {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: grid;
+      width: 100vw;
+      min-height: 100vh;
+      min-height: 100dvh;
+      justify-self: stretch;
+      place-items: center;
+      background: var(--surface-base);
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    nav.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     nav ul {
-      width: 100%;
-      justify-content: space-between;
+      display: grid;
+      gap: 1.35rem;
+      text-align: center;
+    }
+
+    nav a {
+      font-size: clamp(2rem, 12vw, 3.6rem);
+      line-height: 1;
+    }
+
+    nav a::before {
+      right: -1rem;
+      width: 0.45rem;
+      height: 0.45rem;
+    }
+
+    :global(.menu-open) {
+      overflow: hidden;
     }
   }
 </style>

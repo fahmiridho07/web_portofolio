@@ -16,6 +16,14 @@ export const profile = {
       label: "Email",
       href: "mailto:achmad.fahmi@example.com",
     },
+    {
+      label: "LinkedIn",
+      href: "https://id.linkedin.com/in/fahmiridho",
+    },
+    {
+      label: "GitHub",
+      href: "https://github.com/fahmiridho07",
+    },
   ],
 };
 
@@ -54,6 +62,12 @@ export const proofPoints = [
 
 export const experiences = [
   {
+    role: "Software Engineering and Automation Intern",
+    organization: "PT Kaltim Prima Coal",
+    summary:
+      "Worked with the Business Improvement Department on Microsoft Power Automate workflow digitization and ASP.NET Core IdeKU V3 stabilization, including RBAC hardening, Power BI integration, and performance tuning.",
+  },
+  {
     role: "Vice Head of Research and Development Department",
     organization: "HMSI ITS",
     summary:
@@ -86,7 +100,7 @@ export const projectCategories = [
     title: "Predictive Modeling",
     intro:
       "Classification, forecasting, data preparation, and model evaluation.",
-    logo: "/assets/logos/ai-data.svg",
+    logo: "/assets/logos/scikitlearn.svg",
   },
   {
     id: projectCategoryIds[1],
@@ -99,7 +113,7 @@ export const projectCategories = [
     id: projectCategoryIds[2],
     title: "Deployment & Automation",
     intro:
-      "Apps, APIs, CI/CD, containers, cloud deployment, and monitoring.",
+      "Apps, APIs, workflow automation, deployment pipelines, and monitoring.",
     logo: "/assets/logos/devops.svg",
   },
   {
@@ -122,11 +136,17 @@ export const skillGroups = [
     title: "Backend & Deployment",
     items: [
       "TypeScript",
+      "ASP.NET Core",
+      "C#",
+      "SQL Server",
+      "FastAPI",
+      "PostgreSQL",
       "REST API",
       "Authentication",
       "Docker",
       "GitHub Actions",
       "AWS EC2",
+      "Railway",
       "Prometheus",
       "Grafana",
     ],
@@ -142,12 +162,17 @@ export const skillGroups = [
       "SMOTE",
       "CNN-LSTM",
       "Random Forest",
+      "Recommendation Systems",
+      "TF-IDF",
     ],
   },
   {
     title: "Analytics & Workflow",
     items: [
       "Power BI",
+      "Power BI Embedded",
+      "Microsoft Power Automate",
+      "SharePoint",
       "IT-BSC",
       "KPI Mapping",
       "Odoo ERP",

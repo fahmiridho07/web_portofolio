@@ -25,7 +25,7 @@ export function getCategoryMeta(categoryId: string) {
       id: categoryId,
       title: categoryId,
       intro: "",
-      logo: "/assets/logos/case-study.svg",
+      logo: "/assets/marks/fr.svg",
     }
   );
 }

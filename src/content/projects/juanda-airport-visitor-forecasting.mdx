@@ -1,64 +1,73 @@
 ---
 title: "Juanda Airport Visitor Forecasting"
 slug: "juanda-airport-visitor-forecasting"
-summary: "A predictive time-series project forecasting visitor counts at Juanda International Airport and comparing CNN-LSTM against baseline models."
+summary: "A time-series forecasting case study predicting monthly Juanda Airport visitor demand from 2014-2023 data."
 category: "machine-learning-data-science"
 status: "Completed"
 year: 2025
 role: "Data science practitioner"
 stack:
   - Python
-  - TensorFlow
   - Pandas
   - NumPy
-  - CNN-LSTM
+  - Scikit-learn
   - Random Forest
   - Linear Regression
+  - CNN-LSTM
+  - TensorFlow
 links: []
 featured: true
-coverImage: "/covers/juanda-forecasting.svg"
+coverImage: "/assets/projects/juanda-airport-visitor-forecasting/juanda_airport_forecasting_dashboard.svg"
 logo: "/assets/logos/forecast.svg"
-result: "CNN-LSTM achieved lower RMSE than Random Forest and Linear Regression baselines in the provided CV notes."
-metric: "lower RMSE"
+result: "Random Forest Regressor produced the strongest notebook result with R2 0.869 and MAE around 48k visitors on the 80-20 split."
+metric: "R2 0.869"
 proof:
-  - "Time-series preprocessing and normalization"
-  - "CNN-LSTM benchmarked against simpler baselines"
-  - "Forecasting evaluation with RMSE"
+  - "120 monthly observations from 2014-2023"
+  - "Random Forest, Linear Regression, and CNN-LSTM comparison"
+  - "Evaluation with R2, MAE, MSE, and MAPE"
 priority: 2
 ---
 
 ## Context
 
-Airport visitor demand changes across time because of seasonality, travel patterns, and external operational factors. The project explored whether a sequence model could forecast visitor counts more effectively than simpler baselines.
+Airport visitor demand changes across time because of seasonality, travel patterns, and external operational factors. This academic forecasting case study used monthly Juanda Airport visitor data from 2014-2023 to compare baseline, ensemble, and hybrid deep learning approaches.
 
 ## Problem
 
-The core problem was to forecast future visitor counts from historical time-series data while keeping the comparison understandable and measurable.
+The core problem was to forecast future visitor counts from historical time-series data while keeping the comparison understandable and measurable. The data also contained a sharp mobility drop during the pandemic period, so preprocessing and model comparison mattered as much as the final score.
 
 ## My Role
 
-I handled preprocessing, normalization, model setup, baseline comparison, and forecasting evaluation.
+I handled data preparation, descriptive analysis, outlier handling, normalization, model setup, baseline comparison, and forecasting evaluation.
+
+## Evidence
+
+<figure className="evidence-panel">
+  <img src="/assets/projects/juanda-airport-visitor-forecasting/juanda_airport_forecasting_dashboard.svg" alt="Dashboard showing Juanda Airport visitor forecasting data, monthly trend, yearly average, and project metrics" />
+  <figcaption>Forecasting overview: 120 monthly observations, historical demand movement, and summary statistics for the airport visitor dataset.</figcaption>
+</figure>
 
 ## Approach
 
-- Cleaned and normalized historical visitor data.
-- Explored trend and seasonal behavior before modeling.
-- Built a CNN-LSTM model to capture local sequence patterns and longer temporal dependencies.
-- Compared CNN-LSTM against Random Forest and Linear Regression baselines.
-- Evaluated model performance with RMSE.
+- Cleaned the monthly visitor dataset and checked missing values, duplicates, and descriptive statistics.
+- Handled low outliers using a quantile-based rule, then normalized values with Min-Max Scaling.
+- Compared Linear Regression, Random Forest Regressor, and CNN-LSTM across multiple train-test split scenarios.
+- Evaluated model performance using R2, MAE, MSE, and MAPE.
+- Selected the strongest notebook result based on both explanatory power and error size.
 
 ## Key Decisions
 
-The comparison included baseline models so the CNN-LSTM result could be judged against simpler alternatives, not just presented as a complex model by default.
+The model selection stayed evidence-led. Although CNN-LSTM was included as the more complex sequence model, Random Forest produced the strongest result in the notebook and was easier to explain as a portfolio-ready baseline for non-linear demand behavior.
 
-## Tech Stack
-
-Python, TensorFlow, Pandas, NumPy, CNN-LSTM, Random Forest, and Linear Regression.
+<figure className="evidence-panel">
+  <img src="/assets/projects/juanda-airport-visitor-forecasting/juanda_model_comparison.svg" alt="Model comparison for Juanda forecasting showing R2 and MAE across Linear Regression, Random Forest, and CNN-LSTM" />
+  <figcaption>Model comparison: Random Forest reached R2 0.869 with MAE around 48k visitors on the 80-20 split.</figcaption>
+</figure>
 
 ## Result
 
-Based on the CV notes provided, the CNN-LSTM model achieved lower RMSE than the baseline models.
+Random Forest Regressor became the strongest model in the notebook, reaching R2 0.869 and MAE around 48k visitors on the 80-20 split. The result suggests that non-linear ensemble modeling was a better fit for this dataset than a simple linear baseline or the tested CNN-LSTM setup.
 
 ## What I'd Improve
 
-I would add rolling-window validation, visualize forecast intervals, and document how holidays or special travel periods affect forecast error.
+I would replace random train-test splitting with chronological split or walk-forward validation, add seasonality features such as month and holiday periods, compare against ARIMA/SARIMA or boosting models, and visualize forecast intervals.

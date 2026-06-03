@@ -1,86 +1,65 @@
 ---
-import FocusPanel from "@components/FocusPanel.astro";
 import ProjectCard from "@components/ProjectCard.astro";
-import ProjectRail from "@components/ProjectRail.astro";
 import {
+  coursesAndCertificates,
   education,
   experiences,
   profile,
   projectCategories,
-  proofPoints,
-  roleTargets,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getFeaturedProjects, getProjectsByCategory } from "@lib/projects";
+import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 
-const featuredProjects = await getFeaturedProjects();
-const projectGroups = (await getProjectsByCategory()).filter(
-  (group) => group.projects.length > 0,
+const allProjects = await getSortedProjects();
+const activeCategories = projectCategories.filter((category) =>
+  allProjects.some((project) => project.data.category === category.id),
 );
 const flagshipProject =
-  featuredProjects.find((project) => project.data.slug === "la-crime-type-prediction") ??
-  featuredProjects[0];
+  allProjects.find((project) => project.data.slug === "kpc-power-automate-po-automation") ??
+  allProjects[0];
+const flagshipProof = flagshipProject
+  ? (
+      flagshipProject.data.proof && flagshipProject.data.proof.length > 0
+        ? flagshipProject.data.proof
+        : [flagshipProject.data.metric ?? flagshipProject.data.status, flagshipProject.data.status, ...flagshipProject.data.stack]
+    )
+      .filter(Boolean)
+      .slice(0, 3)
+  : [];
+const rolePills = ["Data / ML Engineering", "Data Analytics", "Backend / Data Systems"];
+const primaryExperience = experiences[0];
+const activityItems = experiences.slice(1);
 ---
 
 <BaseLayout
   title="Achmad Fahmi Ainur Ridho Portfolio"
   description="Portfolio of Achmad Fahmi Ainur Ridho, a final-year Information Systems student building practical data products across machine learning, analytics, and backend workflows."
 >
-  <section class="hero">
+  <section class="hero dark-section" data-dark-section>
+    <div class="hero-circle hero-circle-large" aria-hidden="true"></div>
+    <div class="hero-circle hero-circle-small" aria-hidden="true"></div>
+
     <div class="container hero-grid">
-      <div>
-        <p class="section-label">{profile.name}</p>
-        <h1 class="display">I build practical data products from models, dashboards, and backend workflows.</h1>
-      </div>
-
-      <div class="hero-summary">
-        <div class="proof-board">
-          <div class="logo-orbit" aria-hidden="true">
-            {projectCategories.map((category) => <img src={category.logo} alt="" loading="eager" />)}
+      <div class="hero-copy">
+        <div class="hero-person">
+          <img src="/assets/profile/profile_photo.png" alt="" loading="eager" decoding="async" />
+          <div>
+            <p class="section-label">{profile.name}</p>
+            <span>{profile.location} / {profile.role}</span>
           </div>
-
-          <p>
-            Final-year Information Systems student at ITS. Best fit for data,
-            ML, analytics, and data-systems internships.
-          </p>
-
-          <dl aria-label="Recruiter scan facts">
-            <div>
-              <dt>Best fit</dt>
-              <dd>Data / ML Engineering</dd>
-            </div>
-            <div>
-              <dt>Graduation</dt>
-              <dd>Expected 2026</dd>
-            </div>
-            <div>
-              <dt>Signal</dt>
-              <dd>Models to systems</dd>
-            </div>
-          </dl>
         </div>
-
-        <div class="hero-actions" aria-label="Primary actions">
-          <a class="button button-primary" href="/projects/">View work</a>
-        </div>
+        <h1 class="display">I build data products that actually ship.</h1>
+        <p>
+          Models, dashboards, backend workflows, and automation that turn messy
+          inputs into useful systems.
+        </p>
+        <a class="text-arrow" href="#work">View work <span aria-hidden="true">-&gt;</span></a>
       </div>
-    </div>
-  </section>
 
-  <section class="section-block divider">
-    <div class="container section-grid">
-      <header>
-        <p class="section-label">Best fit</p>
-        <h2>Three roles I make sense for.</h2>
-      </header>
-
-      <div class="fit-grid">
+      <div class="role-stack" aria-label="Role fit">
         {
-          roleTargets.map((role) => (
-            <article>
-              <span>{role.title}</span>
-              <p>{role.summary}</p>
-            </article>
+          rolePills.map((role, index) => (
+            <span class:list={[index === 0 && "is-primary"]}>{role}</span>
           ))
         }
       </div>
@@ -89,534 +68,705 @@ const flagshipProject =
 
   {
     flagshipProject && (
-      <section class="section-block divider">
+      <section class="flagship-section">
         <div class="container flagship">
           <div class="flagship-copy">
-            <p class="section-label">Flagship project</p>
+            <p class="section-label">{getCategoryMeta(flagshipProject.data.category).title}</p>
             <h2>{flagshipProject.data.title}</h2>
-            <p>{flagshipProject.data.summary}</p>
-
-            <ul aria-label="Flagship proof points">
-              {proofPoints.map((point) => (
-                <li>{point}</li>
-              ))}
+            <p>{flagshipProject.data.result ?? flagshipProject.data.summary}</p>
+            <span>{flagshipProject.data.metric ?? flagshipProject.data.status}</span>
+            <ul class="flagship-proof" aria-label="Featured project proof points">
+              {flagshipProof.map((item) => <li>{item}</li>)}
             </ul>
-
-            <a class="button button-primary" href={`/projects/${flagshipProject.data.slug}/`}>
-              Read case study
+            <a class="text-arrow" href={`/projects/${flagshipProject.data.slug}/`}>
+              Read case study <span aria-hidden="true">-&gt;</span>
             </a>
           </div>
 
-          <a class="flagship-cover" href={`/projects/${flagshipProject.data.slug}/`}>
-            <span>{flagshipProject.data.metric ?? flagshipProject.data.status}</span>
+          <a class="flagship-preview" href={`/projects/${flagshipProject.data.slug}/`}>
             <img src={flagshipProject.data.coverImage} alt="" loading="eager" />
-            <small>{flagshipProject.data.stack.slice(0, 5).join(" / ")}</small>
+            <span>
+              <strong>{flagshipProject.data.title}</strong>
+              <small>{flagshipProject.data.metric ?? flagshipProject.data.status}</small>
+            </span>
           </a>
         </div>
       </section>
     )
   }
 
-  <ProjectRail projects={featuredProjects} />
+  <section id="work" class="work-section divider">
+    <div class="container project-work" data-project-work data-view="list">
+      <div class="work-head">
+        <div>
+          <p class="section-label">Project index</p>
+          <h2>Evidence, quick to switch context.</h2>
+        </div>
 
-  <section class="section-block divider">
-    <div class="container section-grid">
-      <header>
-        <p class="section-label">Hiring signals</p>
-        <h2>One core lane, supported by adjacent proof.</h2>
-      </header>
+        <div class="view-toggle" aria-label="Project view mode">
+          <button type="button" data-view-mode="grid" aria-pressed="false">Grid</button>
+          <button type="button" data-view-mode="list" aria-pressed="true">List</button>
+        </div>
+      </div>
 
-      <div class="area-list">
+      <div class="filter-tabs" aria-label="Project category filters">
+        <button type="button" data-project-filter="" aria-pressed="true">All</button>
         {
-          projectCategories.map((category) => (
-            <a href={`/projects/#${category.id}`}>
-              <span>
-                <img src={category.logo} alt="" loading="lazy" />
-                <strong>{category.title}</strong>
-              </span>
-              <p>{category.intro}</p>
-            </a>
+          activeCategories.map((category) => (
+            <button type="button" data-project-filter={category.id} aria-pressed="false">
+              {category.title}
+            </button>
           ))
+        }
+      </div>
+
+      <div class="project-grid" data-filter-list>
+        {allProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+
+      <div class="project-list" data-filter-list>
+        {
+          allProjects.map((project, index) => {
+            const category = getCategoryMeta(project.data.category);
+
+            return (
+              <a
+                class="project-row"
+                data-category={project.data.category}
+                href={`/projects/${project.data.slug}/`}
+              >
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{project.data.title}</strong>
+                <small>{category.title}</small>
+                <small>{project.data.metric ?? project.data.status}</small>
+                <small>{project.data.year}</small>
+                <em aria-hidden="true">-&gt;</em>
+              </a>
+            );
+          })
         }
       </div>
     </div>
   </section>
 
-  <section class="section-block divider">
-    <div class="container section-grid">
-      <header>
-        <p class="section-label">Evidence</p>
-        <h2>Projects grouped by problem type.</h2>
-      </header>
+  <section class="resume-section divider">
+    <div class="container resume-grid">
+      <article>
+        <p class="section-label">Education</p>
+        <h2>{education.degree}</h2>
+        <p>{education.institution}</p>
+        <small>{education.period} / GPA {education.gpa}</small>
+      </article>
 
-      <div class="project-groups">
+      <article>
+        <p class="section-label">Experience</p>
+        <h2>{primaryExperience.role}</h2>
+        <p>{primaryExperience.organization}</p>
+        <small>{primaryExperience.summary}</small>
+      </article>
+
+      <article>
+        <p class="section-label">Activities</p>
         {
-          projectGroups.map((group) => (
-            <section class="project-group" aria-labelledby={`${group.id}-title`}>
-              <div class="group-heading">
-                <h3 id={`${group.id}-title`}>{group.title}</h3>
-                <span>{group.projects.length} item{group.projects.length > 1 ? "s" : ""}</span>
-              </div>
-
-              <div>
-                {group.projects.map((project) => <ProjectCard project={project} />)}
-              </div>
-            </section>
+          activityItems.slice(0, 2).map((item) => (
+            <div>
+              <h3>{item.organization}</h3>
+              <p>{item.role}</p>
+            </div>
           ))
         }
-      </div>
+        <small>{coursesAndCertificates[0]}</small>
+      </article>
     </div>
   </section>
 
-  <section class="section-block divider">
-    <div class="container section-grid">
-      <header>
-        <p class="section-label">Background</p>
-        <h2>Signals outside project work.</h2>
-      </header>
+  <script>
+    const projectWork = document.querySelector<HTMLElement>("[data-project-work]");
+    const filterTabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"));
+    const viewButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-view-mode]"));
+    const filterLists = Array.from(document.querySelectorAll<HTMLElement>("[data-filter-list]"));
+    const projectItems = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
+    let activeFilter = "";
 
-      <div class="timeline">
-        <article>
-          <span>{education.period}</span>
-          <h3>{education.degree}</h3>
-          <p>{education.institution} - GPA {education.gpa}</p>
-        </article>
+    const setView = (view: string) => {
+      projectWork?.setAttribute("data-view", view);
+      viewButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.viewMode === view));
+      });
+    };
 
-        {
-          experiences.map((item) => (
-            <article>
-              <span>{item.organization}</span>
-              <h3>{item.role}</h3>
-              <p>{item.summary}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+    const applyFilter = (nextFilter: string) => {
+      activeFilter = nextFilter;
+      filterLists.forEach((list) => list.classList.add("is-filtering"));
 
-  <section class="section-block divider">
-    <div class="container">
-      <FocusPanel />
-    </div>
-  </section>
+      window.setTimeout(() => {
+        filterTabs.forEach((tab) => {
+          tab.setAttribute("aria-pressed", String((tab.dataset.projectFilter ?? "") === activeFilter));
+        });
+
+        projectItems.forEach((item) => {
+          item.hidden = Boolean(activeFilter) && item.dataset.category !== activeFilter;
+        });
+
+        filterLists.forEach((list) => list.classList.remove("is-filtering"));
+      }, 120);
+    };
+
+    setView(window.matchMedia("(max-width: 760px)").matches ? "grid" : "list");
+    viewButtons.forEach((button) => button.addEventListener("click", () => setView(button.dataset.viewMode ?? "grid")));
+    filterTabs.forEach((tab) => tab.addEventListener("click", () => applyFilter(tab.dataset.projectFilter ?? "")));
+  </script>
 </BaseLayout>
 
 <style>
+  .dark-section {
+    background: var(--surface-base);
+    color: #ffffff;
+  }
+
   .hero {
-    padding-block: clamp(3.5rem, 8vw, 5.5rem) clamp(3rem, 6vw, 4rem);
-  }
-
-  .hero-grid,
-  .section-grid {
+    position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: start;
+    min-height: 100vh;
+    align-items: center;
+    overflow: hidden;
+    padding-block: clamp(6.5rem, 12vw, 9rem) clamp(5rem, 10vw, 8rem);
   }
 
-  .hero-summary {
+  .hero::after {
+    position: absolute;
+    inset: auto 0 0;
+    height: 10rem;
+    background: linear-gradient(180deg, rgba(13, 13, 13, 0), var(--surface-light));
+    content: "";
+    pointer-events: none;
+  }
+
+  .hero-circle {
+    position: absolute;
+    border: 0.5px solid rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+    pointer-events: none;
+  }
+
+  .hero-circle-large {
+    top: -18rem;
+    right: -11rem;
+    width: clamp(30rem, 52vw, 46rem);
+    aspect-ratio: 1;
+  }
+
+  .hero-circle-small {
+    right: 13vw;
+    bottom: 16vh;
+    width: clamp(10rem, 18vw, 16rem);
+    aspect-ratio: 1;
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
     display: grid;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 0.62fr) minmax(17rem, 0.38fr);
+    gap: clamp(3rem, 8vw, 7rem);
+    align-items: center;
   }
 
-  .hero-summary p,
-  .area-list p,
-  .timeline p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.78;
-  }
-
-  .proof-board {
+  .hero-copy {
     display: grid;
-    gap: 1rem;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    background:
-      linear-gradient(135deg, rgba(236, 253, 245, 0.62), rgba(255, 247, 237, 0.5) 46%, rgba(239, 246, 255, 0.65)),
-      rgba(246, 246, 244, 0.72);
-    background-size: 180% 180%;
-    box-shadow: 0 18px 48px rgba(24, 24, 27, 0.06);
-    padding: clamp(1rem, 3vw, 1.25rem);
-    animation: proof-flow 12s ease-in-out infinite alternate;
+    gap: 1.2rem;
   }
 
-  .logo-orbit {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
+  .hero-person {
+    display: inline-grid;
+    width: fit-content;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.72rem;
+    align-items: center;
   }
 
-  .logo-orbit img {
-    width: 2.55rem;
-    height: 2.55rem;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.58);
-    box-shadow:
-      0 12px 26px rgba(24, 24, 27, 0.09),
-      inset 0 1px 0 rgba(255, 255, 255, 0.92);
-    transform: translate3d(0, 0, 0);
-    transition:
-      box-shadow 150ms ease-out,
-      transform 150ms ease-out;
-    animation: soft-float 5.6s ease-in-out infinite;
+  .hero-person img {
+    width: 3.35rem;
+    height: 3.35rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    object-fit: cover;
+    object-position: center 58%;
   }
 
-  .logo-orbit img:nth-child(2) {
-    animation-delay: -1.4s;
+  .hero-person .section-label {
+    margin: 0 0 0.35rem;
   }
 
-  .logo-orbit img:nth-child(3) {
-    animation-delay: -2.8s;
-  }
-
-  .logo-orbit img:nth-child(4) {
-    animation-delay: -4.2s;
-  }
-
-  .proof-board:hover .logo-orbit img {
-    box-shadow:
-      0 14px 32px rgba(5, 150, 105, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.92);
-  }
-
-  dl {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin: 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-
-  dl div {
-    display: grid;
-    gap: 0.25rem;
-    border-right: 1px solid var(--line);
-    padding: 0.75rem 0.85rem 0.75rem 0;
-  }
-
-  dl div:last-child {
-    border-right: 0;
-  }
-
-  dt,
-  .timeline span,
-  .group-heading span {
-    color: var(--text-soft);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 11px;
-    line-height: 1.1;
-  }
-
-  dd {
-    margin: 0;
-    color: var(--text);
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .fit-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
-  }
-
-  .fit-grid article {
-    min-height: 10.5rem;
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    background:
-      linear-gradient(145deg, rgba(236, 253, 245, 0.48), rgba(246, 246, 244, 0.78)),
-      rgba(246, 246, 244, 0.72);
-    box-shadow: 0 14px 34px rgba(24, 24, 27, 0.05);
-    padding: 1rem;
-    transition:
-      border-color 150ms ease-out,
-      box-shadow 150ms ease-out,
-      transform 150ms ease-out;
-  }
-
-  .fit-grid article:hover {
-    border-color: rgba(5, 150, 105, 0.22);
-    box-shadow: 0 18px 42px rgba(5, 150, 105, 0.08);
-    transform: translateY(-2px);
-  }
-
-  .fit-grid span {
+  .hero-person span {
     display: block;
-    color: var(--text);
-    font-size: 0.96rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.76rem;
+    line-height: 1.35;
   }
 
-  .fit-grid p {
-    margin: 0.8rem 0 0;
-    color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.68;
+  .hero-copy .display {
+    color: #ffffff;
+  }
+
+  .hero-copy p:not(.section-label) {
+    max-width: 36rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .text-arrow {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.38rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .text-arrow span {
+    transition: transform 200ms ease;
+  }
+
+  .text-arrow:hover span {
+    transform: translateX(4px);
+  }
+
+  .role-stack {
+    display: grid;
+    gap: 0.72rem;
+  }
+
+  .role-stack span {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.92rem;
+    line-height: 1;
+    padding: 0.8rem 1rem;
+  }
+
+  .role-stack .is-primary {
+    border-color: rgba(29, 158, 117, 0.54);
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .flagship-section,
+  .work-section,
+  .resume-section {
+    background: var(--surface-light);
+    padding-block: clamp(4.5rem, 9vw, 7rem);
   }
 
   .flagship {
     display: grid;
-    grid-template-columns: minmax(0, 0.52fr) minmax(18rem, 0.48fr);
-    gap: clamp(1.5rem, 5vw, 4rem);
+    grid-template-columns: minmax(0, 0.45fr) minmax(18rem, 0.55fr);
+    gap: clamp(2rem, 6vw, 5rem);
     align-items: center;
   }
 
   .flagship-copy {
     display: grid;
-    gap: 1rem;
-    align-content: start;
+    gap: 0.9rem;
   }
 
-  .flagship-copy h2 {
-    max-width: 36rem;
+  .flagship-copy .section-label {
+    color: var(--accent);
+  }
+
+  .flagship-copy h2,
+  .work-head h2,
+  .resume-grid h2 {
     margin: 0;
-    font-size: clamp(1.7rem, 4vw, 2.65rem);
-    line-height: 1.02;
+    color: var(--text);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 500;
+    line-height: 1.04;
   }
 
   .flagship-copy p {
-    max-width: 34rem;
     margin: 0;
     color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.78;
+    font-size: 1rem;
+    line-height: 1.7;
   }
 
-  .flagship-copy ul {
+  .flagship-copy > span {
+    width: fit-content;
+    border-radius: 999px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.82rem;
+    line-height: 1;
+    padding: 0.55rem 0.78rem;
+  }
+
+  .flagship-proof {
     display: grid;
-    gap: 0.55rem;
-    margin: 0;
+    gap: 0.5rem;
+    margin: 0.25rem 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .flagship-copy li {
+  .flagship-proof li {
     position: relative;
+    border-left: 2px solid var(--accent);
     color: var(--text-muted);
-    font-size: 14px;
-    line-height: 1.55;
-    padding-left: 1.1rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    padding-left: 0.72rem;
   }
 
-  .flagship-copy li::before {
-    position: absolute;
-    top: 0.62em;
-    left: 0;
-    width: 0.38rem;
-    height: 0.38rem;
-    border-radius: 999px;
-    background: var(--accent);
-    content: "";
-  }
-
-  .flagship-cover {
-    display: grid;
-    gap: 0.75rem;
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    background:
-      linear-gradient(145deg, #ecfdf5, #eff6ff 52%, #fff7ed),
-      var(--surface);
-    box-shadow: 0 24px 56px rgba(24, 24, 27, 0.09);
+  .flagship-preview {
+    position: relative;
+    display: block;
     overflow: hidden;
-    padding: 0.85rem;
-    transition:
-      border-color 150ms ease-out,
-      box-shadow 150ms ease-out,
-      transform 150ms ease-out;
+    border-radius: 14px;
+    background: var(--surface-subtle);
   }
 
-  .flagship-cover:hover {
-    border-color: rgba(5, 150, 105, 0.24);
-    box-shadow: 0 30px 68px rgba(24, 24, 27, 0.12);
-    transform: translateY(-3px) rotate(-0.4deg);
-  }
-
-  .flagship-cover span,
-  .flagship-cover small {
-    color: rgba(63, 63, 70, 0.72);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 11px;
-    line-height: 1.35;
-  }
-
-  .flagship-cover img {
+  .flagship-preview img {
     width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.86);
-    border-radius: 15px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    aspect-ratio: 1.55;
+    object-fit: cover;
+    transition: transform 200ms ease;
   }
 
-  .section-block {
-    padding-block: clamp(3rem, 6vw, 4rem);
-  }
-
-  h2 {
-    max-width: 18rem;
-    margin: 0.7rem 0 0;
-    color: var(--text);
-    font-size: 1.5rem;
-    font-weight: 500;
-    letter-spacing: -0.03em;
-    line-height: 1.15;
-  }
-
-  .area-list {
+  .flagship-preview span {
+    position: absolute;
+    inset: auto 1rem 1rem;
     display: grid;
+    gap: 0.45rem;
+    max-width: calc(100% - 2rem);
+    color: #ffffff;
+    opacity: 0;
+    transform: translateY(4px);
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease;
+  }
+
+  .flagship-preview strong {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .flagship-preview small {
+    width: fit-content;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.72rem;
+    line-height: 1;
+    padding: 0.42rem 0.58rem;
+  }
+
+  .flagship-preview::after {
+    position: absolute;
+    inset: 0;
+    background: rgba(13, 13, 13, 0.44);
+    content: "";
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .flagship-preview:hover img {
+    transform: scale(1.02);
+  }
+
+  .flagship-preview:hover::after,
+  .flagship-preview:hover span {
+    opacity: 1;
+  }
+
+  .flagship-preview:hover span {
+    transform: translateY(0);
+    z-index: 1;
+  }
+
+  .project-work {
+    display: grid;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .work-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .view-toggle {
+    display: inline-flex;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.45);
+  }
+
+  .filter-tabs button {
+    flex: 0 0 auto;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.58rem 0.72rem;
+    white-space: nowrap;
+  }
+
+  .view-toggle button {
+    border: 0;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.58rem 0.78rem;
+  }
+
+  .view-toggle button[aria-pressed="true"],
+  .filter-tabs button[aria-pressed="true"] {
+    background: var(--accent-dim);
+    border-color: rgba(29, 158, 117, 0.32);
+    color: var(--text);
+  }
+
+  .project-grid,
+  .project-list {
+    transition: opacity 150ms ease;
+  }
+
+  .project-grid.is-filtering,
+  .project-list.is-filtering {
+    opacity: 0.3;
+  }
+
+  .project-grid {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.9rem, 2.5vw, 1.25rem);
+  }
+
+  .project-list {
+    display: none;
     border-top: 1px solid var(--line);
   }
 
-  .area-list a {
+  .project-work[data-view="grid"] .project-grid,
+  .project-work[data-view="list"] .project-list {
     display: grid;
-    grid-template-columns: minmax(12rem, 0.36fr) 1fr;
-    gap: 1rem;
-    border-bottom: 1px solid var(--line);
-    padding-block: 1rem;
-    transition:
-      background 150ms ease-out,
-      padding-inline 150ms ease-out;
   }
 
-  .area-list a:hover {
-    background: linear-gradient(90deg, rgba(236, 253, 245, 0.46), rgba(244, 244, 245, 0.5));
-    padding-inline: 0.65rem;
-  }
-
-  .area-list strong,
-  .timeline h3,
-  .group-heading h3 {
-    margin: 0;
-    color: var(--text);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  .area-list span {
-    display: flex;
+  .project-row {
+    position: relative;
+    display: grid;
+    min-height: 58px;
+    grid-template-columns: 3rem minmax(0, 1.3fr) minmax(8rem, 0.7fr) minmax(6rem, 0.5fr) 3.5rem 1rem;
+    gap: 0.8rem;
     align-items: center;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    padding-block: 0.75rem;
+    transition: background 150ms ease;
+  }
+
+  .project-row:hover {
+    background: var(--surface-subtle);
+  }
+
+  .project-row span,
+  .project-row small {
+    color: var(--text-soft);
+    font-size: 0.6875rem;
+    line-height: 1.3;
+  }
+
+  .project-row strong {
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.22;
+    overflow-wrap: break-word;
+  }
+
+  .project-row em {
+    color: var(--accent);
+    font-style: normal;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition:
+      opacity 150ms ease,
+      transform 150ms ease;
+  }
+
+  .project-row:hover em {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .resume-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 6vw, 4rem);
+  }
+
+  .resume-grid article {
+    display: grid;
+    align-content: start;
     gap: 0.65rem;
   }
 
-  .area-list img {
-    width: 2.15rem;
-    height: 2.15rem;
-    flex: 0 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.86);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.54);
-    box-shadow: 0 10px 24px rgba(24, 24, 27, 0.07);
-    transition: transform 150ms ease-out;
+  .resume-grid p,
+  .resume-grid small {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
   }
 
-  .area-list a:hover img {
-    transform: rotate(-3deg) translateY(-1px);
-  }
-
-  .project-groups {
-    display: grid;
-    gap: 2rem;
-  }
-
-  .project-group {
-    display: grid;
-    gap: 0.6rem;
-  }
-
-  .group-heading {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .timeline {
-    display: grid;
-    border-top: 1px solid var(--line);
-  }
-
-  .timeline article {
-    display: grid;
-    gap: 0.35rem;
-    border-bottom: 1px solid var(--line);
-    padding-block: 1rem;
-    transition:
-      background 150ms ease-out,
-      padding-inline 150ms ease-out;
-  }
-
-  .timeline article:hover {
-    background: rgba(244, 244, 245, 0.52);
-    padding-inline: 0.65rem;
-  }
-
-  @keyframes proof-flow {
-    from {
-      background-position: 0% 50%;
-    }
-
-    to {
-      background-position: 100% 50%;
-    }
-  }
-
-  @keyframes soft-float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-4px);
-    }
+  .resume-grid h3 {
+    margin: 1rem 0 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.2;
   }
 
   @media (max-width: 860px) {
     .hero-grid,
-    .section-grid,
-    .area-list a,
-    .flagship {
+    .flagship,
+    .resume-grid {
       grid-template-columns: 1fr;
     }
 
-    .fit-grid {
+    .hero {
+      min-height: auto;
+    }
+
+    .work-head {
       grid-template-columns: 1fr;
+      justify-items: stretch;
+    }
+
+    .view-toggle {
+      width: fit-content;
+    }
+
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-row {
+      grid-template-columns: 2.3rem minmax(0, 1fr) 1rem;
+      gap: 0.35rem 0.7rem;
+      align-items: start;
+      padding-block: 0.95rem;
+    }
+
+    .project-row span {
+      grid-row: span 3;
+      padding-top: 0.2rem;
+    }
+
+    .project-row strong {
+      grid-column: 2;
+    }
+
+    .project-row small {
+      grid-column: 2;
+      display: block;
+    }
+
+    .project-row small:last-of-type {
+      display: none;
+    }
+
+    .project-row em {
+      grid-column: 3;
+      grid-row: 1;
+      opacity: 1;
+      transform: none;
     }
   }
 
   @media (max-width: 560px) {
-    dl {
+    .hero {
+      padding-block: 5.4rem 3.6rem;
+    }
+
+    .hero-grid {
+      gap: 1.8rem;
+    }
+
+    .hero-copy {
+      gap: 1rem;
+    }
+
+    .hero-person img {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .role-stack {
       grid-template-columns: 1fr;
+      gap: 0.5rem;
     }
 
-    dl div {
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
-      padding-block: 0.75rem;
+    .flagship-section,
+    .work-section,
+    .resume-section {
+      padding-block: 3.25rem;
     }
 
-    dl div:last-child {
-      border-bottom: 0;
+    .flagship {
+      gap: 1.35rem;
     }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .proof-board,
-    .logo-orbit img {
-      animation: none;
+    .flagship-copy {
+      gap: 0.75rem;
+    }
+
+    .flagship-preview {
+      border-radius: 8px;
+    }
+
+    .flagship-preview img {
+      aspect-ratio: 4 / 3;
+    }
+
+    .flagship-preview::after,
+    .flagship-preview span {
+      opacity: 1;
+    }
+
+    .flagship-preview span {
+      transform: none;
+    }
+
+    .filter-tabs {
+      margin-inline: -0.625rem;
+      padding-inline: 0.625rem;
     }
   }
 </style>
