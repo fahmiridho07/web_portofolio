@@ -30,9 +30,15 @@ const flagshipProof = flagshipProject
 const rolePills = ["Data / ML Engineering", "Data Analytics", "Backend / Data Systems"];
 const primaryExperience = experiences[0];
 const activityItems = experiences.slice(1);
-const profileImage = "/assets/profile/profile_photo.webp";
-const profileImageMeta = getImageMeta(profileImage);
-const flagshipCoverMeta = flagshipProject ? getImageMeta(flagshipProject.data.coverImage) : undefined;
+const profileAvatar = "/assets/profile/profile_avatar-160.webp";
+const profileAvatarSrcset =
+  "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
+const profileAvatarMeta = getImageMeta(profileAvatar);
+const flagshipHomeImage =
+  flagshipProject?.data.slug === "kpc-power-automate-po-automation"
+    ? "/assets/projects/kpc-power-automate-po-automation/screenshots/02-sharepoint-list-po-database-home.webp"
+    : flagshipProject?.data.coverImage;
+const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage) : undefined;
 ---
 
 <BaseLayout
@@ -47,10 +53,12 @@ const flagshipCoverMeta = flagshipProject ? getImageMeta(flagshipProject.data.co
       <div class="hero-copy">
         <div class="hero-person">
           <img
-            src={profileImage}
+            src={profileAvatar}
+            srcset={profileAvatarSrcset}
+            sizes="54px"
             alt=""
-            width={profileImageMeta?.width}
-            height={profileImageMeta?.height}
+            width={profileAvatarMeta?.width}
+            height={profileAvatarMeta?.height}
             loading="eager"
             decoding="async"
           />
@@ -96,10 +104,10 @@ const flagshipCoverMeta = flagshipProject ? getImageMeta(flagshipProject.data.co
 
           <a class="flagship-preview" href={`/projects/${flagshipProject.data.slug}/`}>
             <img
-              src={flagshipProject.data.coverImage}
+              src={flagshipHomeImage}
               alt=""
-              width={flagshipCoverMeta?.width}
-              height={flagshipCoverMeta?.height}
+              width={flagshipHomeImageMeta?.width}
+              height={flagshipHomeImageMeta?.height}
               loading="lazy"
               decoding="async"
             />

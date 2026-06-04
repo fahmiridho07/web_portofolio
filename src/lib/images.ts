@@ -4,6 +4,10 @@ export type ImageMeta = {
 };
 
 const imageMeta: Record<string, ImageMeta> = {
+  "/assets/profile/profile_avatar-96.webp": { width: 96, height: 96 },
+  "/assets/profile/profile_avatar-160.webp": { width: 160, height: 160 },
+  "/assets/profile/profile_photo-640.webp": { width: 640, height: 853 },
+  "/assets/profile/profile_photo-960.webp": { width: 960, height: 1280 },
   "/assets/profile/profile_photo.webp": { width: 1200, height: 1600 },
   "/assets/projects/bank-jatim-performance-dashboard/screenshots/Dashboard_Bank_Jatim_Pusat_page-0001.webp": {
     width: 1400,
@@ -54,6 +58,10 @@ const imageMeta: Record<string, ImageMeta> = {
     width: 1400,
     height: 669,
   },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/02-sharepoint-list-po-database-home.webp": {
+    width: 1080,
+    height: 516,
+  },
   "/assets/projects/kpc-power-automate-po-automation/screenshots/03-b-simpel-document-distribution.webp": {
     width: 1105,
     height: 525,
@@ -101,4 +109,3 @@ const imageMeta: Record<string, ImageMeta> = {
 export function getImageMeta(src: string) {
   return imageMeta[src];
 }
-

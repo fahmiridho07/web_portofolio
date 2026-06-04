@@ -24,7 +24,13 @@ const profileHighlights = [
   `${profile.location} based`,
   `GPA ${education.gpa}`,
 ];
+const profileAvatar = "/assets/profile/profile_avatar-160.webp";
+const profileAvatarSrcset =
+  "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
+const profileAvatarMeta = getImageMeta(profileAvatar);
 const profileImage = "/assets/profile/profile_photo.webp";
+const profileImageSrcset =
+  "/assets/profile/profile_photo-640.webp 640w, /assets/profile/profile_photo-960.webp 960w, /assets/profile/profile_photo.webp 1200w";
 const profileImageMeta = getImageMeta(profileImage);
 ---
 
@@ -37,10 +43,12 @@ const profileImageMeta = getImageMeta(profileImage);
       <div>
         <div class="about-person">
           <img
-            src={profileImage}
+            src={profileAvatar}
+            srcset={profileAvatarSrcset}
+            sizes="54px"
             alt=""
-            width={profileImageMeta?.width}
-            height={profileImageMeta?.height}
+            width={profileAvatarMeta?.width}
+            height={profileAvatarMeta?.height}
             loading="eager"
             decoding="async"
           />
@@ -60,6 +68,8 @@ const profileImageMeta = getImageMeta(profileImage);
       <div class="portrait">
         <img
           src={profileImage}
+          srcset={profileImageSrcset}
+          sizes="(max-width: 900px) calc(100vw - 1.25rem), 42vw"
           alt="Portrait of Achmad Fahmi Ainur Ridho"
           width={profileImageMeta?.width}
           height={profileImageMeta?.height}
