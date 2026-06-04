@@ -1,6 +1,6 @@
 ---
+import ProjectMockup from "@components/ProjectMockup.astro";
 import type { CollectionEntry } from "astro:content";
-import { getImageMeta } from "@lib/images";
 
 interface Props {
   projects: CollectionEntry<"projects">[];
@@ -25,14 +25,7 @@ const { projects } = Astro.props;
           <article class="rail-card">
             <a href={`/projects/${project.data.slug}/`}>
               <div class="cover" aria-hidden="true">
-                <img
-                  src={project.data.coverImage}
-                  alt=""
-                  width={getImageMeta(project.data.coverImage)?.width}
-                  height={getImageMeta(project.data.coverImage)?.height}
-                  loading={index > 1 ? "lazy" : "eager"}
-                  decoding="async"
-                />
+                <ProjectMockup project={project} variant="rail" eager={index <= 1} />
               </div>
 
               <div class="card-copy">
@@ -49,6 +42,9 @@ const { projects } = Astro.props;
 
 <style>
   .proof-rail {
+    background:
+      radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.05), transparent 24rem),
+      var(--surface-light);
     padding-block: clamp(2.6rem, 6vw, 4rem);
     overflow: hidden;
   }
@@ -96,15 +92,23 @@ const { projects } = Astro.props;
 
   .rail-card {
     min-height: 19rem;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 12px 34px rgba(17, 24, 39, 0.04);
     overflow: hidden;
     scroll-snap-align: start;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
-  .rail-card:hover {
+  .rail-card:hover,
+  .rail-card:focus-within {
     border-color: var(--line-strong);
+    box-shadow: 0 16px 42px rgba(17, 24, 39, 0.07);
+    transform: translateY(-2px);
   }
 
   .rail-card a {
@@ -116,24 +120,19 @@ const { projects } = Astro.props;
 
   .cover {
     align-self: center;
-    margin-block: 0.85rem;
-    border: 1px solid var(--line);
+    aspect-ratio: 1.55;
+    margin: 0.8rem 0.8rem 0;
+    border: 1px solid rgba(17, 24, 39, 0.1);
     border-radius: 8px;
     background: var(--surface);
     overflow: hidden;
-  }
-
-  .cover img {
-    width: 100%;
-    aspect-ratio: 1.55;
-    object-fit: cover;
   }
 
   .card-copy {
     display: grid;
     gap: 0.65rem;
     align-content: start;
-    padding-bottom: 1rem;
+    padding: 0.9rem 0.9rem 1rem;
   }
 
   h3 {

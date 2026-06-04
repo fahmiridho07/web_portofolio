@@ -12,6 +12,7 @@ const { title, description } = Astro.props;
 const pageTitle = title.includes("Portfolio") ? title : `${title} | Portfolio`;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const ogImageUrl = new URL("/og-image.png", Astro.site ?? Astro.url).href;
+const ogImageAlt = "Achmad Fahmi Ainur Ridho portfolio preview for data products, machine learning systems, and workflow automation.";
 ---
 
 <!doctype html>
@@ -21,7 +22,7 @@ const ogImageUrl = new URL("/og-image.png", Astro.site ?? Astro.url).href;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#fbfbfa" />
+    <meta name="theme-color" content="#f3f6fb" />
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />
@@ -30,17 +31,19 @@ const ogImageUrl = new URL("/og-image.png", Astro.site ?? Astro.url).href;
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <style is:inline>
       html,
       body {
-        background: #fbfbfa;
-        color: #18181b;
+        background: #f3f6fb;
+        color: #111827;
       }
     </style>
   </head>
@@ -53,6 +56,40 @@ const ogImageUrl = new URL("/og-image.png", Astro.site ?? Astro.url).href;
       </main>
       <SiteFooter />
     </div>
+
+    <script>
+      const revealItems = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            rootMargin: "0px 0px -12% 0px",
+            threshold: 0.12,
+          },
+        );
+
+        revealItems.forEach((item) => {
+          const delay = item.dataset.revealDelay;
+
+          if (delay) {
+            item.style.setProperty("--reveal-delay", `${delay}ms`);
+          }
+
+          observer.observe(item);
+        });
+      }
+    </script>
   </body>
 </html>
 

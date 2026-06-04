@@ -1,0 +1,465 @@
+---
+import { getImageMeta } from "@lib/images";
+import { getCategoryMeta } from "@lib/projects";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  variant?: "card" | "featured" | "compact" | "rail" | "hero" | "case";
+  showMetric?: boolean;
+  eager?: boolean;
+}
+
+const { project, variant = "card", showMetric = true, eager = false } = Astro.props;
+const category = getCategoryMeta(project.data.category);
+const coverMeta = getImageMeta(project.data.coverImage);
+const metric = project.data.metric ?? project.data.status;
+const labelBySlug: Record<string, string> = {
+  "kpc-power-automate-po-automation": "Automation",
+  "kpc-ideku-v3-dotnet-stabilization": "Ops System",
+  "scent2me-perfume-recommendation": "ML Product",
+  "bank-jatim-performance-dashboard": "Dashboard",
+  "la-crime-type-prediction": "Prediction",
+  "juanda-airport-visitor-forecasting": "Forecast",
+  "orphanage-inspection-route-optimization": "Routing",
+  "medimate-medicine-reminder-app": "Mobile App",
+  "devops-tasktracker": "DevOps",
+};
+const deviceBySlug: Record<string, "desktop" | "phone" | "flow"> = {
+  "medimate-medicine-reminder-app": "phone",
+  "kpc-power-automate-po-automation": "desktop",
+};
+const cropBySlug: Record<string, string> = {
+  "kpc-power-automate-po-automation": "50% 44%",
+  "kpc-ideku-v3-dotnet-stabilization": "50% 42%",
+  "scent2me-perfume-recommendation": "50% 48%",
+  "bank-jatim-performance-dashboard": "50% 42%",
+  "la-crime-type-prediction": "50% 44%",
+  "juanda-airport-visitor-forecasting": "50% 42%",
+  "orphanage-inspection-route-optimization": "50% 38%",
+  "medimate-medicine-reminder-app": "50% 0%",
+  "devops-tasktracker": "50% 34%",
+};
+const categoryThemes: Record<string, { ink: string; accent: string; glow: string; warm: string }> = {
+  "machine-learning-data-science": {
+    ink: "#172033",
+    accent: "#7dd3fc",
+    glow: "rgba(125, 211, 252, 0.22)",
+    warm: "#b779a3",
+  },
+  "optimization-operations-research": {
+    ink: "#1a2430",
+    accent: "#d8a238",
+    glow: "rgba(216, 162, 56, 0.2)",
+    warm: "#7c6aa8",
+  },
+  "software-engineering-devops": {
+    ink: "#111d2e",
+    accent: "#0f9f87",
+    glow: "rgba(15, 159, 135, 0.2)",
+    warm: "#7dd3fc",
+  },
+  "analytics-business-intelligence": {
+    ink: "#161d2a",
+    accent: "#3b82c4",
+    glow: "rgba(59, 130, 196, 0.22)",
+    warm: "#d8a238",
+  },
+};
+const theme = categoryThemes[project.data.category] ?? categoryThemes["software-engineering-devops"];
+const device = deviceBySlug[project.data.slug] ?? "desktop";
+const label = labelBySlug[project.data.slug] ?? category.title;
+const frameTitle = project.data.stack[0] ?? category.title;
+const style = [
+  `--mockup-ink: ${theme.ink}`,
+  `--mockup-accent: ${theme.accent}`,
+  `--mockup-glow: ${theme.glow}`,
+  `--mockup-warm: ${theme.warm}`,
+  `--mockup-crop: ${cropBySlug[project.data.slug] ?? "50% 44%"}`,
+].join("; ");
+---
+
+<figure
+  class:list={[
+    "project-mockup",
+    `is-${variant}`,
+    `is-${device}`,
+    !showMetric && "is-minimal",
+  ]}
+  style={style}
+>
+  <div class="mockup-scene">
+    <div class="mockup-orbit" aria-hidden="true"></div>
+    <div class="mockup-plane mockup-plane-back" aria-hidden="true"></div>
+    <div class="mockup-plane mockup-plane-front" aria-hidden="true"></div>
+
+    <div class="mockup-frame">
+      <div class="mockup-topbar">
+        <span class="mockup-dots" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+        <span class="mockup-title">{frameTitle}</span>
+        <span class="mockup-year">{project.data.year}</span>
+      </div>
+
+      <div class="mockup-screen">
+        <img
+          src={project.data.coverImage}
+          alt=""
+          width={coverMeta?.width}
+          height={coverMeta?.height}
+          loading={eager ? "eager" : "lazy"}
+          decoding="async"
+        />
+      </div>
+    </div>
+
+    <span class="mockup-label">{label}</span>
+    {showMetric && <span class="mockup-metric">{metric}</span>}
+  </div>
+</figure>
+
+<style>
+  .project-mockup {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    margin: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    color: #ffffff;
+    isolation: isolate;
+  }
+
+  .mockup-scene {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    place-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 20%, var(--mockup-glow), transparent 28%),
+      radial-gradient(circle at 78% 76%, color-mix(in srgb, var(--mockup-warm) 22%, transparent), transparent 34%),
+      linear-gradient(138deg, color-mix(in srgb, var(--mockup-ink) 92%, #ffffff 8%), var(--mockup-ink));
+  }
+
+  .mockup-scene::before {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 2.8rem 2.8rem;
+    mask-image: radial-gradient(circle at 48% 48%, #000, transparent 76%);
+    opacity: 0.3;
+    content: "";
+  }
+
+  .mockup-scene::after {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(110deg, transparent 32%, rgba(255, 255, 255, 0.16), transparent 48%),
+      radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.12), transparent 32%);
+    content: "";
+    opacity: 0;
+    transform: translateX(-12%);
+    transition:
+      opacity var(--motion-medium) var(--ease-standard),
+      transform var(--motion-slow) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .mockup-orbit {
+    position: absolute;
+    width: 72%;
+    aspect-ratio: 1.7;
+    border: 1px solid color-mix(in srgb, var(--mockup-accent) 36%, transparent);
+    border-radius: 999px;
+    opacity: 0.46;
+    transform: rotate(-9deg);
+    transition:
+      opacity var(--motion-medium) var(--ease-standard),
+      transform var(--motion-slow) var(--ease-out);
+  }
+
+  .mockup-plane {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.035)),
+      rgba(255, 255, 255, 0.04);
+    box-shadow: 0 22px 50px rgba(0, 0, 0, 0.14);
+  }
+
+  .mockup-plane-back {
+    right: 9%;
+    top: 14%;
+    width: 24%;
+    aspect-ratio: 1.15;
+    transform: rotate(7deg);
+  }
+
+  .mockup-plane-front {
+    left: 10%;
+    bottom: 13%;
+    width: 18%;
+    aspect-ratio: 1.1;
+    transform: rotate(-11deg);
+  }
+
+  .mockup-frame {
+    position: relative;
+    z-index: 2;
+    width: min(86%, 44rem);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05)),
+      rgba(8, 13, 22, 0.72);
+    box-shadow:
+      0 28px 74px rgba(0, 0, 0, 0.28),
+      0 0 46px color-mix(in srgb, var(--mockup-accent) 18%, transparent);
+    transform: translateY(2%);
+    transform-origin: center;
+    transition:
+      box-shadow var(--motion-medium) var(--ease-standard),
+      transform var(--motion-slow) var(--ease-out);
+  }
+
+  .mockup-topbar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 1.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.38rem 0.5rem;
+  }
+
+  .mockup-dots {
+    display: inline-flex;
+    gap: 0.22rem;
+  }
+
+  .mockup-dots i {
+    width: 0.36rem;
+    height: 0.36rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.42);
+  }
+
+  .mockup-dots i:first-child {
+    background: color-mix(in srgb, var(--mockup-warm) 84%, #ffffff 16%);
+  }
+
+  .mockup-dots i:nth-child(2) {
+    background: color-mix(in srgb, var(--mockup-accent) 76%, #ffffff 24%);
+  }
+
+  .mockup-title,
+  .mockup-year {
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.62);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.58rem;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mockup-year {
+    color: rgba(255, 255, 255, 0.44);
+  }
+
+  .mockup-screen {
+    aspect-ratio: 1.62;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  .mockup-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--mockup-crop);
+    filter: saturate(1.04) contrast(1.02);
+    transition:
+      filter var(--motion-medium) var(--ease-standard),
+      transform 560ms var(--ease-out);
+  }
+
+  .mockup-label,
+  .mockup-metric {
+    position: absolute;
+    z-index: 3;
+    max-width: calc(100% - 1.5rem);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--mockup-accent) 26%, transparent), rgba(255, 255, 255, 0.06)),
+      rgba(6, 10, 18, 0.74);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1;
+    padding: 0.46rem 0.62rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    transition:
+      background var(--motion-medium) var(--ease-standard),
+      border-color var(--motion-medium) var(--ease-standard),
+      color var(--motion-medium) var(--ease-standard),
+      transform var(--motion-medium) var(--ease-out);
+  }
+
+  .mockup-label {
+    left: 0.72rem;
+    top: 0.72rem;
+  }
+
+  .mockup-metric {
+    right: 0.72rem;
+    bottom: 0.72rem;
+    background: rgba(6, 10, 18, 0.7);
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 600;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .project-mockup:hover .mockup-scene::after {
+      opacity: 0.72;
+      transform: translateX(8%);
+    }
+
+    .project-mockup:hover .mockup-orbit {
+      opacity: 0.62;
+      transform: rotate(-9deg) scale(1.025);
+    }
+
+    .project-mockup:hover .mockup-frame {
+      box-shadow:
+        0 34px 86px rgba(0, 0, 0, 0.32),
+        0 0 58px color-mix(in srgb, var(--mockup-accent) 22%, transparent);
+      transform: translateY(-1%);
+    }
+
+    .project-mockup:hover .mockup-screen img {
+      filter: saturate(1.1) contrast(1.035);
+      transform: scale(1.026);
+    }
+
+    .project-mockup:hover .mockup-label {
+      border-color: color-mix(in srgb, var(--mockup-accent) 46%, rgba(255, 255, 255, 0.18));
+      transform: translateY(-1px);
+    }
+
+    .project-mockup:hover .mockup-metric {
+      transform: translateY(-1px);
+    }
+  }
+
+  .is-featured .mockup-frame,
+  .is-hero .mockup-frame,
+  .is-case .mockup-frame {
+    width: min(84%, 48rem);
+  }
+
+  .is-compact .mockup-frame,
+  .is-rail .mockup-frame {
+    width: 82%;
+    border-radius: 8px;
+  }
+
+  .is-compact .mockup-topbar,
+  .is-rail .mockup-topbar,
+  .is-card .mockup-topbar {
+    min-height: 1.25rem;
+    padding: 0.28rem 0.38rem;
+  }
+
+  .is-compact .mockup-title,
+  .is-compact .mockup-year,
+  .is-rail .mockup-title,
+  .is-rail .mockup-year,
+  .is-card .mockup-title,
+  .is-card .mockup-year {
+    font-size: 0.5rem;
+  }
+
+  .is-compact .mockup-dots i,
+  .is-rail .mockup-dots i,
+  .is-card .mockup-dots i {
+    width: 0.28rem;
+    height: 0.28rem;
+  }
+
+  .is-phone .mockup-frame {
+    width: min(39%, 12rem);
+    border-radius: 18px;
+    padding: 0.28rem;
+    transform: translateY(1%);
+  }
+
+  .is-phone .mockup-topbar {
+    display: none;
+  }
+
+  .is-phone .mockup-screen {
+    aspect-ratio: 390 / 844;
+    border-radius: 14px;
+  }
+
+  .is-phone .mockup-screen img {
+    object-position: 50% 0%;
+  }
+
+  .is-phone .mockup-plane-back {
+    right: 17%;
+    width: 22%;
+  }
+
+  .is-phone .mockup-plane-front {
+    left: 16%;
+    width: 18%;
+  }
+
+  .is-minimal .mockup-metric {
+    display: none;
+  }
+
+  @media (max-width: 620px) {
+    .is-card .mockup-frame {
+      width: 92%;
+      transform: none;
+    }
+
+    .is-card .mockup-title,
+    .is-card .mockup-year,
+    .is-card .mockup-metric {
+      display: none;
+    }
+
+    .is-card .mockup-label {
+      left: 0.42rem;
+      top: 0.42rem;
+      max-width: calc(100% - 0.84rem);
+      padding: 0.35rem 0.45rem;
+      font-size: 0.58rem;
+    }
+
+    .is-card.is-phone .mockup-frame {
+      width: 56%;
+    }
+  }
+</style>

@@ -1,0 +1,175 @@
+<canvas class="orbit-canvas" data-orbit-canvas aria-hidden="true"></canvas>
+
+<script>
+  const canvases = Array.from(document.querySelectorAll<HTMLCanvasElement>("[data-orbit-canvas]"));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const palette = ["#9be7d4", "#7dd3fc", "#3b82c4", "#d97757", "#d8a238", "#7c6aa8", "#b779a3"];
+
+  canvases.forEach((canvas) => {
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      return;
+    }
+
+    const pointer = {
+      active: false,
+      x: 0.62,
+      y: 0.38,
+    };
+
+    const nodes = Array.from({ length: 42 }, (_, index) => ({
+      color: palette[index % palette.length],
+      orbit: 0.13 + (index % 8) * 0.041,
+      phase: (Math.PI * 2 * index) / 42,
+      speed: 0.00016 + (index % 6) * 0.00004,
+      size: 2.1 + (index % 5) * 0.72,
+      lane: index % 5,
+      pulse: 0.7 + (index % 7) * 0.12,
+    }));
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const scale = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.max(1, Math.floor(rect.width * scale));
+      canvas.height = Math.max(1, Math.floor(rect.height * scale));
+      context.setTransform(scale, 0, 0, scale, 0, 0);
+    };
+
+    const draw = (time: number) => {
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const cx = width * (0.58 + (pointer.x - 0.5) * 0.05);
+      const cy = height * (0.44 + (pointer.y - 0.5) * 0.05);
+      const base = Math.min(width, height);
+      const breath = reduceMotion ? 0 : Math.sin(time * 0.0011) * 0.5 + 0.5;
+
+      context.clearRect(0, 0, width, height);
+
+      const glow = context.createRadialGradient(cx, cy, 0, cx, cy, base * 0.8);
+      glow.addColorStop(0, `rgba(125, 211, 252, ${0.16 + breath * 0.06})`);
+      glow.addColorStop(0.28, "rgba(59, 130, 196, 0.14)");
+      glow.addColorStop(0.5, "rgba(155, 231, 212, 0.1)");
+      glow.addColorStop(0.75, "rgba(216, 162, 56, 0.06)");
+      glow.addColorStop(1, "rgba(10, 11, 16, 0)");
+      context.fillStyle = glow;
+      context.fillRect(0, 0, width, height);
+
+      const cornerGlow = context.createRadialGradient(width * 0.9, height * 0.24, 0, width * 0.9, height * 0.24, base * 0.56);
+      cornerGlow.addColorStop(0, "rgba(124, 106, 168, 0.16)");
+      cornerGlow.addColorStop(0.52, "rgba(217, 119, 87, 0.08)");
+      cornerGlow.addColorStop(1, "rgba(217, 119, 87, 0)");
+      context.fillStyle = cornerGlow;
+      context.fillRect(0, 0, width, height);
+
+      const points = nodes.map((node) => {
+        const angle = node.phase + (reduceMotion ? 0 : time * node.speed);
+        const squeeze = 0.42 + node.lane * 0.055;
+        const radius = base * node.orbit * (1 + breath * 0.025);
+        return {
+          ...node,
+          angle,
+          x: cx + Math.cos(angle) * radius * (1.82 - node.lane * 0.075),
+          y: cy + Math.sin(angle) * radius * squeeze,
+        };
+      });
+
+      context.globalCompositeOperation = "lighter";
+      context.lineWidth = 1.35;
+      points.forEach((point, index) => {
+        const next = points[(index + 6) % points.length];
+        const distance = Math.hypot(point.x - next.x, point.y - next.y);
+
+        if (distance < base * 0.82) {
+          const gradient = context.createLinearGradient(point.x, point.y, next.x, next.y);
+          gradient.addColorStop(0, `${point.color}99`);
+          gradient.addColorStop(0.55, "rgba(255, 255, 255, 0.18)");
+          gradient.addColorStop(1, `${next.color}44`);
+          context.strokeStyle = gradient;
+          context.beginPath();
+          context.moveTo(point.x, point.y);
+          context.lineTo(next.x, next.y);
+          context.stroke();
+        }
+      });
+
+      points.forEach((point) => {
+        const pulse = 1 + Math.sin(time * 0.002 * point.pulse + point.phase) * 0.28;
+        context.beginPath();
+        context.fillStyle = point.color;
+        context.shadowColor = point.color;
+        context.shadowBlur = 26;
+        context.arc(point.x, point.y, point.size * pulse, 0, Math.PI * 2);
+        context.fill();
+        context.shadowBlur = 0;
+      });
+
+      context.globalCompositeOperation = "source-over";
+      context.lineWidth = 1.2;
+      for (let lane = 0; lane < 4; lane += 1) {
+        const laneColor = ["rgba(155, 231, 212, 0.18)", "rgba(125, 211, 252, 0.16)", "rgba(124, 106, 168, 0.14)", "rgba(217, 119, 87, 0.12)"][lane];
+        context.strokeStyle = laneColor;
+        context.beginPath();
+        context.ellipse(cx, cy, base * (0.34 + lane * 0.095), base * (0.16 + lane * 0.04), -0.22, 0, Math.PI * 2);
+        context.stroke();
+      }
+
+      const sweepAngle = reduceMotion ? -0.25 : time * 0.0005 - 0.25;
+      context.globalCompositeOperation = "lighter";
+      for (let track = 0; track < 3; track += 1) {
+        const radiusX = base * (0.48 + track * 0.072);
+        const radiusY = base * (0.21 + track * 0.038);
+        const start = sweepAngle + track * 0.55;
+        const end = start + 0.95;
+        context.strokeStyle = ["rgba(155, 231, 212, 0.42)", "rgba(125, 211, 252, 0.38)", "rgba(216, 162, 56, 0.3)"][track];
+        context.lineWidth = 2.2 - track * 0.35;
+        context.shadowColor = ["#9be7d4", "#7dd3fc", "#d8a238"][track];
+        context.shadowBlur = 18;
+        context.beginPath();
+        context.ellipse(cx, cy, radiusX, radiusY, -0.22, start, end);
+        context.stroke();
+      }
+      context.shadowBlur = 0;
+      context.globalCompositeOperation = "source-over";
+    };
+
+    const loop = (time: number) => {
+      draw(time);
+      window.requestAnimationFrame(loop);
+    };
+
+    resize();
+    if (reduceMotion) {
+      draw(0);
+    } else {
+      window.requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("resize", () => {
+      resize();
+      if (reduceMotion) {
+        draw(0);
+      }
+    });
+
+    window.addEventListener(
+      "pointermove",
+      (event) => {
+        pointer.active = true;
+        pointer.x = event.clientX / Math.max(window.innerWidth, 1);
+        pointer.y = event.clientY / Math.max(window.innerHeight, 1);
+      },
+      { passive: true },
+    );
+  });
+</script>
+
+<style>
+  .orbit-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+</style>

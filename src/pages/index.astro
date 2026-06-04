@@ -1,56 +1,46 @@
 ---
-import ProjectCard from "@components/ProjectCard.astro";
+import FeaturedProjectShowcase from "@components/FeaturedProjectShowcase.astro";
+import ProjectMockup from "@components/ProjectMockup.astro";
 import {
   coursesAndCertificates,
   education,
   experiences,
+  homeProjectSlugs,
   profile,
-  projectCategories,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getImageMeta } from "@lib/images";
 import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 
 const allProjects = await getSortedProjects();
-const activeCategories = projectCategories.filter((category) =>
-  allProjects.some((project) => project.data.category === category.id),
-);
-const flagshipProject =
-  allProjects.find((project) => project.data.slug === "kpc-power-automate-po-automation") ??
-  allProjects[0];
-const flagshipProof = flagshipProject
-  ? (
-      flagshipProject.data.proof && flagshipProject.data.proof.length > 0
-        ? flagshipProject.data.proof
-        : [flagshipProject.data.metric ?? flagshipProject.data.status, flagshipProject.data.status, ...flagshipProject.data.stack]
-    )
-      .filter(Boolean)
-      .slice(0, 3)
-  : [];
-const rolePills = ["Data / ML Engineering", "Data Analytics", "Backend / Data Systems"];
+type ProjectEntry = (typeof allProjects)[number];
+const homeProjects = homeProjectSlugs
+  .map((slug) => allProjects.find((project) => project.data.slug === slug))
+  .filter((project): project is ProjectEntry => Boolean(project));
+const projectCount = allProjects.length;
 const primaryExperience = experiences[0];
 const activityItems = experiences.slice(1);
 const profileAvatar = "/assets/profile/profile_avatar-160.webp";
 const profileAvatarSrcset =
   "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
 const profileAvatarMeta = getImageMeta(profileAvatar);
-const flagshipHomeImage =
-  flagshipProject?.data.slug === "kpc-power-automate-po-automation"
-    ? "/assets/projects/kpc-power-automate-po-automation/screenshots/02-sharepoint-list-po-database-home.webp"
-    : flagshipProject?.data.coverImage;
-const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage) : undefined;
+const heroProject = homeProjects[0];
+const heroCategory = heroProject ? getCategoryMeta(heroProject.data.category) : undefined;
+const heroArtifactImage = heroProject?.data.coverImage;
+const heroProof = heroProject?.data.proof?.[0] ?? heroProject?.data.metric ?? heroProject?.data.status;
+const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 ---
 
 <BaseLayout
   title="Achmad Fahmi Ainur Ridho Portfolio"
   description="Portfolio of Achmad Fahmi Ainur Ridho, a final-year Information Systems student building practical data products across machine learning, analytics, and backend workflows."
 >
-  <section class="hero dark-section" data-dark-section>
-    <div class="hero-circle hero-circle-large" aria-hidden="true"></div>
-    <div class="hero-circle hero-circle-small" aria-hidden="true"></div>
-
+  <section class="simple-hero dark-section" data-dark-section>
+    <div class="hero-gridlines" aria-hidden="true"></div>
+    <div class="hero-ambient" aria-hidden="true"></div>
+    <div class="hero-shade" aria-hidden="true"></div>
     <div class="container hero-grid">
-      <div class="hero-copy">
+      <div class="hero-copy" data-reveal>
         <div class="hero-person">
           <img
             src={profileAvatar}
@@ -67,131 +57,88 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
             <span>{profile.location} / {profile.role}</span>
           </div>
         </div>
-        <h1 class="display">I build data products that actually ship.</h1>
-        <p>
-          Models, dashboards, backend workflows, and automation that turn messy
-          inputs into useful systems.
-        </p>
-        <a class="text-arrow" href="#work">View work <span aria-hidden="true">-&gt;</span></a>
-      </div>
 
-      <div class="role-stack" aria-label="Role fit">
-        {
-          rolePills.map((role, index) => (
-            <span class:list={[index === 0 && "is-primary"]}>{role}</span>
-          ))
-        }
-      </div>
-    </div>
-  </section>
+        <div class="hero-message">
+          <p class="hero-eyebrow">Data products / ML systems / workflow automation</p>
+          <h1 class="display">I turn messy data workflows into shipped systems.</h1>
+          <p>
+            A compact showcase of practical systems: automation, dashboards,
+            machine learning, and backend/data workflows, grounded in visible
+            artifacts and clear decisions.
+          </p>
+        </div>
 
-  {
-    flagshipProject && (
-      <section class="flagship-section">
-        <div class="container flagship">
-          <div class="flagship-copy">
-            <p class="section-label">{getCategoryMeta(flagshipProject.data.category).title}</p>
-            <h2>{flagshipProject.data.title}</h2>
-            <p>{flagshipProject.data.result ?? flagshipProject.data.summary}</p>
-            <span>{flagshipProject.data.metric ?? flagshipProject.data.status}</span>
-            <ul class="flagship-proof" aria-label="Featured project proof points">
-              {flagshipProof.map((item) => <li>{item}</li>)}
-            </ul>
-            <a class="text-arrow" href={`/projects/${flagshipProject.data.slug}/`}>
-              Read case study <span aria-hidden="true">-&gt;</span>
-            </a>
-          </div>
+        <div class="hero-tags" aria-label="Portfolio focus">
+          {heroTags.map((tag) => <span>{tag}</span>)}
+        </div>
 
-          <a class="flagship-preview" href={`/projects/${flagshipProject.data.slug}/`}>
-            <img
-              src={flagshipHomeImage}
-              alt=""
-              width={flagshipHomeImageMeta?.width}
-              height={flagshipHomeImageMeta?.height}
-              loading="lazy"
-              decoding="async"
-            />
-            <span>
-              <strong>{flagshipProject.data.title}</strong>
-              <small>{flagshipProject.data.metric ?? flagshipProject.data.status}</small>
-            </span>
+        <div class="hero-actions">
+          <a class="hero-button hero-button-primary" href="#work">
+            Explore selected work <span aria-hidden="true">-&gt;</span>
+          </a>
+          <a class="hero-button hero-button-secondary" href={profile.contactHref} target="_blank" rel="noreferrer">
+            Contact
           </a>
         </div>
-      </section>
-    )
-  }
-
-  <section id="work" class="work-section divider">
-    <div class="container project-work" data-project-work data-view="list">
-      <div class="work-head">
-        <div>
-          <p class="section-label">Project index</p>
-          <h2>Evidence, quick to switch context.</h2>
-        </div>
-
-        <div class="view-toggle" aria-label="Project view mode">
-          <button type="button" data-view-mode="grid" aria-pressed="false">Grid</button>
-          <button type="button" data-view-mode="list" aria-pressed="true">List</button>
-        </div>
       </div>
 
-      <div class="filter-tabs" aria-label="Project category filters">
-        <button type="button" data-project-filter="" aria-pressed="true">All</button>
-        {
-          activeCategories.map((category) => (
-            <button type="button" data-project-filter={category.id} aria-pressed="false">
-              {category.title}
-            </button>
-          ))
-        }
-      </div>
-
-      <div class="project-grid" data-filter-list>
-        {allProjects.map((project) => <ProjectCard project={project} />)}
-      </div>
-
-      <div class="project-list" data-filter-list>
-        {
-          allProjects.map((project, index) => {
-            const category = getCategoryMeta(project.data.category);
-
-            return (
-              <a
-                class="project-row"
-                data-category={project.data.category}
-                href={`/projects/${project.data.slug}/`}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{project.data.title}</strong>
-                <small>{category.title}</small>
-                <small>{project.data.metric ?? project.data.status}</small>
-                <small>{project.data.year}</small>
-                <em aria-hidden="true">-&gt;</em>
-              </a>
-            );
-          })
-        }
-      </div>
+      {
+        heroProject && heroArtifactImage && (
+          <aside class="hero-artifact" aria-label="Featured project artifact" data-reveal data-reveal-delay="120">
+            <a class="artifact-card" href={`/projects/${heroProject.data.slug}/`}>
+              <div class="artifact-image" aria-hidden="true">
+                <ProjectMockup project={heroProject} variant="hero" eager />
+              </div>
+              <div class="artifact-body">
+                <p class="section-label">{heroCategory?.title}</p>
+                <h2>{heroProject.data.title}</h2>
+                <p>{heroProof}</p>
+                <span>View case study -&gt;</span>
+              </div>
+            </a>
+          </aside>
+        )
+      }
     </div>
   </section>
 
-  <section class="resume-section divider">
-    <div class="container resume-grid">
-      <article>
+  <section id="work" class="featured-work divider">
+    <div class="container featured-inner">
+      <div class="section-intro" data-reveal>
+        <p class="section-label">Selected work</p>
+        <h2>Four projects that show how the work comes together.</h2>
+        <p>
+          A tighter path through the portfolio: workflow automation, production
+          stabilization, recommendation systems, and business analytics, each
+          grounded in visible artifacts.
+        </p>
+      </div>
+
+      <a class="archive-link" href="/projects/" data-reveal data-reveal-delay="80">
+        Explore all {projectCount} projects <span aria-hidden="true">-&gt;</span>
+      </a>
+
+      <FeaturedProjectShowcase projects={homeProjects} />
+    </div>
+  </section>
+
+  <section class="scan-section divider">
+    <div class="container scan-grid">
+      <article class="scan-card" data-reveal>
         <p class="section-label">Education</p>
         <h2>{education.degree}</h2>
         <p>{education.institution}</p>
         <small>{education.period} / GPA {education.gpa}</small>
       </article>
 
-      <article>
+      <article class="scan-card is-highlighted" data-reveal data-reveal-delay="100">
         <p class="section-label">Experience</p>
         <h2>{primaryExperience.role}</h2>
         <p>{primaryExperience.organization}</p>
         <small>{primaryExperience.summary}</small>
       </article>
 
-      <article>
+      <article class="scan-card" data-reveal data-reveal-delay="200">
         <p class="section-label">Activities</p>
         {
           activityItems.slice(0, 2).map((item) => (
@@ -205,102 +152,71 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
       </article>
     </div>
   </section>
-
-  <script>
-    const projectWork = document.querySelector<HTMLElement>("[data-project-work]");
-    const filterTabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"));
-    const viewButtons = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-view-mode]"));
-    const filterLists = Array.from(document.querySelectorAll<HTMLElement>("[data-filter-list]"));
-    const projectItems = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
-    let activeFilter = "";
-
-    const setView = (view: string) => {
-      projectWork?.setAttribute("data-view", view);
-      viewButtons.forEach((button) => {
-        button.setAttribute("aria-pressed", String(button.dataset.viewMode === view));
-      });
-    };
-
-    const applyFilter = (nextFilter: string) => {
-      activeFilter = nextFilter;
-      filterLists.forEach((list) => list.classList.add("is-filtering"));
-
-      window.setTimeout(() => {
-        filterTabs.forEach((tab) => {
-          tab.setAttribute("aria-pressed", String((tab.dataset.projectFilter ?? "") === activeFilter));
-        });
-
-        projectItems.forEach((item) => {
-          item.hidden = Boolean(activeFilter) && item.dataset.category !== activeFilter;
-        });
-
-        filterLists.forEach((list) => list.classList.remove("is-filtering"));
-      }, 120);
-    };
-
-    setView(window.matchMedia("(max-width: 760px)").matches ? "grid" : "list");
-    viewButtons.forEach((button) => button.addEventListener("click", () => setView(button.dataset.viewMode ?? "grid")));
-    filterTabs.forEach((tab) => tab.addEventListener("click", () => applyFilter(tab.dataset.projectFilter ?? "")));
-  </script>
 </BaseLayout>
 
 <style>
-  .dark-section {
-    background: var(--surface-base);
-    color: #ffffff;
-  }
-
-  .hero {
+  .simple-hero {
     position: relative;
     display: grid;
-    min-height: 100vh;
-    align-items: center;
+    min-height: auto;
     overflow: hidden;
-    padding-block: clamp(6.5rem, 12vw, 9rem) clamp(5rem, 10vw, 8rem);
+    background:
+      radial-gradient(circle at 20% 18%, rgba(125, 211, 252, 0.14), transparent 24rem),
+      radial-gradient(circle at 86% 24%, rgba(167, 243, 208, 0.12), transparent 28rem),
+      linear-gradient(135deg, #07111e 0%, #111d2e 56%, #171321 100%);
+    color: #ffffff;
+    padding-block: clamp(5.2rem, 8vw, 6.2rem) clamp(2.2rem, 4vw, 3.2rem);
   }
 
-  .hero::after {
+  .hero-gridlines {
     position: absolute;
-    inset: auto 0 0;
-    height: 10rem;
-    background: linear-gradient(180deg, rgba(13, 13, 13, 0), var(--surface-light));
-    content: "";
-    pointer-events: none;
+    inset: 0;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 4.5rem 4.5rem;
+    mask-image: linear-gradient(180deg, #000, transparent 82%);
   }
 
-  .hero-circle {
+  .hero-ambient {
     position: absolute;
-    border: 0.5px solid rgba(255, 255, 255, 0.06);
+    right: max(-8rem, -8vw);
+    top: 8rem;
+    width: min(42rem, 58vw);
+    aspect-ratio: 1.28;
     border-radius: 999px;
+    background:
+      radial-gradient(circle at 34% 42%, rgba(125, 211, 252, 0.24), transparent 34%),
+      radial-gradient(circle at 68% 62%, rgba(251, 191, 154, 0.16), transparent 38%),
+      rgba(255, 255, 255, 0.03);
+    filter: blur(24px);
+    opacity: 0.86;
     pointer-events: none;
   }
 
-  .hero-circle-large {
-    top: -18rem;
-    right: -11rem;
-    width: clamp(30rem, 52vw, 46rem);
-    aspect-ratio: 1;
-  }
-
-  .hero-circle-small {
-    right: 13vw;
-    bottom: 16vh;
-    width: clamp(10rem, 18vw, 16rem);
-    aspect-ratio: 1;
+  .hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(7, 17, 30, 0.96), rgba(7, 17, 30, 0.64) 52%, rgba(7, 17, 30, 0.25)),
+      linear-gradient(180deg, transparent 64%, var(--surface-light) 100%);
+    pointer-events: none;
   }
 
   .hero-grid {
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 0.62fr) minmax(17rem, 0.38fr);
-    gap: clamp(3rem, 8vw, 7rem);
+    grid-template-columns: minmax(0, 1fr) minmax(17.5rem, 0.42fr);
+    gap: clamp(2rem, 5vw, 4.6rem);
     align-items: center;
   }
 
   .hero-copy {
     display: grid;
     gap: 1.2rem;
+    min-width: 0;
   }
 
   .hero-person {
@@ -312,9 +228,9 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
   }
 
   .hero-person img {
-    width: 3.35rem;
-    height: 3.35rem;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    width: 3.15rem;
+    height: 3.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     object-fit: cover;
     object-position: center 58%;
@@ -322,6 +238,7 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
 
   .hero-person .section-label {
     margin: 0 0 0.35rem;
+    color: rgba(255, 255, 255, 0.62);
   }
 
   .hero-person span {
@@ -331,422 +248,332 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
     line-height: 1.35;
   }
 
-  .hero-copy .display {
+  .hero-message {
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .hero-eyebrow {
+    width: fit-content;
+    margin: 0;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.055);
+    color: rgba(226, 232, 240, 0.9);
+    font-size: 0.75rem;
+    line-height: 1;
+    padding: 0.52rem 0.72rem;
+  }
+
+  .hero-message .display {
+    max-width: 820px;
     color: #ffffff;
+    font-size: clamp(3rem, 6vw, 5.35rem);
+    line-height: 0.94;
   }
 
-  .hero-copy p:not(.section-label) {
-    max-width: 36rem;
+  .hero-message p:not(.hero-eyebrow) {
+    max-width: 41rem;
     margin: 0;
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 1rem;
-    line-height: 1.7;
+    color: rgba(226, 232, 240, 0.74);
+    font-size: clamp(0.98rem, 1.45vw, 1.08rem);
+    line-height: 1.72;
   }
 
-  .text-arrow {
-    display: inline-flex;
-    width: fit-content;
-    align-items: center;
-    gap: 0.38rem;
-    color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-
-  .text-arrow span {
-    transition: transform 200ms ease;
-  }
-
-  .text-arrow:hover span {
-    transform: translateX(4px);
-  }
-
-  .role-stack {
-    display: grid;
-    gap: 0.72rem;
-  }
-
-  .role-stack span {
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 999px;
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 0.92rem;
-    line-height: 1;
-    padding: 0.8rem 1rem;
-  }
-
-  .role-stack .is-primary {
-    border-color: rgba(29, 158, 117, 0.54);
-    color: rgba(255, 255, 255, 0.88);
-  }
-
-  .flagship-section,
-  .work-section,
-  .resume-section {
-    background: var(--surface-light);
-    padding-block: clamp(4.5rem, 9vw, 7rem);
-  }
-
-  .flagship {
-    display: grid;
-    grid-template-columns: minmax(0, 0.45fr) minmax(18rem, 0.55fr);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: center;
-  }
-
-  .flagship-copy {
-    display: grid;
-    gap: 0.9rem;
-  }
-
-  .flagship-copy .section-label {
-    color: var(--accent);
-  }
-
-  .flagship-copy h2,
-  .work-head h2,
-  .resume-grid h2 {
-    margin: 0;
-    color: var(--text);
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 500;
-    line-height: 1.04;
-  }
-
-  .flagship-copy p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 1rem;
-    line-height: 1.7;
-  }
-
-  .flagship-copy > span {
-    width: fit-content;
-    border-radius: 999px;
-    background: var(--accent-dim);
-    color: var(--accent);
-    font-size: 0.82rem;
-    line-height: 1;
-    padding: 0.55rem 0.78rem;
-  }
-
-  .flagship-proof {
-    display: grid;
-    gap: 0.5rem;
-    margin: 0.25rem 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .flagship-proof li {
-    position: relative;
-    border-left: 2px solid var(--accent);
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.45;
-    padding-left: 0.72rem;
-  }
-
-  .flagship-preview {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    border-radius: 14px;
-    background: var(--surface-subtle);
-  }
-
-  .flagship-preview img {
-    width: 100%;
-    aspect-ratio: 1.55;
-    object-fit: cover;
-    transition: transform 200ms ease;
-  }
-
-  .flagship-preview span {
-    position: absolute;
-    inset: auto 1rem 1rem;
-    display: grid;
-    gap: 0.45rem;
-    max-width: calc(100% - 2rem);
-    color: #ffffff;
-    opacity: 0;
-    transform: translateY(4px);
-    transition:
-      opacity 200ms ease,
-      transform 200ms ease;
-  }
-
-  .flagship-preview strong {
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-
-  .flagship-preview small {
-    width: fit-content;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.14);
-    color: rgba(255, 255, 255, 0.78);
-    font-size: 0.72rem;
-    line-height: 1;
-    padding: 0.42rem 0.58rem;
-  }
-
-  .flagship-preview::after {
-    position: absolute;
-    inset: 0;
-    background: rgba(13, 13, 13, 0.44);
-    content: "";
-    opacity: 0;
-    transition: opacity 200ms ease;
-  }
-
-  .flagship-preview:hover img {
-    transform: scale(1.02);
-  }
-
-  .flagship-preview:hover::after,
-  .flagship-preview:hover span {
-    opacity: 1;
-  }
-
-  .flagship-preview:hover span {
-    transform: translateY(0);
-    z-index: 1;
-  }
-
-  .project-work {
-    display: grid;
-    gap: clamp(1rem, 3vw, 1.5rem);
-  }
-
-  .work-head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1rem;
-    align-items: end;
-  }
-
-  .filter-tabs {
+  .hero-tags {
     display: flex;
-    gap: 0.55rem;
-    overflow-x: auto;
-    padding-bottom: 0.15rem;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
-  .filter-tabs::-webkit-scrollbar {
-    display: none;
+  .hero-tags span {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.76rem;
+    line-height: 1;
+    padding: 0.48rem 0.66rem;
   }
 
-  .view-toggle {
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .hero-button {
     display: inline-flex;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.45);
-  }
-
-  .filter-tabs button {
-    flex: 0 0 auto;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--text-soft);
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 500;
-    line-height: 1;
-    padding: 0.58rem 0.72rem;
-    white-space: nowrap;
-  }
-
-  .view-toggle button {
-    border: 0;
-    background: transparent;
-    color: var(--text-soft);
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 500;
-    line-height: 1;
-    padding: 0.58rem 0.78rem;
-  }
-
-  .view-toggle button[aria-pressed="true"],
-  .filter-tabs button[aria-pressed="true"] {
-    background: var(--accent-dim);
-    border-color: rgba(29, 158, 117, 0.32);
-    color: var(--text);
-  }
-
-  .project-grid,
-  .project-list {
-    transition: opacity 150ms ease;
-  }
-
-  .project-grid.is-filtering,
-  .project-list.is-filtering {
-    opacity: 0.3;
-  }
-
-  .project-grid {
-    display: none;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.9rem, 2.5vw, 1.25rem);
-  }
-
-  .project-list {
-    display: none;
-    border-top: 1px solid var(--line);
-  }
-
-  .project-work[data-view="grid"] .project-grid,
-  .project-work[data-view="list"] .project-list {
-    display: grid;
-  }
-
-  .project-row {
-    position: relative;
-    display: grid;
-    min-height: 58px;
-    grid-template-columns: 3rem minmax(0, 1.3fr) minmax(8rem, 0.7fr) minmax(6rem, 0.5fr) 3.5rem 1rem;
-    gap: 0.8rem;
+    min-height: 2.75rem;
     align-items: center;
-    border-bottom: 1px solid var(--line);
-    color: var(--text);
-    padding-block: 0.75rem;
-    transition: background 150ms ease;
-  }
-
-  .project-row:hover {
-    background: var(--surface-subtle);
-  }
-
-  .project-row span,
-  .project-row small {
-    color: var(--text-soft);
-    font-size: 0.6875rem;
-    line-height: 1.3;
-  }
-
-  .project-row strong {
-    font-size: 0.95rem;
-    font-weight: 500;
-    line-height: 1.22;
-    overflow-wrap: break-word;
-  }
-
-  .project-row em {
-    color: var(--accent);
-    font-style: normal;
-    opacity: 0;
-    transform: translateX(-4px);
+    justify-content: center;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.84rem 1.05rem;
     transition:
-      opacity 150ms ease,
-      transform 150ms ease;
+      background var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
-  .project-row:hover em {
-    opacity: 1;
-    transform: translateX(0);
+  .hero-button:hover {
+    transform: translateY(-2px);
   }
 
-  .resume-grid {
+  .hero-button span {
+    display: inline-block;
+    margin-left: 0.42rem;
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .hero-button:hover span {
+    transform: translateX(3px);
+  }
+
+  .hero-button-primary {
+    border: 1px solid rgba(125, 211, 252, 0.36);
+    background: #e7f8ff;
+    box-shadow: 0 14px 36px rgba(125, 211, 252, 0.16);
+    color: #0b1724;
+  }
+
+  .hero-button-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.055);
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  .hero-button-secondary:hover {
+    border-color: rgba(125, 211, 252, 0.32);
+    color: #ffffff;
+  }
+
+  .hero-artifact {
+    min-width: 0;
+  }
+
+  .artifact-card {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(2rem, 6vw, 4rem);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.055)),
+      rgba(10, 18, 30, 0.66);
+    box-shadow:
+      0 26px 80px rgba(0, 0, 0, 0.32),
+      0 0 70px rgba(125, 211, 252, 0.08);
+    color: inherit;
+    backdrop-filter: blur(16px);
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
-  .resume-grid article {
+  .artifact-card:hover {
+    border-color: rgba(125, 211, 252, 0.32);
+    box-shadow:
+      0 30px 90px rgba(0, 0, 0, 0.36),
+      0 0 84px rgba(125, 211, 252, 0.12);
+    transform: translateY(-3px);
+  }
+
+  .artifact-image {
+    aspect-ratio: 1.55;
+    margin: 0.72rem 0.72rem 0;
+    overflow: hidden;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .artifact-body {
     display: grid;
-    align-content: start;
-    gap: 0.65rem;
+    gap: 0.55rem;
+    padding: 0.9rem 0.95rem 1rem;
   }
 
-  .resume-grid p,
-  .resume-grid small {
+  .artifact-body .section-label {
+    margin: 0;
+    color: rgba(226, 232, 240, 0.58);
+  }
+
+  .artifact-body h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: clamp(1.05rem, 1.65vw, 1.28rem);
+    font-weight: 600;
+    line-height: 1.12;
+  }
+
+  .artifact-body p {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: rgba(226, 232, 240, 0.7);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .artifact-body span {
+    color: #bae6fd;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .artifact-body span {
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .featured-work {
+    background:
+      radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.06), transparent 24rem),
+      var(--surface-light);
+    padding-block: clamp(2.8rem, 4vw, 3.5rem) clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .scan-section {
+    background:
+      radial-gradient(circle at 100% 20%, rgba(15, 159, 135, 0.05), transparent 28rem),
+      var(--surface-light);
+    padding-block: clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .featured-inner {
+    display: grid;
+    gap: clamp(1.25rem, 3vw, 1.8rem);
+  }
+
+  .section-intro {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 760px;
+  }
+
+  .section-intro .section-label {
+    color: var(--accent);
+  }
+
+  .section-intro h2,
+  .scan-card h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.75rem, 3.5vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.02;
+  }
+
+  .section-intro p,
+  .scan-card p,
+  .scan-card small {
     margin: 0;
     color: var(--text-muted);
-    font-size: 0.9rem;
     line-height: 1.65;
   }
 
-  .resume-grid h3 {
-    margin: 1rem 0 0;
-    color: var(--text);
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1.2;
+  .archive-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
   }
 
-  @media (max-width: 860px) {
-    .hero-grid,
-    .flagship,
-    .resume-grid {
-      grid-template-columns: 1fr;
-    }
+  .archive-link span {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
 
-    .hero {
+  .archive-link:hover span {
+    transform: translateX(4px);
+  }
+
+  .scan-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 3vw, 1.3rem);
+  }
+
+  .scan-card {
+    display: grid;
+    align-content: start;
+    gap: 0.7rem;
+    min-height: 18rem;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    box-shadow: 0 14px 42px rgba(17, 24, 39, 0.045);
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+  }
+
+  .scan-card.is-highlighted {
+    background:
+      linear-gradient(145deg, rgba(15, 159, 135, 0.1), rgba(125, 211, 252, 0.08)),
+      rgba(255, 255, 255, 0.74);
+  }
+
+  .scan-card h2 {
+    font-size: clamp(1.25rem, 2vw, 1.7rem);
+  }
+
+  .scan-card h3 {
+    margin: 0.75rem 0 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.18;
+  }
+
+  .scan-card small {
+    font-size: 0.86rem;
+  }
+
+  @media (max-width: 920px) {
+    .simple-hero {
       min-height: auto;
     }
 
-    .work-head {
-      grid-template-columns: 1fr;
-      justify-items: stretch;
-    }
-
-    .view-toggle {
-      width: fit-content;
-    }
-
-    .project-grid {
+    .hero-grid,
+    .scan-grid {
       grid-template-columns: 1fr;
     }
 
-    .project-row {
-      grid-template-columns: 2.3rem minmax(0, 1fr) 1rem;
-      gap: 0.35rem 0.7rem;
-      align-items: start;
-      padding-block: 0.95rem;
+    .hero-shade {
+      background:
+        linear-gradient(180deg, rgba(7, 17, 30, 0.9) 0%, rgba(7, 17, 30, 0.76) 70%, var(--surface-light) 100%);
     }
 
-    .project-row span {
-      grid-row: span 3;
-      padding-top: 0.2rem;
+    .hero-artifact {
+      max-width: 32rem;
     }
 
-    .project-row strong {
-      grid-column: 2;
-    }
-
-    .project-row small {
-      grid-column: 2;
-      display: block;
-    }
-
-    .project-row small:last-of-type {
-      display: none;
-    }
-
-    .project-row em {
-      grid-column: 3;
-      grid-row: 1;
-      opacity: 1;
-      transform: none;
+    .scan-card {
+      min-height: auto;
     }
   }
 
-  @media (max-width: 560px) {
-    .hero {
-      padding-block: 5.4rem 3.6rem;
+  @media (max-width: 620px) {
+    .simple-hero {
+      padding-block: 5.25rem 2.8rem;
     }
 
-    .hero-grid {
-      gap: 1.8rem;
+    .hero-message .display {
+      font-size: clamp(2.35rem, 12vw, 3.45rem);
+      line-height: 0.98;
     }
 
-    .hero-copy {
-      gap: 1rem;
+    .hero-message p:not(.hero-eyebrow) {
+      font-size: 0.95rem;
+      line-height: 1.62;
     }
 
     .hero-person img {
@@ -754,45 +581,27 @@ const flagshipHomeImageMeta = flagshipHomeImage ? getImageMeta(flagshipHomeImage
       height: 3rem;
     }
 
-    .role-stack {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
+    .hero-tags {
+      gap: 0.42rem;
     }
 
-    .flagship-section,
-    .work-section,
-    .resume-section {
+    .hero-tags span {
+      font-size: 0.72rem;
+      padding: 0.44rem 0.58rem;
+    }
+
+    .artifact-image {
+      aspect-ratio: 1.7;
+      margin: 0.56rem 0.56rem 0;
+    }
+
+    .artifact-body {
+      padding: 0.78rem 0.82rem 0.9rem;
+    }
+
+    .featured-work,
+    .scan-section {
       padding-block: 3.25rem;
-    }
-
-    .flagship {
-      gap: 1.35rem;
-    }
-
-    .flagship-copy {
-      gap: 0.75rem;
-    }
-
-    .flagship-preview {
-      border-radius: 8px;
-    }
-
-    .flagship-preview img {
-      aspect-ratio: 4 / 3;
-    }
-
-    .flagship-preview::after,
-    .flagship-preview span {
-      opacity: 1;
-    }
-
-    .flagship-preview span {
-      transform: none;
-    }
-
-    .filter-tabs {
-      margin-inline: -0.625rem;
-      padding-inline: 0.625rem;
     }
   }
 </style>

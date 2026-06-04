@@ -8,6 +8,7 @@ const projects = await getSortedProjects();
 const activeCategories = projectCategories.filter((category) =>
   projects.some((project) => project.data.category === category.id),
 );
+const projectCount = projects.length;
 ---
 
 <BaseLayout
@@ -15,27 +16,47 @@ const activeCategories = projectCategories.filter((category) =>
   description="Focused project index for data products, predictive modeling, decision support, analytics, and deployment proof."
 >
   <section class="page-hero dark-section" data-dark-section>
-    <div class="container">
-      <p class="eyebrow">Project Index</p>
-      <h1 class="display">Evidence for data products that ship.</h1>
-      <p class="lead">
-        Modeling, dashboards, workflow automation, deployment, and decision
-        support, shown through the artifacts themselves.
-      </p>
+    <div class="page-grid" aria-hidden="true"></div>
+    <div class="container page-hero-inner" data-reveal>
+      <div>
+        <p class="eyebrow">Project archive</p>
+        <h1 class="display">All project artifacts, grouped by craft and outcome.</h1>
+        <p class="lead">
+          Modeling, dashboards, workflow automation, deployment, and decision
+          support, shown through the artifacts themselves.
+        </p>
+      </div>
+      <div class="archive-count">
+        <strong>{projectCount}</strong>
+        <span>case studies</span>
+      </div>
     </div>
   </section>
 
   <section class="project-index divider">
     <div class="container project-work">
-      <div class="filter-tabs" aria-label="Project category filters">
-        <button type="button" data-project-filter="" aria-pressed="true">All</button>
-        {
-          activeCategories.map((category) => (
-            <button type="button" data-project-filter={category.id} aria-pressed="false">
-              {category.title}
-            </button>
-          ))
-        }
+      <div class="archive-toolbar" data-reveal>
+        <div>
+          <p class="section-label">Project lens</p>
+          <h2>Explore by type of work.</h2>
+        </div>
+
+        <div class="filter-tabs" aria-label="Project category filters" data-filter-tabs>
+          <span class="filter-indicator" data-filter-indicator aria-hidden="true"></span>
+          <button type="button" data-project-filter="" aria-pressed="true">All</button>
+          {
+            activeCategories.map((category) => (
+              <button type="button" data-project-filter={category.id} aria-pressed="false">
+                {category.title}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="archive-feedback" data-reveal data-reveal-delay="80">
+        <p data-filter-status aria-live="polite">{projectCount} projects shown</p>
+        <button type="button" data-filter-reset hidden>Reset filter</button>
       </div>
 
       <div class="project-grid" data-filter-list>
@@ -46,33 +67,101 @@ const activeCategories = projectCategories.filter((category) =>
 
   <script>
     const filterTabs = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"));
+    const filterTabList = document.querySelector<HTMLElement>("[data-filter-tabs]");
+    const filterIndicator = document.querySelector<HTMLElement>("[data-filter-indicator]");
     const list = document.querySelector<HTMLElement>("[data-filter-list]");
     const items = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
+    const filterStatus = document.querySelector<HTMLElement>("[data-filter-status]");
+    const resetFilter = document.querySelector<HTMLButtonElement>("[data-filter-reset]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const formatCount = (count: number) => `${count} ${count === 1 ? "project" : "projects"}`;
+
+    const updateFilterIndicator = () => {
+      const activeTab = filterTabs.find((item) => item.getAttribute("aria-pressed") === "true") ?? filterTabs[0];
+
+      if (!activeTab || !filterTabList || !filterIndicator) {
+        return;
+      }
+
+      filterIndicator.style.setProperty("--indicator-x", `${activeTab.offsetLeft}px`);
+      filterIndicator.style.setProperty("--indicator-width", `${activeTab.offsetWidth}px`);
+    };
+
+    const updateFilterStatus = (active: string) => {
+      const visibleItems = items.filter((item) => !item.hidden);
+      const activeTab = filterTabs.find((item) => (item.dataset.projectFilter ?? "") === active);
+      const activeLabel = activeTab?.textContent?.trim() ?? "";
+
+      if (filterStatus) {
+        filterStatus.textContent = active
+          ? `${formatCount(visibleItems.length)} in ${activeLabel}`
+          : `${formatCount(items.length)} shown`;
+      }
+
+      if (resetFilter) {
+        resetFilter.hidden = !active;
+      }
+    };
+
+    const applyFilter = (active: string) => {
+      list?.classList.add("is-filtering");
+      filterTabs.forEach((item) => {
+        item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
+      });
+      updateFilterIndicator();
+
+      window.setTimeout(() => {
+        items.forEach((item) => {
+          item.hidden = Boolean(active) && item.dataset.category !== active;
+        });
+        updateFilterStatus(active);
+        list?.classList.remove("is-filtering");
+      }, reduceMotion ? 0 : 140);
+    };
 
     filterTabs.forEach((tab) => {
-      tab.addEventListener("click", () => {
-        const active = tab.dataset.projectFilter ?? "";
-        list?.classList.add("is-filtering");
-
-        window.setTimeout(() => {
-          filterTabs.forEach((item) => {
-            item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
-          });
-          items.forEach((item) => {
-            item.hidden = Boolean(active) && item.dataset.category !== active;
-          });
-          list?.classList.remove("is-filtering");
-        }, 120);
-      });
+      tab.addEventListener("click", () => applyFilter(tab.dataset.projectFilter ?? ""));
     });
+
+    resetFilter?.addEventListener("click", () => applyFilter(""));
+    updateFilterIndicator();
+    updateFilterStatus("");
+    filterTabList?.addEventListener("scroll", updateFilterIndicator, { passive: true });
+    window.addEventListener("resize", updateFilterIndicator);
   </script>
 </BaseLayout>
 
 <style>
   .page-hero {
-    background: var(--surface-base);
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 14%, rgba(125, 211, 252, 0.14), transparent 24rem),
+      radial-gradient(circle at 86% 26%, rgba(167, 243, 208, 0.12), transparent 28rem),
+      linear-gradient(135deg, #07111e 0%, #111d2e 56%, #171321 100%);
     color: #ffffff;
-    padding-block: clamp(7rem, 12vw, 10rem) clamp(4rem, 8vw, 6rem);
+    padding-block: clamp(6rem, 9vw, 7.8rem) clamp(3rem, 5vw, 4.2rem);
+  }
+
+  .page-grid {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 5.5rem 5.5rem;
+    mask-image: linear-gradient(180deg, #000, transparent 82%);
+  }
+
+  .page-hero-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    align-items: end;
   }
 
   .page-hero .display {
@@ -84,17 +173,105 @@ const activeCategories = projectCategories.filter((category) =>
     color: rgba(255, 255, 255, 0.72);
   }
 
+  .archive-count {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 9rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.055)),
+      rgba(10, 18, 30, 0.56);
+    padding: 1rem;
+    backdrop-filter: blur(16px);
+  }
+
+  .archive-count strong {
+    color: #9be7d4;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    line-height: 1;
+  }
+
+  .archive-count span {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.78rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
   .project-index {
-    background: var(--surface-light);
-    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    background:
+      radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.08), transparent 24rem),
+      radial-gradient(circle at 100% 40%, rgba(15, 159, 135, 0.06), transparent 28rem),
+      var(--surface-light);
+    padding-block: clamp(2.8rem, 6vw, 4.8rem);
   }
 
   .project-work {
     display: grid;
-    gap: clamp(1rem, 3vw, 1.5rem);
+    gap: clamp(1.05rem, 2.4vw, 1.55rem);
+  }
+
+  .archive-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 0.32fr) minmax(0, 0.68fr);
+    gap: 1rem;
+    align-items: end;
+  }
+
+  .archive-toolbar h2 {
+    margin: 0.45rem 0 0;
+    color: var(--text);
+    font-size: clamp(1.35rem, 3vw, 2.2rem);
+    font-weight: 600;
+    line-height: 1.05;
+  }
+
+  .archive-feedback {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem 0.85rem;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 2.3rem;
+  }
+
+  .archive-feedback p {
+    margin: 0;
+    color: var(--text-soft);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .archive-feedback button {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    border: 1px solid rgba(15, 159, 135, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.54);
+    color: var(--accent);
+    cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.52rem 0.68rem;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      background var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
+  }
+
+  .archive-feedback button:hover {
+    border-color: rgba(15, 159, 135, 0.32);
+    background: rgba(255, 255, 255, 0.78);
+    transform: translateY(-1px);
   }
 
   .filter-tabs {
+    position: relative;
     display: flex;
     gap: 0.55rem;
     overflow-x: auto;
@@ -106,11 +283,30 @@ const activeCategories = projectCategories.filter((category) =>
     display: none;
   }
 
+  .filter-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--indicator-width, 2.8rem);
+    height: calc(100% - 0.15rem);
+    border: 1px solid rgba(15, 159, 135, 0.28);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(15, 159, 135, 0.14), rgba(125, 211, 252, 0.1));
+    box-shadow: 0 8px 22px rgba(15, 159, 135, 0.08);
+    transform: translateX(var(--indicator-x, 0));
+    transition:
+      width var(--motion-medium) var(--ease-standard),
+      transform var(--motion-medium) var(--ease-out);
+    pointer-events: none;
+  }
+
   .filter-tabs button {
+    position: relative;
+    z-index: 1;
     flex: 0 0 auto;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.52);
     color: var(--text-soft);
     cursor: pointer;
     font-size: 0.82rem;
@@ -118,32 +314,56 @@ const activeCategories = projectCategories.filter((category) =>
     line-height: 1;
     padding: 0.58rem 0.72rem;
     white-space: nowrap;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
+  }
+
+  .filter-tabs button:hover {
+    border-color: rgba(15, 159, 135, 0.24);
+    color: var(--text);
+    transform: translateY(-1px);
   }
 
   .filter-tabs button[aria-pressed="true"] {
-    background: var(--accent-dim);
-    border-color: rgba(29, 158, 117, 0.32);
+    border-color: transparent;
+    background: transparent;
     color: var(--text);
   }
 
   .project-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(0.9rem, 2.5vw, 1.25rem);
-    transition: opacity 150ms ease;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+    gap: clamp(0.75rem, 1.8vw, 1rem);
+    transition:
+      filter var(--motion-fast) var(--ease-standard),
+      opacity var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
   .project-grid.is-filtering {
-    opacity: 0.3;
+    opacity: 0.68;
+    filter: blur(2px);
+    transform: translateY(3px);
   }
 
   @media (max-width: 760px) {
     .page-hero {
-      padding-block: 6.5rem 4rem;
+      padding-block: 5.5rem 3rem;
+    }
+
+    .page-hero-inner,
+    .archive-toolbar {
+      grid-template-columns: 1fr;
+    }
+
+    .archive-count {
+      width: fit-content;
     }
 
     .project-index {
-      padding-block: 3.25rem;
+      padding-block: 2.35rem 3rem;
     }
 
     .filter-tabs {
@@ -153,6 +373,23 @@ const activeCategories = projectCategories.filter((category) =>
 
     .project-grid {
       grid-template-columns: 1fr;
+      gap: 0.72rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .page-hero .display {
+      font-size: clamp(2.45rem, 12vw, 3.2rem);
+      line-height: 0.98;
+    }
+
+    .page-hero .lead {
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .archive-toolbar h2 {
+      font-size: 1.3rem;
     }
   }
 </style>

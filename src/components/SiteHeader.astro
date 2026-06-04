@@ -84,19 +84,19 @@ const isActive = (href: string) =>
     z-index: 50;
     width: 100%;
     border-bottom: 1px solid var(--line);
-    background: rgba(247, 246, 242, 0.86);
+    background: rgba(243, 246, 251, 0.82);
     color: var(--text);
     backdrop-filter: blur(18px);
     transition:
-      background 200ms ease,
-      border-color 200ms ease,
-      color 200ms ease;
+      background var(--motion-medium) var(--ease-standard),
+      border-color var(--motion-medium) var(--ease-standard),
+      color var(--motion-medium) var(--ease-standard);
   }
 
   .site-header.is-dark {
-    --accent: #2fc995;
-    border-color: rgba(255, 255, 255, 0.08);
-    background: rgba(13, 13, 13, 0.58);
+    --accent: #9be7d4;
+    border-color: rgba(255, 255, 255, 0.07);
+    background: rgba(7, 17, 30, 0.64);
     color: #ffffff;
   }
 
@@ -140,6 +140,9 @@ const isActive = (href: string) =>
     font-weight: 500;
     line-height: 1;
     padding-block: 0.56rem;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
   nav a::before {
@@ -153,6 +156,9 @@ const isActive = (href: string) =>
     content: "";
     opacity: 0;
     transform: translateY(-50%);
+    transition:
+      opacity var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
   nav a::after {
@@ -163,12 +169,16 @@ const isActive = (href: string) =>
     height: 1px;
     background: var(--accent);
     content: "";
-    transition: width 250ms ease;
+    transition: width var(--motion-medium) var(--ease-out);
   }
 
   nav a:hover,
   nav a[aria-current="page"] {
     color: currentColor;
+  }
+
+  nav a:hover {
+    transform: translateY(-1px);
   }
 
   nav a:hover::after {
@@ -177,6 +187,10 @@ const isActive = (href: string) =>
 
   nav a[aria-current="page"]::before {
     opacity: 1;
+  }
+
+  nav a:hover::before {
+    transform: translateY(-50%) scale(1.18);
   }
 
   .menu-toggle {
@@ -214,7 +228,7 @@ const isActive = (href: string) =>
       color: #ffffff;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 180ms ease;
+      transition: opacity var(--motion-medium) var(--ease-standard);
     }
 
     nav.is-open {

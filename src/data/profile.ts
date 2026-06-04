@@ -10,7 +10,7 @@ export const profile = {
   summary:
     "I build practical data products: models, dashboards, and backend workflows that turn raw data into usable systems.",
   availability:
-    "Best fit for data, machine learning, analytics, and data-systems internship roles",
+    "Open to data, machine learning, analytics, and data-systems work",
   links: [
     {
       label: "LinkedIn",
@@ -34,7 +34,7 @@ export const education = {
 
 export const roleTargets = [
   {
-    title: "Data / ML Engineering Intern",
+    title: "Data / ML Engineering",
     summary:
       "Modeling, evaluation, data preparation, and reproducible ML workflows.",
   },
@@ -44,11 +44,18 @@ export const roleTargets = [
       "Dashboards, KPI mapping, workflow analysis, and business-facing data stories.",
   },
   {
-    title: "Backend / Data Systems Intern",
+    title: "Backend / Data Systems",
     summary:
       "APIs, deployment pipelines, automation, and practical system delivery.",
   },
 ];
+
+export const homeProjectSlugs = [
+  "kpc-power-automate-po-automation",
+  "kpc-ideku-v3-dotnet-stabilization",
+  "scent2me-perfume-recommendation",
+  "bank-jatim-performance-dashboard",
+] as const;
 
 export const proofPoints = [
   "Predictive modeling with clear evaluation metrics",
@@ -122,9 +129,9 @@ export const projectCategories = [
 ];
 
 export const focusItems = [
-  "Data / ML engineering internships",
-  "Analytics roles that need strong technical execution",
-  "Backend or workflow automation teams working close to data",
+  "Data and ML engineering work",
+  "Analytics products with strong technical execution",
+  "Backend and workflow automation close to real data",
 ];
 
 export const skillGroups = [
