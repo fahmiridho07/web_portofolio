@@ -1,5 +1,6 @@
 ---
 import { getCategoryMeta } from "@lib/projects";
+import { getImageMeta } from "@lib/images";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
@@ -11,6 +12,7 @@ const href = `/projects/${project.data.slug}/`;
 const metric = project.data.metric ?? project.data.status;
 const category = getCategoryMeta(project.data.category);
 const projectLogo = project.data.logo ?? category.logo;
+const coverMeta = getImageMeta(project.data.coverImage);
 const stackLine = project.data.stack.slice(0, 4).join(" / ");
 const proofLine = project.data.proof?.[0] ?? metric;
 ---
@@ -18,13 +20,20 @@ const proofLine = project.data.proof?.[0] ?? metric;
 <article class="project-card" data-category={project.data.category}>
   <a class="project-link" href={href} aria-label={`Read case study: ${project.data.title}`}>
     <div class="project-thumb" aria-hidden="true">
-      <img src={project.data.coverImage} alt="" loading="eager" decoding="async" />
+      <img
+        src={project.data.coverImage}
+        alt=""
+        width={coverMeta?.width}
+        height={coverMeta?.height}
+        loading="lazy"
+        decoding="async"
+      />
     </div>
 
     <div class="project-main">
       <div class="project-kicker">
         <p class="project-category">
-          {projectLogo && <img src={projectLogo} alt="" loading="eager" decoding="async" />}
+          {projectLogo && <img src={projectLogo} alt="" width="24" height="24" loading="lazy" decoding="async" />}
           <span>{category.title}</span>
         </p>
         <p>{project.data.year}</p>

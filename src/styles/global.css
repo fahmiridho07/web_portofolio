@@ -6,16 +6,16 @@
   --surface-raised: #111411;
   --surface-light: #f7f6f2;
   --surface-subtle: #f0efe9;
-  --accent: #1d9e75;
-  --accent-dim: rgba(29, 158, 117, 0.15);
+  --accent: #0d6f54;
+  --accent-dim: rgba(13, 111, 84, 0.12);
   --bg: var(--surface-light);
   --surface: var(--surface-light);
   --surface-soft: var(--surface-subtle);
   --line: rgba(13, 13, 13, 0.12);
   --line-strong: rgba(13, 13, 13, 0.26);
   --text: #111111;
-  --text-muted: rgba(17, 17, 17, 0.58);
-  --text-soft: rgba(17, 17, 17, 0.4);
+  --text-muted: rgba(17, 17, 17, 0.72);
+  --text-soft: rgba(17, 17, 17, 0.62);
   --mint: var(--accent);
   --accent-soft: var(--accent-dim);
   --max-width: 1120px;
@@ -48,7 +48,7 @@ body {
 }
 
 body::selection {
-  background: rgba(16, 185, 129, 0.18);
+  background: rgba(13, 111, 84, 0.18);
   color: var(--text);
 }
 
@@ -71,7 +71,7 @@ select {
 }
 
 :focus-visible {
-  outline: 2px solid rgba(5, 150, 105, 0.72);
+  outline: 2px solid rgba(13, 111, 84, 0.72);
   outline-offset: 4px;
 }
 
@@ -217,9 +217,14 @@ select {
   text-transform: uppercase;
 }
 
+.dark-section {
+  --accent: #2fc995;
+  --accent-dim: rgba(47, 201, 149, 0.16);
+}
+
 .dark-section .section-label,
 .dark-section .eyebrow {
-  color: rgba(255, 255, 255, 0.48);
+  color: rgba(255, 255, 255, 0.62);
 }
 
 .prose h2,

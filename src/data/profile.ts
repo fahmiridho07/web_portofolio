@@ -4,7 +4,7 @@ export const profile = {
   mark: "FR",
   role: "Final-year Information Systems student at ITS",
   location: "Indonesia",
-  email: "achmad.fahmi@example.com",
+  contactHref: "https://id.linkedin.com/in/fahmiridho",
   headline:
     "Practical data products across machine learning, analytics, and backend workflows.",
   summary:
@@ -12,10 +12,6 @@ export const profile = {
   availability:
     "Best fit for data, machine learning, analytics, and data-systems internship roles",
   links: [
-    {
-      label: "Email",
-      href: "mailto:achmad.fahmi@example.com",
-    },
     {
       label: "LinkedIn",
       href: "https://id.linkedin.com/in/fahmiridho",

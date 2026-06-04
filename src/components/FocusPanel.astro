@@ -12,7 +12,7 @@ import { focusItems, profile } from "@data/profile";
     {focusItems.map((item) => <li>{item}</li>)}
   </ul>
 
-  <a class="button button-primary" href={`mailto:${profile.email}`}>Contact</a>
+  <a class="button button-primary" href={profile.contactHref} target="_blank" rel="noreferrer">Contact</a>
 </aside>
 
 <style>

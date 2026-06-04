@@ -5,7 +5,7 @@ Place Fahmi's profile photo here.
 Recommended filenames:
 
 - `fahmi-profile.webp`
-- `profile_photo.png`
+- `profile_photo.webp`
 
 Recommended image:
 
@@ -13,4 +13,4 @@ Recommended image:
 - At least 1200px wide
 - Clear face, calm background, natural lighting
 
-The current site references `/assets/profile/profile_photo.png`.
+The current site references `/assets/profile/profile_photo.webp`.

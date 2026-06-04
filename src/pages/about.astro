@@ -9,6 +9,7 @@ import {
   skillGroups,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getImageMeta } from "@lib/images";
 import { getLogoItems } from "@lib/logos";
 
 const primarySkills = new Set([
@@ -23,6 +24,8 @@ const profileHighlights = [
   `${profile.location} based`,
   `GPA ${education.gpa}`,
 ];
+const profileImage = "/assets/profile/profile_photo.webp";
+const profileImageMeta = getImageMeta(profileImage);
 ---
 
 <BaseLayout
@@ -33,7 +36,14 @@ const profileHighlights = [
     <div class="container about-grid">
       <div>
         <div class="about-person">
-          <img src="/assets/profile/profile_photo.png" alt="" loading="eager" decoding="async" />
+          <img
+            src={profileImage}
+            alt=""
+            width={profileImageMeta?.width}
+            height={profileImageMeta?.height}
+            loading="eager"
+            decoding="async"
+          />
           <p class="eyebrow">{profile.name}</p>
         </div>
         <h1 class="display">Information Systems student building practical data products.</h1>
@@ -48,7 +58,14 @@ const profileHighlights = [
   <section class="section-tight profile-section">
     <div class="container profile-card">
       <div class="portrait">
-        <img src="/assets/profile/profile_photo.png" alt="Portrait of Achmad Fahmi Ainur Ridho" />
+        <img
+          src={profileImage}
+          alt="Portrait of Achmad Fahmi Ainur Ridho"
+          width={profileImageMeta?.width}
+          height={profileImageMeta?.height}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
       <div class="profile-copy">
         <p class="eyebrow">Positioning</p>
@@ -130,7 +147,7 @@ const profileHighlights = [
                     {
                       primaryItems.map((item) => (
                         <li class:list={[item.logo && "has-logo"]}>
-                          {item.logo && <img src={item.logo} alt="" loading="lazy" />}
+                          {item.logo && <img src={item.logo} alt="" width="24" height="24" loading="lazy" />}
                           <span>{item.label}</span>
                         </li>
                       ))
@@ -200,7 +217,7 @@ const profileHighlights = [
   }
 
   .about-hero .lead {
-    color: rgba(255, 255, 255, 0.58);
+    color: rgba(255, 255, 255, 0.72);
   }
 
   .about-grid {
@@ -430,7 +447,7 @@ const profileHighlights = [
 
   .skill-grid .secondary-skills li {
     background: transparent;
-    color: rgba(82, 82, 91, 0.52);
+    color: var(--text-soft);
     font-size: 0.74rem;
     padding: 0.28rem 0;
   }

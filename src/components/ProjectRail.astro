@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { getImageMeta } from "@lib/images";
 
 interface Props {
   projects: CollectionEntry<"projects">[];
@@ -24,7 +25,14 @@ const { projects } = Astro.props;
           <article class="rail-card">
             <a href={`/projects/${project.data.slug}/`}>
               <div class="cover" aria-hidden="true">
-                <img src={project.data.coverImage} alt="" loading={index > 1 ? "lazy" : "eager"} />
+                <img
+                  src={project.data.coverImage}
+                  alt=""
+                  width={getImageMeta(project.data.coverImage)?.width}
+                  height={getImageMeta(project.data.coverImage)?.height}
+                  loading={index > 1 ? "lazy" : "eager"}
+                  decoding="async"
+                />
               </div>
 
               <div class="card-copy">

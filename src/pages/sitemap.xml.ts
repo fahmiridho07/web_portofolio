@@ -1,0 +1,33 @@
+import { getCollection } from "astro:content";
+
+const SITE = "https://fahmiridho.me";
+
+function entry(pathname: string, priority: string) {
+  return [
+    "  <url>",
+    `    <loc>${new URL(pathname, SITE).href}</loc>`,
+    "    <changefreq>monthly</changefreq>",
+    `    <priority>${priority}</priority>`,
+    "  </url>",
+  ].join("\n");
+}
+
+export async function GET() {
+  const projects = await getCollection("projects");
+  const urls = [
+    entry("/", "1.0"),
+    entry("/projects/", "0.9"),
+    entry("/about/", "0.8"),
+    ...projects.map((project) => entry(`/projects/${project.data.slug}/`, "0.7")),
+  ];
+
+  return new Response(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`,
+    {
+      headers: {
+        "Content-Type": "application/xml; charset=utf-8",
+      },
+    },
+  );
+}
+

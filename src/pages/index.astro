@@ -8,6 +8,7 @@ import {
   projectCategories,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getImageMeta } from "@lib/images";
 import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 
 const allProjects = await getSortedProjects();
@@ -29,6 +30,9 @@ const flagshipProof = flagshipProject
 const rolePills = ["Data / ML Engineering", "Data Analytics", "Backend / Data Systems"];
 const primaryExperience = experiences[0];
 const activityItems = experiences.slice(1);
+const profileImage = "/assets/profile/profile_photo.webp";
+const profileImageMeta = getImageMeta(profileImage);
+const flagshipCoverMeta = flagshipProject ? getImageMeta(flagshipProject.data.coverImage) : undefined;
 ---
 
 <BaseLayout
@@ -42,7 +46,14 @@ const activityItems = experiences.slice(1);
     <div class="container hero-grid">
       <div class="hero-copy">
         <div class="hero-person">
-          <img src="/assets/profile/profile_photo.png" alt="" loading="eager" decoding="async" />
+          <img
+            src={profileImage}
+            alt=""
+            width={profileImageMeta?.width}
+            height={profileImageMeta?.height}
+            loading="eager"
+            decoding="async"
+          />
           <div>
             <p class="section-label">{profile.name}</p>
             <span>{profile.location} / {profile.role}</span>
@@ -84,7 +95,14 @@ const activityItems = experiences.slice(1);
           </div>
 
           <a class="flagship-preview" href={`/projects/${flagshipProject.data.slug}/`}>
-            <img src={flagshipProject.data.coverImage} alt="" loading="eager" />
+            <img
+              src={flagshipProject.data.coverImage}
+              alt=""
+              width={flagshipCoverMeta?.width}
+              height={flagshipCoverMeta?.height}
+              loading="lazy"
+              decoding="async"
+            />
             <span>
               <strong>{flagshipProject.data.title}</strong>
               <small>{flagshipProject.data.metric ?? flagshipProject.data.status}</small>
@@ -300,7 +318,7 @@ const activityItems = experiences.slice(1);
 
   .hero-person span {
     display: block;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.66);
     font-size: 0.76rem;
     line-height: 1.35;
   }
@@ -312,7 +330,7 @@ const activityItems = experiences.slice(1);
   .hero-copy p:not(.section-label) {
     max-width: 36rem;
     margin: 0;
-    color: rgba(255, 255, 255, 0.58);
+    color: rgba(255, 255, 255, 0.72);
     font-size: 1rem;
     line-height: 1.7;
   }
@@ -343,7 +361,7 @@ const activityItems = experiences.slice(1);
   .role-stack span {
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 999px;
-    color: rgba(255, 255, 255, 0.46);
+    color: rgba(255, 255, 255, 0.62);
     font-size: 0.92rem;
     line-height: 1;
     padding: 0.8rem 1rem;
@@ -351,7 +369,7 @@ const activityItems = experiences.slice(1);
 
   .role-stack .is-primary {
     border-color: rgba(29, 158, 117, 0.54);
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.88);
   }
 
   .flagship-section,

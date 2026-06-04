@@ -1,6 +1,7 @@
 ---
 import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getImageMeta } from "@lib/images";
 import { getLogoItems } from "@lib/logos";
 import { getCategoryMeta } from "@lib/projects";
 import { getCollection, render } from "astro:content";
@@ -12,27 +13,16 @@ interface Props {
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
-  const paths = projects.map((project) => ({
+  return projects.map((project) => ({
     params: { slug: project.data.slug },
     props: { project },
   }));
-  const kpcInternshipProject = projects.find(
-    (project) => project.data.slug === "kpc-power-automate-po-automation",
-  );
-
-  if (kpcInternshipProject) {
-    paths.push({
-      params: { slug: "kpc-internship" },
-      props: { project: kpcInternshipProject },
-    });
-  }
-
-  return paths;
 }
 
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
 const projectLogo = project.data.logo ?? category.logo;
+const coverMeta = getImageMeta(project.data.coverImage);
 const visibleStack = getLogoItems(project.data.stack.slice(0, 6));
 const hiddenStackCount = Math.max(project.data.stack.length - visibleStack.length, 0);
 const proofItems = (
@@ -79,7 +69,7 @@ const relatedProjects = allProjects
     <header class="case-hero dark-section" data-dark-section>
       <div class="container case-hero-inner">
         <div class="case-kicker">
-          {projectLogo && <span class="case-logo"><img src={projectLogo} alt="" loading="eager" /></span>}
+          {projectLogo && <span class="case-logo"><img src={projectLogo} alt="" width="24" height="24" loading="eager" /></span>}
           <p class="section-label">{category.title} / {project.data.year}</p>
         </div>
         <h1 class="display">{project.data.title}</h1>
@@ -102,7 +92,7 @@ const relatedProjects = allProjects
           {
             visibleStack.map((item) => (
               <li class:list={[item.logo && "has-logo"]}>
-                {item.logo && <img src={item.logo} alt="" loading="lazy" />}
+                {item.logo && <img src={item.logo} alt="" width="24" height="24" loading="lazy" />}
                 <span>{item.label}</span>
               </li>
             ))
@@ -120,7 +110,14 @@ const relatedProjects = allProjects
       <div class="container case-body-inner">
         <section class="case-snapshot" aria-label="Project snapshot">
           <a class="snapshot-visual" href={project.data.coverImage} target="_blank" rel="noreferrer">
-            <img src={project.data.coverImage} alt="" loading="eager" decoding="async" />
+            <img
+              src={project.data.coverImage}
+              alt=""
+              width={coverMeta?.width}
+              height={coverMeta?.height}
+              loading="lazy"
+              decoding="async"
+            />
             <span>{category.title}</span>
           </a>
 
@@ -260,7 +257,7 @@ const relatedProjects = allProjects
   .case-hero-inner > p:not(.section-label) {
     max-width: 760px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.58);
+    color: rgba(255, 255, 255, 0.72);
     font-size: 1.08rem;
     line-height: 1.7;
   }
@@ -287,13 +284,13 @@ const relatedProjects = allProjects
 
   .meta-pills span:nth-child(n + 2) {
     background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.62);
+    color: rgba(255, 255, 255, 0.72);
   }
 
   .stack-pills li {
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.46);
+    color: rgba(255, 255, 255, 0.68);
     font-size: 0.6875rem;
     line-height: 1;
     padding: 0.42rem 0.66rem;

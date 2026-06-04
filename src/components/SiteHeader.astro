@@ -5,7 +5,7 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/projects/", label: "Projects" },
   { href: "/about/", label: "About" },
-  { href: `mailto:${profile.email}`, label: "Contact" },
+  { href: profile.contactHref, label: "Contact" },
 ];
 
 const pathname = Astro.url.pathname;
@@ -26,7 +26,12 @@ const isActive = (href: string) =>
         {
           navItems.map((item) => (
             <li>
-              <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+                target={item.href.startsWith("http") ? "_blank" : undefined}
+                rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+              >
                 {item.label}
               </a>
             </li>
@@ -89,6 +94,7 @@ const isActive = (href: string) =>
   }
 
   .site-header.is-dark {
+    --accent: #2fc995;
     border-color: rgba(255, 255, 255, 0.08);
     background: rgba(13, 13, 13, 0.58);
     color: #ffffff;
