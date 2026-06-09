@@ -1,5 +1,8 @@
 ---
 import { focusItems, profile } from "@data/profile";
+import { getResumeAction } from "@lib/resume";
+
+const resumeAction = getResumeAction();
 
 const contactActions = [
   {
@@ -8,8 +11,8 @@ const contactActions = [
     variant: "primary",
   },
   {
-    label: "Request resume",
-    href: profile.resumeRequestHref,
+    label: resumeAction.label,
+    href: resumeAction.href,
     variant: "secondary",
   },
   ...profile.links
@@ -41,6 +44,7 @@ const contactActions = [
           href={link.href}
           target={link.href.startsWith("http") ? "_blank" : undefined}
           rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+          download={link.href === resumeAction.href && resumeAction.download ? "" : undefined}
         >
           {link.label}
         </a>

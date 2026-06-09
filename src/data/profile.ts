@@ -6,9 +6,10 @@ export const profile = {
   location: "Indonesia",
   email: "achmadridho.id@gmail.com",
   emailHref: "mailto:achmadridho.id@gmail.com",
-  contactHref: "mailto:achmadridho.id@gmail.com",
+  contactHref: "/#contact",
   resumeRequestHref:
     "mailto:achmadridho.id@gmail.com?subject=Resume%20request%20-%20Achmad%20Fahmi%20Ainur%20Ridho",
+  resumePdfHref: "/resume.pdf",
   headline:
     "Practical data products across machine learning, analytics, and backend workflows.",
   summary:
@@ -79,6 +80,8 @@ export const roleTargets = [
       "APIs, deployment pipelines, automation, and practical system delivery.",
   },
 ];
+
+export const heroProjectSlug = "kpc-ideku-v3-dotnet-stabilization";
 
 export const homeProjectSlugs = [
   "kpc-power-automate-po-automation",

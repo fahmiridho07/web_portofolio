@@ -104,12 +104,39 @@ const projectCount = projects.length;
       }
     };
 
-    const applyFilter = (active: string) => {
+    const allowedFilters = new Set(
+      filterTabs
+        .map((tab) => tab.dataset.projectFilter ?? "")
+        .filter((value) => Boolean(value)),
+    );
+
+    const readFilterFromUrl = () => {
+      const value = new URL(window.location.href).searchParams.get("category") ?? "";
+      return allowedFilters.has(value) ? value : "";
+    };
+
+    const writeFilterToUrl = (active: string) => {
+      const url = new URL(window.location.href);
+
+      if (active) {
+        url.searchParams.set("category", active);
+      } else {
+        url.searchParams.delete("category");
+      }
+
+      window.history.replaceState({}, "", url);
+    };
+
+    const applyFilter = (active: string, syncUrl = true) => {
       list?.classList.add("is-filtering");
       filterTabs.forEach((item) => {
         item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
       });
       updateFilterIndicator();
+
+      if (syncUrl) {
+        writeFilterToUrl(active);
+      }
 
       window.setTimeout(() => {
         items.forEach((item) => {
@@ -125,8 +152,7 @@ const projectCount = projects.length;
     });
 
     resetFilter?.addEventListener("click", () => applyFilter(""));
-    updateFilterIndicator();
-    updateFilterStatus("");
+    applyFilter(readFilterFromUrl(), false);
     filterTabList?.addEventListener("scroll", updateFilterIndicator, { passive: true });
     window.addEventListener("resize", updateFilterIndicator);
   </script>

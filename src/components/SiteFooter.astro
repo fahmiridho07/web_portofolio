@@ -1,12 +1,15 @@
 ---
 import { profile } from "@data/profile";
+import { getResumeAction } from "@lib/resume";
 
 const year = new Date().getFullYear();
+const resumeAction = getResumeAction();
+
 const footerLinks = [
   ...profile.links,
   {
-    label: "Resume request",
-    href: profile.resumeRequestHref,
+    label: resumeAction.download ? "Resume" : "Resume request",
+    href: resumeAction.href,
   },
 ];
 ---
@@ -21,7 +24,12 @@ const footerLinks = [
     <nav aria-label="Footer links">
       {
         footerLinks.map((link) => (
-          <a href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noreferrer" : undefined}>
+          <a
+            href={link.href}
+            target={link.href.startsWith("http") ? "_blank" : undefined}
+            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+            download={link.href === resumeAction.href && resumeAction.download ? "" : undefined}
+          >
             {link.label}
           </a>
         ))

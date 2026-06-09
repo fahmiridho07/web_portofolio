@@ -1,11 +1,13 @@
 ---
 import FeaturedProjectShowcase from "@components/FeaturedProjectShowcase.astro";
+import FocusPanel from "@components/FocusPanel.astro";
 import OrganizationLogo from "@components/OrganizationLogo.astro";
 import ProjectMockup from "@components/ProjectMockup.astro";
 import {
   coursesAndCertificates,
   education,
   experiences,
+  heroProjectSlug,
   homeProjectSlugs,
   profile,
   whyMeItems,
@@ -26,7 +28,8 @@ const profileAvatar = "/assets/profile/profile_avatar-160.webp";
 const profileAvatarSrcset =
   "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
 const profileAvatarMeta = getImageMeta(profileAvatar);
-const heroProject = homeProjects[0];
+const heroProject =
+  allProjects.find((project) => project.data.slug === heroProjectSlug) ?? homeProjects[1] ?? homeProjects[0];
 const heroCategory = heroProject ? getCategoryMeta(heroProject.data.category) : undefined;
 const heroArtifactImage = heroProject?.data.coverImage;
 const heroProof = heroProject?.data.proof?.[0] ?? heroProject?.data.metric ?? heroProject?.data.status;
@@ -184,6 +187,12 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
         }
         <small>{coursesAndCertificates[0]}</small>
       </article>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section divider">
+    <div class="container">
+      <FocusPanel />
     </div>
   </section>
 </BaseLayout>
@@ -484,11 +493,16 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     padding-block: clamp(2.8rem, 4vw, 3.5rem) clamp(4rem, 8vw, 6.5rem);
   }
 
-  .scan-section {
+  .scan-section,
+  .contact-section {
     background:
       radial-gradient(circle at 100% 20%, rgba(15, 159, 135, 0.05), transparent 28rem),
       var(--surface-light);
     padding-block: clamp(4rem, 8vw, 6.5rem);
+  }
+
+  .contact-section {
+    padding-block-start: clamp(3rem, 6vw, 4.5rem);
   }
 
   .why-section {
@@ -718,7 +732,8 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 
     .featured-work,
     .why-section,
-    .scan-section {
+    .scan-section,
+    .contact-section {
       padding-block: 3.25rem;
     }
 

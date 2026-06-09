@@ -2,6 +2,8 @@
 import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getCaseStudyNavSections, getCaseStudySectionMap } from "@lib/case-study";
+import { getCreativeWorkSchema } from "@lib/seo";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
@@ -59,9 +61,20 @@ const quickReadItems = [
     value: proofItems[0] ?? project.data.status,
   },
 ];
+const siteUrl = Astro.site?.href ?? Astro.url.origin;
+const projectSchema = getCreativeWorkSchema({
+  site: siteUrl,
+  title: project.data.title,
+  description: project.data.summary,
+  slug: project.data.slug,
+  year: project.data.year,
+  stack: project.data.stack,
+});
+const caseNavSections = getCaseStudyNavSections(project.body ?? "");
+const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 ---
 
-<BaseLayout title={project.data.title} description={project.data.summary}>
+<BaseLayout title={project.data.title} description={project.data.summary} jsonLd={projectSchema}>
   <article>
     <CaseSnapshotHero project={project} />
 
@@ -84,10 +97,13 @@ const quickReadItems = [
           <div class="read-flow">
             <p class="section-label">Read flow</p>
             <a href="#case-study" data-case-nav-link aria-current="location">Overview</a>
-            <a href="#problem" data-case-nav-link>Problem</a>
-            <a href="#evidence" data-case-nav-link>Evidence</a>
-            <a href="#approach" data-case-nav-link>Approach</a>
-            <a href="#result" data-case-nav-link>Result</a>
+            {
+              caseNavSections.map((section) => (
+                <a href={`#${section.id}`} data-case-nav-link>
+                  {section.label}
+                </a>
+              ))
+            }
           </div>
         </nav>
 
@@ -144,9 +160,9 @@ const quickReadItems = [
     </div>
   </section>
 
-  <script>
-    const progress = document.querySelector<HTMLElement>("[data-case-progress]");
-    const progressTrack = document.querySelector<HTMLElement>("[data-case-progress-track]");
+  <script define:vars={{ caseSectionMap }}>
+    const progress = document.querySelector("[data-case-progress]");
+    const progressTrack = document.querySelector("[data-case-progress-track]");
     let progressFrame = 0;
 
     const updateProgress = () => {
@@ -165,41 +181,25 @@ const quickReadItems = [
     window.addEventListener("scroll", updateProgress, { passive: true });
     window.addEventListener("resize", updateProgress);
 
-    const anchorMap = new Map([
-      ["context", "context"],
-      ["problem", "problem"],
-      ["my role", "my-role"],
-      ["evidence", "evidence"],
-      ["validation", "validation"],
-      ["source evidence", "source-evidence"],
-      ["approach", "approach"],
-      ["key decisions", "key-decisions"],
-      ["result", "result"],
-      ["what i'd improve", "what-id-improve"],
-      ["responsible use note", "responsible-use-note"],
-      ["api surface", "api-surface"],
-      ["delivery signal", "delivery-signal"],
-    ]);
+    document.querySelectorAll(".prose h2").forEach((heading) => {
+      const label = heading.textContent?.trim();
+      const section = caseSectionMap.find((item) => item.label === label);
 
-    document.querySelectorAll<HTMLHeadingElement>(".prose h2").forEach((heading) => {
-      const key = heading.textContent?.trim().toLowerCase();
-      const id = key ? anchorMap.get(key) : undefined;
-
-      if (id && !document.getElementById(id)) {
-        heading.id = id;
+      if (section && !document.getElementById(section.id)) {
+        heading.id = section.id;
       }
     });
 
-    const readLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-case-nav-link]"));
+    const readLinks = Array.from(document.querySelectorAll("[data-case-nav-link]"));
     const sections = readLinks
       .map((link) => {
         const id = link.hash.slice(1);
         const section = document.getElementById(id);
-        return section ? { id, link, section } : undefined;
+        return section ? { id, link, section } : null;
       })
       .filter(Boolean);
 
-    const setActiveSection = (activeId: string) => {
+    const setActiveSection = (activeId) => {
       readLinks.forEach((link) => {
         const isActive = link.hash === `#${activeId}`;
         link.toggleAttribute("aria-current", isActive);

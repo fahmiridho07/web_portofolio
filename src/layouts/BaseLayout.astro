@@ -1,18 +1,28 @@
 ---
 import SiteFooter from "@components/SiteFooter.astro";
 import SiteHeader from "@components/SiteHeader.astro";
+import { getPersonSchema, getWebSiteSchema, serializeJsonLd } from "@lib/seo";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, jsonLd } = Astro.props;
 const pageTitle = title.includes("Portfolio") ? title : `${title} | Portfolio`;
+const siteUrl = Astro.site?.href ?? Astro.url.origin;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : Astro.url.href;
 const ogImageUrl = new URL("/og-image.png", Astro.site ?? Astro.url).href;
-const ogImageAlt = "Achmad Fahmi Ainur Ridho portfolio preview for data products, machine learning systems, and workflow automation.";
+const ogImageAlt =
+  "Achmad Fahmi Ainur Ridho portfolio preview for data products, machine learning systems, and workflow automation.";
+const structuredData = [
+  getPersonSchema(siteUrl),
+  getWebSiteSchema(siteUrl),
+  ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
+];
+const cloudflareAnalyticsToken = import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN;
 ---
 
 <!doctype html>
@@ -24,7 +34,15 @@ const ogImageAlt = "Achmad Fahmi Ainur Ridho portfolio preview for data products
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#f3f6fb" />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Achmad Fahmi Ainur Ridho Portfolio" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
@@ -39,6 +57,17 @@ const ogImageAlt = "Achmad Fahmi Ainur Ridho portfolio preview for data products
     <meta name="twitter:image:alt" content={ogImageAlt} />
     <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
+    {
+      cloudflareAnalyticsToken && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: cloudflareAnalyticsToken })}
+        />
+      )
+    }
     <style is:inline>
       html,
       body {
