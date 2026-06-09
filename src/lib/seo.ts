@@ -1,4 +1,8 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { profile } from "@data/profile";
+
+const resumePdfPath = path.join(process.cwd(), "public", "resume.pdf");
 
 type JsonLd = Record<string, unknown>;
 
@@ -17,6 +21,15 @@ export function getPersonSchema(site: string): JsonLd {
     sameAs: profile.links
       .map((link) => link.href)
       .filter((href) => href.startsWith("http")),
+    ...(existsSync(resumePdfPath)
+      ? {
+          subjectOf: {
+            "@type": "DigitalDocument",
+            name: "Resume",
+            url: new URL(profile.resumePdfHref, site).href,
+          },
+        }
+      : {}),
   };
 }
 

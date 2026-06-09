@@ -22,7 +22,6 @@ const structuredData = [
   getWebSiteSchema(siteUrl),
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
-const cloudflareAnalyticsToken = import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN;
 ---
 
 <!doctype html>
@@ -58,16 +57,6 @@ const cloudflareAnalyticsToken = import.meta.env.PUBLIC_CF_WEB_ANALYTICS_TOKEN;
     <title>{pageTitle}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
-    {
-      cloudflareAnalyticsToken && (
-        <script
-          is:inline
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon={JSON.stringify({ token: cloudflareAnalyticsToken })}
-        />
-      )
-    }
     <style is:inline>
       html,
       body {

@@ -11,6 +11,7 @@ verification/
 
 # Documents
 *.pdf
+!public/resume.pdf
 
 # OS generated files
 .DS_Store
