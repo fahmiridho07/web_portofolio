@@ -972,16 +972,20 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
+::view-transition-group(site-header),
 ::view-transition-group(site-footer) {
   z-index: 100;
   animation-duration: 0s;
   pointer-events: none;
 }
 
+::view-transition-old(site-header),
+::view-transition-new(site-header),
 ::view-transition-old(site-footer),
 ::view-transition-new(site-footer) {
   animation: none;
   mix-blend-mode: normal;
+  opacity: 1;
 }
 
 ::view-transition-group(main-content) {

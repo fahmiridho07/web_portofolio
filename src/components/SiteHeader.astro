@@ -35,6 +35,7 @@ const isActive = (href: string) => {
   class="site-header glass-chrome-bar"
   data-site-header
   transition:persist="site-header"
+  transition:name="site-header"
   transition:animate="none"
 >
   <div class="header-glow" aria-hidden="true"></div>
@@ -329,6 +330,20 @@ const isActive = (href: string) => {
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
     transition: none !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(243, 246, 251, 0.88));
+  }
+
+  :global(html[data-theme="dark"][data-astro-transition]) .site-header {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+      rgba(7, 17, 30, 0.9);
+  }
+
+  :global(html[data-header-dark="true"][data-astro-transition]:not([data-theme="dark"])) .site-header {
+    background: var(--header-hero-bg);
+    border-color: var(--header-hero-border);
+    box-shadow: var(--header-hero-shadow);
   }
 
   :global(html[data-astro-transition]) .site-header .header-glow,
