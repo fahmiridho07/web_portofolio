@@ -43,15 +43,19 @@ const proofItems = (
   .slice(0, 3);
 const quickReadItems = [
   {
-    label: "Outcome",
-    value: project.data.result ?? project.data.metric ?? project.data.status,
+    label: "Context",
+    value: project.data.summary,
   },
   {
-    label: "Role",
+    label: "My role",
     value: project.data.role,
   },
   {
-    label: "Proof signal",
+    label: "Result",
+    value: project.data.result ?? project.data.metric ?? project.data.status,
+  },
+  {
+    label: "Evidence",
     value: proofItems[0] ?? project.data.status,
   },
 ];
@@ -91,7 +95,7 @@ const quickReadItems = [
           <section class="case-brief" aria-label="Case study quick read" data-reveal>
             <div>
               <p class="section-label">Quick read</p>
-              <h2>Read the case by outcome, role, and proof first.</h2>
+              <h2>Skim the case by context, role, result, and evidence.</h2>
             </div>
             <div class="case-brief-grid">
               {
@@ -394,7 +398,7 @@ const quickReadItems = [
 
   .case-brief-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1px;
     overflow: hidden;
     border: 1px solid rgba(17, 24, 39, 0.08);

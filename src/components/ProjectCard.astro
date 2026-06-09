@@ -12,12 +12,27 @@ const href = `/projects/${project.data.slug}/`;
 const metric = project.data.metric ?? project.data.status;
 const category = getCategoryMeta(project.data.category);
 const projectLogo = project.data.logo ?? category.logo;
-const stackLine = project.data.stack.slice(0, 4).join(" / ");
+const buildLine = project.data.stack.slice(0, 3).join(" / ");
 const proofLine = project.data.proof?.[0] ?? metric;
+const resultLine = project.data.metric ?? proofLine;
+const storyItems = [
+  {
+    label: "Problem",
+    value: project.data.summary,
+  },
+  {
+    label: "Built",
+    value: buildLine,
+  },
+  {
+    label: "Result",
+    value: resultLine,
+  },
+];
 ---
 
 <article class="project-card" data-category={project.data.category} data-reveal>
-  <a class="project-link" href={href} aria-label={`Read case study: ${project.data.title}`}>
+  <a class="project-link" href={href} aria-label={`Open the build: ${project.data.title}`}>
     <div class="project-thumb" aria-hidden="true">
       <ProjectMockup project={project} variant="card" />
     </div>
@@ -31,12 +46,20 @@ const proofLine = project.data.proof?.[0] ?? metric;
         <p>{project.data.year}</p>
       </div>
       <h3>{project.data.title}</h3>
-      <p class="project-summary">{project.data.summary}</p>
-      <p class="project-proof">{proofLine}</p>
+      <dl class="project-story" aria-label={`${project.data.title} quick story`}>
+        {
+          storyItems.map((item) => (
+            <div>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
 
       <div class="project-footer">
-        <small>{stackLine}</small>
-        <span class="project-arrow" aria-hidden="true">Read -&gt;</span>
+        <small>{project.data.role}</small>
+        <span class="project-arrow" aria-hidden="true">Open -&gt;</span>
       </div>
     </div>
   </a>
@@ -162,28 +185,41 @@ const proofLine = project.data.proof?.[0] ?? metric;
     overflow-wrap: break-word;
   }
 
-  .project-summary {
-    display: -webkit-box;
+  .project-story {
+    display: grid;
+    gap: 0.45rem;
     margin: 0;
-    overflow: hidden;
-    color: var(--text-muted);
-    font-size: 0.82rem;
-    line-height: 1.46;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
   }
 
-  .project-proof {
+  .project-story div {
+    display: grid;
+    grid-template-columns: 3.2rem minmax(0, 1fr);
+    gap: 0.55rem;
+    align-items: start;
+  }
+
+  .project-story dt {
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.63rem;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .project-story dd {
     display: -webkit-box;
     margin: 0;
-    overflow: hidden;
-    border-left: 2px solid var(--accent-blue);
-    color: var(--text);
+    color: var(--text-muted);
     font-size: 0.76rem;
     line-height: 1.38;
-    padding-left: 0.58rem;
+    overflow: hidden;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
+  }
+
+  .project-story div:last-child dd {
+    color: var(--text);
+    font-weight: 500;
   }
 
   .project-footer {
@@ -232,7 +268,7 @@ const proofLine = project.data.proof?.[0] ?? metric;
       border-right: 1px solid rgba(17, 24, 39, 0.08);
     }
 
-    .project-proof,
+    .project-story div:nth-child(2),
     .project-category img,
     .project-footer small {
       display: none;
@@ -275,9 +311,19 @@ const proofLine = project.data.proof?.[0] ?? metric;
       line-height: 1.16;
     }
 
-    .project-summary {
+    .project-story {
+      gap: 0.38rem;
+    }
+
+    .project-story div {
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: 0.45rem;
+    }
+
+    .project-story dt,
+    .project-story dd {
       font-size: 0.78rem;
-      line-height: 1.42;
+      line-height: 1.38;
     }
   }
 

@@ -1,5 +1,6 @@
 ---
 import FocusPanel from "@components/FocusPanel.astro";
+import OrganizationLogo from "@components/OrganizationLogo.astro";
 import SectionHeader from "@components/SectionHeader.astro";
 import {
   coursesAndCertificates,
@@ -54,12 +55,15 @@ const profileImageMeta = getImageMeta(profileImage);
           />
           <p class="eyebrow">{profile.name}</p>
         </div>
-        <h1 class="display">Information Systems student building practical data products.</h1>
+        <h1 class="display">Building practical data products across ML, analytics, and backend workflows.</h1>
       </div>
-      <p class="lead">
-        I focus on machine learning, analytics, and backend workflows: the parts
-        that turn messy data and business problems into usable systems.
-      </p>
+      <div class="about-lead">
+        <p class="lead">
+          I focus on machine learning, analytics, and backend workflows: the parts
+          that turn messy data and business problems into usable systems.
+        </p>
+        <p class="target-line">{profile.roleSignal}</p>
+      </div>
     </div>
   </section>
 
@@ -97,8 +101,13 @@ const profileImageMeta = getImageMeta(profileImage);
       <SectionHeader eyebrow="Education" title="Academic foundation." />
 
       <div class="info-panel">
-        <h2>{education.degree}</h2>
-        <p>{education.institution}</p>
+        <div class="info-kicker">
+          <OrganizationLogo organization={education.institution} size="lg" />
+          <div class="org-copy">
+            <p class="org-name">{education.institution}</p>
+            <p class="org-detail">{education.degree}</p>
+          </div>
+        </div>
         <dl>
           <div>
             <dt>Period</dt>
@@ -128,7 +137,10 @@ const profileImageMeta = getImageMeta(profileImage);
         {
           experiences.map((item) => (
             <article>
-              <span>{item.organization}</span>
+              <div class="experience-kicker">
+                <OrganizationLogo organization={item.organization} size="lg" />
+                <p class="org-name">{item.organization}</p>
+              </div>
               <h3>{item.role}</h3>
               <p>{item.summary}</p>
             </article>
@@ -241,10 +253,12 @@ const profileImageMeta = getImageMeta(profileImage);
   }
 
   .about-hero .display {
+    max-width: 820px;
     color: #ffffff;
   }
 
   .about-hero .lead {
+    margin: 0;
     color: rgba(255, 255, 255, 0.72);
   }
 
@@ -252,9 +266,24 @@ const profileImageMeta = getImageMeta(profileImage);
     position: relative;
     z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(18rem, 32rem);
+    grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.42fr);
     gap: clamp(2rem, 6vw, 5rem);
     align-items: end;
+  }
+
+  .about-lead {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .target-line {
+    margin: 0;
+    border-left: 2px solid #9be7d4;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.55;
+    padding-left: 0.82rem;
   }
 
   .about-person {
@@ -354,6 +383,46 @@ const profileImageMeta = getImageMeta(profileImage);
     padding: clamp(1rem, 3vw, 1.6rem);
   }
 
+  .info-kicker,
+  .experience-kicker {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  .org-copy {
+    display: grid;
+    gap: 0.28rem;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .org-name,
+  .org-detail {
+    margin: 0;
+  }
+
+  .org-name {
+    color: var(--text);
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.38;
+    text-wrap: pretty;
+  }
+
+  .org-detail {
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
+  .experience-kicker .org-name {
+    align-self: center;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
   .info-panel h2,
   .experience-list h3,
   .skill-grid h3,
@@ -365,9 +434,10 @@ const profileImageMeta = getImageMeta(profileImage);
     letter-spacing: 0;
   }
 
-  .info-panel > p {
-    margin: 0.55rem 0 1rem;
-    color: var(--text-muted);
+  .info-kicker {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
   }
 
   dl {
@@ -384,8 +454,7 @@ const profileImageMeta = getImageMeta(profileImage);
     padding-block: 0.9rem;
   }
 
-  dt,
-  .experience-list span {
+  dt {
     color: var(--text-soft);
     font-size: 0.74rem;
     font-weight: 500;
@@ -418,8 +487,16 @@ const profileImageMeta = getImageMeta(profileImage);
     padding: clamp(1rem, 2vw, 1.35rem);
   }
 
+  .experience-kicker {
+    margin-bottom: 0.35rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
+  }
+
   .experience-list h3 {
     margin-top: 0.7rem;
+    font-size: 1.05rem;
+    line-height: 1.22;
   }
 
   .experience-list p,
@@ -568,6 +645,15 @@ const profileImageMeta = getImageMeta(profileImage);
       border: 1px solid var(--line);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.46);
+    }
+
+    .org-name {
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .org-detail {
+      font-size: 0.82rem;
     }
 
     .experience-list p,

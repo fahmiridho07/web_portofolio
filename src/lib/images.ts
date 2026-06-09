@@ -104,6 +104,12 @@ const imageMeta: Record<string, ImageMeta> = {
     height: 826,
   },
   "/assets/projects/scent2me-perfume-recommendation/screenshots/04-explore.webp": { width: 1400, height: 826 },
+  "/assets/logos/organization/hmsi-64.webp": { width: 64, height: 64 },
+  "/assets/logos/organization/hmsi-128.webp": { width: 128, height: 128 },
+  "/assets/logos/organization/its-h64.webp": { width: 143, height: 64 },
+  "/assets/logos/organization/its-h128.webp": { width: 286, height: 128 },
+  "/assets/logos/organization/kpc-64.webp": { width: 64, height: 64 },
+  "/assets/logos/organization/kpc-128.webp": { width: 128, height: 128 },
 };
 
 export function getImageMeta(src: string) {

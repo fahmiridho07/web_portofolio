@@ -4,14 +4,26 @@ export const profile = {
   mark: "FR",
   role: "Final-year Information Systems student at ITS",
   location: "Indonesia",
-  contactHref: "https://id.linkedin.com/in/fahmiridho",
+  email: "achmadridho.id@gmail.com",
+  emailHref: "mailto:achmadridho.id@gmail.com",
+  contactHref: "mailto:achmadridho.id@gmail.com",
+  resumeRequestHref:
+    "mailto:achmadridho.id@gmail.com?subject=Resume%20request%20-%20Achmad%20Fahmi%20Ainur%20Ridho",
   headline:
     "Practical data products across machine learning, analytics, and backend workflows.",
   summary:
     "I build practical data products: models, dashboards, and backend workflows that turn raw data into usable systems.",
   availability:
-    "Open to data, machine learning, analytics, and data-systems work",
+    "Open to data/ML engineering, analytics engineering, and backend/data systems roles",
+  roleSignal:
+    "Seeking data/ML engineering, analytics engineering, or backend/data systems roles.",
+  contactPrompt:
+    "Best fit: practical teams that need data workflows turned into shipped, maintainable systems.",
   links: [
+    {
+      label: "Email",
+      href: "mailto:achmadridho.id@gmail.com",
+    },
     {
       label: "LinkedIn",
       href: "https://id.linkedin.com/in/fahmiridho",
@@ -22,6 +34,24 @@ export const profile = {
     },
   ],
 };
+
+export const whyMeItems = [
+  {
+    title: "I show the artifact",
+    summary:
+      "Projects include screenshots, workflows, dashboards, and case evidence so the work is easy to inspect.",
+  },
+  {
+    title: "I connect data to delivery",
+    summary:
+      "The portfolio spans models, dashboards, automation, APIs, and deployment, not isolated notebooks.",
+  },
+  {
+    title: "I write for busy reviewers",
+    summary:
+      "Each project is shaped around context, role, result, and proof so the signal is fast to scan.",
+  },
+];
 
 export const education = {
   degree: "Bachelor of Information Systems",

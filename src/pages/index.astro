@@ -1,5 +1,6 @@
 ---
 import FeaturedProjectShowcase from "@components/FeaturedProjectShowcase.astro";
+import OrganizationLogo from "@components/OrganizationLogo.astro";
 import ProjectMockup from "@components/ProjectMockup.astro";
 import {
   coursesAndCertificates,
@@ -7,6 +8,7 @@ import {
   experiences,
   homeProjectSlugs,
   profile,
+  whyMeItems,
 } from "@data/profile";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getImageMeta } from "@lib/images";
@@ -72,12 +74,14 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
           {heroTags.map((tag) => <span>{tag}</span>)}
         </div>
 
+        <p class="role-signal">{profile.roleSignal}</p>
+
         <div class="hero-actions">
           <a class="hero-button hero-button-primary" href="#work">
             Explore selected work <span aria-hidden="true">-&gt;</span>
           </a>
-          <a class="hero-button hero-button-secondary" href={profile.contactHref} target="_blank" rel="noreferrer">
-            Contact
+          <a class="hero-button hero-button-secondary" href={profile.emailHref}>
+            Email me
           </a>
         </div>
       </div>
@@ -93,7 +97,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
                 <p class="section-label">{heroCategory?.title}</p>
                 <h2>{heroProject.data.title}</h2>
                 <p>{heroProof}</p>
-                <span>View case study -&gt;</span>
+                <span>Open the build -&gt;</span>
               </div>
             </a>
           </aside>
@@ -122,19 +126,46 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     </div>
   </section>
 
+  <section class="why-section divider">
+    <div class="container why-inner">
+      <div class="section-intro" data-reveal>
+        <p class="section-label">Why me</p>
+        <h2>Three reasons the portfolio is built this way.</h2>
+      </div>
+
+      <div class="why-grid">
+        {
+          whyMeItems.map((item, index) => (
+            <article data-reveal data-reveal-delay={String((index + 1) * 80)}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section class="scan-section divider">
     <div class="container scan-grid">
       <article class="scan-card" data-reveal>
         <p class="section-label">Education</p>
+        <div class="scan-kicker">
+          <OrganizationLogo organization={education.institution} size="md" />
+          <p>{education.institution}</p>
+        </div>
         <h2>{education.degree}</h2>
-        <p>{education.institution}</p>
         <small>{education.period} / GPA {education.gpa}</small>
       </article>
 
       <article class="scan-card is-highlighted" data-reveal data-reveal-delay="100">
         <p class="section-label">Experience</p>
+        <div class="scan-kicker">
+          <OrganizationLogo organization={primaryExperience.organization} size="md" eager />
+          <p>{primaryExperience.organization}</p>
+        </div>
         <h2>{primaryExperience.role}</h2>
-        <p>{primaryExperience.organization}</p>
         <small>{primaryExperience.summary}</small>
       </article>
 
@@ -142,8 +173,11 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
         <p class="section-label">Activities</p>
         {
           activityItems.slice(0, 2).map((item) => (
-            <div>
-              <h3>{item.organization}</h3>
+            <div class="scan-activity">
+              <div class="scan-kicker">
+                <OrganizationLogo organization={item.organization} size="md" />
+                <h3>{item.organization}</h3>
+              </div>
               <p>{item.role}</p>
             </div>
           ))
@@ -296,6 +330,17 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     padding: 0.48rem 0.66rem;
   }
 
+  .role-signal {
+    max-width: 42rem;
+    margin: 0;
+    border-left: 2px solid #9be7d4;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.55;
+    padding-left: 0.82rem;
+  }
+
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -446,7 +491,15 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     padding-block: clamp(4rem, 8vw, 6.5rem);
   }
 
-  .featured-inner {
+  .why-section {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(216, 162, 56, 0.06), transparent 24rem),
+      var(--surface-light);
+    padding-block: clamp(3.4rem, 6vw, 5rem);
+  }
+
+  .featured-inner,
+  .why-inner {
     display: grid;
     gap: clamp(1.25rem, 3vw, 1.8rem);
   }
@@ -497,6 +550,43 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     transform: translateX(4px);
   }
 
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.8rem, 2vw, 1rem);
+  }
+
+  .why-grid article {
+    display: grid;
+    gap: 0.65rem;
+    align-content: start;
+    min-height: 13rem;
+    border-top: 1px solid var(--line);
+    padding-block-start: 1rem;
+  }
+
+  .why-grid span {
+    color: var(--accent-coral);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .why-grid h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.12rem, 2vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.12;
+  }
+
+  .why-grid p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.62;
+  }
+
   .scan-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -525,8 +615,34 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     font-size: clamp(1.25rem, 2vw, 1.7rem);
   }
 
+  .scan-kicker {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.7rem;
+    align-items: start;
+  }
+
+  .scan-kicker p,
+  .scan-kicker h3 {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .scan-activity + .scan-activity {
+    margin-top: 0.85rem;
+  }
+
+  .scan-activity p {
+    margin: 0.35rem 0 0;
+    color: var(--text-muted);
+    font-size: 0.86rem;
+    line-height: 1.45;
+  }
+
   .scan-card h3 {
-    margin: 0.75rem 0 0;
     color: var(--text);
     font-size: 1rem;
     font-weight: 600;
@@ -543,6 +659,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     }
 
     .hero-grid,
+    .why-grid,
     .scan-grid {
       grid-template-columns: 1fr;
     }
@@ -600,8 +717,13 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     }
 
     .featured-work,
+    .why-section,
     .scan-section {
       padding-block: 3.25rem;
+    }
+
+    .why-grid article {
+      min-height: auto;
     }
   }
 </style>

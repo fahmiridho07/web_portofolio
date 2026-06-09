@@ -1,18 +1,52 @@
 ---
 import { focusItems, profile } from "@data/profile";
+
+const contactActions = [
+  {
+    label: "Email me",
+    href: profile.emailHref,
+    variant: "primary",
+  },
+  {
+    label: "Request resume",
+    href: profile.resumeRequestHref,
+    variant: "secondary",
+  },
+  ...profile.links
+    .filter((link) => link.label !== "Email")
+    .map((link) => ({
+      label: link.label === "LinkedIn" ? "Connect on LinkedIn" : `View ${link.label}`,
+      href: link.href,
+      variant: "secondary",
+    })),
+];
 ---
 
 <aside class="focus-panel surface" aria-labelledby="focus-title">
   <div>
     <p class="eyebrow">Contact</p>
-    <h2 id="focus-title">Open to data, ML, analytics, and backend/data-systems work.</h2>
+    <h2 id="focus-title">{profile.availability}.</h2>
+    <p class="focus-copy">{profile.contactPrompt}</p>
   </div>
 
   <ul>
     {focusItems.map((item) => <li>{item}</li>)}
   </ul>
 
-  <a class="button button-primary" href={profile.contactHref} target="_blank" rel="noreferrer">Contact</a>
+  <div class="contact-actions">
+    {
+      contactActions.map((link) => (
+        <a
+          class:list={["button", link.variant === "primary" ? "button-primary" : "button-secondary"]}
+          href={link.href}
+          target={link.href.startsWith("http") ? "_blank" : undefined}
+          rel={link.href.startsWith("http") ? "noreferrer" : undefined}
+        >
+          {link.label}
+        </a>
+      ))
+    }
+  </div>
 </aside>
 
 <style>
@@ -38,6 +72,13 @@ import { focusItems, profile } from "@data/profile";
     letter-spacing: 0;
   }
 
+  .focus-copy {
+    max-width: 620px;
+    margin: 0.8rem 0 0;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
   ul {
     display: flex;
     flex-wrap: wrap;
@@ -57,20 +98,38 @@ import { focusItems, profile } from "@data/profile";
     padding: 0.52rem 0.72rem;
   }
 
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
   a {
     min-height: 2.45rem;
-    justify-self: start;
     border-radius: 999px;
-    background: var(--accent);
-    color: #ffffff;
-    box-shadow: 0 12px 28px rgba(15, 159, 135, 0.16);
     padding: 0.72rem 0.95rem;
     text-decoration: none;
   }
 
-  a:hover {
+  .button-primary {
+    background: var(--accent);
     color: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 159, 135, 0.16);
+  }
+
+  .button-secondary {
+    border: 1px solid rgba(15, 159, 135, 0.2);
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--accent);
+    box-shadow: none;
+  }
+
+  a:hover {
     opacity: 0.82;
+  }
+
+  .button-primary:hover {
+    color: #ffffff;
   }
 
   @media (max-width: 620px) {
