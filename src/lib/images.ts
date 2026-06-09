@@ -4,6 +4,32 @@ export type ImageMeta = {
 };
 
 const imageMeta: Record<string, ImageMeta> = {
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub-400.webp": { width: 400, height: 192 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub-640.webp": { width: 640, height: 307 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/02-guided-tour-400.webp": { width: 400, height: 192 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/02-guided-tour-640.webp": { width: 640, height: 307 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/03-resend-approval-400.webp": { width: 400, height: 192 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/03-resend-approval-640.webp": { width: 640, height: 308 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/01-microsoft-forms-po-request-400.webp": { width: 400, height: 225 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/01-microsoft-forms-po-request-640.webp": { width: 640, height: 359 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/03-b-simpel-document-distribution-400.webp": { width: 400, height: 190 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/03-b-simpel-document-distribution-640.webp": { width: 640, height: 304 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/01-home-400.webp": { width: 400, height: 236 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/01-home-640.webp": { width: 640, height: 378 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/02-preferences-400.webp": { width: 400, height: 236 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/02-preferences-640.webp": { width: 640, height: 378 },
+  "/assets/projects/bank-jatim-performance-dashboard/screenshots/Dashboard_Bank_Jatim_Pusat_page-0001-400.webp": { width: 400, height: 231 },
+  "/assets/projects/bank-jatim-performance-dashboard/screenshots/Dashboard_Bank_Jatim_Pusat_page-0001-640.webp": { width: 640, height: 370 },
+  "/assets/projects/devops-tasktracker/screenshots/github-repository-400.webp": { width: 400, height: 255 },
+  "/assets/projects/devops-tasktracker/screenshots/github-repository-640.webp": { width: 640, height: 409 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report-400.webp": { width: 400, height: 192 },
+  "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report-640.webp": { width: 640, height: 308 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/02-sharepoint-list-po-database-400.webp": { width: 400, height: 191 },
+  "/assets/projects/kpc-power-automate-po-automation/screenshots/02-sharepoint-list-po-database-640.webp": { width: 640, height: 306 },
+  "/assets/projects/orphanage-inspection-route-optimization/screenshots/public-project-link-400.webp": { width: 400, height: 255 },
+  "/assets/projects/orphanage-inspection-route-optimization/screenshots/public-project-link-640.webp": { width: 640, height: 409 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/03-results-400.webp": { width: 400, height: 236 },
+  "/assets/projects/scent2me-perfume-recommendation/screenshots/03-results-640.webp": { width: 640, height: 378 },
   "/assets/profile/profile_avatar-96.webp": { width: 96, height: 96 },
   "/assets/profile/profile_avatar-160.webp": { width: 160, height: 160 },
   "/assets/profile/profile_photo-640.webp": { width: 640, height: 853 },
@@ -114,4 +140,88 @@ const imageMeta: Record<string, ImageMeta> = {
 
 export function getImageMeta(src: string) {
   return imageMeta[src];
+}
+
+export type CoverVariant = "card" | "featured" | "compact" | "hero" | "case";
+
+const coverSizes: Record<CoverVariant, string> = {
+  card: "(max-width: 620px) 92vw, (max-width: 1100px) 42vw, 28rem",
+  featured: "(max-width: 720px) 90vw, (max-width: 1100px) 56vw, 32rem",
+  compact: "(max-width: 720px) 40vw, 12rem",
+  hero: "(max-width: 720px) 85vw, 22rem",
+  case: "(max-width: 900px) 90vw, 38rem",
+};
+
+const proseImageSizes = "(max-width: 900px) 100vw, 52rem";
+
+function getImageVariantWidths(src: string) {
+  const dotIndex = src.lastIndexOf(".");
+  if (dotIndex === -1) {
+    return [];
+  }
+
+  const base = src.slice(0, dotIndex);
+  const ext = src.slice(dotIndex);
+  const widths: number[] = [];
+
+  for (const path of Object.keys(imageMeta)) {
+    if (!path.startsWith(`${base}-`) || !path.endsWith(ext)) {
+      continue;
+    }
+
+    const suffix = path.slice(base.length + 1, -ext.length);
+    if (/^\d+$/.test(suffix)) {
+      widths.push(Number(suffix));
+    }
+  }
+
+  return [...new Set(widths)].sort((a, b) => a - b);
+}
+
+function buildResponsiveSrcset(src: string, widths: number[], fullWidth?: number) {
+  if (widths.length <= 1) {
+    return undefined;
+  }
+
+  const dotIndex = src.lastIndexOf(".");
+  const base = src.slice(0, dotIndex);
+  const ext = src.slice(dotIndex);
+
+  return widths
+    .map((width) => {
+      const path = width === fullWidth ? src : `${base}-${width}${ext}`;
+      return `${path} ${width}w`;
+    })
+    .join(", ");
+}
+
+export function getResponsiveImageSources(src: string, sizes = proseImageSizes) {
+  const meta = getImageMeta(src);
+  const variantWidths = getImageVariantWidths(src);
+  const widths =
+    variantWidths.length > 0
+      ? [...new Set([...variantWidths, meta?.width].filter((value): value is number => Boolean(value)))].sort(
+          (a, b) => a - b,
+        )
+      : [];
+
+  return {
+    src,
+    srcset: buildResponsiveSrcset(src, widths, meta?.width),
+    sizes,
+    width: meta?.width,
+    height: meta?.height,
+  };
+}
+
+export function getProjectCoverSources(src: string, variant: CoverVariant) {
+  const image = getResponsiveImageSources(src, coverSizes[variant]);
+
+  return {
+    src: image.src,
+    srcset: image.srcset,
+    sizes: image.sizes,
+    width: image.width,
+    height: image.height,
+  };
 }

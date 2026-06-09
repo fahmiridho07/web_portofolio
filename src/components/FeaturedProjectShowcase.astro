@@ -17,9 +17,10 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
   primaryProject && (
     <div class="featured-showcase" data-reveal>
       <a
-        class="primary-feature"
+        class="primary-feature glass-card"
         href={`/projects/${primaryProject.data.slug}/`}
         aria-label={`Open the build: ${primaryProject.data.title}`}
+        data-astro-prefetch="hover"
       >
         <div class="primary-visual" aria-hidden="true">
           <ProjectMockup project={primaryProject} variant="featured" />
@@ -28,12 +29,10 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
         <div class="primary-copy">
           <p class="section-label">{primaryCategory?.title}</p>
           <h3>{primaryProject.data.title}</h3>
-          <p>{primaryProject.data.result ?? primaryProject.data.summary}</p>
           <div class="primary-meta">
             <span>{primaryProject.data.metric ?? primaryProject.data.status}</span>
             <span>{primaryProject.data.role}</span>
           </div>
-          <span class="feature-cta">Open the build -&gt;</span>
         </div>
       </a>
 
@@ -41,13 +40,14 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
         {
           secondaryProjects.map((project, index) => {
             const category = getCategoryMeta(project.data.category);
-            const proof = project.data.proof?.[0] ?? project.data.metric ?? project.data.status;
+            const metric = project.data.metric ?? project.data.status;
 
             return (
               <a
-                class="secondary-feature"
+                class="secondary-feature glass-card"
                 href={`/projects/${project.data.slug}/`}
                 aria-label={`Open the build: ${project.data.title}`}
+                data-astro-prefetch="hover"
               >
                 <span class="feature-index">{String(index + 2).padStart(2, "0")}</span>
                 <div class="secondary-thumb" aria-hidden="true">
@@ -56,7 +56,7 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
                 <div>
                   <small>{category.title}</small>
                   <h3>{project.data.title}</h3>
-                  <p>{proof}</p>
+                  <p class="secondary-metric">{metric}</p>
                 </div>
                 <em aria-hidden="true">Open -&gt;</em>
               </a>
@@ -72,7 +72,7 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
   .featured-showcase {
     display: grid;
     grid-template-columns: minmax(0, 1.16fr) minmax(19rem, 0.84fr);
-    gap: clamp(1rem, 3vw, 1.5rem);
+    gap: var(--gap-grid);
   }
 
   .primary-feature,
@@ -85,14 +85,10 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
   .primary-feature {
     display: grid;
     overflow: hidden;
-    border: 1px solid rgba(17, 24, 39, 0.12);
-    border-radius: 8px;
-    background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(232, 238, 247, 0.78)),
-      #ffffff;
     box-shadow:
-      0 22px 64px rgba(17, 24, 39, 0.09),
-      0 0 48px rgba(125, 211, 252, 0.06);
+      var(--shadow-soft),
+      inset 0 1px 0 var(--card-inset),
+      0 0 48px color-mix(in srgb, var(--accent-cyan) 6%, transparent);
     transition:
       border-color var(--motion-medium) var(--ease-standard),
       box-shadow var(--motion-medium) var(--ease-standard),
@@ -123,8 +119,8 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
   .primary-copy {
     position: relative;
     display: grid;
-    gap: 0.82rem;
-    padding: clamp(1.15rem, 3vw, 1.6rem);
+    gap: var(--space-stack-sm);
+    padding: clamp(1rem, 2.5vw, 1.35rem);
   }
 
   .primary-copy .section-label {
@@ -145,65 +141,40 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
     line-height: 1.02;
   }
 
-  .primary-copy p,
-  .secondary-feature p {
-    margin: 0;
-    color: var(--text-muted);
-  }
-
-  .primary-copy p {
-    max-width: 68ch;
-    font-size: 0.96rem;
-    line-height: 1.7;
-  }
-
   .primary-meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  .feature-cta {
-    width: fit-content;
-    color: var(--accent-coral);
-    font-size: 0.84rem;
-    font-weight: 700;
-    line-height: 1;
-  }
-
   .primary-meta span {
-    border: 1px solid rgba(59, 130, 196, 0.2);
+    border: 1px solid var(--badge-blue-border);
     border-radius: 999px;
-    background: rgba(59, 130, 196, 0.08);
-    color: #315f86;
+    background: var(--badge-blue-bg);
+    color: var(--accent-blue-on);
     font-size: 0.78rem;
     line-height: 1;
     padding: 0.5rem 0.68rem;
   }
 
   .primary-meta span:first-child {
-    border-color: rgba(15, 159, 135, 0.24);
-    background: rgba(15, 159, 135, 0.12);
-    color: #0f5f54;
+    border-color: var(--badge-border-strong);
+    background: var(--badge-metric-bg);
+    color: var(--accent-on);
   }
 
   .secondary-stack {
     display: grid;
-    gap: 0.85rem;
+    gap: var(--space-stack-sm);
   }
 
   .secondary-feature {
     display: grid;
     grid-template-columns: 2.4rem minmax(7.5rem, 0.36fr) minmax(0, 1fr) 3.1rem;
-    gap: 0.85rem;
+    gap: var(--space-stack-sm);
     align-items: center;
     overflow: hidden;
     min-height: 9.75rem;
-    border: 1px solid rgba(17, 24, 39, 0.12);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(232, 239, 255, 0.56)),
-      rgba(255, 255, 255, 0.64);
     padding: 0.78rem;
     transition:
       border-color var(--motion-medium) var(--ease-standard),
@@ -235,14 +206,12 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
     line-height: 1.12;
   }
 
-  .secondary-feature p {
-    display: -webkit-box;
-    margin-top: 0.58rem;
-    overflow: hidden;
-    font-size: 0.82rem;
-    line-height: 1.45;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+  .secondary-metric {
+    margin: 0.45rem 0 0;
+    color: var(--text-soft);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1;
   }
 
   .secondary-feature em {
@@ -264,33 +233,21 @@ const primaryCategory = primaryProject ? getCategoryMeta(primaryProject.data.cat
 
   .primary-feature:hover,
   .primary-feature:focus-within {
-    border-color: rgba(47, 123, 255, 0.3);
+    border-color: color-mix(in srgb, var(--accent-cyan) 30%, var(--card-border));
     box-shadow:
-      0 26px 74px rgba(17, 24, 39, 0.12),
-      0 0 54px rgba(125, 211, 252, 0.08);
+      var(--shadow-soft),
+      0 0 54px color-mix(in srgb, var(--accent-cyan) 8%, transparent);
     transform: translateY(-2px);
   }
 
   .secondary-feature:hover,
   .secondary-feature:focus-within {
-    border-color: rgba(47, 123, 255, 0.3);
-    background: #ffffff;
+    border-color: color-mix(in srgb, var(--accent-cyan) 30%, var(--card-border));
+    background: var(--card-bg-hover, var(--card-bg));
     box-shadow:
-      0 18px 50px rgba(17, 24, 39, 0.08),
-      0 0 36px rgba(125, 211, 252, 0.06);
+      var(--panel-shadow),
+      0 0 36px color-mix(in srgb, var(--accent-cyan) 6%, transparent);
     transform: translateY(-2px);
-  }
-
-  .secondary-feature:nth-child(2) {
-    background:
-      linear-gradient(135deg, rgba(255, 248, 232, 0.8), rgba(242, 237, 247, 0.55)),
-      rgba(255, 255, 255, 0.66);
-  }
-
-  .secondary-feature:nth-child(3) {
-    background:
-      linear-gradient(135deg, rgba(236, 253, 245, 0.72), rgba(235, 241, 249, 0.6)),
-      rgba(255, 255, 255, 0.66);
   }
 
   .secondary-feature:hover em,

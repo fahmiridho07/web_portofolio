@@ -1,0 +1,19 @@
+{
+  "name": "Achmad Fahmi Ainur Ridho Portfolio",
+  "short_name": "Fahmi Ridho",
+  "description": "Portfolio of practical data products across machine learning, analytics, and backend workflows.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#07111e",
+  "theme_color": "#07111e",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

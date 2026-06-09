@@ -1,19 +1,21 @@
 ---
-import FocusPanel from "@components/FocusPanel.astro";
+
 import OrganizationLogo from "@components/OrganizationLogo.astro";
-import SectionHeader from "@components/SectionHeader.astro";
 import {
   coursesAndCertificates,
   education,
   experiences,
+  heroProjectSlug,
   profile,
   skillGroups,
+  whyMeItems,
 } from "@data/profile";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getProfilePageSchema } from "@lib/seo";
 import { getImageMeta } from "@lib/images";
 import { getLogoItems } from "@lib/logos";
+import { getSortedProjects } from "@lib/projects";
 
 const primarySkills = new Set([
   "ASP.NET Core",
@@ -30,14 +32,33 @@ const profileHighlights = [
 const siteUrl = Astro.site?.href ?? Astro.url.origin;
 const profilePageSchema = getProfilePageSchema(siteUrl);
 const aboutOgImage = getImageMeta(pageSeo.about.ogImagePath);
-const profileAvatar = "/assets/profile/profile_avatar-160.webp";
-const profileAvatarSrcset =
-  "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
-const profileAvatarMeta = getImageMeta(profileAvatar);
 const profileImage = "/assets/profile/profile_photo.webp";
 const profileImageSrcset =
   "/assets/profile/profile_photo-640.webp 640w, /assets/profile/profile_photo-960.webp 960w, /assets/profile/profile_photo.webp 1200w";
 const profileImageMeta = getImageMeta(profileImage);
+
+const allProjects = await getSortedProjects();
+const heroProject =
+  allProjects.find((project) => project.data.slug === heroProjectSlug) ??
+  allProjects[0];
+const primaryStackItems = getLogoItems([...primarySkills]);
+const backendGroup = skillGroups[0];
+const mlGroup = skillGroups[1];
+const analyticsGroup = skillGroups[2];
+const backendHighlights = getLogoItems(
+  ["TypeScript", "ASP.NET Core", "Docker", "GitHub Actions", "FastAPI", "PostgreSQL"].filter((item) =>
+    backendGroup.items.includes(item),
+  ),
+);
+const mlHighlights = getLogoItems(
+  ["Python", "Pandas", "Scikit-learn", "TensorFlow"].filter((item) => mlGroup.items.includes(item)),
+);
+const analyticsHighlights = getLogoItems(
+  ["Power BI", "Microsoft Power Automate", "Odoo ERP"].filter((item) =>
+    analyticsGroup.items.includes(item),
+  ),
+);
+
 ---
 
 <BaseLayout
@@ -49,41 +70,31 @@ const profileImageMeta = getImageMeta(profileImage);
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <section class="section about-hero dark-section" data-dark-section>
-    <div class="container about-grid">
-      <div>
-        <div class="about-person">
-          <img
-            src={profileAvatar}
-            srcset={profileAvatarSrcset}
-            sizes="54px"
-            alt=""
-            width={profileAvatarMeta?.width}
-            height={profileAvatarMeta?.height}
-            loading="eager"
-            decoding="async"
-          />
-          <p class="eyebrow">{profile.name}</p>
-        </div>
-        <h1 class="display">Building practical data products across ML, analytics, and backend workflows.</h1>
+  <section class="about-hero dark-section dark-hero-shell" data-dark-section>
+    <div class="dark-hero-grid" aria-hidden="true"></div>
+
+    <div class="container about-hero-inner" data-reveal>
+      <div class="about-person">
+        <p class="section-label">{profile.name}</p>
+        <span>{profile.location} / {profile.role}</span>
       </div>
-      <div class="about-lead">
-        <p class="lead">
-          I focus on machine learning, analytics, and backend workflows: the parts
-          that turn messy data and business problems into usable systems.
-        </p>
-        <p class="target-line">{profile.roleSignal}</p>
-      </div>
+
+      <h1 class="display">{profile.headline}</h1>
+      <p class="role-signal">{profile.roleSignal}</p>
+
+      <ul class="profile-highlights" aria-label="Profile highlights">
+        {profileHighlights.map((item) => <li class="glass-pill-dark">{item}</li>)}
+      </ul>
     </div>
   </section>
 
-  <section class="section-tight profile-section">
-    <div class="container profile-card">
-      <div class="portrait">
+  <section class="profile-strip divider">
+    <div class="container profile-card" data-reveal>
+      <div class="portrait glass-panel">
         <img
           src={profileImage}
           srcset={profileImageSrcset}
-          sizes="(max-width: 900px) calc(100vw - 1.25rem), 42vw"
+          sizes="(max-width: 900px) calc(100vw - 1.25rem), 28vw"
           alt="Portrait of Achmad Fahmi Ainur Ridho"
           width={profileImageMeta?.width}
           height={profileImageMeta?.height}
@@ -91,26 +102,30 @@ const profileImageMeta = getImageMeta(profileImage);
           decoding="async"
         />
       </div>
+
       <div class="profile-copy">
-        <p class="eyebrow">Positioning</p>
-        <h2>{profile.headline}</h2>
-        <p>
-          My strongest work sits where data needs to become a usable artifact:
-          an evaluated model, a dashboard, a deployed workflow, or a decision
-          support system.
-        </p>
-        <ul class="profile-highlights" aria-label="Profile highlights">
-          {profileHighlights.map((item) => <li>{item}</li>)}
-        </ul>
+        <p class="profile-summary">{profile.summary}</p>
+        <p class="profile-hook">{profile.aboutHook}</p>
+        {
+          heroProject && (
+            <a class="profile-shipped" href={`/projects/${heroProject.data.slug}/`} data-astro-prefetch="hover">
+              {profile.lastShippedLabel}: {heroProject.data.title}
+              <span aria-hidden="true">-&gt;</span>
+            </a>
+          )
+        }
       </div>
     </div>
   </section>
 
-  <section class="section-tight divider">
-    <div class="container two-col">
-      <SectionHeader eyebrow="Education" title="Academic foundation." />
+  <section class="about-section divider">
+    <div class="container section-block">
+      <div class="section-head" data-reveal>
+        <p class="section-label">Education</p>
+        <h2>ITS.</h2>
+      </div>
 
-      <div class="info-panel">
+      <div class="info-panel glass-panel" data-reveal data-reveal-delay="80">
         <div class="info-kicker">
           <OrganizationLogo organization={education.institution} size="lg" />
           <div class="org-copy">
@@ -136,22 +151,145 @@ const profileImageMeta = getImageMeta(profileImage);
     </div>
   </section>
 
-  <section class="section-tight divider">
-    <div class="container">
-      <SectionHeader
-        eyebrow="Experience"
-        title="Experience that supports data-product work."
-      />
+  <section class="about-section divider">
+    <div class="container section-block">
+      <div class="section-head" data-reveal>
+        <p class="section-label">Experience</p>
+        <h2>Four roles.</h2>
+      </div>
 
-      <div class="experience-list">
+      <ol class="experience-timeline">
         {
-          experiences.map((item) => (
-            <article>
-              <div class="experience-kicker">
-                <OrganizationLogo organization={item.organization} size="lg" />
-                <p class="org-name">{item.organization}</p>
+          experiences.map((item, index) => (
+            <li class="timeline-item glass-elevated" data-reveal data-reveal-delay={String((index + 1) * 60)}>
+              <div class="timeline-marker" aria-hidden="true">
+                <span class="timeline-dot" />
               </div>
-              <h3>{item.role}</h3>
+
+              <div class="timeline-content">
+                <div class="timeline-head">
+                  <div class="timeline-org">
+                    <OrganizationLogo organization={item.organization} size="md" />
+                    <div>
+                      <p class="timeline-period">{item.period}</p>
+                      <p class="org-name">{item.organization}</p>
+                    </div>
+                  </div>
+                  <span class="timeline-proof glass-chip">{item.proof}</span>
+                </div>
+
+                <h3>{item.role}</h3>
+                <p>{item.summary}</p>
+
+                {
+                  item.relatedProjectSlug && (
+                    <a
+                      class="timeline-link"
+                      href={`/projects/${item.relatedProjectSlug}/`}
+                      data-astro-prefetch="hover"
+                    >
+                      See related build <span aria-hidden="true">-&gt;</span>
+                    </a>
+                  )
+                }
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="about-section divider">
+    <div class="container section-block">
+      <div class="section-head" data-reveal>
+        <p class="section-label">Skills</p>
+        <h2>Toolkit.</h2>
+      </div>
+
+      <div class="skill-bento">
+        <article class="skill-bento-featured glass-elevated" data-reveal>
+          <p class="bento-label">Core stack</p>
+          <h3>What I reach for first.</h3>
+          <ul class="featured-stack" aria-label="Primary stack">
+            {
+              primaryStackItems.map((item) => (
+                <li>
+                  {item.logo && <img src={item.logo} alt="" width="28" height="28" loading="lazy" decoding="async" />}
+                  <span>{item.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <ul class="support-stack" aria-label="Backend and deployment highlights">
+            {
+              backendHighlights.map((item) => (
+                <li class="glass-chip">
+                  {item.logo && <img src={item.logo} alt="" width="18" height="18" loading="lazy" />}
+                  <span>{item.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+
+        <article class="skill-bento-card glass-elevated" data-reveal data-reveal-delay="60">
+          <p class="bento-label">{mlGroup.title}</p>
+          <h3>Models and data work.</h3>
+          <ul class="skill-chip-list">
+            {
+              mlHighlights.map((item) => (
+                <li class="glass-chip">
+                  {item.logo && <img src={item.logo} alt="" width="18" height="18" loading="lazy" />}
+                  <span>{item.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="skill-overflow">
+            {mlGroup.items.filter((item) => !mlHighlights.some((entry) => entry.label === item)).join(" · ")}
+          </p>
+        </article>
+
+        <article class="skill-bento-card glass-elevated" data-reveal data-reveal-delay="120">
+          <p class="bento-label">{analyticsGroup.title}</p>
+          <h3>Analytics and ops.</h3>
+          <ul class="skill-chip-list">
+            {
+              analyticsHighlights.map((item) => (
+                <li class="glass-chip">
+                  {item.logo && <img src={item.logo} alt="" width="18" height="18" loading="lazy" />}
+                  <span>{item.label}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <p class="skill-overflow">
+            {
+              analyticsGroup.items
+                .filter((item) => !analyticsHighlights.some((entry) => entry.label === item))
+                .join(" · ")
+            }
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="working-style dark-section dark-hero-shell" data-dark-section>
+    <div class="dark-hero-grid" aria-hidden="true"></div>
+    <div class="container section-block">
+      <div class="section-head section-head-dark" data-reveal>
+        <p class="section-label">Working style</p>
+        <h2>How I work.</h2>
+      </div>
+
+      <div class="why-grid">
+        {
+          whyMeItems.map((item, index) => (
+            <article class="why-card glass-dark" data-reveal data-reveal-delay={String((index + 1) * 60)}>
+              <span class="why-index">0{index + 1}</span>
+              <h3>{item.title}</h3>
               <p>{item.summary}</p>
             </article>
           ))
@@ -160,177 +298,107 @@ const profileImageMeta = getImageMeta(profileImage);
     </div>
   </section>
 
-  <section class="section-tight divider">
-    <div class="container">
-      <SectionHeader eyebrow="Skills" title="Tools grouped around the target role." />
+  <section class="about-section divider">
+    <div class="container section-block">
+      <div class="section-head" data-reveal>
+        <p class="section-label">Also</p>
+        <h2>Beyond project cards.</h2>
+      </div>
 
-      <div class="skill-grid">
+      <ul class="credential-grid">
         {
-          skillGroups.map((group) => {
-            const primary = group.items.filter((item) => primarySkills.has(item));
-            const secondary = group.items.filter((item) => !primarySkills.has(item));
-            const primaryItems = getLogoItems(primary);
-
-            return (
-              <article>
-                <h3>{group.title}</h3>
-                {primary.length > 0 && (
-                  <ul class="primary-skills" aria-label={`${group.title} primary skills`}>
-                    {
-                      primaryItems.map((item) => (
-                        <li class:list={[item.logo && "has-logo"]}>
-                          {item.logo && <img src={item.logo} alt="" width="24" height="24" loading="lazy" />}
-                          <span>{item.label}</span>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                )}
-                {secondary.length > 0 && (
-                  <ul class="secondary-skills" aria-label={`${group.title} secondary skills`}>
-                    {secondary.map((item) => <li>{item}</li>)}
-                  </ul>
-                )}
-              </article>
-            );
-          })
+          coursesAndCertificates.map((item, index) => (
+            <li class="credential-card glass-elevated" data-reveal data-reveal-delay={String((index + 1) * 60)}>
+              <span class="credential-year">{item.year}</span>
+              <h3>{item.title}</h3>
+              <p class="credential-issuer">{item.issuer}</p>
+              <p>{item.context}</p>
+            </li>
+          ))
         }
-      </div>
-    </div>
-  </section>
-
-  <section class="section-tight divider">
-    <div class="container workflow-grid">
-      <div>
-        <p class="eyebrow">Enterprise Systems</p>
-        <h2>Workflow proof beyond project cards.</h2>
-      </div>
-      <div class="workflow-panels">
-        <article>
-          <h3>Odoo ERP teaching support</h3>
-          <p>
-            Guided students through Sales, Inventory, Human Resources, and
-            Accounting modules while reviewing implementation projects.
-          </p>
-        </article>
-        <article>
-          <h3>Operational documentation</h3>
-          <p>
-            HMSI R&D work included SOPs, internal process optimization,
-            supervision, documentation, and project delivery coordination.
-          </p>
-        </article>
-        <article>
-          <h3>Courses & applied evidence</h3>
-          <ul>
-            {coursesAndCertificates.map((item) => <li>{item}</li>)}
-          </ul>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="section-tight divider">
-    <div class="container">
-      <FocusPanel />
+      </ul>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .about-hero {
+  .about-hero-inner {
     position: relative;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 20% 18%, rgba(125, 211, 252, 0.14), transparent 24rem),
-      radial-gradient(circle at 86% 24%, rgba(167, 243, 208, 0.12), transparent 28rem),
-      linear-gradient(135deg, #07111e 0%, #111d2e 56%, #171321 100%);
-    color: #ffffff;
-    padding-block: clamp(6rem, 9vw, 7.8rem) clamp(3rem, 5vw, 4.2rem);
-  }
-
-  .about-hero::before {
-    position: absolute;
-    inset: 0;
-    opacity: 0.16;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 4.5rem 4.5rem;
-    mask-image: linear-gradient(180deg, #000, transparent 82%);
-    content: "";
-    pointer-events: none;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-stack-md);
   }
 
   .about-hero .display {
     max-width: 820px;
+    margin: 0;
     color: #ffffff;
-  }
-
-  .about-hero .lead {
-    margin: 0;
-    color: rgba(255, 255, 255, 0.72);
-  }
-
-  .about-grid {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 0.72fr) minmax(18rem, 0.42fr);
-    gap: clamp(2rem, 6vw, 5rem);
-    align-items: end;
-  }
-
-  .about-lead {
-    display: grid;
-    gap: 1rem;
-  }
-
-  .target-line {
-    margin: 0;
-    border-left: 2px solid #9be7d4;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.92rem;
-    font-weight: 600;
-    line-height: 1.55;
-    padding-left: 0.82rem;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 0.98;
   }
 
   .about-person {
-    display: inline-flex;
+    display: grid;
     width: fit-content;
-    align-items: center;
-    gap: 0.7rem;
-    margin-bottom: 0.85rem;
+    gap: 0.35rem;
   }
 
-  .about-person img {
-    width: 3rem;
-    height: 3rem;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 999px;
-    object-fit: cover;
-    object-position: center 56%;
-  }
-
-  .about-person .eyebrow {
+  .about-person .section-label {
     margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .about-person span {
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+
+  .role-signal {
+    max-width: 36rem;
+    margin: 0;
+    color: rgba(226, 232, 240, 0.68);
+    font-size: clamp(0.9rem, 1.3vw, 1rem);
+    line-height: 1.55;
+  }
+
+  .profile-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .profile-highlights li {
+    color: rgba(226, 232, 240, 0.78);
+    font-size: 0.76rem;
+    line-height: 1.25;
+    padding: 0.48rem 0.66rem;
+  }
+
+  .profile-strip,
+  .about-section {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--accent-cyan) 5%, transparent),
+        transparent 24rem
+      ),
+      var(--surface-light);
   }
 
   .profile-card {
     display: grid;
-    grid-template-columns: minmax(18rem, 0.42fr) 1fr;
-    gap: clamp(2rem, 6vw, 4rem);
+    grid-template-columns: minmax(12rem, 0.28fr) 1fr;
+    gap: var(--gap-grid-lg);
     align-items: center;
   }
 
   .portrait {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    min-height: clamp(26rem, 48vw, 36rem);
-    background: var(--surface);
+    min-height: clamp(14rem, 28vw, 18rem);
     overflow: hidden;
-    box-shadow: var(--shadow-soft);
   }
 
   .portrait img {
@@ -342,63 +410,94 @@ const profileImageMeta = getImageMeta(profileImage);
 
   .profile-copy {
     display: grid;
-    align-content: center;
+    gap: var(--space-stack-md);
+    min-width: 0;
   }
 
-  .profile-copy h2,
-  .workflow-grid h2 {
-    max-width: 760px;
-    margin: 0.75rem 0 0;
-    color: var(--text);
-    font-size: clamp(1.7rem, 3vw, 2.8rem);
-    line-height: 1.04;
-    letter-spacing: 0;
-  }
-
-  .profile-copy p:not(.eyebrow) {
-    max-width: 680px;
-    margin: 1rem 0 0;
+  .profile-summary {
+    max-width: 52ch;
+    margin: 0;
     color: var(--text-muted);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.55;
   }
 
-  .profile-highlights {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 1.15rem 0 0;
-    padding: 0;
-    list-style: none;
+  .profile-hook {
+    max-width: 48ch;
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.94rem;
+    line-height: 1.6;
   }
 
-  .profile-highlights li {
-    border: 1px solid rgba(15, 159, 135, 0.2);
+  .profile-shipped {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.42rem;
+    border: 1px solid var(--badge-border);
     border-radius: 999px;
-    background: var(--accent-dim);
-    color: #0f766e;
-    font-size: 0.78rem;
-    line-height: 1.25;
-    padding: 0.48rem 0.66rem;
+    background: color-mix(in srgb, var(--accent-dim) 72%, var(--surface-elevated));
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 0.55rem 0.78rem;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
   }
 
-  .two-col {
+  .profile-shipped:hover {
+    border-color: var(--badge-border-strong);
+    transform: translateX(2px);
+  }
+
+  .profile-shipped span {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .profile-shipped:hover span {
+    transform: translateX(3px);
+  }
+
+  .section-block {
     display: grid;
-    gap: 1.25rem;
+    gap: var(--space-block-inner);
+  }
+
+  .section-head .section-label {
+    color: var(--accent);
+  }
+
+  .section-head h2 {
+    margin: 0;
+    color: var(--text);
+    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+    font-weight: 600;
+    line-height: 1.02;
+  }
+
+  .section-head-dark .section-label {
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .section-head-dark h2 {
+    color: #ffffff;
   }
 
   .info-panel {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.68);
-    box-shadow: 0 14px 42px rgba(17, 24, 39, 0.04);
-    padding: clamp(1rem, 3vw, 1.6rem);
+    padding: clamp(1rem, 3vw, 1.4rem);
   }
 
-  .info-kicker,
-  .experience-kicker {
+  .info-kicker {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 0.9rem;
     align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
   }
 
   .org-copy {
@@ -425,29 +524,6 @@ const profileImageMeta = getImageMeta(profileImage);
     color: var(--text-muted);
     font-size: 0.86rem;
     line-height: 1.45;
-  }
-
-  .experience-kicker .org-name {
-    align-self: center;
-    font-size: 0.9rem;
-    line-height: 1.35;
-  }
-
-  .info-panel h2,
-  .experience-list h3,
-  .skill-grid h3,
-  .workflow-panels h3 {
-    margin: 0;
-    color: var(--text);
-    font-size: 1.15rem;
-    line-height: 1.2;
-    letter-spacing: 0;
-  }
-
-  .info-kicker {
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--line);
   }
 
   dl {
@@ -478,163 +554,358 @@ const profileImageMeta = getImageMeta(profileImage);
     font-weight: 500;
   }
 
-  .experience-list,
-  .skill-grid,
-  .workflow-panels {
+  .experience-timeline {
+    position: relative;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--line);
-    border-left: 1px solid var(--line);
-  }
-
-  .experience-list article,
-  .skill-grid article,
-  .workflow-panels article {
-    min-height: 15rem;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.58);
-    padding: clamp(1rem, 2vw, 1.35rem);
-  }
-
-  .experience-kicker {
-    margin-bottom: 0.35rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(17, 24, 39, 0.08);
-  }
-
-  .experience-list h3 {
-    margin-top: 0.7rem;
-    font-size: 1.05rem;
-    line-height: 1.22;
-  }
-
-  .experience-list p,
-  .workflow-panels p {
-    margin: 0.8rem 0 0;
-    color: var(--text-muted);
-  }
-
-  .skill-grid ul,
-  .workflow-panels ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-    margin: 1rem 0 0;
+    gap: var(--gap-grid);
+    margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .skill-grid li,
-  .workflow-panels li {
+  .experience-timeline::before {
+    position: absolute;
+    top: 1.35rem;
+    bottom: 1.35rem;
+    left: 1.09rem;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), color-mix(in srgb, var(--accent-cyan) 72%, transparent));
+    content: "";
+    opacity: 0.45;
+  }
+
+  .timeline-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.2rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    padding: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .timeline-marker {
+    display: grid;
+    place-items: center;
+    padding-top: 0.2rem;
+  }
+
+  .timeline-dot {
+    width: 0.82rem;
+    height: 0.82rem;
+    border: 2px solid var(--accent);
+    border-radius: 999px;
+    background: var(--surface-light);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-dim) 80%, transparent);
+  }
+
+  .timeline-content {
+    display: grid;
+    gap: var(--space-stack-sm);
+    min-width: 0;
+  }
+
+  .timeline-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .timeline-org {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .timeline-period {
+    margin: 0 0 0.18rem;
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.68rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .timeline-proof {
+    border-color: var(--badge-border);
+    border-radius: 999px;
+    color: var(--accent-on);
+    font-size: 0.72rem;
+    line-height: 1.25;
+    padding: 0.42rem 0.62rem;
+  }
+
+  .timeline-content h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .timeline-content p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .timeline-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1;
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .timeline-link:hover {
+    transform: translateX(2px);
+  }
+
+  .timeline-link span {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .timeline-link:hover span {
+    transform: translateX(3px);
+  }
+
+  .skill-bento {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto;
+    gap: var(--gap-grid);
+  }
+
+  .skill-bento-featured {
+    grid-row: 1 / -1;
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    padding: clamp(1.1rem, 2.2vw, 1.35rem);
+  }
+
+  .skill-bento-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    padding: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .bento-label {
+    margin: 0;
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.68rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .skill-bento h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .featured-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    margin: 0.35rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .featured-stack li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.62rem;
+    align-items: center;
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--panel-border));
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--skill-primary-bg) 70%, var(--surface-elevated));
+    color: var(--text);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.2;
+    padding: 0.72rem 0.78rem;
+    box-shadow: inset 0 1px 0 var(--panel-inset);
+  }
+
+  .featured-stack img {
+    width: 1.45rem;
+    height: 1.45rem;
+    object-fit: contain;
+  }
+
+  .support-stack,
+  .skill-chip-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.45rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .support-stack li,
+  .skill-chip-list li {
     display: inline-flex;
     align-items: center;
     gap: 0.38rem;
     border-radius: 999px;
-    background: rgba(143, 232, 194, 0.07);
     color: var(--text-muted);
     font-size: 0.8rem;
     line-height: 1;
     padding: 0.42rem 0.62rem;
   }
 
-  .skill-grid li img {
-    width: 1.12rem;
-    height: 1.12rem;
-    box-sizing: content-box;
-    flex: 0 0 auto;
-    border-radius: 0;
-    background: transparent;
+  .support-stack img,
+  .skill-chip-list img {
+    width: 1rem;
+    height: 1rem;
     object-fit: contain;
-    padding: 0;
-    box-shadow: none;
   }
 
-  .skill-grid .primary-skills {
-    gap: 0.5rem;
-  }
-
-  .skill-grid .primary-skills li {
-    background: rgba(236, 253, 245, 0.9);
-    color: var(--text);
-    font-size: 0.94rem;
-    font-weight: 500;
-    padding: 0.48rem 0.72rem;
-  }
-
-  .skill-grid .secondary-skills {
-    margin-top: 0.75rem;
-  }
-
-  .skill-grid .secondary-skills li {
-    background: transparent;
+  .skill-overflow {
+    margin: 0.35rem 0 0;
     color: var(--text-soft);
-    font-size: 0.74rem;
-    padding: 0.28rem 0;
+    font-size: 0.76rem;
+    line-height: 1.55;
   }
 
-  .skill-grid .secondary-skills img {
-    display: none;
+  .working-style {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-section-before) var(--space-section-after);
   }
 
-  .workflow-grid {
+  .why-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.35fr) 1fr;
-    gap: clamp(1.5rem, 4vw, 4rem);
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-grid);
+  }
+
+  .why-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    padding: clamp(1rem, 2.2vw, 1.3rem);
+  }
+
+  .why-index {
+    color: rgba(186, 230, 253, 0.72);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .why-card h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .why-card p {
+    margin: 0;
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .credential-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-grid);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .credential-card {
+    display: grid;
+    align-content: start;
+    gap: var(--space-stack-sm);
+    padding: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .credential-year {
+    color: var(--accent);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.68rem;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .credential-card h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  .credential-issuer {
+    margin: 0;
+    color: var(--text);
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.35;
+  }
+
+  .credential-card p:last-child {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 980px) {
+    .skill-bento {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+    }
+
+    .skill-bento-featured {
+      grid-row: auto;
+    }
   }
 
   @media (max-width: 900px) {
-    .about-grid,
     .profile-card,
-    .workflow-grid,
-    .experience-list,
-    .skill-grid,
-    .workflow-panels {
+    .why-grid,
+    .credential-grid {
       grid-template-columns: 1fr;
     }
 
     .portrait {
-      min-height: 18rem;
+      min-height: 14rem;
     }
 
-    .experience-list article,
-    .skill-grid article,
-    .workflow-panels article {
-      min-height: auto;
+    .featured-stack {
+      grid-template-columns: 1fr;
     }
   }
 
   @media (max-width: 620px) {
     .about-hero {
-      padding-block: 6rem 3.2rem;
-    }
-
-    .about-grid {
-      gap: 1.1rem;
-    }
-
-    .profile-section {
-      padding-block-start: 2.25rem;
+      padding-block: 5rem var(--space-hero-bottom);
     }
 
     .profile-card {
-      gap: 1.15rem;
-    }
-
-    .portrait {
-      min-height: 15rem;
-      border-radius: 8px;
-    }
-
-    .portrait img {
-      object-position: center 42%;
-    }
-
-    .profile-copy h2,
-    .workflow-grid h2 {
-      font-size: 1.55rem;
-      line-height: 1.08;
+      grid-template-columns: 1fr;
+      gap: var(--space-stack-lg);
     }
 
     dl div {
@@ -642,40 +913,13 @@ const profileImageMeta = getImageMeta(profileImage);
       gap: 0.35rem;
     }
 
-    .experience-list,
-    .skill-grid,
-    .workflow-panels {
-      gap: 0.75rem;
-      border: 0;
+    .timeline-head {
+      flex-direction: column;
+      align-items: flex-start;
     }
 
-    .experience-list article,
-    .skill-grid article,
-    .workflow-panels article {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.46);
+    .experience-timeline::before {
+      left: 1.05rem;
     }
-
-    .org-name {
-      font-size: 0.88rem;
-      line-height: 1.4;
-    }
-
-    .org-detail {
-      font-size: 0.82rem;
-    }
-
-    .experience-list p,
-    .workflow-panels p {
-      display: -webkit-box;
-      overflow: hidden;
-      font-size: 0.9rem;
-      line-height: 1.58;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
-    }
-
-
   }
 </style>

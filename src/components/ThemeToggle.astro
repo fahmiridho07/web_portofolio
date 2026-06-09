@@ -1,0 +1,125 @@
+---
+const sunIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>`;
+const moonIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+---
+
+<div class="theme-switch glass-segment glass-backdrop" role="group" aria-label="Color theme" data-theme-switch>
+  <span class="theme-switch-indicator glass-segment-indicator" aria-hidden="true"></span>
+
+  <button
+    type="button"
+    class="theme-option"
+    data-theme-option="light"
+    aria-label="Light mode"
+    set:html={sunIcon}
+  />
+
+  <button
+    type="button"
+    class="theme-option"
+    data-theme-option="dark"
+    aria-label="Dark mode"
+    set:html={moonIcon}
+  />
+
+  <script is:inline>
+    (function () {
+      var root = document.currentScript && document.currentScript.parentElement;
+      if (!root) return;
+
+      var KEY = "portfolio-theme";
+      var stored = localStorage.getItem(KEY);
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = stored === "light" || stored === "dark" ? stored : prefersDark ? "dark" : "light";
+      var offset = theme === "dark" ? "translateX(100%)" : "translateX(0)";
+      var indicator = root.querySelector(".theme-switch-indicator");
+
+      root.dataset.activeTheme = theme;
+      root.classList.toggle("is-dark-active", theme === "dark");
+
+      root.querySelectorAll("[data-theme-option]").forEach(function (option) {
+        option.setAttribute("aria-pressed", String(option.dataset.themeOption === theme));
+      });
+
+      if (indicator) {
+        indicator.style.transform = offset;
+      }
+    })();
+  </script>
+</div>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+  import { initThemeSwitch } from "@lib/theme";
+
+  initOnPageLoad(() => {
+    initThemeSwitch();
+  });
+</script>
+
+<style>
+  .theme-switch {
+    view-transition-name: none;
+    display: inline-grid;
+    width: 4.36rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.125rem;
+  }
+
+  .theme-switch:not([data-active-theme]) {
+    visibility: hidden;
+  }
+
+  .theme-switch-indicator {
+    left: 0.18rem;
+    width: calc(50% - 0.18rem);
+    height: calc(100% - 0.36rem);
+    transform: translateX(0);
+    transition: none;
+  }
+
+  .theme-switch.is-dark-active .theme-switch-indicator {
+    transform: translateX(100%);
+  }
+
+  .theme-switch.is-animating .theme-switch-indicator {
+    transition: transform var(--motion-medium) var(--ease-out);
+  }
+
+  :global(html[data-astro-transition]) .theme-switch .theme-switch-indicator,
+  :global(html[data-astro-transition]) .theme-option,
+  :global(html.theme-switch-frozen) .theme-switch .theme-switch-indicator,
+  :global(html.theme-switch-frozen) .theme-option {
+    transition: none !important;
+  }
+
+  .theme-option {
+    position: relative;
+    z-index: 1;
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: color-mix(in srgb, currentColor 52%, transparent);
+    cursor: pointer;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-out);
+  }
+
+  .theme-option:hover {
+    color: currentColor;
+    transform: scale(1.04);
+  }
+
+  .theme-option[aria-pressed="true"] {
+    color: var(--accent, #0f9f87);
+  }
+
+  .theme-option :global(svg) {
+    display: block;
+  }
+</style>

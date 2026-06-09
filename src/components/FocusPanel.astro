@@ -2,49 +2,61 @@
 import { focusItems, profile } from "@data/profile";
 import { getResumeAction } from "@lib/resume";
 
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
 const resumeAction = getResumeAction();
 
 const contactActions = [
   {
     label: "Email me",
     href: profile.emailHref,
-    variant: "primary",
+    variant: "primary" as const,
   },
   {
     label: resumeAction.label,
     href: resumeAction.href,
-    variant: "secondary",
+    variant: "secondary" as const,
+    download: resumeAction.download,
   },
   ...profile.links
     .filter((link) => link.label !== "Email")
     .map((link) => ({
-      label: link.label === "LinkedIn" ? "Connect on LinkedIn" : `View ${link.label}`,
+      label: link.label === "LinkedIn" ? "LinkedIn" : link.label,
       href: link.href,
-      variant: "secondary",
+      variant: "secondary" as const,
+      download: false,
     })),
 ];
 ---
 
-<aside class="focus-panel surface" aria-labelledby="focus-title">
+<aside class:list={["focus-panel", "glass-panel", compact && "is-compact"]} aria-labelledby="focus-title">
   <div>
-    <p class="eyebrow">Contact</p>
-    <h2 id="focus-title">{profile.availability}.</h2>
-    <p class="focus-copy">{profile.contactPrompt}</p>
+    {!compact && <p class="eyebrow">Contact</p>}
+    <h2 id="focus-title">{compact ? "Let's connect." : profile.availability}</h2>
+    {!compact && <p class="focus-copy">{profile.contactPrompt}</p>}
   </div>
 
-  <ul>
-    {focusItems.map((item) => <li>{item}</li>)}
-  </ul>
+  {!compact && (
+    <ul class="focus-chips" aria-label="Collaboration focus">
+      {focusItems.map((item) => <li class="glass-chip">{item}</li>)}
+    </ul>
+  )}
 
   <div class="contact-actions">
     {
       contactActions.map((link) => (
         <a
-          class:list={["button", link.variant === "primary" ? "button-primary" : "button-secondary"]}
+          class:list={[
+            "button",
+            link.variant === "primary" ? "button-primary" : "button-secondary glass-chip",
+          ]}
           href={link.href}
           target={link.href.startsWith("http") ? "_blank" : undefined}
           rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-          download={link.href === resumeAction.href && resumeAction.download ? "" : undefined}
+          download={link.download ? "" : undefined}
         >
           {link.label}
         </a>
@@ -54,21 +66,34 @@ const contactActions = [
 </aside>
 
 <style>
+  .focus-panel.is-compact {
+    gap: var(--space-stack-md);
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: clamp(1rem, 2.2vw, 1.2rem) clamp(1.1rem, 2.6vw, 1.35rem);
+  }
+
+  .focus-panel.is-compact h2 {
+    margin: 0;
+    font-size: clamp(1.2rem, 2.4vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.12;
+  }
+
+  .focus-panel.is-compact .contact-actions {
+    justify-content: flex-end;
+  }
+
   .focus-panel {
     display: grid;
-    gap: 1.25rem;
-    border-color: rgba(15, 159, 135, 0.18);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(29, 158, 117, 0.1), rgba(255, 255, 255, 0.68)),
-      rgba(255, 255, 255, 0.76);
-    box-shadow: 0 16px 46px rgba(17, 24, 39, 0.055);
-    padding: clamp(1.15rem, 3vw, 1.6rem);
+    gap: var(--space-stack-lg);
+    border-color: color-mix(in srgb, var(--accent) 24%, var(--panel-border));
+    padding: clamp(1.1rem, 2.5vw, 1.45rem) clamp(1.25rem, 3vw, 1.65rem);
   }
 
   h2 {
     max-width: 680px;
-    margin: 0.75rem 0 0;
+    margin: var(--label-gap) 0 0;
     color: var(--text);
     font-size: 1.5rem;
     font-weight: 500;
@@ -83,7 +108,7 @@ const contactActions = [
     line-height: 1.65;
   }
 
-  ul {
+  .focus-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
@@ -92,10 +117,9 @@ const contactActions = [
     list-style: none;
   }
 
-  li {
-    border: 1px solid rgba(15, 159, 135, 0.16);
+  .focus-chips li {
+    border-color: var(--badge-border);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.58);
     color: var(--text-muted);
     font-size: 0.82rem;
     line-height: 1.25;
@@ -105,7 +129,8 @@ const contactActions = [
   .contact-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.65rem;
+    align-items: center;
+    gap: 0.55rem;
   }
 
   a {
@@ -117,15 +142,18 @@ const contactActions = [
 
   .button-primary {
     background: var(--accent);
-    color: #ffffff;
-    box-shadow: 0 12px 28px rgba(15, 159, 135, 0.16);
+    color: var(--button-on-accent);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 16%, transparent);
+    font-weight: 600;
   }
 
   .button-secondary {
-    border: 1px solid rgba(15, 159, 135, 0.2);
-    background: rgba(255, 255, 255, 0.62);
-    color: var(--accent);
-    box-shadow: none;
+    border-color: var(--badge-border);
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    min-height: 2.2rem;
+    padding: 0.58rem 0.82rem;
   }
 
   a:hover {
@@ -133,7 +161,24 @@ const contactActions = [
   }
 
   .button-primary:hover {
-    color: #ffffff;
+    color: var(--button-on-accent);
+  }
+
+  .button-secondary:hover {
+    border-color: color-mix(in srgb, var(--accent) 28%, var(--badge-border));
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  @media (max-width: 720px) {
+    .focus-panel.is-compact {
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+
+    .focus-panel.is-compact .contact-actions {
+      justify-content: flex-start;
+    }
   }
 
   @media (max-width: 620px) {
@@ -144,6 +189,10 @@ const contactActions = [
     h2 {
       font-size: 1.28rem;
       line-height: 1.16;
+    }
+
+    .contact-actions {
+      gap: 0.45rem;
     }
   }
 </style>

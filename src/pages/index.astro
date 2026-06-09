@@ -1,17 +1,9 @@
 ---
+import CredentialsStrip from "@components/CredentialsStrip.astro";
 import FeaturedProjectShowcase from "@components/FeaturedProjectShowcase.astro";
 import FocusPanel from "@components/FocusPanel.astro";
-import OrganizationLogo from "@components/OrganizationLogo.astro";
 import ProjectMockup from "@components/ProjectMockup.astro";
-import {
-  coursesAndCertificates,
-  education,
-  experiences,
-  heroProjectSlug,
-  homeProjectSlugs,
-  profile,
-  whyMeItems,
-} from "@data/profile";
+import { heroProjectSlug, homeProjectSlugs, profile } from "@data/profile";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getImageMeta } from "@lib/images";
@@ -23,8 +15,6 @@ const homeProjects = homeProjectSlugs
   .map((slug) => allProjects.find((project) => project.data.slug === slug))
   .filter((project): project is ProjectEntry => Boolean(project));
 const projectCount = allProjects.length;
-const primaryExperience = experiences[0];
-const activityItems = experiences.slice(1);
 const profileAvatar = "/assets/profile/profile_avatar-160.webp";
 const profileAvatarSrcset =
   "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
@@ -33,15 +23,22 @@ const heroProject =
   allProjects.find((project) => project.data.slug === heroProjectSlug) ?? homeProjects[1] ?? homeProjects[0];
 const heroCategory = heroProject ? getCategoryMeta(heroProject.data.category) : undefined;
 const heroArtifactImage = heroProject?.data.coverImage;
-const heroProof = heroProject?.data.proof?.[0] ?? heroProject?.data.metric ?? heroProject?.data.status;
-const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
+const heroProof = heroProject?.data.metric ?? heroProject?.data.status;
+const homeProjectLabel = `${homeProjects.length} ${homeProjects.length === 1 ? "build" : "builds"}`;
 ---
 
 <BaseLayout title={pageSeo.home.title} description={pageSeo.home.description}>
-  <section class="simple-hero dark-section" data-dark-section>
-    <div class="hero-gridlines" aria-hidden="true"></div>
-    <div class="hero-ambient" aria-hidden="true"></div>
-    <div class="hero-shade" aria-hidden="true"></div>
+  <section class="simple-hero dark-section dark-hero-shell" data-dark-section>
+    <div class="hero-backdrop" aria-hidden="true">
+      <div class="hero-orb hero-orb-cyan"></div>
+      <div class="hero-orb hero-orb-mint"></div>
+      <div class="hero-orb hero-orb-warm"></div>
+      <div class="hero-light-pool"></div>
+      <div class="hero-beam"></div>
+      <div class="dark-hero-grid"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-floor"></div>
+    </div>
     <div class="container hero-grid">
       <div class="hero-copy" data-reveal>
         <div class="hero-person">
@@ -53,6 +50,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
             width={profileAvatarMeta?.width}
             height={profileAvatarMeta?.height}
             loading="eager"
+            fetchpriority="high"
             decoding="async"
           />
           <div>
@@ -62,27 +60,16 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
         </div>
 
         <div class="hero-message">
-          <p class="hero-eyebrow">Data products / ML systems / workflow automation</p>
           <h1 class="display">I turn messy data workflows into shipped systems.</h1>
-          <p>
-            A compact showcase of practical systems: automation, dashboards,
-            machine learning, and backend/data workflows, grounded in visible
-            artifacts and clear decisions.
-          </p>
+          <p class="role-signal">{profile.roleSignal}</p>
         </div>
 
-        <div class="hero-tags" aria-label="Portfolio focus">
-          {heroTags.map((tag) => <span>{tag}</span>)}
-        </div>
-
-        <p class="role-signal">{profile.roleSignal}</p>
-
-        <div class="hero-actions">
-          <a class="hero-button hero-button-primary" href="#work">
-            Explore selected work <span aria-hidden="true">-&gt;</span>
+        <div class="dark-cta-row">
+          <a class="dark-cta dark-cta-primary" href="#work">
+            View work <span aria-hidden="true">-&gt;</span>
           </a>
-          <a class="hero-button hero-button-secondary" href={profile.emailHref}>
-            Email me
+          <a class="dark-cta dark-cta-secondary" href="/about/" data-astro-prefetch="hover">
+            About
           </a>
         </div>
       </div>
@@ -90,7 +77,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
       {
         heroProject && heroArtifactImage && (
           <aside class="hero-artifact" aria-label="Featured project artifact" data-reveal data-reveal-delay="120">
-            <a class="artifact-card" href={`/projects/${heroProject.data.slug}/`}>
+            <a class="artifact-card glass-dark" href={`/projects/${heroProject.data.slug}/`} data-astro-prefetch="hover">
               <div class="artifact-image" aria-hidden="true">
                 <ProjectMockup project={heroProject} variant="hero" eager />
               </div>
@@ -109,88 +96,25 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 
   <section id="work" class="featured-work divider">
     <div class="container featured-inner">
-      <div class="section-intro" data-reveal>
-        <p class="section-label">Selected work</p>
-        <h2>Four projects that show how the work comes together.</h2>
-        <p>
-          A tighter path through the portfolio: workflow automation, production
-          stabilization, recommendation systems, and business analytics, each
-          grounded in visible artifacts.
-        </p>
+      <div class="work-header" data-reveal>
+        <div>
+          <p class="section-label">Selected work</p>
+          <h2>{homeProjectLabel}.</h2>
+        </div>
+        <a class="archive-link" href="/projects/" data-astro-prefetch="hover">
+          All {projectCount} projects <span aria-hidden="true">-&gt;</span>
+        </a>
       </div>
-
-      <a class="archive-link" href="/projects/" data-reveal data-reveal-delay="80">
-        Explore all {projectCount} projects <span aria-hidden="true">-&gt;</span>
-      </a>
 
       <FeaturedProjectShowcase projects={homeProjects} />
     </div>
   </section>
 
-  <section class="why-section divider">
-    <div class="container why-inner">
-      <div class="section-intro" data-reveal>
-        <p class="section-label">Why me</p>
-        <h2>Three reasons the portfolio is built this way.</h2>
-      </div>
-
-      <div class="why-grid">
-        {
-          whyMeItems.map((item, index) => (
-            <article data-reveal data-reveal-delay={String((index + 1) * 80)}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <h3>{item.title}</h3>
-              <p>{item.summary}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="scan-section divider">
-    <div class="container scan-grid">
-      <article class="scan-card" data-reveal>
-        <p class="section-label">Education</p>
-        <div class="scan-kicker">
-          <OrganizationLogo organization={education.institution} size="md" />
-          <p>{education.institution}</p>
-        </div>
-        <h2>{education.degree}</h2>
-        <small>{education.period} / GPA {education.gpa}</small>
-      </article>
-
-      <article class="scan-card is-highlighted" data-reveal data-reveal-delay="100">
-        <p class="section-label">Experience</p>
-        <div class="scan-kicker">
-          <OrganizationLogo organization={primaryExperience.organization} size="md" eager />
-          <p>{primaryExperience.organization}</p>
-        </div>
-        <h2>{primaryExperience.role}</h2>
-        <small>{primaryExperience.summary}</small>
-      </article>
-
-      <article class="scan-card" data-reveal data-reveal-delay="200">
-        <p class="section-label">Activities</p>
-        {
-          activityItems.slice(0, 2).map((item) => (
-            <div class="scan-activity">
-              <div class="scan-kicker">
-                <OrganizationLogo organization={item.organization} size="md" />
-                <h3>{item.organization}</h3>
-              </div>
-              <p>{item.role}</p>
-            </div>
-          ))
-        }
-        <small>{coursesAndCertificates[0]}</small>
-      </article>
-    </div>
-  </section>
+  <CredentialsStrip />
 
   <section id="contact" class="contact-section divider">
-    <div class="container">
-      <FocusPanel />
+    <div class="container contact-inner">
+      <FocusPanel compact />
     </div>
   </section>
 </BaseLayout>
@@ -198,51 +122,153 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 <style>
   .simple-hero {
     position: relative;
+    isolation: isolate;
     display: grid;
     min-height: auto;
+    background:
+      radial-gradient(circle at 14% 12%, rgba(125, 211, 252, 0.16), transparent 28rem),
+      radial-gradient(circle at 88% 18%, rgba(167, 243, 208, 0.14), transparent 32rem),
+      radial-gradient(circle at 62% 88%, rgba(216, 162, 56, 0.08), transparent 24rem),
+      linear-gradient(145deg, #06101c 0%, #0d1a2c 46%, #12101f 100%);
+  }
+
+  .hero-backdrop {
+    position: absolute;
+    inset: 0;
     overflow: hidden;
-    background:
-      radial-gradient(circle at 20% 18%, rgba(125, 211, 252, 0.14), transparent 24rem),
-      radial-gradient(circle at 86% 24%, rgba(167, 243, 208, 0.12), transparent 28rem),
-      linear-gradient(135deg, #07111e 0%, #111d2e 56%, #171321 100%);
-    color: #ffffff;
-    padding-block: clamp(5.2rem, 8vw, 6.2rem) clamp(2.2rem, 4vw, 3.2rem);
+    pointer-events: none;
   }
 
-  .hero-gridlines {
+  .hero-orb {
     position: absolute;
-    inset: 0;
-    opacity: 0.16;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 4.5rem 4.5rem;
-    mask-image: linear-gradient(180deg, #000, transparent 82%);
-  }
-
-  .hero-ambient {
-    position: absolute;
-    right: max(-8rem, -8vw);
-    top: 8rem;
-    width: min(42rem, 58vw);
-    aspect-ratio: 1.28;
     border-radius: 999px;
-    background:
-      radial-gradient(circle at 34% 42%, rgba(125, 211, 252, 0.24), transparent 34%),
-      radial-gradient(circle at 68% 62%, rgba(251, 191, 154, 0.16), transparent 38%),
-      rgba(255, 255, 255, 0.03);
-    filter: blur(24px);
-    opacity: 0.86;
-    pointer-events: none;
+    filter: blur(56px);
+    will-change: transform;
   }
 
-  .hero-shade {
+  .hero-orb-cyan {
+    top: 8%;
+    right: -4%;
+    width: min(38rem, 54vw);
+    height: min(30rem, 42vw);
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.42) 0%, transparent 68%);
+    animation: hero-drift-cyan 32s var(--ease-standard) infinite;
+  }
+
+  .hero-orb-mint {
+    top: 42%;
+    left: -8%;
+    width: min(30rem, 44vw);
+    height: min(24rem, 36vw);
+    background: radial-gradient(circle, rgba(155, 231, 212, 0.28) 0%, transparent 70%);
+    animation: hero-drift-mint 38s var(--ease-standard) infinite;
+  }
+
+  .hero-orb-warm {
+    right: 22%;
+    bottom: 6%;
+    width: min(24rem, 34vw);
+    height: min(18rem, 28vw);
+    background: radial-gradient(circle, rgba(216, 162, 56, 0.2) 0%, transparent 72%);
+    animation: hero-drift-warm 42s var(--ease-standard) infinite;
+  }
+
+  .hero-light-pool {
+    position: absolute;
+    top: 18%;
+    right: 10%;
+    width: min(26rem, 40vw);
+    aspect-ratio: 1.15;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(125, 211, 252, 0.16), transparent 64%);
+    filter: blur(36px);
+    opacity: 0.9;
+  }
+
+  .hero-beam {
+    position: absolute;
+    top: -18%;
+    left: 32%;
+    width: 42%;
+    height: 136%;
+    background: linear-gradient(
+      112deg,
+      transparent 40%,
+      rgba(125, 211, 252, 0.07) 49%,
+      rgba(155, 231, 212, 0.05) 52%,
+      transparent 60%
+    );
+    transform: rotate(-7deg);
+    opacity: 0.75;
+  }
+
+  .simple-hero .dark-hero-grid {
+    opacity: 0.2;
+    mask-image: radial-gradient(ellipse 92% 72% at 48% 18%, #000 12%, transparent 78%);
+  }
+
+  .hero-vignette {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, rgba(7, 17, 30, 0.96), rgba(7, 17, 30, 0.64) 52%, rgba(7, 17, 30, 0.25)),
-      linear-gradient(180deg, transparent 64%, var(--surface-light) 100%);
-    pointer-events: none;
+      linear-gradient(90deg, rgba(6, 16, 28, 0.78) 0%, rgba(6, 16, 28, 0.34) 46%, rgba(6, 16, 28, 0.1) 100%),
+      linear-gradient(180deg, rgba(6, 16, 28, 0.28) 0%, transparent 34%, transparent 68%, rgba(243, 246, 251, 0.92) 100%);
+  }
+
+  .hero-floor {
+    position: absolute;
+    right: 12%;
+    bottom: 0;
+    left: 12%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(125, 211, 252, 0.28),
+      rgba(155, 231, 212, 0.22),
+      transparent
+    );
+    box-shadow: 0 0 40px rgba(125, 211, 252, 0.14);
+    opacity: 0.8;
+  }
+
+  @keyframes hero-drift-cyan {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(-2.5%, 2%, 0) scale(1.04);
+    }
+  }
+
+  @keyframes hero-drift-mint {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(3%, -2%, 0) scale(1.05);
+    }
+  }
+
+  @keyframes hero-drift-warm {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    50% {
+      transform: translate3d(-2%, 1.5%, 0) scale(1.03);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-orb {
+      animation: none;
+    }
   }
 
   .hero-grid {
@@ -250,13 +276,13 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(17.5rem, 0.42fr);
-    gap: clamp(2rem, 5vw, 4.6rem);
+    gap: var(--gap-hero);
     align-items: center;
   }
 
   .hero-copy {
     display: grid;
-    gap: 1.2rem;
+    gap: var(--space-stack-lg);
     min-width: 0;
   }
 
@@ -271,7 +297,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
   .hero-person img {
     width: 3.15rem;
     height: 3.15rem;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid var(--glass-dark-logo-border);
     border-radius: 999px;
     object-fit: cover;
     object-position: center 58%;
@@ -291,19 +317,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 
   .hero-message {
     display: grid;
-    gap: 0.95rem;
-  }
-
-  .hero-eyebrow {
-    width: fit-content;
-    margin: 0;
-    border: 1px solid rgba(148, 163, 184, 0.28);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.055);
-    color: rgba(226, 232, 240, 0.9);
-    font-size: 0.75rem;
-    line-height: 1;
-    padding: 0.52rem 0.72rem;
+    gap: var(--space-stack-md);
   }
 
   .hero-message .display {
@@ -313,95 +327,13 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     line-height: 0.94;
   }
 
-  .hero-message p:not(.hero-eyebrow) {
-    max-width: 41rem;
-    margin: 0;
-    color: rgba(226, 232, 240, 0.74);
-    font-size: clamp(0.98rem, 1.45vw, 1.08rem);
-    line-height: 1.72;
-  }
-
-  .hero-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .hero-tags span {
-    border: 1px solid rgba(148, 163, 184, 0.22);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
-    color: rgba(226, 232, 240, 0.72);
-    font-size: 0.76rem;
-    line-height: 1;
-    padding: 0.48rem 0.66rem;
-  }
-
   .role-signal {
-    max-width: 42rem;
+    max-width: 36rem;
     margin: 0;
-    border-left: 2px solid #9be7d4;
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.92rem;
-    font-weight: 600;
+    color: rgba(226, 232, 240, 0.68);
+    font-size: clamp(0.9rem, 1.3vw, 1rem);
+    font-weight: 400;
     line-height: 1.55;
-    padding-left: 0.82rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-  }
-
-  .hero-button {
-    display: inline-flex;
-    min-height: 2.75rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    font-size: 0.88rem;
-    font-weight: 600;
-    line-height: 1;
-    padding: 0.84rem 1.05rem;
-    transition:
-      background var(--motion-fast) var(--ease-standard),
-      border-color var(--motion-fast) var(--ease-standard),
-      box-shadow var(--motion-fast) var(--ease-standard),
-      color var(--motion-fast) var(--ease-standard),
-      transform var(--motion-fast) var(--ease-out);
-  }
-
-  .hero-button:hover {
-    transform: translateY(-2px);
-  }
-
-  .hero-button span {
-    display: inline-block;
-    margin-left: 0.42rem;
-    transition: transform var(--motion-fast) var(--ease-out);
-  }
-
-  .hero-button:hover span {
-    transform: translateX(3px);
-  }
-
-  .hero-button-primary {
-    border: 1px solid rgba(125, 211, 252, 0.36);
-    background: #e7f8ff;
-    box-shadow: 0 14px 36px rgba(125, 211, 252, 0.16);
-    color: #0b1724;
-  }
-
-  .hero-button-secondary {
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: rgba(255, 255, 255, 0.055);
-    color: rgba(255, 255, 255, 0.82);
-  }
-
-  .hero-button-secondary:hover {
-    border-color: rgba(125, 211, 252, 0.32);
-    color: #ffffff;
   }
 
   .hero-artifact {
@@ -411,16 +343,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
   .artifact-card {
     display: grid;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.055)),
-      rgba(10, 18, 30, 0.66);
-    box-shadow:
-      0 26px 80px rgba(0, 0, 0, 0.32),
-      0 0 70px rgba(125, 211, 252, 0.08);
     color: inherit;
-    backdrop-filter: blur(16px);
     transition:
       border-color var(--motion-fast) var(--ease-standard),
       box-shadow var(--motion-fast) var(--ease-standard),
@@ -429,9 +352,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 
   .artifact-card:hover {
     border-color: rgba(125, 211, 252, 0.32);
-    box-shadow:
-      0 30px 90px rgba(0, 0, 0, 0.36),
-      0 0 84px rgba(125, 211, 252, 0.12);
+    box-shadow: var(--glass-dark-shadow-hover);
     transform: translateY(-3px);
   }
 
@@ -440,7 +361,7 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     margin: 0.72rem 0.72rem 0;
     overflow: hidden;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--glass-dark-well);
   }
 
   .artifact-body {
@@ -463,14 +384,10 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
   }
 
   .artifact-body p {
-    display: -webkit-box;
     margin: 0;
-    overflow: hidden;
     color: rgba(226, 232, 240, 0.7);
     font-size: 0.82rem;
     line-height: 1.5;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
   }
 
   .artifact-body span {
@@ -485,63 +402,81 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
   }
 
   .featured-work {
+    position: relative;
     background:
-      radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.06), transparent 24rem),
+      radial-gradient(
+        ellipse 90% 55% at 50% -8%,
+        color-mix(in srgb, var(--accent-cyan) 9%, transparent),
+        transparent 58%
+      ),
+      radial-gradient(
+        circle at 0% 0%,
+        color-mix(in srgb, var(--accent-cyan) 6%, transparent),
+        transparent 24rem
+      ),
       var(--surface-light);
-    padding-block: clamp(2.8rem, 4vw, 3.5rem) clamp(4rem, 8vw, 6.5rem);
   }
 
-  .scan-section,
+  .featured-work::before {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 100%;
+    height: 5rem;
+    background: linear-gradient(180deg, rgba(243, 246, 251, 0.55), transparent);
+    content: "";
+    pointer-events: none;
+  }
+
   .contact-section {
+    position: relative;
     background:
-      radial-gradient(circle at 100% 20%, rgba(15, 159, 135, 0.05), transparent 28rem),
+      radial-gradient(
+        ellipse 72% 48% at 50% 0%,
+        color-mix(in srgb, var(--accent-cyan) 8%, transparent),
+        transparent 56%
+      ),
+      radial-gradient(
+        ellipse 70% 45% at 100% 12%,
+        color-mix(in srgb, var(--accent) 7%, transparent),
+        transparent 52%
+      ),
+      radial-gradient(
+        circle at 100% 20%,
+        color-mix(in srgb, var(--accent) 5%, transparent),
+        transparent 28rem
+      ),
       var(--surface-light);
-    padding-block: clamp(4rem, 8vw, 6.5rem);
   }
 
-  .contact-section {
-    padding-block-start: clamp(3rem, 6vw, 4.5rem);
+  .contact-inner {
+    padding-block: clamp(0.5rem, 1.2vw, 0.85rem) clamp(0.65rem, 1.5vw, 1rem);
   }
 
-  .why-section {
-    background:
-      radial-gradient(circle at 100% 0%, rgba(216, 162, 56, 0.06), transparent 24rem),
-      var(--surface-light);
-    padding-block: clamp(3.4rem, 6vw, 5rem);
-  }
-
-  .featured-inner,
-  .why-inner {
+  .featured-inner {
     display: grid;
-    gap: clamp(1.25rem, 3vw, 1.8rem);
+    gap: var(--space-block-inner);
   }
 
-  .section-intro {
-    display: grid;
-    gap: 0.75rem;
-    max-width: 760px;
+  .work-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-stack-sm) var(--space-stack-lg);
   }
 
-  .section-intro .section-label {
+  .work-header .section-label {
     color: var(--accent);
   }
 
-  .section-intro h2,
-  .scan-card h2 {
+  .work-header h2 {
     margin: 0;
     color: var(--text);
-    font-size: clamp(1.75rem, 3.5vw, 3.2rem);
+    font-size: clamp(1.75rem, 3.5vw, 2.8rem);
     font-weight: 600;
     letter-spacing: 0;
     line-height: 1.02;
-  }
-
-  .section-intro p,
-  .scan-card p,
-  .scan-card small {
-    margin: 0;
-    color: var(--text-muted);
-    line-height: 1.65;
   }
 
   .archive-link {
@@ -562,137 +497,40 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
     transform: translateX(4px);
   }
 
-  .why-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(0.8rem, 2vw, 1rem);
-  }
-
-  .why-grid article {
-    display: grid;
-    gap: 0.65rem;
-    align-content: start;
-    min-height: 13rem;
-    border-top: 1px solid var(--line);
-    padding-block-start: 1rem;
-  }
-
-  .why-grid span {
-    color: var(--accent-coral);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.72rem;
-    line-height: 1;
-  }
-
-  .why-grid h3 {
-    margin: 0;
-    color: var(--text);
-    font-size: clamp(1.12rem, 2vw, 1.45rem);
-    font-weight: 600;
-    line-height: 1.12;
-  }
-
-  .why-grid p {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 0.92rem;
-    line-height: 1.62;
-  }
-
-  .scan-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1rem, 3vw, 1.3rem);
-  }
-
-  .scan-card {
-    display: grid;
-    align-content: start;
-    gap: 0.7rem;
-    min-height: 18rem;
-    border: 1px solid rgba(17, 24, 39, 0.12);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.62);
-    box-shadow: 0 14px 42px rgba(17, 24, 39, 0.045);
-    padding: clamp(1rem, 2.5vw, 1.35rem);
-  }
-
-  .scan-card.is-highlighted {
-    background:
-      linear-gradient(145deg, rgba(15, 159, 135, 0.1), rgba(125, 211, 252, 0.08)),
-      rgba(255, 255, 255, 0.74);
-  }
-
-  .scan-card h2 {
-    font-size: clamp(1.25rem, 2vw, 1.7rem);
-  }
-
-  .scan-kicker {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.7rem;
-    align-items: start;
-  }
-
-  .scan-kicker p,
-  .scan-kicker h3 {
-    margin: 0;
-    color: var(--text-muted);
-    font-size: 0.86rem;
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  .scan-activity + .scan-activity {
-    margin-top: 0.85rem;
-  }
-
-  .scan-activity p {
-    margin: 0.35rem 0 0;
-    color: var(--text-muted);
-    font-size: 0.86rem;
-    line-height: 1.45;
-  }
-
-  .scan-card h3 {
-    color: var(--text);
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1.18;
-  }
-
-  .scan-card small {
-    font-size: 0.86rem;
-  }
-
   @media (max-width: 920px) {
     .simple-hero {
       min-height: auto;
     }
 
-    .hero-grid,
-    .why-grid,
-    .scan-grid {
+    .hero-grid {
       grid-template-columns: 1fr;
     }
 
-    .hero-shade {
+    .hero-vignette {
       background:
-        linear-gradient(180deg, rgba(7, 17, 30, 0.9) 0%, rgba(7, 17, 30, 0.76) 70%, var(--surface-light) 100%);
+        linear-gradient(180deg, rgba(6, 16, 28, 0.82) 0%, rgba(6, 16, 28, 0.58) 62%, rgba(243, 246, 251, 0.94) 100%);
+    }
+
+    .hero-orb-cyan {
+      top: 14%;
+      right: -18%;
+    }
+
+    .hero-light-pool {
+      top: 28%;
+      right: 4%;
+      width: min(20rem, 72vw);
     }
 
     .hero-artifact {
       max-width: 32rem;
     }
 
-    .scan-card {
-      min-height: auto;
-    }
   }
 
   @media (max-width: 620px) {
     .simple-hero {
-      padding-block: 5.25rem 2.8rem;
+      padding-block: 5rem var(--space-hero-bottom);
     }
 
     .hero-message .display {
@@ -700,23 +538,14 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
       line-height: 0.98;
     }
 
-    .hero-message p:not(.hero-eyebrow) {
-      font-size: 0.95rem;
-      line-height: 1.62;
+    .role-signal {
+      font-size: 0.88rem;
+      line-height: 1.5;
     }
 
     .hero-person img {
       width: 3rem;
       height: 3rem;
-    }
-
-    .hero-tags {
-      gap: 0.42rem;
-    }
-
-    .hero-tags span {
-      font-size: 0.72rem;
-      padding: 0.44rem 0.58rem;
     }
 
     .artifact-image {
@@ -728,15 +557,8 @@ const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
       padding: 0.78rem 0.82rem 0.9rem;
     }
 
-    .featured-work,
-    .why-section,
-    .scan-section,
-    .contact-section {
-      padding-block: 3.25rem;
-    }
-
-    .why-grid article {
-      min-height: auto;
+    .work-header {
+      align-items: start;
     }
   }
 </style>

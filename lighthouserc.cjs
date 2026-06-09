@@ -7,7 +7,11 @@ module.exports = {
         "http://localhost/about/",
         "http://localhost/projects/",
         "http://localhost/projects/kpc-power-automate-po-automation/",
+        "http://localhost/404.html",
       ],
+      settings: {
+        preset: "desktop",
+      },
       numberOfRuns: 1,
     },
     assert: {

@@ -26,7 +26,7 @@ const sizes = `${displayWidth}px`;
 {
   logo && (
     <span
-      class:list={["org-logo", `is-${size}`, isWide && "is-wide"]}
+      class:list={["org-logo", "glass-backdrop", `is-${size}`, isWide && "is-wide"]}
       style={`--org-logo-width: ${displayWidth}px; --org-logo-height: ${displayHeight}px;`}
     >
       <img
@@ -50,10 +50,12 @@ const sizes = `${displayWidth}px`;
     height: var(--org-logo-height);
     flex: 0 0 auto;
     place-items: center;
-    border: 1px solid rgba(17, 24, 39, 0.1);
+    border: 1px solid var(--org-logo-border);
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.05);
+    background: var(--org-logo-bg);
+    box-shadow:
+      var(--panel-shadow),
+      inset 0 1px 0 var(--panel-inset);
     padding: 0.42rem;
   }
 

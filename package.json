@@ -9,7 +9,9 @@
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
     "format": "prettier --write \"src/**/*.{ts,css,mdx}\" \"docs/**/*.mdx\" \"README.md\" \"public/assets/**/*.md\"",
-    "validate": "astro check && astro build"
+    "validate": "astro check && astro build",
+    "images:covers": "node scripts/generate-cover-variants.mjs",
+    "lighthouse": "npm run build && npx --yes @lhci/cli@0.14.0 autorun"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",
@@ -18,9 +20,13 @@
     "@types/node": "^25.9.2",
     "astro": "6.3.7",
     "tailwindcss": "4.1.17",
+    "sharp": "^0.34.3",
     "typescript": "6.0.3"
   },
   "overrides": {
     "yaml": "2.9.0"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8"
   }
 }

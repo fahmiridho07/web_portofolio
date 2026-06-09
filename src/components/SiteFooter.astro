@@ -1,40 +1,20 @@
 ---
 import { profile } from "@data/profile";
-import { getResumeAction } from "@lib/resume";
 
 const year = new Date().getFullYear();
-const resumeAction = getResumeAction();
-
-const footerLinks = [
-  ...profile.links,
-  {
-    label: resumeAction.download ? "Resume" : "Resume request",
-    href: resumeAction.href,
-  },
-];
 ---
 
-<footer class="site-footer divider">
+<footer
+  class="site-footer glass-backdrop-chrome divider"
+  transition:persist="site-footer"
+  transition:name="site-footer"
+  transition:animate="none"
+>
   <div class="container footer-inner">
-    <p>
-      <span>{profile.name}</span>
-      <span>Building practical data products and systems - graduating 2026</span>
-    </p>
-
-    <nav aria-label="Footer links">
-      {
-        footerLinks.map((link) => (
-          <a
-            href={link.href}
-            target={link.href.startsWith("http") ? "_blank" : undefined}
-            rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-            download={link.href === resumeAction.href && resumeAction.download ? "" : undefined}
-          >
-            {link.label}
-          </a>
-        ))
-      }
-    </nav>
+    <a class="footer-brand" href="/" aria-label={`${profile.name} home`} data-astro-prefetch="hover">
+      <span class="mark glass-chip">{profile.mark}</span>
+      <span class="name">{profile.shortName}</span>
+    </a>
 
     <p class="year">{year}</p>
   </div>
@@ -42,66 +22,50 @@ const footerLinks = [
 
 <style>
   .site-footer {
-    background: rgba(232, 238, 247, 0.42);
-    padding-block: 2.2rem;
+    background: var(--footer-bg);
+    padding-block: clamp(1.35rem, 2.5vw, 1.75rem);
     color: var(--text-soft);
   }
 
   .footer-inner {
-    display: grid;
-    grid-template-columns: 1fr auto auto;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  p:first-child {
-    display: grid;
-    gap: 0.15rem;
-  }
-
-  p:first-child span:first-child {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  p:first-child span:last-child {
-    font-size: 0.86rem;
-  }
-
-  nav {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 0.9rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-stack-sm) var(--space-stack-lg);
   }
 
-  nav a {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+  .footer-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: inherit;
   }
 
-  nav a:hover {
-    color: var(--accent);
+  .mark {
+    display: inline-grid;
+    width: 1.75rem;
+    height: 1.75rem;
+    place-items: center;
+    border-radius: var(--radius-pill);
+    color: var(--text);
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    line-height: 1;
+  }
+
+  .name {
+    color: var(--text);
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.2;
   }
 
   .year {
-    font-family:
-      "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    font-size: 0.82rem;
-  }
-
-  @media (max-width: 760px) {
-    .footer-inner {
-      grid-template-columns: 1fr;
-      align-items: start;
-    }
-
-    nav {
-      justify-content: flex-start;
-    }
+    margin: 0;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.72rem;
+    line-height: 1;
   }
 </style>

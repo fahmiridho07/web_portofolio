@@ -1,18 +1,18 @@
 ---
-import { getImageMeta } from "@lib/images";
+import { getProjectCoverSources, type CoverVariant } from "@lib/images";
 import { getCategoryMeta } from "@lib/projects";
 import type { CollectionEntry } from "astro:content";
 
 interface Props {
   project: CollectionEntry<"projects">;
-  variant?: "card" | "featured" | "compact" | "rail" | "hero" | "case";
+  variant?: CoverVariant;
   showMetric?: boolean;
   eager?: boolean;
 }
 
 const { project, variant = "card", showMetric = true, eager = false } = Astro.props;
 const category = getCategoryMeta(project.data.category);
-const coverMeta = getImageMeta(project.data.coverImage);
+const cover = getProjectCoverSources(project.data.coverImage, variant);
 const metric = project.data.metric ?? project.data.status;
 const labelBySlug: Record<string, string> = {
   "kpc-power-automate-po-automation": "Automation",
@@ -106,12 +106,15 @@ const style = [
 
       <div class="mockup-screen">
         <img
-          src={project.data.coverImage}
+          src={cover.src}
+          srcset={cover.srcset}
+          sizes={cover.sizes}
           alt=""
-          width={coverMeta?.width}
-          height={coverMeta?.height}
+          width={cover.width}
+          height={cover.height}
           loading={eager ? "eager" : "lazy"}
           decoding="async"
+          fetchpriority={eager ? "high" : "auto"}
         />
       </div>
     </div>
@@ -302,11 +305,11 @@ const style = [
     position: absolute;
     z-index: 3;
     max-width: calc(100% - 1.5rem);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 1px solid var(--glass-dark-chip-border);
     border-radius: 999px;
     background:
       linear-gradient(135deg, color-mix(in srgb, var(--mockup-accent) 26%, transparent), rgba(255, 255, 255, 0.06)),
-      rgba(6, 10, 18, 0.74);
+      var(--glass-dark-badge-bg);
     color: rgba(255, 255, 255, 0.92);
     font-size: 0.68rem;
     font-weight: 700;
@@ -315,7 +318,8 @@ const style = [
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
     transition:
       background var(--motion-medium) var(--ease-standard),
       border-color var(--motion-medium) var(--ease-standard),
@@ -331,7 +335,7 @@ const style = [
   .mockup-metric {
     right: 0.72rem;
     bottom: 0.72rem;
-    background: rgba(6, 10, 18, 0.7);
+    background: var(--glass-dark-badge-bg);
     color: rgba(255, 255, 255, 0.82);
     font-weight: 600;
   }
@@ -375,14 +379,12 @@ const style = [
     width: min(84%, 48rem);
   }
 
-  .is-compact .mockup-frame,
-  .is-rail .mockup-frame {
+  .is-compact .mockup-frame {
     width: 82%;
     border-radius: 8px;
   }
 
   .is-compact .mockup-topbar,
-  .is-rail .mockup-topbar,
   .is-card .mockup-topbar {
     min-height: 1.25rem;
     padding: 0.28rem 0.38rem;
@@ -390,15 +392,12 @@ const style = [
 
   .is-compact .mockup-title,
   .is-compact .mockup-year,
-  .is-rail .mockup-title,
-  .is-rail .mockup-year,
   .is-card .mockup-title,
   .is-card .mockup-year {
     font-size: 0.5rem;
   }
 
   .is-compact .mockup-dots i,
-  .is-rail .mockup-dots i,
   .is-card .mockup-dots i {
     width: 0.28rem;
     height: 0.28rem;

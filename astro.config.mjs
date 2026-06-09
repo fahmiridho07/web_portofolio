@@ -6,7 +6,7 @@ export default defineConfig({
   site: "https://fahmiridho.me",
   output: "static",
   build: {
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
   integrations: [mdx()],
   vite: {

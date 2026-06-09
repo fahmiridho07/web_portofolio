@@ -13,13 +13,16 @@ export const profile = {
   headline:
     "Practical data products across machine learning, analytics, and backend workflows.",
   summary:
-    "I build practical data products: models, dashboards, and backend workflows that turn raw data into usable systems.",
+    "I build data products that ship. That includes models, dashboards, and backend workflows that turn raw data into systems teams can use.",
   availability:
-    "Open to data/ML engineering, analytics engineering, and backend/data systems roles",
+    "Open to data/ML engineering, analytics engineering, and backend or data systems roles",
   roleSignal:
-    "Seeking data/ML engineering, analytics engineering, or backend/data systems roles.",
+    "Looking for data/ML engineering, analytics engineering, or backend and data systems roles.",
   contactPrompt:
-    "Best fit: practical teams that need data workflows turned into shipped, maintainable systems.",
+    "Best fit for teams that need data workflows turned into shipped, maintainable systems.",
+  aboutHook:
+    "Based in Indonesia, shipping from internship work and coursework that teams can actually run.",
+  lastShippedLabel: "Last shipped",
   links: [
     {
       label: "Email",
@@ -38,48 +41,30 @@ export const profile = {
 
 export const whyMeItems = [
   {
-    title: "I show the artifact",
+    title: "I start with the workflow",
     summary:
-      "Projects include screenshots, workflows, dashboards, and case evidence so the work is easy to inspect.",
+      "I map the business process, data handoffs, and constraints first. Then I pick models, dashboards, or automation that fit the problem.",
   },
   {
-    title: "I connect data to delivery",
+    title: "I ship inspectable systems",
     summary:
-      "The portfolio spans models, dashboards, automation, APIs, and deployment, not isolated notebooks.",
+      "I prioritize working artifacts like deployed apps, dashboards, API flows, and automation so outcomes are easy to verify in review.",
   },
   {
-    title: "I write for busy reviewers",
+    title: "I build for handoff",
     summary:
-      "Each project is shaped around context, role, result, and proof so the signal is fast to scan.",
+      "I document decisions, structure access, and leave maintainable code so teams can own the work after delivery.",
   },
 ];
 
 export const education = {
   degree: "Bachelor of Information Systems",
   institution: "Institut Teknologi Sepuluh Nopember (ITS)",
-  period: "Aug 2022 - Expected 2026",
+  period: "Aug 2022 to expected 2026",
   gpa: "3.62/4.00",
   focus:
-    "Integration of technology, business, data, AI/data systems, and enterprise systems.",
+    "Technology, business, data, AI/data systems, and enterprise systems.",
 };
-
-export const roleTargets = [
-  {
-    title: "Data / ML Engineering",
-    summary:
-      "Modeling, evaluation, data preparation, and reproducible ML workflows.",
-  },
-  {
-    title: "Data Analyst with Engineering Strength",
-    summary:
-      "Dashboards, KPI mapping, workflow analysis, and business-facing data stories.",
-  },
-  {
-    title: "Backend / Data Systems",
-    summary:
-      "APIs, deployment pipelines, automation, and practical system delivery.",
-  },
-];
 
 export const heroProjectSlug = "kpc-ideku-v3-dotnet-stabilization";
 
@@ -90,36 +75,40 @@ export const homeProjectSlugs = [
   "bank-jatim-performance-dashboard",
 ] as const;
 
-export const proofPoints = [
-  "Predictive modeling with clear evaluation metrics",
-  "Forecasting and optimization under real constraints",
-  "Dashboards and deployed workflows connected to business decisions",
-];
-
 export const experiences = [
   {
     role: "Software Engineering and Automation Intern",
     organization: "PT Kaltim Prima Coal",
+    period: "Feb 2025 to Aug 2025",
+    proof: "Power Automate flows, IdeKU V3 stabilization, Power BI embedded",
+    relatedProjectSlug: "kpc-ideku-v3-dotnet-stabilization",
     summary:
-      "Worked with the Business Improvement Department on Microsoft Power Automate workflow digitization and ASP.NET Core IdeKU V3 stabilization, including RBAC hardening, Power BI integration, and performance tuning.",
+      "Built Power Automate workflows and stabilized IdeKU V3 on ASP.NET Core, including RBAC fixes, Power BI integration, and performance tuning.",
   },
   {
     role: "Vice Head of Research and Development Department",
     organization: "HMSI ITS",
+    period: "2023 to 2024",
+    proof: "R&D ops, SOPs, and member project delivery",
     summary:
-      "Led member development, innovation work, internal process optimization, project delivery, documentation, SOPs, and operational workflows.",
+      "Led member development, innovation projects, process optimization, documentation, and SOP work across the R&D department.",
   },
   {
-    role: "Teaching Assistant - Enterprise Systems Course",
+    role: "Teaching Assistant, Enterprise Systems",
     organization: "Institut Teknologi Sepuluh Nopember",
+    period: "2024",
+    proof: "50+ students across Odoo ERP modules",
     summary:
-      "Guided 50+ students through Odoo ERP modules including Sales, Inventory, Human Resources, and Accounting while evaluating implementation projects.",
+      "Guided 50+ students through Odoo ERP modules in Sales, Inventory, HR, and Accounting and graded implementation projects.",
   },
   {
-    role: "Expert Staff of Data Science Academy",
+    role: "Expert Staff, Data Science Academy",
     organization: "Information Systems Expo 2024",
+    period: "2024",
+    proof: "Python assessments and academy curriculum",
+    relatedProjectSlug: "la-crime-type-prediction",
     summary:
-      "Supported Python-based assessments, data manipulation challenges, curriculum execution, event operations, and industry collaboration.",
+      "Ran Python assessments, data manipulation challenges, curriculum delivery, and event operations for the academy.",
   },
 ];
 
@@ -134,29 +123,25 @@ export const projectCategories = [
   {
     id: projectCategoryIds[0],
     title: "Predictive Modeling",
-    intro:
-      "Classification, forecasting, data preparation, and model evaluation.",
+    intro: "Classification, forecasting, data preparation, and model evaluation.",
     logo: "/assets/logos/scikitlearn.svg",
   },
   {
     id: projectCategoryIds[1],
     title: "Decision Support Systems",
-    intro:
-      "Optimization and route planning for operational constraints.",
+    intro: "Optimization and route planning for operational constraints.",
     logo: "/assets/logos/route.svg",
   },
   {
     id: projectCategoryIds[2],
     title: "Deployment & Automation",
-    intro:
-      "Apps, APIs, workflow automation, deployment pipelines, and monitoring.",
+    intro: "Apps, APIs, workflow automation, deployment pipelines, and monitoring.",
     logo: "/assets/logos/devops.svg",
   },
   {
     id: projectCategoryIds[3],
     title: "Business Analytics",
-    intro:
-      "Dashboards, KPI mapping, and business-aligned data storytelling.",
+    intro: "Dashboards, KPI mapping, and business aligned data storytelling.",
     logo: "/assets/logos/bi.svg",
   },
 ];
@@ -164,7 +149,7 @@ export const projectCategories = [
 export const focusItems = [
   "Data and ML engineering work",
   "Analytics products with strong technical execution",
-  "Backend and workflow automation close to real data",
+  "Backend and workflow automation close to production data",
 ];
 
 export const skillGroups = [
@@ -221,6 +206,22 @@ export const skillGroups = [
 ];
 
 export const coursesAndCertificates = [
-  "Enterprise Systems Course - Teaching Assistant for Odoo ERP modules",
-  "Data Science Academy - Python assessments and data manipulation curriculum support",
+  {
+    title: "Odoo ERP teaching assistant",
+    issuer: "ITS Enterprise Systems",
+    context: "Sales, Inventory, HR, and Accounting modules with implementation grading",
+    year: "2024",
+  },
+  {
+    title: "Data Science Academy operations",
+    issuer: "Information Systems Expo 2024",
+    context: "Python assessments, data manipulation challenges, and curriculum delivery",
+    year: "2024",
+  },
+  {
+    title: "HMSI R&D leadership",
+    issuer: "HMSI ITS",
+    context: "Process optimization, SOPs, documentation, and project delivery",
+    year: "2023 to 2024",
+  },
 ];

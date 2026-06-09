@@ -83,6 +83,44 @@ export function getProfilePageSchema(site: string): JsonLd {
   };
 }
 
+export function getBreadcrumbSchema(
+  site: string,
+  items: { name: string; path: string }[],
+): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(site, item.path),
+    })),
+  };
+}
+
+export function getCollectionPageSchema(input: {
+  site: string;
+  name: string;
+  description: string;
+  path: string;
+}): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: input.name,
+    description: input.description,
+    url: absoluteUrl(input.site, input.path),
+    inLanguage: "en",
+    isPartOf: {
+      "@id": absoluteUrl(input.site, "/#website"),
+    },
+    author: {
+      "@id": absoluteUrl(input.site, "/#person"),
+    },
+  };
+}
+
 export function getCreativeWorkSchema(input: {
   site: string;
   title: string;
@@ -134,7 +172,7 @@ export function getProjectOpenGraph(project: {
 }) {
   return {
     imagePath: project.coverImage,
-    imageAlt: `${project.title} project preview — ${project.summary}`,
+    imageAlt: `${project.title} project preview`,
   };
 }
 

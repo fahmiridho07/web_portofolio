@@ -37,7 +37,7 @@ export const pageSeo = {
   about: {
     title: "About",
     description:
-      "About Achmad Fahmi Ainur Ridho — ITS Information Systems student, KPC software engineering intern, and builder of practical ML, analytics, and backend data systems.",
+      "About Achmad Fahmi Ainur Ridho, an ITS Information Systems student, KPC software engineering intern, and builder of practical ML, analytics, and backend data systems.",
     ogImagePath: "/assets/profile/profile_photo.webp",
     ogImageAlt: "Portrait of Achmad Fahmi Ainur Ridho",
   },

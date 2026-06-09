@@ -1,10 +1,15 @@
 ---
 import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
+import ContentImage from "@components/ContentImage.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCaseStudyNavSections, getCaseStudySectionMap } from "@lib/case-study";
 import { getImageMeta } from "@lib/images";
-import { getCreativeWorkSchema, getProjectOpenGraph } from "@lib/seo";
+import {
+  getBreadcrumbSchema,
+  getCreativeWorkSchema,
+  getProjectOpenGraph,
+} from "@lib/seo";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
@@ -74,6 +79,12 @@ const projectSchema = getCreativeWorkSchema({
   stack: project.data.stack,
   imagePath: project.data.coverImage,
 });
+const breadcrumbSchema = getBreadcrumbSchema(siteUrl, [
+  { name: "Home", path: "/" },
+  { name: "Projects", path: "/projects/" },
+  { name: project.data.title, path: `/projects/${project.data.slug}/` },
+]);
+const articlePublishedTime = `${project.data.year}-01-01T00:00:00.000Z`;
 const caseNavSections = getCaseStudyNavSections(project.body ?? "");
 const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 ---
@@ -81,14 +92,15 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 <BaseLayout
   title={project.data.title}
   description={project.data.summary}
-  jsonLd={projectSchema}
+  jsonLd={[projectSchema, breadcrumbSchema]}
   ogType="article"
+  articlePublishedTime={articlePublishedTime}
   ogImagePath={projectOg.imagePath}
   ogImageAlt={projectOg.imageAlt}
   ogImageWidth={projectOgImage?.width}
   ogImageHeight={projectOgImage?.height}
 >
-  <article>
+  <article data-case-sections={JSON.stringify(caseSectionMap)}>
     <CaseSnapshotHero project={project} />
 
     <div
@@ -106,13 +118,13 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     <section id="case-study" class="case-body">
       <div class="container case-body-inner">
         <nav class="case-read-nav" aria-label="Case study quick navigation">
-          <a class="archive-return" href="/projects/"><span aria-hidden="true">&lt;-</span> All projects</a>
+          <a class="archive-return" href="/projects/" data-astro-prefetch="hover"><span aria-hidden="true">&lt;-</span> All projects</a>
           <div class="read-flow">
             <p class="section-label">Read flow</p>
-            <a href="#case-study" data-case-nav-link aria-current="location">Overview</a>
+            <a class="glass-chip" href="#case-study" data-case-nav-link aria-current="location">Overview</a>
             {
               caseNavSections.map((section) => (
-                <a href={`#${section.id}`} data-case-nav-link>
+                <a class="glass-chip" href={`#${section.id}`} data-case-nav-link>
                   {section.label}
                 </a>
               ))
@@ -121,11 +133,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
         </nav>
 
         <div class="case-reading">
-          <section class="case-brief" aria-label="Case study quick read" data-reveal>
-            <div>
-              <p class="section-label">Quick read</p>
-              <h2>Skim the case by context, role, result, and evidence.</h2>
-            </div>
+          <section class="case-brief glass-panel" aria-label="Case study summary" data-reveal>
             <div class="case-brief-grid">
               {
                 quickReadItems.map((item) => (
@@ -138,8 +146,11 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
             </div>
           </section>
 
-          <div class="prose">
-            <Content />
+          <div class="case-deep-dive" data-reveal>
+            <p class="section-label">Deep dive</p>
+            <div class="prose">
+              <Content components={{ img: ContentImage }} />
+            </div>
           </div>
         </div>
       </div>
@@ -152,7 +163,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
         <div class="container">
           <div class="related-heading">
             <p class="section-label">More work</p>
-            <h2>Other case studies</h2>
+            <h2>Related builds.</h2>
           </div>
           <div class="related-grid">
             {relatedProjects.map((entry) => <ProjectCard project={entry} />)}
@@ -165,92 +176,109 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   <section class="case-exit divider">
     <div class="container case-exit-card">
       <div>
-        <p class="section-label">Project archive</p>
-        <h2>Back to the full project index.</h2>
-        <p>Return to all case studies and filter by modeling, automation, decision support, or analytics.</p>
+        <p class="section-label">Archive</p>
+        <h2>All projects.</h2>
       </div>
-      <a href="/projects/">View all projects <span aria-hidden="true">-&gt;</span></a>
+      <a href="/projects/" data-astro-prefetch="hover">View index <span aria-hidden="true">-&gt;</span></a>
     </div>
   </section>
 
-  <script define:vars={{ caseSectionMap }}>
-    const progress = document.querySelector("[data-case-progress]");
-    const progressTrack = document.querySelector("[data-case-progress-track]");
-    let progressFrame = 0;
+  <script>
+    import type { CaseStudySection } from "@lib/case-study";
+    import { initOnPageLoad } from "@lib/page-script";
 
-    const updateProgress = () => {
-      window.cancelAnimationFrame(progressFrame);
-      progressFrame = window.requestAnimationFrame(() => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-        const percent = Math.round(value * 100);
-        progress?.style.setProperty("transform", `scaleX(${value})`);
-        progressTrack?.setAttribute("aria-valuenow", String(percent));
-        progressTrack?.classList.toggle("is-active", percent > 2 && percent < 98);
+    initOnPageLoad(() => {
+      const caseRoot = document.querySelector<HTMLElement>("[data-case-sections]");
+      const caseSectionMap: CaseStudySection[] = caseRoot?.dataset.caseSections
+        ? JSON.parse(caseRoot.dataset.caseSections)
+        : [];
+
+      const progress = document.querySelector<HTMLElement>("[data-case-progress]");
+      const progressTrack = document.querySelector<HTMLElement>("[data-case-progress-track]");
+      const controller = new AbortController();
+      const { signal } = controller;
+      let progressFrame = 0;
+
+      const updateProgress = () => {
+        window.cancelAnimationFrame(progressFrame);
+        progressFrame = window.requestAnimationFrame(() => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+          const percent = Math.round(value * 100);
+          progress?.style.setProperty("transform", `scaleX(${value})`);
+          progressTrack?.setAttribute("aria-valuenow", String(percent));
+          progressTrack?.classList.toggle("is-active", percent > 2 && percent < 98);
+        });
+      };
+
+      document.querySelectorAll<HTMLHeadingElement>(".prose h2").forEach((heading) => {
+        const label = heading.textContent?.trim();
+        const section = caseSectionMap.find((item) => item.label === label);
+
+        if (section && !document.getElementById(section.id)) {
+          heading.id = section.id;
+        }
       });
-    };
 
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    window.addEventListener("resize", updateProgress);
+      const readLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-case-nav-link]"));
+      const sections = readLinks
+        .map((link) => {
+          const id = link.hash.slice(1);
+          const section = document.getElementById(id);
+          return section ? { id, link, section } : null;
+        })
+        .filter((item): item is { id: string; link: HTMLAnchorElement; section: HTMLElement } =>
+          Boolean(item),
+        );
 
-    document.querySelectorAll(".prose h2").forEach((heading) => {
-      const label = heading.textContent?.trim();
-      const section = caseSectionMap.find((item) => item.label === label);
+      const setActiveSection = (activeId: string) => {
+        readLinks.forEach((link) => {
+          const isActive = link.hash === `#${activeId}`;
 
-      if (section && !document.getElementById(section.id)) {
-        heading.id = section.id;
+          if (isActive) {
+            link.setAttribute("aria-current", "location");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      };
+
+      const updateActiveSection = () => {
+        const anchorLine = window.innerHeight * 0.28;
+        const active = sections.reduce<(typeof sections)[number] | null>((current, item) => {
+          const rect = item.section.getBoundingClientRect();
+          return rect.top <= anchorLine ? item : current;
+        }, sections[0] ?? null);
+
+        if (active) {
+          setActiveSection(active.id);
+        }
+      };
+
+      let sectionObserver: IntersectionObserver | undefined;
+
+      if ("IntersectionObserver" in window) {
+        sectionObserver = new IntersectionObserver(updateActiveSection, {
+          rootMargin: "-22% 0px -64% 0px",
+          threshold: [0, 0.25, 0.7],
+        });
+
+        sections.forEach((item) => sectionObserver?.observe(item.section));
       }
+
+      updateProgress();
+      updateActiveSection();
+      window.addEventListener("scroll", updateProgress, { passive: true, signal });
+      window.addEventListener("resize", updateProgress, { signal });
+      window.addEventListener("scroll", updateActiveSection, { passive: true, signal });
+      window.addEventListener("resize", updateActiveSection, { signal });
+
+      return () => {
+        controller.abort();
+        window.cancelAnimationFrame(progressFrame);
+        sectionObserver?.disconnect();
+      };
     });
-
-    const readLinks = Array.from(document.querySelectorAll("[data-case-nav-link]"));
-    const sections = readLinks
-      .map((link) => {
-        const id = link.hash.slice(1);
-        const section = document.getElementById(id);
-        return section ? { id, link, section } : null;
-      })
-      .filter(Boolean);
-
-    const setActiveSection = (activeId) => {
-      readLinks.forEach((link) => {
-        const isActive = link.hash === `#${activeId}`;
-        link.toggleAttribute("aria-current", isActive);
-
-        if (isActive) {
-          link.setAttribute("aria-current", "location");
-        }
-      });
-    };
-
-    const updateActiveSection = () => {
-      const anchorLine = window.innerHeight * 0.28;
-      const active = sections.reduce((current, item) => {
-        if (!item) {
-          return current;
-        }
-
-        const rect = item.section.getBoundingClientRect();
-        return rect.top <= anchorLine ? item : current;
-      }, sections[0]);
-
-      if (active) {
-        setActiveSection(active.id);
-      }
-    };
-
-    if ("IntersectionObserver" in window) {
-      const sectionObserver = new IntersectionObserver(updateActiveSection, {
-        rootMargin: "-22% 0px -64% 0px",
-        threshold: [0, 0.25, 0.7],
-      });
-
-      sections.forEach((item) => item && sectionObserver.observe(item.section));
-    }
-
-    updateActiveSection();
-    window.addEventListener("scroll", updateActiveSection, { passive: true });
-    window.addEventListener("resize", updateActiveSection);
   </script>
 </BaseLayout>
 
@@ -289,25 +317,35 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     right: 0;
     width: 4.5rem;
     height: 1rem;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.72), transparent 62%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--accent-cyan) 72%, transparent), transparent 62%);
     content: "";
     transform: translate(50%, -50%);
     opacity: 0.7;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .progress {
+      display: none;
+    }
   }
 
   .case-body,
   .related-section,
   .case-exit {
     background:
-      radial-gradient(circle at 0% 0%, rgba(125, 211, 252, 0.06), transparent 24rem),
+      radial-gradient(
+        circle at 0% 0%,
+        color-mix(in srgb, var(--accent-cyan) 6%, transparent),
+        transparent 24rem
+      ),
       var(--surface-light);
-    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    padding-block: var(--space-section-before) var(--space-section-after);
   }
 
   .case-body-inner {
     display: grid;
     grid-template-columns: minmax(9rem, 0.22fr) minmax(0, 860px);
-    gap: clamp(1.4rem, 5vw, 4rem);
+    gap: var(--gap-grid-lg);
     align-items: start;
   }
 
@@ -315,13 +353,13 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     position: sticky;
     top: 5rem;
     display: grid;
-    gap: 0.95rem;
+    gap: var(--space-stack-md);
     min-width: 0;
   }
 
   .read-flow {
     display: grid;
-    gap: 0.42rem;
+    gap: var(--space-stack-xs);
   }
 
   .read-flow .section-label {
@@ -331,9 +369,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   .case-read-nav a {
     display: inline-flex;
     width: fit-content;
-    border: 1px solid rgba(17, 24, 39, 0.12);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.58);
     color: var(--text-muted);
     font-size: 0.76rem;
     font-weight: 600;
@@ -347,24 +383,22 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   }
 
   .case-read-nav a:hover {
-    border-color: rgba(15, 159, 135, 0.22);
+    border-color: var(--badge-border);
     color: var(--accent);
     transform: translateX(2px);
   }
 
   .case-read-nav a[aria-current="location"] {
-    border-color: rgba(15, 159, 135, 0.26);
-    background:
-      linear-gradient(135deg, rgba(15, 159, 135, 0.14), rgba(125, 211, 252, 0.1)),
-      rgba(255, 255, 255, 0.76);
+    border-color: var(--badge-border-strong);
+    background: var(--chip-active-bg);
     color: var(--text);
-    box-shadow: 0 8px 24px rgba(15, 159, 135, 0.08);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   .archive-return {
-    border-color: rgba(15, 159, 135, 0.2) !important;
-    background: rgba(15, 159, 135, 0.1) !important;
-    color: #0f766e !important;
+    border-color: var(--badge-border) !important;
+    background: var(--badge-metric-bg) !important;
+    color: var(--accent-strong-on) !important;
   }
 
   .archive-return span,
@@ -385,28 +419,22 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 
   .case-reading {
     display: grid;
-    gap: clamp(1.4rem, 3vw, 2.2rem);
+    gap: var(--gap-grid-lg);
   }
 
   .case-brief {
-    display: grid;
-    gap: 1rem;
-    border: 1px solid rgba(17, 24, 39, 0.12);
-    border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(232, 238, 247, 0.54)),
-      rgba(255, 255, 255, 0.72);
-    box-shadow: 0 16px 48px rgba(17, 24, 39, 0.055);
-    padding: clamp(1rem, 2.5vw, 1.35rem);
+    overflow: hidden;
   }
 
-  .case-brief h2 {
-    max-width: 620px;
-    margin: 0.52rem 0 0;
-    color: var(--text);
-    font-size: clamp(1.25rem, 2.2vw, 1.8rem);
-    font-weight: 600;
-    line-height: 1.08;
+  .case-deep-dive {
+    display: grid;
+    gap: var(--space-stack-md);
+    padding-top: var(--space-section-tight);
+    border-top: 1px solid var(--line);
+  }
+
+  .case-deep-dive .section-label {
+    color: var(--text-soft);
   }
 
   .case-brief-grid {
@@ -414,18 +442,18 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1px;
     overflow: hidden;
-    border: 1px solid rgba(17, 24, 39, 0.08);
+    border: 1px solid var(--grid-line);
     border-radius: 8px;
-    background: rgba(17, 24, 39, 0.08);
+    background: var(--grid-line);
   }
 
   .case-brief-grid article {
     display: grid;
     gap: 0.5rem;
     align-content: start;
-    min-height: 8.5rem;
-    background: rgba(255, 255, 255, 0.72);
-    padding: 0.9rem;
+    min-height: 7rem;
+    background: var(--grid-cell-bg);
+    padding: 0.85rem;
   }
 
   .case-brief-grid span {
@@ -437,25 +465,21 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   }
 
   .case-brief-grid p {
-    display: -webkit-box;
     margin: 0;
-    overflow: hidden;
     color: var(--text);
     font-size: 0.86rem;
     font-weight: 500;
     line-height: 1.5;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
   }
 
   .related-heading {
     display: grid;
-    gap: 0.65rem;
-    margin-bottom: 1.5rem;
+    gap: var(--label-gap);
+    margin-bottom: var(--space-stack-lg);
   }
 
   .related-heading h2 {
-    margin: 0;
+    margin: var(--label-gap) 0 0;
     color: var(--text);
     font-size: clamp(1.5rem, 3vw, 2.5rem);
     font-weight: 600;
@@ -465,11 +489,11 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   .related-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1rem, 3vw, 1.5rem);
+    gap: var(--gap-grid);
   }
 
   .case-exit {
-    padding-block-start: clamp(2.5rem, 5vw, 4rem);
+    padding-block-start: var(--space-section-tight);
   }
 
   .case-exit-card {
@@ -477,32 +501,19 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 1rem;
     align-items: center;
-    border: 1px solid rgba(17, 24, 39, 0.12);
+    border: 1px solid var(--panel-border);
     border-radius: 8px;
-    background:
-      linear-gradient(135deg, rgba(15, 159, 135, 0.08), rgba(125, 211, 252, 0.07)),
-      rgba(255, 255, 255, 0.72);
-    box-shadow: 0 16px 48px rgba(17, 24, 39, 0.055);
+    background: var(--chip-highlight-bg);
+    box-shadow: var(--panel-shadow);
     padding: clamp(1rem, 2.5vw, 1.35rem);
   }
 
-  .case-exit-card h2,
-  .case-exit-card p {
-    margin: 0;
-  }
-
   .case-exit-card h2 {
-    margin-top: 0.5rem;
+    margin: 0;
     color: var(--text);
-    font-size: clamp(1.3rem, 2.3vw, 2rem);
+    font-size: clamp(1.3rem, 2.3vw, 1.8rem);
     font-weight: 600;
     line-height: 1.08;
-  }
-
-  .case-exit-card p:not(.section-label) {
-    max-width: 52rem;
-    margin-top: 0.55rem;
-    color: var(--text-muted);
   }
 
   .case-exit-card a {
@@ -510,10 +521,10 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     min-height: 2.55rem;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(15, 159, 135, 0.22);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
     border-radius: 999px;
     background: var(--accent);
-    color: #ffffff;
+    color: var(--button-on-accent);
     font-size: 0.86rem;
     font-weight: 600;
     line-height: 1;
@@ -563,12 +574,6 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   }
 
   @media (max-width: 760px) {
-    .case-body,
-    .related-section,
-    .case-exit {
-      padding-block: 3.25rem;
-    }
-
     .related-grid {
       grid-template-columns: 1fr;
     }
