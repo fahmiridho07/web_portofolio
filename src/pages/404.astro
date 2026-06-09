@@ -1,10 +1,12 @@
 ---
+import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 ---
 
 <BaseLayout
-  title="Page not found"
-  description="The page you requested is not available on this portfolio site."
+  title={pageSeo.notFound.title}
+  description={pageSeo.notFound.description}
+  robots={pageSeo.notFound.robots}
 >
   <section class="section not-found">
     <div class="container not-found-inner">

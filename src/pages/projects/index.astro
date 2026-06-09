@@ -1,5 +1,6 @@
 ---
 import ProjectCard from "@components/ProjectCard.astro";
+import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { projectCategories } from "@data/profile";
 import { getSortedProjects } from "@lib/projects";
@@ -11,10 +12,7 @@ const activeCategories = projectCategories.filter((category) =>
 const projectCount = projects.length;
 ---
 
-<BaseLayout
-  title="Projects"
-  description="Focused project index for data products, predictive modeling, decision support, analytics, and deployment proof."
->
+<BaseLayout title={pageSeo.projects.title} description={pageSeo.projects.description}>
   <section class="page-hero dark-section" data-dark-section>
     <div class="page-grid" aria-hidden="true"></div>
     <div class="container page-hero-inner" data-reveal>

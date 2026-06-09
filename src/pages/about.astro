@@ -9,7 +9,9 @@ import {
   profile,
   skillGroups,
 } from "@data/profile";
+import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import { getProfilePageSchema } from "@lib/seo";
 import { getImageMeta } from "@lib/images";
 import { getLogoItems } from "@lib/logos";
 
@@ -25,6 +27,9 @@ const profileHighlights = [
   `${profile.location} based`,
   `GPA ${education.gpa}`,
 ];
+const siteUrl = Astro.site?.href ?? Astro.url.origin;
+const profilePageSchema = getProfilePageSchema(siteUrl);
+const aboutOgImage = getImageMeta(pageSeo.about.ogImagePath);
 const profileAvatar = "/assets/profile/profile_avatar-160.webp";
 const profileAvatarSrcset =
   "/assets/profile/profile_avatar-96.webp 96w, /assets/profile/profile_avatar-160.webp 160w";
@@ -36,8 +41,13 @@ const profileImageMeta = getImageMeta(profileImage);
 ---
 
 <BaseLayout
-  title="About"
-  description="About Achmad Fahmi Ainur Ridho, a final-year Information Systems student at ITS focused on practical data products, machine learning, analytics, and backend workflows."
+  title={pageSeo.about.title}
+  description={pageSeo.about.description}
+  jsonLd={profilePageSchema}
+  ogImagePath={pageSeo.about.ogImagePath}
+  ogImageAlt={pageSeo.about.ogImageAlt}
+  ogImageWidth={aboutOgImage?.width}
+  ogImageHeight={aboutOgImage?.height}
 >
   <section class="section about-hero dark-section" data-dark-section>
     <div class="container about-grid">

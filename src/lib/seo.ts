@@ -1,22 +1,40 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { profile } from "@data/profile";
+import { education, profile } from "@data/profile";
+import { defaultOg, personEntity } from "@data/seo";
 
 const resumePdfPath = path.join(process.cwd(), "public", "resume.pdf");
+const ITS_URL = "https://www.its.ac.id";
 
 type JsonLd = Record<string, unknown>;
+
+export function absoluteUrl(site: string, pathname: string): string {
+  return new URL(pathname, site).href;
+}
 
 export function getPersonSchema(site: string): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
+    "@id": absoluteUrl(site, "/#person"),
     name: profile.name,
+    alternateName: personEntity.alternateNames,
+    givenName: "Achmad Fahmi Ainur",
+    familyName: "Ridho",
+    description: personEntity.description,
     email: profile.email,
     url: site,
+    image: absoluteUrl(site, personEntity.imagePath),
     jobTitle: profile.role,
+    knowsAbout: personEntity.knowsAbout,
     address: {
       "@type": "PostalAddress",
       addressCountry: profile.location,
+    },
+    alumniOf: {
+      "@type": "EducationalOrganization",
+      name: education.institution,
+      url: ITS_URL,
     },
     sameAs: profile.links
       .map((link) => link.href)
@@ -26,7 +44,7 @@ export function getPersonSchema(site: string): JsonLd {
           subjectOf: {
             "@type": "DigitalDocument",
             name: "Resume",
-            url: new URL(profile.resumePdfHref, site).href,
+            url: absoluteUrl(site, profile.resumePdfHref),
           },
         }
       : {}),
@@ -37,13 +55,30 @@ export function getWebSiteSchema(site: string): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": absoluteUrl(site, "/#website"),
     name: `${profile.shortName} Portfolio`,
     url: site,
     description: profile.summary,
+    inLanguage: "en",
+    publisher: {
+      "@id": absoluteUrl(site, "/#person"),
+    },
     author: {
-      "@type": "Person",
-      name: profile.name,
-      url: site,
+      "@id": absoluteUrl(site, "/#person"),
+    },
+  };
+}
+
+export function getProfilePageSchema(site: string): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: absoluteUrl(site, "/about/"),
+    name: `About ${profile.name}`,
+    description: personEntity.description,
+    inLanguage: "en",
+    mainEntity: {
+      "@id": absoluteUrl(site, "/#person"),
     },
   };
 }
@@ -55,20 +90,51 @@ export function getCreativeWorkSchema(input: {
   slug: string;
   year: number;
   stack: string[];
+  imagePath?: string;
 }): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: input.title,
     description: input.description,
-    url: new URL(`/projects/${input.slug}/`, input.site).href,
+    url: absoluteUrl(input.site, `/projects/${input.slug}/`),
     dateCreated: String(input.year),
+    inLanguage: "en",
     author: {
-      "@type": "Person",
-      name: profile.name,
-      url: input.site,
+      "@id": absoluteUrl(input.site, "/#person"),
     },
     keywords: input.stack.join(", "),
+    ...(input.imagePath
+      ? { image: absoluteUrl(input.site, input.imagePath) }
+      : {}),
+  };
+}
+
+export function getOpenGraphImage(
+  site: string,
+  imagePath = defaultOg.imagePath,
+  options?: {
+    width?: number;
+    height?: number;
+    alt?: string;
+  },
+) {
+  return {
+    url: absoluteUrl(site, imagePath),
+    width: options?.width ?? defaultOg.imageWidth,
+    height: options?.height ?? defaultOg.imageHeight,
+    alt: options?.alt ?? defaultOg.imageAlt,
+  };
+}
+
+export function getProjectOpenGraph(project: {
+  title: string;
+  summary: string;
+  coverImage: string;
+}) {
+  return {
+    imagePath: project.coverImage,
+    imageAlt: `${project.title} project preview — ${project.summary}`,
   };
 }
 

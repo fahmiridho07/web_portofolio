@@ -3,7 +3,8 @@ import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
 import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCaseStudyNavSections, getCaseStudySectionMap } from "@lib/case-study";
-import { getCreativeWorkSchema } from "@lib/seo";
+import { getImageMeta } from "@lib/images";
+import { getCreativeWorkSchema, getProjectOpenGraph } from "@lib/seo";
 import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
@@ -62,6 +63,8 @@ const quickReadItems = [
   },
 ];
 const siteUrl = Astro.site?.href ?? Astro.url.origin;
+const projectOg = getProjectOpenGraph(project.data);
+const projectOgImage = getImageMeta(project.data.coverImage);
 const projectSchema = getCreativeWorkSchema({
   site: siteUrl,
   title: project.data.title,
@@ -69,12 +72,22 @@ const projectSchema = getCreativeWorkSchema({
   slug: project.data.slug,
   year: project.data.year,
   stack: project.data.stack,
+  imagePath: project.data.coverImage,
 });
 const caseNavSections = getCaseStudyNavSections(project.body ?? "");
 const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 ---
 
-<BaseLayout title={project.data.title} description={project.data.summary} jsonLd={projectSchema}>
+<BaseLayout
+  title={project.data.title}
+  description={project.data.summary}
+  jsonLd={projectSchema}
+  ogType="article"
+  ogImagePath={projectOg.imagePath}
+  ogImageAlt={projectOg.imageAlt}
+  ogImageWidth={projectOgImage?.width}
+  ogImageHeight={projectOgImage?.height}
+>
   <article>
     <CaseSnapshotHero project={project} />
 

@@ -12,6 +12,7 @@ import {
   profile,
   whyMeItems,
 } from "@data/profile";
+import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getImageMeta } from "@lib/images";
 import { getCategoryMeta, getSortedProjects } from "@lib/projects";
@@ -36,10 +37,7 @@ const heroProof = heroProject?.data.proof?.[0] ?? heroProject?.data.metric ?? he
 const heroTags = ["Automation", "Dashboards", "ML systems", "Backend/data"];
 ---
 
-<BaseLayout
-  title="Achmad Fahmi Ainur Ridho Portfolio"
-  description="Portfolio of Achmad Fahmi Ainur Ridho, a final-year Information Systems student building practical data products across machine learning, analytics, and backend workflows."
->
+<BaseLayout title={pageSeo.home.title} description={pageSeo.home.description}>
   <section class="simple-hero dark-section" data-dark-section>
     <div class="hero-gridlines" aria-hidden="true"></div>
     <div class="hero-ambient" aria-hidden="true"></div>
