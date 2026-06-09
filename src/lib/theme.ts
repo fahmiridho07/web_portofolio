@@ -106,9 +106,7 @@ const paintThemeSwitch = (theme: ThemeMode, options: { animate?: boolean; lock?:
 
     switchRoot.dataset.activeTheme = theme;
     switchRoot.classList.toggle("is-dark-active", theme === "dark");
-    switchRoot.querySelectorAll<HTMLElement>("[data-theme-option]").forEach((option) => {
-      option.setAttribute("aria-pressed", String(option.dataset.themeOption === theme));
-    });
+    switchRoot.setAttribute("aria-checked", String(theme === "dark"));
 
     if (indicator) {
       indicator.style.setProperty("transform", indicatorOffset(theme), lock ? "important" : "");
@@ -196,9 +194,7 @@ export const prepareThemeForSwap = (newDocument: Document): void => {
 
     switchRoot.dataset.activeTheme = theme;
     switchRoot.classList.toggle("is-dark-active", theme === "dark");
-    switchRoot.querySelectorAll<HTMLElement>("[data-theme-option]").forEach((option) => {
-      option.setAttribute("aria-pressed", String(option.dataset.themeOption === theme));
-    });
+    switchRoot.setAttribute("aria-checked", String(theme === "dark"));
 
     if (indicator) {
       indicator.style.setProperty("transform", indicatorOffset(theme), "important");
@@ -240,17 +236,11 @@ export const initThemeSwitch = (): void => {
   themeSwitchReady = true;
 
   switchRoots.forEach((switchRoot) => {
-    switchRoot.querySelectorAll<HTMLButtonElement>("[data-theme-option]").forEach((option) => {
-      option.addEventListener("click", () => {
-        const nextTheme: ThemeMode = option.dataset.themeOption === "dark" ? "dark" : "light";
+    switchRoot.addEventListener("click", () => {
+      const nextTheme: ThemeMode = getStoredTheme() === "dark" ? "light" : "dark";
 
-        if (getStoredTheme() === nextTheme) {
-          return;
-        }
-
-        paintThemeSwitch(nextTheme, { animate: true });
-        applyTheme(nextTheme, { persist: true, dispatchEvent: true });
-      });
+      paintThemeSwitch(nextTheme, { animate: true });
+      applyTheme(nextTheme, { persist: true, dispatchEvent: true });
     });
   });
 };

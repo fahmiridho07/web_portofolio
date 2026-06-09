@@ -3,24 +3,18 @@ const sunIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" str
 const moonIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
 ---
 
-<div class="theme-switch glass-segment glass-backdrop" role="group" aria-label="Color theme" data-theme-switch>
+<button
+  type="button"
+  class="theme-switch glass-segment glass-backdrop"
+  role="switch"
+  aria-label="Toggle color theme"
+  data-theme-switch
+>
   <span class="theme-switch-indicator glass-segment-indicator" aria-hidden="true"></span>
 
-  <button
-    type="button"
-    class="theme-option"
-    data-theme-option="light"
-    aria-label="Light mode"
-    set:html={sunIcon}
-  />
+  <span class="theme-option" data-theme-option="light" aria-hidden="true" set:html={sunIcon} />
 
-  <button
-    type="button"
-    class="theme-option"
-    data-theme-option="dark"
-    aria-label="Dark mode"
-    set:html={moonIcon}
-  />
+  <span class="theme-option" data-theme-option="dark" aria-hidden="true" set:html={moonIcon} />
 
   <script is:inline>
     (function () {
@@ -37,16 +31,14 @@ const moonIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" st
       root.dataset.activeTheme = theme;
       root.classList.toggle("is-dark-active", theme === "dark");
 
-      root.querySelectorAll("[data-theme-option]").forEach(function (option) {
-        option.setAttribute("aria-pressed", String(option.dataset.themeOption === theme));
-      });
+      root.setAttribute("aria-checked", String(theme === "dark"));
 
       if (indicator) {
         indicator.style.transform = offset;
       }
     })();
   </script>
-</div>
+</button>
 
 <script>
   import { initOnPageLoad } from "@lib/page-script";
@@ -64,6 +56,11 @@ const moonIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" st
     width: 4.36rem;
     grid-template-columns: 1fr 1fr;
     gap: 0.125rem;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .theme-switch:not([data-active-theme]) {
@@ -115,7 +112,8 @@ const moonIcon = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" st
     transform: scale(1.04);
   }
 
-  .theme-option[aria-pressed="true"] {
+  .theme-switch[data-active-theme="light"] .theme-option[data-theme-option="light"],
+  .theme-switch[data-active-theme="dark"] .theme-option[data-theme-option="dark"] {
     color: var(--accent, #0f9f87);
   }
 
