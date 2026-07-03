@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="640" viewBox="0 0 1440 640" role="img" aria-label="AE latent-space oversampling and LightGBM pipeline architecture">
+<defs>
+<filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#172033" flood-opacity="0.10"/></filter>
+</defs>
+<rect x="0" y="0" width="1440" height="640" rx="0" fill="#fbfcff" stroke="none"/>
+<text x="64" y="78" font-size="34" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="850" text-anchor="start" fill="#172033">AE Latent-Space Oversampling + LightGBM Pipeline</text>
+<text x="64" y="112" font-size="17" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="500" text-anchor="start" fill="#5d667a">Autoencoder generates synthetic fraud in latent space; LightGBM is tuned on top via Bayesian Optimization.</text>
+
+<text x="84" y="176" font-size="22" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="850" text-anchor="start" fill="#1f7a8c">1 &#183; Data &amp; Latent-Space Oversampling</text>
+
+<!-- Stage 1 boxes -->
+<g font-family="Inter, Segoe UI, Arial, sans-serif">
+<rect x="84" y="206" width="180" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="174" y="238" font-size="17" font-weight="900" text-anchor="middle" fill="#1f7a8c">1</text>
+<text x="100" y="264" font-size="13.5" font-weight="750" fill="#172033"><tspan x="100" dy="0">IEEE-CIS data</tspan><tspan x="100" dy="18">590,540 txns</tspan><tspan x="100" dy="18">3.5% fraud</tspan></text>
+
+<line x1="264" y1="258" x2="298" y2="258" stroke="#1f7a8c" stroke-width="2"/>
+<path d="M 298 258 l -8 -6 v 12 z" fill="#1f7a8c"/>
+
+<rect x="299" y="206" width="180" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="389" y="238" font-size="17" font-weight="900" text-anchor="middle" fill="#1f7a8c">2</text>
+<text x="315" y="264" font-size="13.5" font-weight="750" fill="#172033"><tspan x="315" dy="0">A1 preprocessing</tspan><tspan x="315" dy="18">freq-encode + z-score</tspan><tspan x="315" dy="18">432 features</tspan></text>
+
+<line x1="479" y1="258" x2="513" y2="258" stroke="#1f7a8c" stroke-width="2"/>
+<path d="M 513 258 l -8 -6 v 12 z" fill="#1f7a8c"/>
+
+<rect x="514" y="206" width="180" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="604" y="238" font-size="17" font-weight="900" text-anchor="middle" fill="#1f7a8c">3</text>
+<text x="530" y="264" font-size="13.5" font-weight="750" fill="#172033"><tspan x="530" dy="0">Autoencoder</tspan><tspan x="530" dy="18">fraud rows only</tspan><tspan x="530" dy="18">128&#8594;64&#8594;64, MSE</tspan></text>
+
+<line x1="694" y1="258" x2="728" y2="258" stroke="#1f7a8c" stroke-width="2"/>
+<path d="M 728 258 l -8 -6 v 12 z" fill="#1f7a8c"/>
+
+<rect x="729" y="206" width="180" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="819" y="238" font-size="17" font-weight="900" text-anchor="middle" fill="#1f7a8c">4</text>
+<text x="745" y="264" font-size="13.5" font-weight="750" fill="#172033"><tspan x="745" dy="0">Latent-space SMOTE</tspan><tspan x="745" dy="18">k=5 interpolation</tspan><tspan x="745" dy="18">(Chawla 2002 in latent z)</tspan></text>
+
+<line x1="909" y1="258" x2="943" y2="258" stroke="#1f7a8c" stroke-width="2"/>
+<path d="M 943 258 l -8 -6 v 12 z" fill="#1f7a8c"/>
+
+<rect x="944" y="206" width="180" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="1034" y="238" font-size="17" font-weight="900" text-anchor="middle" fill="#1f7a8c">5</text>
+<text x="960" y="264" font-size="13.5" font-weight="750" fill="#172033"><tspan x="960" dy="0">Decode + append</tspan><tspan x="960" dy="18">synthetic fraud rows</tspan><tspan x="960" dy="18">train split only</tspan></text>
+</g>
+
+<!-- connector from stage 1 to stage 2 -->
+<path d="M 1034 310 V 356 H 214 V 400" fill="none" stroke="#5d667a" stroke-width="2" stroke-dasharray="4 4"/>
+<path d="M 214 400 l -6 -8 h 12 z" fill="#5d667a"/>
+
+<text x="84" y="392" font-size="22" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="850" text-anchor="start" fill="#3366cc">2 &#183; Bayesian-Tuned LightGBM</text>
+
+<!-- Stage 2 boxes -->
+<g font-family="Inter, Segoe UI, Arial, sans-serif">
+<rect x="84" y="422" width="260" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="214" y="454" font-size="17" font-weight="900" text-anchor="middle" fill="#3366cc">1</text>
+<text x="100" y="480" font-size="13.5" font-weight="750" fill="#172033"><tspan x="100" dy="0">Augmented train set</tspan><tspan x="100" dy="18">baseline / SMOTE-NC / AE-oversample</tspan><tspan x="100" dy="18">same locked target fraud rate (10%)</tspan></text>
+
+<line x1="344" y1="474" x2="378" y2="474" stroke="#3366cc" stroke-width="2"/>
+<path d="M 378 474 l -8 -6 v 12 z" fill="#3366cc"/>
+
+<rect x="379" y="422" width="260" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="509" y="454" font-size="17" font-weight="900" text-anchor="middle" fill="#3366cc">2</text>
+<text x="395" y="480" font-size="13.5" font-weight="750" fill="#172033"><tspan x="395" dy="0">Optuna TPE search</tspan><tspan x="395" dy="18">10 trials &#183; 7-D hyperparam space</tspan><tspan x="395" dy="18">objective: validation PR-AUC</tspan></text>
+
+<line x1="639" y1="474" x2="673" y2="474" stroke="#3366cc" stroke-width="2"/>
+<path d="M 673 474 l -8 -6 v 12 z" fill="#3366cc"/>
+
+<rect x="674" y="422" width="260" height="104" rx="8" fill="#ffffff" stroke="#dfe5ef"/>
+<text x="804" y="454" font-size="17" font-weight="900" text-anchor="middle" fill="#3366cc">3</text>
+<text x="690" y="480" font-size="13.5" font-weight="750" fill="#172033"><tspan x="690" dy="0">LightGBM classifier</tspan><tspan x="690" dy="18">2000 trees</tspan><tspan x="690" dy="18">early stop @ 100 rounds</tspan></text>
+</g>
+
+<rect x="84" y="560" width="1272" height="52" rx="8" fill="#f1f8ff" stroke="#cfe4ff"/>
+<text x="110" y="591" font-size="16.5" font-family="Inter, Segoe UI, Arial, sans-serif" font-weight="750" text-anchor="start" fill="#172033">Result: test PR-AUC 0.8547 for AE latent-oversample (tuned) &#8212; best of baseline, SMOTE-NC, and AE, tuned or untuned.</text>
+</svg>

@@ -1,6 +1,5 @@
 ---
-import ProjectMockup from "@components/ProjectMockup.astro";
-import { getLogoItems } from "@lib/logos";
+import { getImageMeta } from "@lib/images";
 import { getCategoryMeta } from "@lib/projects";
 import type { CollectionEntry } from "astro:content";
 
@@ -10,263 +9,158 @@ interface Props {
 
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
-const projectLogo = project.data.logo ?? category.logo;
-const visibleStack = getLogoItems(project.data.stack.slice(0, 4));
-const hiddenStackCount = Math.max(project.data.stack.length - visibleStack.length, 0);
-const snapshotStats = [
-  {
-    label: "Outcome",
-    value: project.data.metric ?? project.data.status,
-  },
-  {
-    label: "Role",
-    value: project.data.role,
-  },
-  {
-    label: "Status",
-    value: `${project.data.status} / ${project.data.year}`,
-  },
+const coverMeta = getImageMeta(project.data.coverImage);
+const facts = [
+  { label: "Role", value: project.data.role },
+  { label: "Outcome", value: project.data.metric ?? project.data.status },
+  { label: "Status", value: `${project.data.status} / ${project.data.year}` },
+  { label: "Stack", value: project.data.stack.slice(0, 5).join(" · ") },
 ];
 ---
 
-<header class="case-snapshot-hero dark-section dark-hero-shell" data-dark-section style="--dark-hero-grid-size: 5.5rem">
-  <div class="dark-hero-grid" aria-hidden="true"></div>
-  <div class="container case-command-grid">
+<header class="case-snapshot-hero">
+  <div class="container case-hero-inner">
     <div class="case-copy" data-reveal>
-      <div class="case-kicker">
-        {projectLogo && <span class="case-logo"><img src={projectLogo} alt="" width="24" height="24" loading="eager" /></span>}
-        <p class="section-label">{category.title} / {project.data.year}</p>
-      </div>
-
+      <p class="section-label">{category.title} / {project.data.year}</p>
       <h1 class="display">{project.data.title}</h1>
-      <p class="case-result">{project.data.metric ?? project.data.status}</p>
+      <p class="case-summary">{project.data.summary}</p>
 
-      <div class="dark-cta-row case-actions">
+      <div class="case-actions">
         <a class="dark-cta dark-cta-primary" href="#case-study">
-          Open the build <span aria-hidden="true">-&gt;</span>
+          Read the case <span aria-hidden="true">&darr;</span>
         </a>
         {
           project.data.links.map((link) => (
-            <a class="dark-cta dark-cta-secondary dark-cta-compact" href={link.href} target="_blank" rel="noreferrer">
-              {link.label} <span aria-hidden="true">-&gt;</span>
+            <a
+              class="dark-cta dark-cta-secondary dark-cta-compact"
+              href={link.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {link.label} <span aria-hidden="true">&nearr;</span>
             </a>
           ))
         }
       </div>
-
-      <ul class="stack-pills" aria-label="Technology stack">
-        {
-          visibleStack.map((item) => (
-            <li class:list={["glass-chip-dark", item.logo && "has-logo"]}>
-              {item.logo && <img src={item.logo} alt="" width="24" height="24" loading="lazy" />}
-              <span>{item.label}</span>
-            </li>
-          ))
-        }
-        {hiddenStackCount > 0 && <li class="glass-chip-dark">+{hiddenStackCount} more</li>}
-      </ul>
     </div>
 
-    <aside class="snapshot-panel glass-dark" aria-label="Project snapshot" data-reveal data-reveal-delay="120">
-      <a class="snapshot-artifact" href={project.data.coverImage} target="_blank" rel="noreferrer">
-        <ProjectMockup project={project} variant="case" showMetric={false} eager />
-        <span class="artifact-open glass-badge-dark">Open artifact</span>
-      </a>
+    <figure class="case-cover" data-reveal data-reveal-delay="100">
+      <img
+        src={project.data.coverImage}
+        alt={`Screenshot from ${project.data.title}`}
+        width={coverMeta?.width}
+        height={coverMeta?.height}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </figure>
 
-      <div class="snapshot-stat-grid">
-        {
-          snapshotStats.map((item) => (
-            <article>
-              <span>{item.label}</span>
-              <strong>{item.value}</strong>
-            </article>
-          ))
-        }
-      </div>
-
-    </aside>
+    <dl class="case-facts" data-reveal data-reveal-delay="60">
+      {
+        facts.map((fact) => (
+          <div class="case-fact">
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
   </div>
 </header>
 
 <style>
-  .case-command-grid {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 0.96fr) minmax(19rem, 0.74fr);
-    gap: var(--gap-hero);
-    align-items: center;
+  .case-snapshot-hero {
+    padding-block: clamp(4.5rem, 9vw, 7rem) clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .case-copy,
-  .snapshot-panel {
-    min-width: 0;
+  .case-hero-inner {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 2.75rem);
   }
 
   .case-copy {
     display: grid;
-    gap: var(--space-stack-md);
+    gap: 1rem;
   }
 
-  .case-kicker {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.7rem;
-    align-items: center;
+  .case-copy .display {
+    max-width: 900px;
+    font-size: clamp(2.2rem, 4.8vw, 4rem);
   }
 
-  .case-logo {
-    display: inline-grid;
-    width: 2.2rem;
-    height: 2.2rem;
-    place-items: center;
-    border: 1px solid var(--glass-dark-logo-border);
-    border-radius: 999px;
-    background: var(--glass-dark-logo-bg);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
-  }
-
-  .case-logo img {
-    width: 1.24rem;
-    height: 1.24rem;
-    object-fit: contain;
-  }
-
-  .display {
-    max-width: 940px;
-    color: #ffffff;
-  }
-
-  .case-result {
-    max-width: 760px;
+  .case-summary {
+    max-width: 62ch;
     margin: 0;
-    color: rgba(155, 231, 212, 0.92);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: clamp(0.88rem, 1.4vw, 1rem);
-    line-height: 1.4;
+    color: var(--ink-muted);
+    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    line-height: 1.65;
   }
 
   .case-actions {
-    gap: 0.5rem;
-  }
-
-  .stack-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .stack-pills li {
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 0.6875rem;
-    line-height: 1;
-    padding: 0.42rem 0.66rem;
-  }
-
-  .stack-pills li.has-logo {
-    display: inline-flex;
     align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
+  }
+
+  .case-facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: 1.1rem;
+  }
+
+  .case-fact {
+    display: grid;
     gap: 0.4rem;
-    padding: 0.32rem 0.62rem 0.32rem 0.38rem;
-  }
-
-  .stack-pills img {
-    width: 1rem;
-    height: 1rem;
-    border-radius: 999px;
-    background: var(--glass-dark-logo-bg);
-    object-fit: contain;
-    padding: 0.12rem;
-  }
-
-  .snapshot-panel {
-    display: grid;
-    gap: 0.85rem;
-    padding: clamp(0.8rem, 2vw, 1rem);
-  }
-
-  .snapshot-artifact {
-    position: relative;
-    display: block;
-    aspect-ratio: 1.55;
-    overflow: hidden;
-    border-radius: 6px;
-    background: var(--glass-dark-well);
-  }
-
-  .artifact-open {
-    position: absolute;
-    right: 0.75rem;
-    bottom: 0.75rem;
-    z-index: 4;
-    color: rgba(255, 255, 255, 0.86);
-    font-size: 0.72rem;
-    line-height: 1;
-    padding: 0.46rem 0.62rem;
-  }
-
-  .snapshot-stat-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1px;
-    overflow: hidden;
-    border-radius: 6px;
-    background: var(--glass-dark-stat-divider);
-  }
-
-  .snapshot-stat-grid article {
-    display: grid;
-    gap: 0.42rem;
-    min-height: 6rem;
     align-content: start;
-    background: var(--glass-dark-stat-bg);
-    padding: 0.8rem;
   }
 
-  .snapshot-stat-grid span {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.64rem;
-    font-weight: 600;
+  .case-fact dt {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
     line-height: 1;
     text-transform: uppercase;
   }
 
-  .snapshot-stat-grid strong {
-    color: #ffffff;
-    font-size: 0.86rem;
-    font-weight: 600;
-    line-height: 1.25;
+  .case-fact dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.85rem;
+    font-weight: 500;
+    line-height: 1.45;
   }
 
-  @media (max-width: 900px) {
-    .case-command-grid {
-      grid-template-columns: 1fr;
-    }
+  .case-cover {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: #ffffff;
   }
 
-  @media (max-width: 620px) {
-    .case-snapshot-hero {
-      padding-block: 5rem var(--space-hero-bottom);
+  .case-cover img {
+    width: 100%;
+    aspect-ratio: 2.1;
+    object-fit: cover;
+    object-position: top left;
+  }
+
+  @media (max-width: 720px) {
+    .case-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
     }
 
-    .case-copy {
-      gap: var(--space-stack-sm);
-    }
-
-    .snapshot-panel {
-      gap: 0.65rem;
-      padding: 0.65rem;
-    }
-
-    .snapshot-stat-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .snapshot-stat-grid article {
-      min-height: auto;
+    .case-cover img {
+      aspect-ratio: 1.6;
     }
   }
 </style>

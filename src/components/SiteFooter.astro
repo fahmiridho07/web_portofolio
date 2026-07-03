@@ -2,70 +2,104 @@
 import { profile } from "@data/profile";
 
 const year = new Date().getFullYear();
+const externalLinks = profile.links.filter((link) => link.href.startsWith("http"));
 ---
 
 <footer
-  class="site-footer glass-backdrop-chrome divider"
+  class="site-footer divider"
   transition:persist="site-footer"
   transition:name="site-footer"
   transition:animate="none"
 >
   <div class="container footer-inner">
-    <a class="footer-brand" href="/" aria-label={`${profile.name} home`} data-astro-prefetch="hover">
-      <span class="mark glass-chip">{profile.mark}</span>
-      <span class="name">{profile.shortName}</span>
-    </a>
+    <p class="footer-name">{profile.shortName}</p>
 
-    <p class="year">{year}</p>
+    <ul class="footer-links">
+      <li><a href={profile.emailHref}>Email</a></li>
+      {
+        externalLinks.map((link) => (
+          <li>
+            <a href={link.href} target="_blank" rel="noreferrer">
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="footer-meta">Surabaya, ID <span class="footer-dot" aria-hidden="true"></span> {year}</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background: var(--footer-bg);
-    padding-block: clamp(1.35rem, 2.5vw, 1.75rem);
-    color: var(--text-soft);
+    background: var(--paper);
+    padding-block: clamp(1.5rem, 3vw, 2rem);
   }
 
   .footer-inner {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
-    gap: var(--space-stack-sm) var(--space-stack-lg);
+    gap: 0.75rem 1.5rem;
   }
 
-  .footer-brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    color: inherit;
-  }
-
-  .mark {
-    display: inline-grid;
-    width: 1.75rem;
-    height: 1.75rem;
-    place-items: center;
-    border-radius: var(--radius-pill);
-    color: var(--text);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    line-height: 1;
-  }
-
-  .name {
-    color: var(--text);
-    font-size: 0.82rem;
-    font-weight: 500;
-    line-height: 1.2;
-  }
-
-  .year {
+  .footer-name {
     margin: 0;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.72rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer-links a {
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
     line-height: 1;
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.3em;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      text-decoration-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .footer-links a:hover {
+    color: var(--rust);
+    text-decoration-color: var(--rust);
+  }
+
+  .footer-meta {
+    margin: 0;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1;
+  }
+
+  .footer-dot {
+    display: inline-block;
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 0 2.5px transparent, 0 0 0 1px var(--signal) inset;
+    outline: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
+    outline-offset: 2px;
+    margin-inline: 0.15rem;
+    transform: translateY(-0.05rem);
   }
 </style>
