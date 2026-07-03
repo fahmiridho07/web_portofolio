@@ -2,7 +2,6 @@
 
 import OrganizationLogo from "@components/OrganizationLogo.astro";
 import {
-  coursesAndCertificates,
   education,
   experiences,
   heroProjectSlug,
@@ -70,9 +69,7 @@ const analyticsHighlights = getLogoItems(
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <section class="about-hero dark-section dark-hero-shell" data-dark-section>
-    <div class="dark-hero-grid" aria-hidden="true"></div>
-
+  <section class="about-hero dark-hero-shell">
     <div class="container about-hero-inner" data-reveal>
       <div class="about-person">
         <p class="section-label">{profile.name}</p>
@@ -122,7 +119,7 @@ const analyticsHighlights = getLogoItems(
     <div class="container section-block">
       <div class="section-head" data-reveal>
         <p class="section-label">Education</p>
-        <h2>ITS.</h2>
+        <h2>Where I studied.</h2>
       </div>
 
       <div class="info-panel glass-panel" data-reveal data-reveal-delay="80">
@@ -155,7 +152,7 @@ const analyticsHighlights = getLogoItems(
     <div class="container section-block">
       <div class="section-head" data-reveal>
         <p class="section-label">Experience</p>
-        <h2>Four roles.</h2>
+        <h2>Where the experience comes from.</h2>
       </div>
 
       <ol class="experience-timeline">
@@ -204,7 +201,7 @@ const analyticsHighlights = getLogoItems(
     <div class="container section-block">
       <div class="section-head" data-reveal>
         <p class="section-label">Skills</p>
-        <h2>Toolkit.</h2>
+        <h2>What I reach for.</h2>
       </div>
 
       <div class="skill-bento">
@@ -276,10 +273,9 @@ const analyticsHighlights = getLogoItems(
     </div>
   </section>
 
-  <section class="working-style dark-section dark-hero-shell" data-dark-section>
-    <div class="dark-hero-grid" aria-hidden="true"></div>
+  <section class="working-style divider">
     <div class="container section-block">
-      <div class="section-head section-head-dark" data-reveal>
+      <div class="section-head" data-reveal>
         <p class="section-label">Working style</p>
         <h2>How I work.</h2>
       </div>
@@ -287,7 +283,7 @@ const analyticsHighlights = getLogoItems(
       <div class="why-grid">
         {
           whyMeItems.map((item, index) => (
-            <article class="why-card glass-dark" data-reveal data-reveal-delay={String((index + 1) * 60)}>
+            <article class="why-card" data-reveal data-reveal-delay={String((index + 1) * 60)}>
               <span class="why-index">0{index + 1}</span>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
@@ -295,28 +291,6 @@ const analyticsHighlights = getLogoItems(
           ))
         }
       </div>
-    </div>
-  </section>
-
-  <section class="about-section divider">
-    <div class="container section-block">
-      <div class="section-head" data-reveal>
-        <p class="section-label">Also</p>
-        <h2>Beyond project cards.</h2>
-      </div>
-
-      <ul class="credential-grid">
-        {
-          coursesAndCertificates.map((item, index) => (
-            <li class="credential-card glass-elevated" data-reveal data-reveal-delay={String((index + 1) * 60)}>
-              <span class="credential-year">{item.year}</span>
-              <h3>{item.title}</h3>
-              <p class="credential-issuer">{item.issuer}</p>
-              <p>{item.context}</p>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 </BaseLayout>
@@ -332,9 +306,7 @@ const analyticsHighlights = getLogoItems(
   .about-hero .display {
     max-width: 820px;
     margin: 0;
-    color: #ffffff;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.98;
+    font-size: clamp(2.4rem, 5vw, 4rem);
   }
 
   .about-person {
@@ -345,21 +317,20 @@ const analyticsHighlights = getLogoItems(
 
   .about-person .section-label {
     margin: 0;
-    color: rgba(255, 255, 255, 0.62);
   }
 
   .about-person span {
-    color: rgba(255, 255, 255, 0.66);
+    color: var(--ink-soft);
     font-size: 0.76rem;
     line-height: 1.35;
   }
 
   .role-signal {
-    max-width: 36rem;
+    max-width: 40rem;
     margin: 0;
-    color: rgba(226, 232, 240, 0.68);
+    color: var(--ink-muted);
     font-size: clamp(0.9rem, 1.3vw, 1rem);
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .profile-highlights {
@@ -372,21 +343,9 @@ const analyticsHighlights = getLogoItems(
   }
 
   .profile-highlights li {
-    color: rgba(226, 232, 240, 0.78);
     font-size: 0.76rem;
     line-height: 1.25;
     padding: 0.48rem 0.66rem;
-  }
-
-  .profile-strip,
-  .about-section {
-    background:
-      radial-gradient(
-        circle at 100% 0%,
-        color-mix(in srgb, var(--accent-cyan) 5%, transparent),
-        transparent 24rem
-      ),
-      var(--surface-light);
   }
 
   .profile-card {
@@ -476,14 +435,6 @@ const analyticsHighlights = getLogoItems(
     font-size: clamp(1.75rem, 3.5vw, 2.6rem);
     font-weight: 600;
     line-height: 1.02;
-  }
-
-  .section-head-dark .section-label {
-    color: rgba(255, 255, 255, 0.62);
-  }
-
-  .section-head-dark h2 {
-    color: #ffffff;
   }
 
   .info-panel {
@@ -785,7 +736,7 @@ const analyticsHighlights = getLogoItems(
 
   .working-style {
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     padding-block: var(--space-section-before) var(--space-section-after);
   }
 
@@ -799,29 +750,31 @@ const analyticsHighlights = getLogoItems(
     display: grid;
     align-content: start;
     gap: var(--space-stack-sm);
-    padding: clamp(1rem, 2.2vw, 1.3rem);
+    border-top: 1px solid var(--line);
+    padding-top: 1.1rem;
   }
 
   .why-index {
-    color: rgba(186, 230, 253, 0.72);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    color: var(--rust);
+    font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1;
   }
 
   .why-card h3 {
     margin: 0;
-    color: #ffffff;
-    font-size: 1.05rem;
-    font-weight: 600;
-    line-height: 1.2;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.25;
   }
 
   .why-card p {
     margin: 0;
-    color: rgba(226, 232, 240, 0.72);
+    color: var(--ink-muted);
     font-size: 0.88rem;
-    line-height: 1.55;
+    line-height: 1.6;
   }
 
   .credential-grid {

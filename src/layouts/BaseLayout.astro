@@ -14,6 +14,7 @@ import {
 } from "@lib/seo";
 import interLatin400 from "@fontsource/inter/files/inter-latin-400-normal.woff2?url";
 import interLatin500 from "@fontsource/inter/files/inter-latin-500-normal.woff2?url";
+import frauncesLatin from "@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url";
 import "../styles/global.css";
 
 interface Props {
@@ -67,12 +68,11 @@ const structuredData = [
     <meta name="author" content={profile.name} />
     {robots ? <meta name="robots" content={robots} /> : null}
     <meta name="generator" content={Astro.generator} />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap.xml" type="application/xml" title="Sitemap" />
     {identityLinks.map((link) => <link rel="me" href={link.href} />)}
-    <meta name="theme-color" content="#07111e" />
-    <script is:inline src="/scripts/theme-boot.js"></script>
+    <meta name="theme-color" content="#f7f8f6" />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={siteBrand} />
     <meta property="og:locale" content={defaultOg.locale} />
@@ -98,34 +98,21 @@ const structuredData = [
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="preload" href={interLatin400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={interLatin500} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={frauncesLatin} as="font" type="font/woff2" crossorigin />
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
     <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
     <style is:inline>
       html,
       body {
-        background: #f3f6fb;
-        color: #111827;
-      }
-
-      html[data-theme="dark"],
-      html[data-theme="dark"] body {
-        background: #07111e;
-        color: #eef3f9;
-      }
-
-      html[data-header-dark="true"] .site-header {
-        border-bottom-color: rgba(255, 255, 255, 0.16);
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
-          rgba(7, 17, 30, 0.28);
-        color: #ffffff;
-      }
-
-      html[data-theme="dark"] .site-header {
-        border-bottom-color: rgba(255, 255, 255, 0.14);
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
-          rgba(7, 17, 30, 0.26);
-        color: #eef3f9;
+        background: #f7f8f6;
+        color: #16181d;
       }
     </style>
   </head>
@@ -146,38 +133,17 @@ const structuredData = [
     </div>
 
     <script>
-      import {
-        initThemeTransitionGuard,
-        lockDocumentTheme,
-        lockStoredTheme,
-        prepareThemeForSwap,
-        setSwapDestination,
-      } from "@lib/theme";
-
-      initThemeTransitionGuard();
-      lockStoredTheme();
-      document.addEventListener("astro:before-preparation", (event) => {
-        if ("to" in event && event.to instanceof URL) {
-          setSwapDestination(event.to.pathname);
-        }
-
-        lockDocumentTheme();
-      });
-      document.addEventListener("astro:before-swap", (event) => {
-        if ("newDocument" in event && event.newDocument instanceof Document) {
-          prepareThemeForSwap(event.newDocument);
-        }
-      });
-      document.addEventListener("astro:after-swap", () => lockStoredTheme());
-      document.addEventListener("astro:page-load", () => lockStoredTheme());
-    </script>
-
-    <script>
       import { initOnPageLoad } from "@lib/page-script";
 
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      // Native CSS scroll-driven animations handle reveals without JS
+      const nativeReveal = CSS.supports("animation-timeline: view()");
 
       initOnPageLoad(() => {
+        if (nativeReveal) {
+          return;
+        }
+
         const revealItems = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
 
         if (reduceMotion || !("IntersectionObserver" in window)) {

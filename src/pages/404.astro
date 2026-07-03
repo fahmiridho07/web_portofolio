@@ -8,10 +8,9 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   description={pageSeo.notFound.description}
   robots={pageSeo.notFound.robots}
 >
-  <section class="not-found dark-section dark-hero-shell" data-dark-section>
-    <div class="dark-hero-grid" aria-hidden="true"></div>
+  <section class="not-found dark-hero-shell">
     <div class="container not-found-inner">
-      <div class="not-found-card glass-dark" data-reveal>
+      <div class="not-found-card" data-reveal>
         <p class="section-label">404</p>
         <h1 class="display">Page not found.</h1>
         <div class="not-found-actions dark-cta-row">
@@ -48,14 +47,8 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     text-align: center;
   }
 
-  .not-found-card .section-label {
-    color: rgba(255, 255, 255, 0.62);
-  }
-
   .not-found-card .display {
-    color: #ffffff;
     font-size: clamp(2rem, 6vw, 2.8rem);
-    line-height: 1;
   }
 
   .not-found-actions {

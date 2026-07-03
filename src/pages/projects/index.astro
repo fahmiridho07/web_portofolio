@@ -1,10 +1,9 @@
 ---
-import ProjectCard from "@components/ProjectCard.astro";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { projectCategories } from "@data/profile";
 import { getCollectionPageSchema } from "@lib/seo";
-import { getSortedProjects } from "@lib/projects";
+import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 
 const projects = await getSortedProjects();
 const siteUrl = Astro.site?.href ?? Astro.url.origin;
@@ -25,17 +24,10 @@ const projectCount = projects.length;
   description={pageSeo.projects.description}
   jsonLd={collectionSchema}
 >
-  <section class="page-hero dark-section dark-hero-shell" data-dark-section style="--dark-hero-grid-size: 5.5rem">
-    <div class="dark-hero-grid" aria-hidden="true"></div>
+  <section class="page-hero">
     <div class="container page-hero-inner" data-reveal>
-      <div class="hero-copy">
-        <p class="section-label">Project archive</p>
-        <h1 class="display">All projects.</h1>
-      </div>
-      <div class="archive-count glass-dark">
-        <strong>{projectCount}</strong>
-        <span>builds</span>
-      </div>
+      <p class="section-label">Project archive</p>
+      <h1 class="display">All <em>{projectCount}</em> projects.</h1>
     </div>
   </section>
 
@@ -45,7 +37,6 @@ const projectCount = projects.length;
         <p class="filter-status" data-filter-status aria-live="polite">{projectCount} shown</p>
 
         <div class="filter-tabs" role="toolbar" aria-label="Project category filters" data-filter-tabs>
-          <span class="filter-indicator glass-chip" data-filter-indicator aria-hidden="true"></span>
           <button type="button" data-project-filter="" aria-pressed="true">All</button>
           {
             activeCategories.map((category) => (
@@ -56,13 +47,45 @@ const projectCount = projects.length;
           }
         </div>
 
-        <button type="button" class="filter-reset glass-chip" data-filter-reset aria-label="Reset category filter" hidden>
+        <button
+          type="button"
+          class="filter-reset"
+          data-filter-reset
+          aria-label="Reset category filter"
+          hidden
+        >
           Reset
         </button>
       </div>
 
-      <div class="project-grid" data-filter-list>
-        {projects.map((project) => <ProjectCard project={project} />)}
+      <div class="archive-list" data-filter-list>
+        {
+          projects.map((project, index) => {
+            const category = getCategoryMeta(project.data.category);
+            const metric = project.data.metric ?? project.data.status;
+
+            return (
+              <a
+                class="archive-row"
+                href={`/projects/${project.data.slug}/`}
+                data-astro-prefetch="hover"
+                data-category={project.data.category}
+                data-reveal
+              >
+                <span class="archive-index">{String(index + 1).padStart(2, "0")}</span>
+                <span class="archive-copy">
+                  <span class="archive-title">{project.data.title}</span>
+                  <span class="archive-meta">
+                    {category.title} &middot; {project.data.year} &middot; {metric}
+                  </span>
+                </span>
+                <span class="archive-arrow" aria-hidden="true">
+                  &rarr;
+                </span>
+              </a>
+            );
+          })
+        }
       </div>
     </div>
   </section>
@@ -75,7 +98,6 @@ const projectCount = projects.length;
         document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"),
       );
       const filterTabList = document.querySelector<HTMLElement>("[data-filter-tabs]");
-      const filterIndicator = document.querySelector<HTMLElement>("[data-filter-indicator]");
       const list = document.querySelector<HTMLElement>("[data-filter-list]");
       const items = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
       const filterStatus = document.querySelector<HTMLElement>("[data-filter-status]");
@@ -83,18 +105,6 @@ const projectCount = projects.length;
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const controller = new AbortController();
       const { signal } = controller;
-
-      const updateFilterIndicator = () => {
-        const activeTab =
-          filterTabs.find((item) => item.getAttribute("aria-pressed") === "true") ?? filterTabs[0];
-
-        if (!activeTab || !filterTabList || !filterIndicator) {
-          return;
-        }
-
-        filterIndicator.style.setProperty("--indicator-x", `${activeTab.offsetLeft}px`);
-        filterIndicator.style.setProperty("--indicator-width", `${activeTab.offsetWidth}px`);
-      };
 
       const updateFilterStatus = (active: string) => {
         const visibleItems = items.filter((item) => !item.hidden);
@@ -140,27 +150,27 @@ const projectCount = projects.length;
         filterTabs.forEach((item) => {
           item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
         });
-        updateFilterIndicator();
 
         if (syncUrl) {
           writeFilterToUrl(active);
         }
 
-        window.setTimeout(() => {
-          items.forEach((item) => {
-            item.hidden = Boolean(active) && item.dataset.category !== active;
-          });
-          updateFilterStatus(active);
-          list?.classList.remove("is-filtering");
-        }, reduceMotion ? 0 : 140);
+        window.setTimeout(
+          () => {
+            items.forEach((item) => {
+              item.hidden = Boolean(active) && item.dataset.category !== active;
+            });
+            updateFilterStatus(active);
+            list?.classList.remove("is-filtering");
+          },
+          reduceMotion ? 0 : 140,
+        );
       };
 
       filterTabs.forEach((tab) => {
-        tab.addEventListener(
-          "click",
-          () => applyFilter(tab.dataset.projectFilter ?? ""),
-          { signal },
-        );
+        tab.addEventListener("click", () => applyFilter(tab.dataset.projectFilter ?? ""), {
+          signal,
+        });
       });
 
       filterTabList?.addEventListener(
@@ -199,11 +209,8 @@ const projectCount = projects.length;
       );
 
       resetFilter?.addEventListener("click", () => applyFilter(""), { signal });
-      filterTabList?.addEventListener("scroll", updateFilterIndicator, { passive: true, signal });
-      window.addEventListener("resize", updateFilterIndicator, { signal });
 
       applyFilter(readFilterFromUrl(), false);
-      requestAnimationFrame(updateFilterIndicator);
 
       return () => controller.abort();
     });
@@ -211,57 +218,17 @@ const projectCount = projects.length;
 </BaseLayout>
 
 <style>
+  .page-hero {
+    padding-block: clamp(5rem, 10vw, 8rem) clamp(2rem, 4vw, 3rem);
+  }
+
   .page-hero-inner {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-stack-lg);
-    align-items: end;
-    justify-content: space-between;
-  }
-
-  .hero-copy .section-label {
-    color: rgba(255, 255, 255, 0.62);
-  }
-
-  .page-hero .display {
-    max-width: 640px;
-    margin-top: var(--label-gap);
-    color: #ffffff;
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    line-height: 0.98;
-  }
-
-  .archive-count {
     display: grid;
-    gap: 0.35rem;
-    min-width: 8rem;
-    padding: 0.9rem 1rem;
+    gap: 0.75rem;
   }
 
-  .archive-count strong {
-    color: #9be7d4;
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    line-height: 1;
-  }
-
-  .archive-count span {
-    color: rgba(255, 255, 255, 0.66);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.68rem;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .project-index {
-    background:
-      radial-gradient(
-        circle at 0% 0%,
-        color-mix(in srgb, var(--accent-cyan) 6%, transparent),
-        transparent 24rem
-      ),
-      var(--surface-light);
+  .page-hero .display em {
+    font-style: italic;
   }
 
   .project-work {
@@ -272,150 +239,153 @@ const projectCount = projects.length;
   .archive-toolbar {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.65rem 0.85rem;
+    gap: 0.65rem 1.25rem;
     align-items: center;
   }
 
   .filter-status {
     margin: 0;
-    color: var(--text-soft);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.68rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
-    flex: 1 1 auto;
-  }
-
-  .filter-reset {
-    display: inline-flex;
-    min-height: 2rem;
-    align-items: center;
-    border: 1px solid var(--badge-border);
-    border-radius: 999px;
-    color: var(--accent);
-    cursor: pointer;
-    font-size: 0.74rem;
-    font-weight: 600;
-    line-height: 1;
-    padding: 0.5rem 0.68rem;
-    transition:
-      border-color var(--motion-fast) var(--ease-standard),
-      background var(--motion-fast) var(--ease-standard),
-      transform var(--motion-fast) var(--ease-out);
-  }
-
-  .filter-reset:hover {
-    border-color: var(--badge-border-strong);
-    background: var(--surface-elevated-hover);
-    transform: translateY(-1px);
   }
 
   .filter-tabs {
-    position: relative;
     display: flex;
-    flex: 1 1 100%;
-    gap: 0.45rem;
-    overflow-x: auto;
-    padding-bottom: 0.1rem;
-    scrollbar-width: none;
-  }
-
-  .filter-tabs::-webkit-scrollbar {
-    display: none;
-  }
-
-  .filter-indicator {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: var(--indicator-width, 2.8rem);
-    height: calc(100% - 0.1rem);
-    border-color: var(--badge-border-strong);
-    border-radius: 999px;
-    background: var(--filter-indicator-bg);
-    box-shadow:
-      inset 0 1px 0 var(--filter-indicator-inset),
-      0 8px 22px color-mix(in srgb, var(--accent) 8%, transparent);
-    transform: translateX(var(--indicator-x, 0));
-    transition:
-      width var(--motion-medium) var(--ease-standard),
-      transform var(--motion-medium) var(--ease-out);
-    pointer-events: none;
+    flex-wrap: wrap;
+    gap: 0.35rem 1rem;
   }
 
   .filter-tabs button {
-    position: relative;
-    z-index: 1;
-    flex: 0 0 auto;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    background: transparent;
-    color: var(--text-soft);
+    border: 0;
+    background: none;
+    color: var(--ink-muted);
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 500;
     line-height: 1;
-    padding: 0.55rem 0.72rem;
-    white-space: nowrap;
+    padding: 0.4rem 0;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.35em;
     transition:
       color var(--motion-fast) var(--ease-standard),
-      transform var(--motion-fast) var(--ease-out);
+      text-decoration-color var(--motion-fast) var(--ease-standard);
   }
 
   .filter-tabs button:hover {
-    color: var(--text);
-    transform: translateY(-1px);
+    color: var(--ink);
+    text-decoration-color: var(--line-strong);
   }
 
   .filter-tabs button[aria-pressed="true"] {
-    color: var(--text);
+    color: var(--rust-deep);
+    text-decoration-color: var(--rust);
   }
 
-  .project-grid {
+  .filter-reset {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    background: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    font-size: 0.72rem;
+    line-height: 1;
+    padding: 0.42rem 0.7rem;
+  }
+
+  .filter-reset:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .archive-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-    gap: var(--gap-grid);
-    transition:
-      filter var(--motion-fast) var(--ease-standard),
-      opacity var(--motion-fast) var(--ease-standard),
-      transform var(--motion-fast) var(--ease-out);
+    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
-  .project-grid.is-filtering {
-    opacity: 0.68;
-    filter: blur(2px);
-    transform: translateY(3px);
+  .archive-list.is-filtering {
+    opacity: 0.35;
+  }
+
+  .archive-row {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) 2rem;
+    gap: 1rem;
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    padding-block: clamp(1rem, 2.2vw, 1.4rem);
+  }
+
+  .archive-row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .archive-row[hidden] {
+    display: none;
+  }
+
+  .archive-index {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1;
+  }
+
+  .archive-copy {
+    display: grid;
+    gap: 0.3rem;
+    min-width: 0;
+  }
+
+  .archive-title {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+    font-weight: 480;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-medium) var(--ease-out);
+  }
+
+  .archive-meta {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .archive-arrow {
+    color: var(--ink-soft);
+    text-align: right;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-medium) var(--ease-out);
+  }
+
+  .archive-row:hover .archive-title,
+  .archive-row:focus-visible .archive-title {
+    color: var(--rust-deep);
+    transform: translateX(0.35rem);
+  }
+
+  .archive-row:hover .archive-arrow,
+  .archive-row:focus-visible .archive-arrow {
+    color: var(--rust);
+    transform: translateX(4px);
   }
 
   @media (max-width: 720px) {
-    .project-grid.is-filtering {
-      filter: none;
-      opacity: 0.82;
-    }
-  }
-
-  @media (max-width: 760px) {
-    .page-hero {
-      padding-block: 5rem var(--space-hero-bottom);
-    }
-
-    .archive-count {
-      width: fit-content;
-    }
-
-    .filter-tabs {
-      margin-inline: -0.625rem;
-      padding-inline: 0.625rem;
-    }
-
-    .project-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 520px) {
-    .page-hero .display {
-      font-size: clamp(2.2rem, 12vw, 3rem);
+    .archive-row {
+      grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
     }
   }
 </style>

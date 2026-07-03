@@ -11,15 +11,16 @@ export const profile = {
     "mailto:achmadridho.id@gmail.com?subject=Resume%20request%20-%20Achmad%20Fahmi%20Ainur%20Ridho",
   resumePdfHref: "/resume.pdf",
   headline:
-    "Practical data products across machine learning, analytics, and backend workflows.",
+    "Software engineering with real machine learning depth, from production .NET to fraud detection pipelines.",
   summary:
-    "I build data products that ship. That includes models, dashboards, and backend workflows that turn raw data into systems teams can use.",
-  availability:
-    "Open to data/ML engineering, analytics engineering, and backend or data systems roles",
+    "I build software that ships: production ASP.NET Core systems, workflow automation, and the ML pipelines behind them.",
+  availability: "Open to software engineering and AI/ML roles from 2026",
   roleSignal:
-    "Looking for data/ML engineering, analytics engineering, or backend and data systems roles.",
+    "Full-stack .NET engineer going deep into machine learning. Looking for software engineering or AI/ML roles.",
+  currentFocus:
+    "Latest: fraud detection thesis, 0.855 PR-AUC (Autoencoder + LightGBM + Optuna) · graduating 2026",
   contactPrompt:
-    "Best fit for teams that need data workflows turned into shipped, maintainable systems.",
+    "Best fit for teams shipping production software or ML systems that have to hold up in the real world.",
   aboutHook:
     "Based in Indonesia, shipping from internship work and coursework that teams can actually run.",
   lastShippedLabel: "Last shipped",
@@ -62,13 +63,13 @@ export const education = {
   institution: "Institut Teknologi Sepuluh Nopember (ITS)",
   period: "Aug 2022 to expected 2026",
   gpa: "3.62/4.00",
-  focus:
-    "Technology, business, data, AI/data systems, and enterprise systems.",
+  focus: "Technology, business, data, AI/data systems, and enterprise systems.",
 };
 
-export const heroProjectSlug = "kpc-ideku-v3-dotnet-stabilization";
+export const heroProjectSlug = "fraud-detection-ml-pipeline";
 
 export const homeProjectSlugs = [
+  "fraud-detection-ml-pipeline",
   "kpc-power-automate-po-automation",
   "kpc-ideku-v3-dotnet-stabilization",
   "scent2me-perfume-recommendation",
@@ -123,7 +124,8 @@ export const projectCategories = [
   {
     id: projectCategoryIds[0],
     title: "Predictive Modeling",
-    intro: "Classification, forecasting, data preparation, and model evaluation.",
+    intro:
+      "Classification, forecasting, data preparation, and model evaluation.",
     logo: "/assets/logos/scikitlearn.svg",
   },
   {
@@ -135,7 +137,8 @@ export const projectCategories = [
   {
     id: projectCategoryIds[2],
     title: "Deployment & Automation",
-    intro: "Apps, APIs, workflow automation, deployment pipelines, and monitoring.",
+    intro:
+      "Apps, APIs, workflow automation, deployment pipelines, and monitoring.",
     logo: "/assets/logos/devops.svg",
   },
   {
@@ -209,13 +212,15 @@ export const coursesAndCertificates = [
   {
     title: "Odoo ERP teaching assistant",
     issuer: "ITS Enterprise Systems",
-    context: "Sales, Inventory, HR, and Accounting modules with implementation grading",
+    context:
+      "Sales, Inventory, HR, and Accounting modules with implementation grading",
     year: "2024",
   },
   {
     title: "Data Science Academy operations",
     issuer: "Information Systems Expo 2024",
-    context: "Python assessments, data manipulation challenges, and curriculum delivery",
+    context:
+      "Python assessments, data manipulation challenges, and curriculum delivery",
     year: "2024",
   },
   {

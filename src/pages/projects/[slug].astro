@@ -1,7 +1,6 @@
 ---
 import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
 import ContentImage from "@components/ContentImage.astro";
-import ProjectCard from "@components/ProjectCard.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getCaseStudyNavSections, getCaseStudySectionMap } from "@lib/case-study";
 import { getImageMeta } from "@lib/images";
@@ -165,8 +164,16 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
             <p class="section-label">More work</p>
             <h2>Related builds.</h2>
           </div>
-          <div class="related-grid">
-            {relatedProjects.map((entry) => <ProjectCard project={entry} />)}
+          <div class="related-list">
+            {relatedProjects.map((entry) => (
+              <a class="related-row" href={`/projects/${entry.data.slug}/`} data-astro-prefetch="hover">
+                <span class="related-title">{entry.data.title}</span>
+                <span class="related-meta">{entry.data.metric ?? entry.data.status}</span>
+                <span class="related-arrow" aria-hidden="true">
+                  -&gt;
+                </span>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -285,19 +292,12 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 <style>
   .progress {
     position: sticky;
-    top: 3.8rem;
+    top: 3.55rem;
     z-index: 45;
-    height: 3px;
+    height: 2px;
     overflow: hidden;
-    background: rgba(226, 232, 240, 0.18);
-    opacity: 0.86;
-    transition:
-      opacity var(--motion-fast) var(--ease-standard),
-      height var(--motion-fast) var(--ease-standard);
-  }
-
-  .progress.is-active {
-    opacity: 1;
+    background: var(--line);
+    transition: opacity var(--motion-fast) var(--ease-standard);
   }
 
   .progress span {
@@ -305,22 +305,10 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     display: block;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, #9be7d4, #7dd3fc, #d8a238);
+    background: var(--rust);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 90ms linear;
-  }
-
-  .progress span::after {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 4.5rem;
-    height: 1rem;
-    background: radial-gradient(circle, color-mix(in srgb, var(--accent-cyan) 72%, transparent), transparent 62%);
-    content: "";
-    transform: translate(50%, -50%);
-    opacity: 0.7;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -481,15 +469,61 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   .related-heading h2 {
     margin: var(--label-gap) 0 0;
     color: var(--text);
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
-    font-weight: 600;
-    line-height: 1.05;
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 480;
+    line-height: 1.15;
   }
 
-  .related-grid {
+  .related-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--gap-grid);
+  }
+
+  .related-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 1.5rem;
+    gap: 1rem;
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    padding-block: 1rem;
+  }
+
+  .related-row:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .related-title {
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 490;
+    line-height: 1.25;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .related-meta {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    line-height: 1.4;
+    text-align: right;
+  }
+
+  .related-arrow {
+    color: var(--ink-soft);
+    text-align: right;
+    transition:
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-medium) var(--ease-out);
+  }
+
+  .related-row:hover .related-title {
+    color: var(--rust-deep);
+  }
+
+  .related-row:hover .related-arrow {
+    color: var(--rust);
+    transform: translateX(3px);
   }
 
   .case-exit {
@@ -574,10 +608,6 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   }
 
   @media (max-width: 760px) {
-    .related-grid {
-      grid-template-columns: 1fr;
-    }
-
     .case-brief-grid article {
       min-height: auto;
     }
