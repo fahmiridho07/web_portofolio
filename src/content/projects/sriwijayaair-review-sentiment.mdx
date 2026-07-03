@@ -1,0 +1,89 @@
+---
+title: "Sriwijaya Air Review Sentiment Analysis"
+slug: "sriwijayaair-review-sentiment"
+summary: "An end-to-end Indonesian NLP pipeline classifying 1,756 Google Play reviews of the Sriwijaya Air Mobile app into three sentiment classes, then turning negative reviews into a product complaint taxonomy."
+category: "machine-learning-data-science"
+status: "Completed"
+year: 2026
+role: "Sole author, NLP coursework project at ITS"
+stack:
+  - Python
+  - Scikit-learn
+  - TF-IDF
+  - NLTK
+  - Sastrawi
+  - Logistic Regression
+  - Linear SVM
+  - Naive Bayes
+  - Streamlit
+links:
+  - label: "GitHub"
+    href: "https://github.com/fahmiridho07/nlp_project_sriwijayaair"
+featured: true
+coverImage: "/assets/projects/sriwijayaair-review-sentiment/case-overview.webp"
+logo: "/assets/logos/scikitlearn.svg"
+result: "Logistic Regression over TF-IDF n-grams reached 0.852 accuracy and 0.845 weighted F1 on a held-out test set, and a rule-based aspect taxonomy converted negative reviews into ranked product complaints."
+metric: "0.852 accuracy · 3-class sentiment"
+proof:
+  - "1,756 Google Play reviews, weak-labeled from star ratings"
+  - "Logistic Regression vs Linear SVM vs Naive Bayes on the same split"
+  - "Negative-review aspect taxonomy plus held-out error analysis"
+priority: 2
+---
+
+## Context
+
+This is an NLP coursework project at ITS: sentiment analysis on Google Play reviews of the Sriwijaya Air Mobile app. I scraped 1,799 reviews with `google_play_scraper`, kept 1,756 after cleaning, and built the full pipeline end to end: preprocessing, feature engineering, model comparison, evaluation, error analysis, and a Streamlit inference demo.
+
+Labels are derived from star ratings: 1 to 2 stars is negative, 3 is neutral, 4 to 5 is positive. That makes them weak labels, a rating is a useful proxy for sentiment but not a human annotation, and the whole evaluation has to be read with that in mind.
+
+## Problem
+
+Airline app reviews are mixed-language (Indonesian with English fragments), short, and heavily imbalanced: 806 negative, 863 positive, and only 87 neutral reviews. The interesting questions were less "can a classifier fit this" and more operational: which model holds up on a held-out split, where exactly does it fail, and can the output be turned into something a product team could actually use.
+
+## Approach
+
+- Preprocessing for mixed Indonesian and English text: lowercasing, tokenization, bilingual stopword removal, English lemmatization, Indonesian and English stemming, contraction expansion, and word normalization.
+- Features: TF-IDF over unigrams, bigrams, and trigrams, plus simple numeric features (word count, character count, average word length).
+- Models: Logistic Regression, Linear SVM, and Naive Bayes compared on the same stratified 80:20 split, with random oversampling applied to the training split only to help the small neutral class.
+- Evaluation on the held-out test set with accuracy, macro F1, weighted F1, per-class F1, and a confusion matrix.
+- Beyond classification: a rule-based keyword taxonomy over negative reviews (app performance, check-in, ticketing, promo, login, payment, membership, customer service) to rank what users actually complain about.
+
+## Evidence
+
+<div className="evidence-grid evidence-grid-2">
+  <figure className="evidence-panel" data-artifact="Model comparison">
+    <img src="/assets/projects/sriwijayaair-review-sentiment/model-performance.webp" width="1400" height="540" loading="lazy" decoding="async" alt="Bar charts comparing Logistic Regression, Linear SVM, and Naive Bayes on accuracy, macro F1, and weighted F1, plus per-class F1 for the best model" />
+    <figcaption>Logistic Regression won on macro F1; per-class F1 exposes the weak neutral class honestly.</figcaption>
+  </figure>
+  <figure className="evidence-panel" data-artifact="Confusion matrix">
+    <img src="/assets/projects/sriwijayaair-review-sentiment/confusion-matrix.webp" width="1400" height="833" loading="lazy" decoding="async" alt="Confusion matrix of the best model on the held-out test set" />
+    <figcaption>Held-out confusion matrix: negative and positive separate cleanly, neutral gets absorbed by both.</figcaption>
+  </figure>
+  <figure className="evidence-panel" data-artifact="Complaint signals">
+    <img src="/assets/projects/sriwijayaair-review-sentiment/negative-review-signals.webp" width="1400" height="846" loading="lazy" decoding="async" alt="Bar chart of the most frequent terms in negative reviews: promo, tiket, member, buka, loading, and check-in related terms" />
+    <figcaption>Negative reviews cluster around promos, ticketing, membership, and the app failing to open.</figcaption>
+  </figure>
+  <figure className="evidence-panel" data-artifact="Error analysis">
+    <img src="/assets/projects/sriwijayaair-review-sentiment/error-analysis.webp" width="1400" height="783" loading="lazy" decoding="async" alt="Error analysis summary showing which classes the model confuses on the held-out test set" />
+    <figcaption>Error analysis on the held-out split: most mistakes involve the ambiguous neutral class.</figcaption>
+  </figure>
+</div>
+
+## Key Decisions
+
+Oversampling only the training split. Balancing the whole dataset before splitting would leak duplicated neutral reviews into the test set and inflate every score; keeping the test set untouched kept the evaluation honest.
+
+Selecting the best model by macro F1 instead of accuracy. With 87 neutral rows against 1,669 others, accuracy is nearly blind to the minority class; macro F1 is the metric that actually punishes ignoring it.
+
+Treating the labels as weak labels explicitly. Rating 3 reviews mix complaints, suggestions, and mild praise, so neutral F1 of 0.15 is reported as a data problem to solve with manual annotation, not hidden behind the strong 0.88 negative and positive F1 scores.
+
+## Result
+
+Logistic Regression was the best of the three models with 0.852 accuracy, 0.636 macro F1, and 0.845 weighted F1 on the held-out test set, against 0.841 accuracy for Linear SVM and 0.818 for Naive Bayes.
+
+The aspect analysis turned the model output into product insight: negative reviews concentrate on promos, ticketing and booking, membership features, and the app failing to open or load. The pipeline ships with a model card documenting intended use and limitations, and a Streamlit demo for classifying new review text.
+
+## What I'd Improve
+
+Manually annotate 100 to 150 reviews to measure how far rating-based labels drift from human judgment, add cross-validation with hyperparameter tuning, and test IndoBERT or another multilingual transformer once a stronger labeling baseline exists. The neutral class needs data work before it needs a bigger model.
