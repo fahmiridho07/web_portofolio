@@ -72,7 +72,7 @@ export const homeProjectSlugs = [
   "fraud-detection-ml-pipeline",
   "kpc-power-automate-po-automation",
   "kpc-ideku-v3-dotnet-stabilization",
-  "scent2me-perfume-recommendation",
+  "sriwijayaair-review-sentiment",
   "bank-jatim-performance-dashboard",
 ] as const;
 

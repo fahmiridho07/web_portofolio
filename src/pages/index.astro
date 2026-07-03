@@ -414,13 +414,15 @@ const marqueeItems = [
   }
 
   /* Headline arrives word by word, once, on load */
+  /* Stagger kept tight: the headline is the LCP element, so every extra
+     millisecond of delay here is paid in paint metrics */
   .hero-word {
     display: inline-block;
     margin-right: 0.24em;
     opacity: 0;
     transform: translateY(0.55em);
-    animation: hero-word-in 640ms var(--ease-out) forwards;
-    animation-delay: calc(var(--wi) * 60ms);
+    animation: hero-word-in 520ms var(--ease-out) forwards;
+    animation-delay: calc(var(--wi) * 45ms);
   }
 
   @keyframes hero-word-in {
@@ -463,7 +465,7 @@ const marqueeItems = [
     stroke-dashoffset: 1;
     opacity: 0.9;
     animation: circle-draw 850ms var(--ease-out) forwards;
-    animation-delay: calc(var(--wi) * 60ms + 480ms);
+    animation-delay: calc(var(--wi) * 45ms + 400ms);
     vector-effect: non-scaling-stroke;
   }
 
