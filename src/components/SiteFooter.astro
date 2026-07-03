@@ -11,6 +11,10 @@ const externalLinks = profile.links.filter((link) => link.href.startsWith("http"
   transition:name="site-footer"
   transition:animate="none"
 >
+  <div class="container footer-tagline-row">
+    <p class="footer-tagline">Trained to find <em>the outlier</em>.</p>
+  </div>
+
   <div class="container footer-inner">
     <p class="footer-name">{profile.shortName}</p>
 
@@ -35,6 +39,28 @@ const externalLinks = profile.links.filter((link) => link.href.startsWith("http"
   .site-footer {
     background: var(--paper);
     padding-block: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .footer-tagline-row {
+    margin-bottom: clamp(1.1rem, 2.5vw, 1.6rem);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: clamp(1.1rem, 2.5vw, 1.6rem);
+  }
+
+  .footer-tagline {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+    font-weight: 470;
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+  }
+
+  .footer-tagline em {
+    color: var(--rust-deep);
+    font-style: italic;
+    font-weight: 450;
   }
 
   .footer-inner {

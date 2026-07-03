@@ -1,7 +1,7 @@
 ---
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { projectCategories } from "@data/profile";
+import { heroProjectSlug, projectCategories } from "@data/profile";
 import { getCollectionPageSchema } from "@lib/seo";
 import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 
@@ -63,10 +63,11 @@ const projectCount = projects.length;
           projects.map((project, index) => {
             const category = getCategoryMeta(project.data.category);
             const metric = project.data.metric ?? project.data.status;
+            const isAnomaly = project.data.slug === heroProjectSlug;
 
             return (
               <a
-                class="archive-row"
+                class:list={["archive-row", isAnomaly && "is-anomaly"]}
                 href={`/projects/${project.data.slug}/`}
                 data-astro-prefetch="hover"
                 data-category={project.data.category}
@@ -77,6 +78,11 @@ const projectCount = projects.length;
                   <span class="archive-title">{project.data.title}</span>
                   <span class="archive-meta">
                     {category.title} &middot; {project.data.year} &middot; {metric}
+                    {isAnomaly && (
+                      <span class="archive-flag">
+                        <span class="archive-flag-dot" aria-hidden="true" /> the anomaly
+                      </span>
+                    )}
                   </span>
                 </span>
                 <span class="archive-arrow" aria-hidden="true">
@@ -330,10 +336,51 @@ const projectCount = projects.length;
   }
 
   .archive-index {
+    position: relative;
+    justify-self: start;
     color: var(--ink-soft);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1;
+  }
+
+  .archive-index::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1.9rem;
+    height: 1.55rem;
+    border: 1.5px solid var(--signal);
+    border-radius: 52% 48% 55% 45% / 60% 55% 45% 50%;
+    content: "";
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6) rotate(-6deg);
+    transition:
+      opacity var(--motion-medium) var(--ease-out),
+      transform var(--motion-medium) var(--ease-out);
+    pointer-events: none;
+  }
+
+  .archive-row:hover .archive-index::after,
+  .archive-row:focus-visible .archive-index::after {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(-6deg);
+  }
+
+  .archive-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.34rem;
+    margin-left: 0.55rem;
+    color: var(--signal);
+    letter-spacing: 0.06em;
+  }
+
+  .archive-flag-dot {
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: var(--signal);
   }
 
   .archive-copy {

@@ -8,17 +8,34 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   description={pageSeo.notFound.description}
   robots={pageSeo.notFound.robots}
 >
-  <section class="not-found dark-hero-shell">
-    <div class="container not-found-inner">
-      <div class="not-found-card" data-reveal>
-        <p class="section-label">404</p>
-        <h1 class="display">Page not found.</h1>
-        <div class="not-found-actions dark-cta-row">
-          <a class="dark-cta dark-cta-primary" href="/">
-            Home <span aria-hidden="true">-&gt;</span>
-          </a>
-          <a class="dark-cta dark-cta-secondary" href="/projects/" data-astro-prefetch="hover">Projects</a>
-        </div>
+  <section class="not-found">
+    <div class="container not-found-inner" data-reveal>
+      <svg class="nf-scatter" viewBox="0 0 260 120" aria-hidden="true">
+        <circle class="nf-dot" cx="20" cy="88" r="4"></circle>
+        <circle class="nf-dot" cx="52" cy="52" r="4"></circle>
+        <circle class="nf-dot" cx="86" cy="94" r="4"></circle>
+        <circle class="nf-dot" cx="118" cy="40" r="4"></circle>
+        <circle class="nf-dot" cx="150" cy="82" r="4"></circle>
+        <circle class="nf-dot" cx="184" cy="56" r="4"></circle>
+        <circle class="nf-dot" cx="240" cy="92" r="4"></circle>
+        <circle class="nf-outlier" cx="216" cy="22" r="5.5"></circle>
+        <path
+          class="nf-ring"
+          d="M236 16 C 231 4, 206 2, 197 14 C 188 26, 200 40, 216 38 C 232 36, 240 26, 236 18"
+          pathLength="1"></path>
+      </svg>
+
+      <p class="section-label">404 &middot; anomaly detected</p>
+      <h1 class="display">This page is an <em>outlier</em>.</h1>
+      <p class="nf-copy">
+        It sits outside every route this site knows. Flagged, logged, and nothing more to see here.
+      </p>
+
+      <div class="nf-actions dark-cta-row">
+        <a class="dark-cta dark-cta-primary" href="/">
+          Back to the data <span aria-hidden="true">-&gt;</span>
+        </a>
+        <a class="dark-cta dark-cta-secondary" href="/projects/" data-astro-prefetch="hover">Projects</a>
       </div>
     </div>
   </section>
@@ -27,39 +44,76 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 <style>
   .not-found {
     display: grid;
-    min-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 12rem);
     align-items: center;
-    padding-block-end: var(--space-section-end);
+    padding-block: clamp(4rem, 9vw, 7rem);
   }
 
   .not-found-inner {
-    position: relative;
-    z-index: 1;
     display: grid;
-    place-items: center;
+    justify-items: start;
+    gap: 1.1rem;
   }
 
-  .not-found-card {
-    display: grid;
-    gap: var(--space-stack-md);
-    width: min(100%, 28rem);
-    padding: clamp(1.5rem, 4vw, 2rem);
-    text-align: center;
+  .nf-scatter {
+    width: clamp(11rem, 24vw, 15rem);
+    margin-bottom: 0.5rem;
+    overflow: visible;
   }
 
-  .not-found-card .display {
-    font-size: clamp(2rem, 6vw, 2.8rem);
+  .nf-dot {
+    fill: var(--ink);
+    opacity: 0.18;
   }
 
-  .not-found-actions {
-    justify-content: center;
-    margin-top: var(--space-stack-xs);
+  .nf-outlier {
+    fill: var(--signal);
+    opacity: 0.9;
   }
 
-  @media (max-width: 620px) {
-    .not-found {
-      min-height: calc(100vh - 6rem);
-      padding-block: 5rem var(--space-section-end);
+  .nf-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0.9;
+    animation: nf-ring-draw 700ms var(--ease-out) 350ms forwards;
+  }
+
+  @keyframes nf-ring-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .not-found .display {
+    font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  }
+
+  .not-found .display em {
+    color: var(--rust-deep);
+    font-style: italic;
+    font-weight: 450;
+  }
+
+  .nf-copy {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .nf-actions {
+    margin-top: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nf-ring {
+      stroke-dashoffset: 0;
+      animation: none;
     }
   }
 </style>

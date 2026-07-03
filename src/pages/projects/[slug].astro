@@ -41,31 +41,6 @@ const relatedProjects = allProjects
     return a.data.priority - b.data.priority;
   })
   .slice(0, 2);
-const proofItems = (
-  project.data.proof && project.data.proof.length > 0
-    ? project.data.proof
-    : [project.data.metric ?? project.data.status, project.data.status, ...project.data.stack]
-)
-  .filter(Boolean)
-  .slice(0, 3);
-const quickReadItems = [
-  {
-    label: "Context",
-    value: project.data.summary,
-  },
-  {
-    label: "My role",
-    value: project.data.role,
-  },
-  {
-    label: "Result",
-    value: project.data.result ?? project.data.metric ?? project.data.status,
-  },
-  {
-    label: "Evidence",
-    value: proofItems[0] ?? project.data.status,
-  },
-];
 const siteUrl = Astro.site?.href ?? Astro.url.origin;
 const projectOg = getProjectOpenGraph(project.data);
 const projectOgImage = getImageMeta(project.data.coverImage);
@@ -120,10 +95,10 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
           <a class="archive-return" href="/projects/" data-astro-prefetch="hover"><span aria-hidden="true">&lt;-</span> All projects</a>
           <div class="read-flow">
             <p class="section-label">Read flow</p>
-            <a class="glass-chip" href="#case-study" data-case-nav-link aria-current="location">Overview</a>
+            <a class="read-flow-link" href="#case-study" data-case-nav-link aria-current="location">Overview</a>
             {
               caseNavSections.map((section) => (
-                <a class="glass-chip" href={`#${section.id}`} data-case-nav-link>
+                <a class="read-flow-link" href={`#${section.id}`} data-case-nav-link>
                   {section.label}
                 </a>
               ))
@@ -132,21 +107,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
         </nav>
 
         <div class="case-reading">
-          <section class="case-brief glass-panel" aria-label="Case study summary" data-reveal>
-            <div class="case-brief-grid">
-              {
-                quickReadItems.map((item) => (
-                  <article>
-                    <span>{item.label}</span>
-                    <p>{item.value}</p>
-                  </article>
-                ))
-              }
-            </div>
-          </section>
-
           <div class="case-deep-dive" data-reveal>
-            <p class="section-label">Deep dive</p>
             <div class="prose">
               <Content components={{ img: ContentImage }} />
             </div>
@@ -320,13 +281,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   .case-body,
   .related-section,
   .case-exit {
-    background:
-      radial-gradient(
-        circle at 0% 0%,
-        color-mix(in srgb, var(--accent-cyan) 6%, transparent),
-        transparent 24rem
-      ),
-      var(--surface-light);
+    background: var(--paper);
     padding-block: var(--space-section-before) var(--space-section-after);
   }
 
@@ -354,39 +309,44 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     margin: 0 0 0.08rem;
   }
 
-  .case-read-nav a {
+  .read-flow-link {
     display: inline-flex;
     width: fit-content;
-    border-radius: 999px;
-    color: var(--text-muted);
-    font-size: 0.76rem;
-    font-weight: 600;
-    line-height: 1;
-    padding: 0.5rem 0.68rem;
+    border-left: 1.5px solid transparent;
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.2;
+    padding: 0.28rem 0 0.28rem 0.7rem;
     transition:
       border-color var(--motion-fast) var(--ease-standard),
-      background var(--motion-fast) var(--ease-standard),
-      color var(--motion-fast) var(--ease-standard),
-      transform var(--motion-fast) var(--ease-out);
+      color var(--motion-fast) var(--ease-standard);
   }
 
-  .case-read-nav a:hover {
-    border-color: var(--badge-border);
-    color: var(--accent);
-    transform: translateX(2px);
+  .read-flow-link:hover {
+    border-left-color: var(--line-strong);
+    color: var(--ink);
   }
 
-  .case-read-nav a[aria-current="location"] {
-    border-color: var(--badge-border-strong);
-    background: var(--chip-active-bg);
-    color: var(--text);
-    box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 8%, transparent);
+  .read-flow-link[aria-current="location"] {
+    border-left-color: var(--rust);
+    color: var(--rust-deep);
   }
 
   .archive-return {
-    border-color: var(--badge-border) !important;
-    background: var(--badge-metric-bg) !important;
-    color: var(--accent-strong-on) !important;
+    display: inline-flex;
+    width: fit-content;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1;
+    padding-block: 0.25rem;
+  }
+
+  .archive-return:hover {
+    color: var(--rust);
   }
 
   .archive-return span,
@@ -410,54 +370,9 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     gap: var(--gap-grid-lg);
   }
 
-  .case-brief {
-    overflow: hidden;
-  }
-
   .case-deep-dive {
     display: grid;
     gap: var(--space-stack-md);
-    padding-top: var(--space-section-tight);
-    border-top: 1px solid var(--line);
-  }
-
-  .case-deep-dive .section-label {
-    color: var(--text-soft);
-  }
-
-  .case-brief-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    overflow: hidden;
-    border: 1px solid var(--grid-line);
-    border-radius: 8px;
-    background: var(--grid-line);
-  }
-
-  .case-brief-grid article {
-    display: grid;
-    gap: 0.5rem;
-    align-content: start;
-    min-height: 7rem;
-    background: var(--grid-cell-bg);
-    padding: 0.85rem;
-  }
-
-  .case-brief-grid span {
-    color: var(--text-soft);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.68rem;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .case-brief-grid p {
-    margin: 0;
-    color: var(--text);
-    font-size: 0.86rem;
-    font-weight: 500;
-    line-height: 1.5;
   }
 
   .related-heading {
@@ -534,45 +449,38 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 1rem;
-    align-items: center;
-    border: 1px solid var(--panel-border);
-    border-radius: 8px;
-    background: var(--chip-highlight-bg);
-    box-shadow: var(--panel-shadow);
-    padding: clamp(1rem, 2.5vw, 1.35rem);
+    align-items: baseline;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding-block: clamp(1rem, 2.4vw, 1.5rem);
   }
 
   .case-exit-card h2 {
-    margin: 0;
-    color: var(--text);
+    margin: var(--label-gap) 0 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
     font-size: clamp(1.3rem, 2.3vw, 1.8rem);
-    font-weight: 600;
-    line-height: 1.08;
+    font-weight: 480;
+    line-height: 1.15;
   }
 
   .case-exit-card a {
     display: inline-flex;
-    min-height: 2.55rem;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-    border-radius: 999px;
-    background: var(--accent);
-    color: var(--button-on-accent);
-    font-size: 0.86rem;
-    font-weight: 600;
+    align-items: baseline;
+    gap: 0.35rem;
+    color: var(--ink-muted);
+    font-size: 0.84rem;
+    font-weight: 500;
     line-height: 1;
-    padding: 0.78rem 1rem;
     transition:
-      border-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard),
       background var(--motion-fast) var(--ease-standard),
       box-shadow var(--motion-fast) var(--ease-standard),
       transform var(--motion-fast) var(--ease-out);
   }
 
   .case-exit-card a:hover {
-    box-shadow: 0 12px 28px rgba(15, 159, 135, 0.14);
-    transform: translateY(-1px);
+    color: var(--rust);
   }
 
   .case-exit-card a:hover span {
@@ -601,9 +509,23 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
       flex: 1 1 100%;
     }
 
-    .case-brief-grid,
     .case-exit-card {
       grid-template-columns: 1fr;
+    }
+
+    .read-flow-link {
+      border-left: 0;
+      border-bottom: 1.5px solid transparent;
+      padding: 0.25rem 0;
+      margin-right: 0.9rem;
+    }
+
+    .read-flow-link:hover {
+      border-bottom-color: var(--line-strong);
+    }
+
+    .read-flow-link[aria-current="location"] {
+      border-bottom-color: var(--rust);
     }
   }
 

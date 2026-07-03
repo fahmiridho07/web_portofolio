@@ -10,9 +10,11 @@ interface Props {
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
 const coverMeta = getImageMeta(project.data.coverImage);
+const wordCount = (project.body ?? "").split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.round(wordCount / 200));
 const facts = [
   { label: "Role", value: project.data.role },
-  { label: "Outcome", value: project.data.metric ?? project.data.status },
+  { label: "Outcome", value: project.data.metric ?? project.data.status, highlight: true },
   { label: "Status", value: `${project.data.status} / ${project.data.year}` },
   { label: "Stack", value: project.data.stack.slice(0, 5).join(" · ") },
 ];
@@ -21,7 +23,9 @@ const facts = [
 <header class="case-snapshot-hero">
   <div class="container case-hero-inner">
     <div class="case-copy" data-reveal>
-      <p class="section-label">{category.title} / {project.data.year}</p>
+      <p class="section-label">
+        {category.title} / {project.data.year} &middot; {readingMinutes} min read
+      </p>
       <h1 class="display">{project.data.title}</h1>
       <p class="case-summary">{project.data.summary}</p>
 
@@ -60,8 +64,11 @@ const facts = [
       {
         facts.map((fact) => (
           <div class="case-fact">
-            <dt>{fact.label}</dt>
-            <dd>{fact.value}</dd>
+            <dt>
+              {fact.highlight && <span class="fact-dot" aria-hidden="true" />}
+              {fact.label}
+            </dt>
+            <dd class:list={[fact.highlight && "is-highlight"]}>{fact.value}</dd>
           </div>
         ))
       }
@@ -122,12 +129,22 @@ const facts = [
   }
 
   .case-fact dt {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--ink-soft);
     font-family: var(--font-mono);
     font-size: 0.66rem;
     letter-spacing: 0.12em;
     line-height: 1;
     text-transform: uppercase;
+  }
+
+  .fact-dot {
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: var(--signal);
   }
 
   .case-fact dd {
@@ -138,6 +155,10 @@ const facts = [
     line-height: 1.45;
   }
 
+  .case-fact dd.is-highlight {
+    font-weight: 600;
+  }
+
   .case-cover {
     margin: 0;
     overflow: hidden;
@@ -146,21 +167,18 @@ const facts = [
     background: #ffffff;
   }
 
+  /* Contain, never crop: covers include diagrams whose edges carry meaning */
   .case-cover img {
     width: 100%;
-    aspect-ratio: 2.1;
-    object-fit: cover;
-    object-position: top left;
+    max-height: clamp(20rem, 44vw, 30rem);
+    object-fit: contain;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
   }
 
   @media (max-width: 720px) {
     .case-facts {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1rem;
-    }
-
-    .case-cover img {
-      aspect-ratio: 1.6;
     }
   }
 </style>

@@ -603,6 +603,10 @@ select {
 
 /* --------------------------------- Prose --------------------------------- */
 
+.prose {
+  counter-reset: case-section;
+}
+
 .prose h2,
 .prose h3 {
   color: var(--ink);
@@ -610,24 +614,49 @@ select {
   line-height: 1.2;
 }
 
+/* Case sections are auto numbered like records in a log, which makes a long
+   read scannable at a glance */
 .prose h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  counter-increment: case-section;
   scroll-margin-top: 5rem;
-  margin: 2.25rem 0 0.7rem;
-  padding-top: 1.25rem;
+  margin: 2.5rem 0 0.8rem;
+  padding-top: 1.35rem;
   border-top: 1px solid var(--line);
-  color: var(--ink-soft);
+  color: var(--ink-muted);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1;
   text-transform: uppercase;
+}
+
+.prose h2::before {
+  color: var(--rust);
+  content: counter(case-section, decimal-leading-zero);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
 }
 
 .prose h2:first-child {
   margin-top: 0;
   padding-top: 0;
   border-top: 0;
+}
+
+/* The payoff paragraph reads as a pull quote, not a footnote */
+.prose h2#result + p {
+  max-width: 34ch;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+  font-weight: 470;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
 }
 
 .prose h3 {

@@ -14,37 +14,37 @@ export const personEntity = {
   alternateNames: ["fahmiridho", "Fahmi Ridho"],
   imagePath: "/assets/profile/profile_avatar-160.webp",
   description:
-    "Achmad Fahmi Ainur Ridho is a final-year Information Systems student at Institut Teknologi Sepuluh Nopember (ITS) who builds practical data products across machine learning, analytics dashboards, and backend workflows.",
+    "Achmad Fahmi Ainur Ridho is a final-year Information Systems student at Institut Teknologi Sepuluh Nopember (ITS), a full-stack .NET engineer going deep into machine learning, from production ASP.NET Core systems to a fraud detection ML pipeline.",
   knowsAbout: [
-    "Data Engineering",
+    "Software Engineering",
     "Machine Learning",
+    "Fraud Detection",
     "Python",
-    "Power BI",
     "ASP.NET Core",
     "SQL Server",
-    "Analytics Engineering",
+    "LightGBM",
+    "Power BI",
     "Workflow Automation",
-    "Backend Development",
   ],
 };
 
 export const pageSeo = {
   home: {
-    title: "Achmad Fahmi Ainur Ridho | Data & ML Engineering Portfolio",
+    title: "Achmad Fahmi Ainur Ridho | Software Engineering & AI/ML Portfolio",
     description:
-      "Portfolio of Achmad Fahmi Ainur Ridho, a final-year Information Systems student at ITS focused on data products, machine learning models, analytics dashboards, and backend workflows.",
+      "Portfolio of Achmad Fahmi Ainur Ridho, a full-stack .NET engineer going deep into machine learning: production ASP.NET Core work, workflow automation, and a fraud detection ML pipeline at 0.855 PR-AUC.",
   },
   about: {
     title: "About",
     description:
-      "About Achmad Fahmi Ainur Ridho, an ITS Information Systems student, KPC software engineering intern, and builder of practical ML, analytics, and backend data systems.",
+      "About Achmad Fahmi Ainur Ridho, an ITS Information Systems student, KPC software engineering intern, and builder of production software and machine learning systems.",
     ogImagePath: "/assets/profile/profile_photo.webp",
     ogImageAlt: "Portrait of Achmad Fahmi Ainur Ridho",
   },
   projects: {
     title: "Projects",
     description:
-      "Project archive by Achmad Fahmi Ainur Ridho covering predictive modeling, decision support, business analytics, and deployment automation.",
+      "Project archive by Achmad Fahmi Ainur Ridho covering machine learning, production software engineering, decision support, and business analytics.",
   },
   notFound: {
     title: "Page Not Found",
