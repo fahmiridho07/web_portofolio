@@ -55,23 +55,23 @@ const marqueeItems = [
 
 <BaseLayout title={pageSeo.home.title} description={pageSeo.home.description}>
   <section class="hero">
-    <svg class="hero-ornament" viewBox="0 0 220 170" aria-hidden="true">
-      <circle class="orn-dot" cx="18" cy="128" r="4"></circle>
-      <circle class="orn-dot" cx="52" cy="84" r="4"></circle>
-      <circle class="orn-dot" cx="84" cy="132" r="4"></circle>
-      <circle class="orn-dot" cx="112" cy="72" r="4"></circle>
-      <circle class="orn-dot" cx="146" cy="118" r="4"></circle>
-      <circle class="orn-dot" cx="196" cy="140" r="4"></circle>
-      <circle class="orn-dot" cx="38" cy="40" r="4"></circle>
-      <circle class="orn-dot" cx="140" cy="30" r="4"></circle>
-      <circle class="orn-outlier" cx="182" cy="52" r="5.5"></circle>
-      <path
-        class="orn-ring"
-        d="M203 44 C 198 30, 172 28, 163 42 C 154 56, 168 72, 184 70 C 200 68, 207 56, 203 46"
-        pathLength="1"></path>
-    </svg>
-
     <div class="container hero-inner" data-reveal>
+      <svg class="hero-ornament" viewBox="0 0 220 170" aria-hidden="true">
+        <circle class="orn-dot" cx="18" cy="128" r="4"></circle>
+        <circle class="orn-dot" cx="52" cy="84" r="4"></circle>
+        <circle class="orn-dot" cx="84" cy="132" r="4"></circle>
+        <circle class="orn-dot" cx="112" cy="72" r="4"></circle>
+        <circle class="orn-dot" cx="146" cy="118" r="4"></circle>
+        <circle class="orn-dot" cx="196" cy="140" r="4"></circle>
+        <circle class="orn-dot" cx="38" cy="40" r="4"></circle>
+        <circle class="orn-dot" cx="140" cy="30" r="4"></circle>
+        <circle class="orn-outlier" cx="182" cy="52" r="5.5"></circle>
+        <path
+          class="orn-ring"
+          d="M203 44 C 198 30, 172 28, 163 42 C 154 56, 168 72, 184 70 C 200 68, 207 56, 203 46"
+          pathLength="1"></path>
+      </svg>
+
       <p class="hero-kicker">
         {profile.name} &middot; Surabaya, Indonesia
       </p>
@@ -87,13 +87,13 @@ const marqueeItems = [
           }
           <span class="hero-word" style={`--wi: ${heroWordIndex++}`}>
             <em class="hero-em">
-              ships,
-              <svg class="hero-circle" viewBox="0 0 200 74" preserveAspectRatio="none">
+              ships
+              <svg class="hero-circle" viewBox="0 0 200 60" preserveAspectRatio="none">
                 <path
-                  d="M186 16 C 168 -2, 40 -4, 18 22 C -2 46, 34 70, 100 70 C 158 70, 194 54, 190 30"
+                  d="M172 10 C 152 -1, 42 -3, 18 14 C -2 29, 20 55, 96 56 C 158 57, 192 44, 183 21"
                   pathLength="1"></path>
               </svg>
-            </em>
+            </em>,
           </span>
           {
             heroTail.split(" ").map((word) => (
@@ -154,11 +154,7 @@ const marqueeItems = [
                   <span class="work-title">{project.data.title}</span>
                   <span class="work-meta">
                     {category.title} &middot; {project.data.year}
-                    {isAnomaly && (
-                      <span class="work-flag">
-                        <span class="work-flag-dot" aria-hidden="true" /> the anomaly
-                      </span>
-                    )}
+                    {isAnomaly && <span class="work-flag-dot" aria-hidden="true" />}
                   </span>
                 </span>
                 <span class="work-metric">{metric}</span>
@@ -348,15 +344,23 @@ const marqueeItems = [
   }
 
   /* The anomaly mark: an ordered scatter with one flagged outlier.
-     The signature of the whole site, drawn from the fraud detection thesis. */
+     The signature of the whole site, drawn from the fraud detection thesis.
+     Anchored to the content grid (not the viewport) so its position stays
+     proportional to the headline at every width. */
   .hero-ornament {
     position: absolute;
-    top: clamp(4.5rem, 9vw, 7rem);
-    right: clamp(1rem, 6vw, 5rem);
+    top: -0.5rem;
+    right: 0;
     z-index: 0;
-    width: clamp(9rem, 18vw, 14rem);
+    width: clamp(8rem, 13vw, 11rem);
     overflow: visible;
     pointer-events: none;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-ornament {
+      display: none;
+    }
   }
 
   .orn-dot {
@@ -440,12 +444,12 @@ const marqueeItems = [
      word lands. Same gesture as circling an outlier on a chart. */
   .hero-circle {
     position: absolute;
-    inset: -0.18em -0.34em -0.16em -0.32em;
-    width: calc(100% + 0.66em);
+    inset: -0.12em -0.2em -0.1em -0.22em;
+    width: calc(100% + 0.42em);
     /* Global svg rule clamps max-width to 100%, which pinned the circle to the
        word box and shifted it left. Unclamp so the insets actually apply. */
     max-width: none;
-    height: calc(100% + 0.34em);
+    height: calc(100% + 0.22em);
     overflow: visible;
     pointer-events: none;
   }
@@ -498,6 +502,7 @@ const marqueeItems = [
   }
 
   .hero-inner {
+    position: relative;
     display: grid;
     gap: 1.5rem;
   }
@@ -550,11 +555,11 @@ const marqueeItems = [
   @keyframes dot-pulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(217, 38, 55, 0.35);
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.35);
     }
 
     50% {
-      box-shadow: 0 0 0 5px rgba(217, 38, 55, 0);
+      box-shadow: 0 0 0 5px rgba(201, 46, 62, 0);
     }
   }
 
@@ -715,21 +720,15 @@ const marqueeItems = [
     color: var(--ink);
   }
 
-  /* The flagged row: one anomaly among the ordered records */
-  .work-flag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.34rem;
-    margin-left: 0.55rem;
-    color: var(--signal);
-    letter-spacing: 0.06em;
-  }
-
+  /* The flagged row: one marked record among the ordered ones */
   .work-flag-dot {
+    display: inline-block;
     width: 0.34rem;
     height: 0.34rem;
+    margin-left: 0.5rem;
     border-radius: 999px;
     background: var(--signal);
+    transform: translateY(-0.06rem);
   }
 
   .work-copy {
@@ -760,11 +759,14 @@ const marqueeItems = [
   }
 
   .work-metric {
-    max-width: 15rem;
-    color: var(--ink-muted);
-    font-size: 0.78rem;
-    line-height: 1.45;
+    max-width: 13rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    line-height: 1.7;
     text-align: right;
+    text-transform: uppercase;
   }
 
   .work-arrow {
@@ -1054,11 +1056,6 @@ const marqueeItems = [
   @media (max-width: 720px) {
     .hero .display {
       font-size: clamp(2.3rem, 10.5vw, 3.2rem);
-    }
-
-    /* The scatter collides with the headline on small screens */
-    .hero-ornament {
-      display: none;
     }
 
     .work-row {

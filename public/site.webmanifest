@@ -1,12 +1,12 @@
 {
   "name": "Achmad Fahmi Ainur Ridho Portfolio",
   "short_name": "Fahmi Ridho",
-  "description": "Portfolio of practical data products across machine learning, analytics, and backend workflows.",
+  "description": "Portfolio of Achmad Fahmi Ainur Ridho: production software engineering and machine learning, from ASP.NET Core systems to a fraud detection ML pipeline.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#07111e",
-  "theme_color": "#07111e",
+  "background_color": "#f7f7f6",
+  "theme_color": "#f7f7f6",
   "lang": "en",
   "icons": [
     {

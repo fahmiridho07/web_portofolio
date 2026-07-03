@@ -78,11 +78,7 @@ const projectCount = projects.length;
                   <span class="archive-title">{project.data.title}</span>
                   <span class="archive-meta">
                     {category.title} &middot; {project.data.year} &middot; {metric}
-                    {isAnomaly && (
-                      <span class="archive-flag">
-                        <span class="archive-flag-dot" aria-hidden="true" /> the anomaly
-                      </span>
-                    )}
+                    {isAnomaly && <span class="archive-flag-dot" aria-hidden="true" />}
                   </span>
                 </span>
                 <span class="archive-arrow" aria-hidden="true">
@@ -367,20 +363,14 @@ const projectCount = projects.length;
     transform: translate(-50%, -50%) scale(1) rotate(-6deg);
   }
 
-  .archive-flag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.34rem;
-    margin-left: 0.55rem;
-    color: var(--signal);
-    letter-spacing: 0.06em;
-  }
-
   .archive-flag-dot {
+    display: inline-block;
     width: 0.34rem;
     height: 0.34rem;
+    margin-left: 0.5rem;
     border-radius: 999px;
     background: var(--signal);
+    transform: translateY(-0.06rem);
   }
 
   .archive-copy {

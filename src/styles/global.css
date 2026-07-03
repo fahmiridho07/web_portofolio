@@ -7,12 +7,13 @@
 
 /* ---------------------------------------------------------------------------
    "The Anomaly" design system.
-   Editorial minimal, but the identity is Ridho's own: cool paper, dark ink,
-   cobalt as the working accent, and one crimson outlier reserved for the
-   anomaly motif (a nod to the fraud-detection thesis: everything ordered,
-   one point flagged). Fraunces carries the voice, Inter the machinery,
-   mono the metadata. Legacy token names are kept so component-scoped styles
-   inherit the palette without a rewrite.
+   Editorial minimal with an identity drawn from the fraud detection thesis:
+   neutral paper, blue-black ink, and exactly one accent, a carmine red pen.
+   At rest everything is ordered and neutral; anomalies and anything the
+   visitor touches get flagged red, the same gesture as circling an outlier
+   on a chart. Fraunces carries the voice, Inter the machinery, mono the
+   metadata. Legacy token names are kept so component-scoped styles inherit
+   the palette without a rewrite.
 --------------------------------------------------------------------------- */
 
 html {
@@ -22,17 +23,20 @@ html {
 :root {
   color-scheme: light;
 
-  /* Core palette: cool paper + blue-black ink + cobalt, crimson for the
-     anomaly motif only. Token names --rust/--rust-deep are kept so scoped
-     styles re-skin without edits; they now resolve to cobalt. */
-  --paper: #f7f8f6;
-  --paper-soft: #edefeb;
+  /* Core palette: two inks only. Neutral paper + blue-black ink, and one
+     carmine for the anomaly. At rest everything is ordered and neutral;
+     whatever the visitor touches gets flagged red, the same gesture as
+     circling an outlier. Token names --rust/--rust-deep are kept so scoped
+     styles re-skin without edits; they resolve to the carmine family. */
+  --paper: #f7f7f6;
+  --paper-soft: #efeeec;
   --ink: #16181d;
   --ink-muted: #454a53;
   --ink-soft: #5f656f;
-  --rust: #2542d8;
-  --rust-deep: #1a2fa6;
-  --signal: #d92637;
+  --signal: #c92e3e;
+  --signal-deep: #a8242f;
+  --rust: var(--signal);
+  --rust-deep: var(--signal-deep);
 
   /* Legacy token names mapped onto the new palette */
   --surface-base: var(--paper);
@@ -41,7 +45,7 @@ html {
   --surface-subtle: var(--paper-soft);
   --surface-warm: var(--paper-soft);
   --accent: var(--rust);
-  --accent-dim: rgba(37, 66, 216, 0.08);
+  --accent-dim: rgba(201, 46, 62, 0.08);
   --accent-blue: var(--ink-muted);
   --accent-coral: var(--rust);
   --accent-amber: var(--rust);
@@ -72,7 +76,7 @@ html {
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
   --focus-ring: var(--rust);
-  --focus-halo: rgba(37, 66, 216, 0.18);
+  --focus-halo: rgba(201, 46, 62, 0.16);
 
   /* Layout */
   --max-width: 1060px;
@@ -142,11 +146,11 @@ html {
   --org-logo-border: var(--line);
   --card-inset: transparent;
   --body-bg: var(--paper);
-  --selection-bg: rgba(37, 66, 216, 0.14);
+  --selection-bg: rgba(201, 46, 62, 0.12);
   --filter-indicator-bg: var(--ink);
   --filter-indicator-inset: transparent;
   --footer-bg: var(--paper);
-  --header-bg: rgba(247, 248, 246, 0.88);
+  --header-bg: rgba(247, 247, 246, 0.88);
   --header-border: var(--line);
   --header-shadow: none;
   --glass-blur: 12px;
