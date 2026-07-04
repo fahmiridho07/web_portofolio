@@ -20,7 +20,6 @@ stack:
 links:
   - label: "Project link"
     href: "https://its.id/m/PredictiveAnalyticsCrimeLA"
-featured: true
 coverImage: "/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg"
 logo: "/assets/logos/scikitlearn.svg"
 result: "SVM with RBF kernel became the strongest deployable baseline with accuracy 0.321 and macro F1 0.303 across 138 modeled classes."
@@ -29,7 +28,7 @@ proof:
   - "976k raw crime records"
   - "Balanced 13,800-row modeling dataset"
   - "SVM, KNN, Naive Bayes, Logistic Regression, Decision Tree, and BPNN comparison"
-priority: 1
+priority: 5
 ---
 
 ## Context
@@ -47,8 +46,18 @@ I worked on data preparation, model comparison, imbalance handling, and evaluati
 ## Evidence
 
 <figure className="evidence-panel" data-artifact="Dataset profile">
-  <img src="/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg" width="1440" height="960" loading="lazy" decoding="async" alt="Los Angeles crime prediction dashboard showing raw records, modeled classes, balanced records, top crime types, day-night split, zones, and top areas" />
-  <figcaption>Dataset evidence: 976k raw records, 138 modeled classes, and a balanced 13,800-row modeling dataset.</figcaption>
+  <img
+    src="/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg"
+    width="1440"
+    height="960"
+    loading="lazy"
+    decoding="async"
+    alt="Los Angeles crime prediction dashboard showing raw records, modeled classes, balanced records, top crime types, day-night split, zones, and top areas"
+  />
+  <figcaption>
+    Dataset evidence: 976k raw records, 138 modeled classes, and a balanced
+    13,800-row modeling dataset.
+  </figcaption>
 </figure>
 
 ## Approach
@@ -65,12 +74,32 @@ The project compared several model families instead of relying on a single high-
 
 <div className="evidence-grid">
   <figure className="evidence-panel" data-artifact="ML workflow">
-    <img src="/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg" width="1440" height="760" loading="lazy" decoding="async" alt="Machine learning workflow diagram covering data preparation, exploratory analysis, model experimentation, evaluation, and model selection" />
-    <figcaption>Workflow evidence: data preparation, EDA, class balancing, model experimentation, evaluation, and selection.</figcaption>
+    <img
+      src="/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg"
+      width="1440"
+      height="760"
+      loading="lazy"
+      decoding="async"
+      alt="Machine learning workflow diagram covering data preparation, exploratory analysis, model experimentation, evaluation, and model selection"
+    />
+    <figcaption>
+      Workflow evidence: data preparation, EDA, class balancing, model
+      experimentation, evaluation, and selection.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Model comparison">
-    <img src="/assets/projects/la-crime-type-prediction/la_model_comparison.svg" width="1440" height="900" loading="lazy" decoding="async" alt="Model comparison for LA Crime classification showing accuracy, F1, and AUC across tested models" />
-    <figcaption>Model evidence: SVM RBF led the usable baseline results with accuracy 0.321 and macro F1 0.303.</figcaption>
+    <img
+      src="/assets/projects/la-crime-type-prediction/la_model_comparison.svg"
+      width="1440"
+      height="900"
+      loading="lazy"
+      decoding="async"
+      alt="Model comparison for LA Crime classification showing accuracy, F1, and AUC across tested models"
+    />
+    <figcaption>
+      Model evidence: SVM RBF led the usable baseline results with accuracy
+      0.321 and macro F1 0.303.
+    </figcaption>
   </figure>
 </div>
 

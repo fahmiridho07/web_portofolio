@@ -19,7 +19,6 @@ stack:
 links:
   - label: "GitHub"
     href: "https://github.com/fahmiridho07/nlp_project_sriwijayaair"
-featured: true
 coverImage: "/assets/projects/sriwijayaair-review-sentiment/case-overview.webp"
 logo: "/assets/logos/scikitlearn.svg"
 result: "Logistic Regression over TF-IDF n-grams reached 0.852 accuracy and 0.845 weighted F1 on a held-out test set, and a rule-based aspect taxonomy converted negative reviews into ranked product complaints."
@@ -28,7 +27,7 @@ proof:
   - "1,756 Google Play reviews, weak-labeled from star ratings"
   - "Logistic Regression vs Linear SVM vs Naive Bayes on the same split"
   - "Negative-review aspect taxonomy plus held-out error analysis"
-priority: 2
+priority: 3
 ---
 
 ## Context
@@ -53,20 +52,60 @@ Airline app reviews are mixed-language (Indonesian with English fragments), shor
 
 <div className="evidence-grid evidence-grid-2">
   <figure className="evidence-panel" data-artifact="Model comparison">
-    <img src="/assets/projects/sriwijayaair-review-sentiment/model-performance.webp" width="1400" height="540" loading="lazy" decoding="async" alt="Bar charts comparing Logistic Regression, Linear SVM, and Naive Bayes on accuracy, macro F1, and weighted F1, plus per-class F1 for the best model" />
-    <figcaption>Logistic Regression won on macro F1; per-class F1 exposes the weak neutral class honestly.</figcaption>
+    <img
+      src="/assets/projects/sriwijayaair-review-sentiment/model-performance.webp"
+      width="1400"
+      height="540"
+      loading="lazy"
+      decoding="async"
+      alt="Bar charts comparing Logistic Regression, Linear SVM, and Naive Bayes on accuracy, macro F1, and weighted F1, plus per-class F1 for the best model"
+    />
+    <figcaption>
+      Logistic Regression won on macro F1; per-class F1 exposes the weak neutral
+      class honestly.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Confusion matrix">
-    <img src="/assets/projects/sriwijayaair-review-sentiment/confusion-matrix.webp" width="1400" height="833" loading="lazy" decoding="async" alt="Confusion matrix of the best model on the held-out test set" />
-    <figcaption>Held-out confusion matrix: negative and positive separate cleanly, neutral gets absorbed by both.</figcaption>
+    <img
+      src="/assets/projects/sriwijayaair-review-sentiment/confusion-matrix.webp"
+      width="1400"
+      height="833"
+      loading="lazy"
+      decoding="async"
+      alt="Confusion matrix of the best model on the held-out test set"
+    />
+    <figcaption>
+      Held-out confusion matrix: negative and positive separate cleanly, neutral
+      gets absorbed by both.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Complaint signals">
-    <img src="/assets/projects/sriwijayaair-review-sentiment/negative-review-signals.webp" width="1400" height="846" loading="lazy" decoding="async" alt="Bar chart of the most frequent terms in negative reviews: promo, tiket, member, buka, loading, and check-in related terms" />
-    <figcaption>Negative reviews cluster around promos, ticketing, membership, and the app failing to open.</figcaption>
+    <img
+      src="/assets/projects/sriwijayaair-review-sentiment/negative-review-signals.webp"
+      width="1400"
+      height="846"
+      loading="lazy"
+      decoding="async"
+      alt="Bar chart of the most frequent terms in negative reviews: promo, tiket, member, buka, loading, and check-in related terms"
+    />
+    <figcaption>
+      Negative reviews cluster around promos, ticketing, membership, and the app
+      failing to open.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Error analysis">
-    <img src="/assets/projects/sriwijayaair-review-sentiment/error-analysis.webp" width="1400" height="783" loading="lazy" decoding="async" alt="Error analysis summary showing which classes the model confuses on the held-out test set" />
-    <figcaption>Error analysis on the held-out split: most mistakes involve the ambiguous neutral class.</figcaption>
+    <img
+      src="/assets/projects/sriwijayaair-review-sentiment/error-analysis.webp"
+      width="1400"
+      height="783"
+      loading="lazy"
+      decoding="async"
+      alt="Error analysis summary showing which classes the model confuses on the held-out test set"
+    />
+    <figcaption>
+      Error analysis on the held-out split: most mistakes involve the ambiguous
+      neutral class.
+    </figcaption>
   </figure>
 </div>
 

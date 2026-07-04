@@ -1,7 +1,6 @@
 export const profile = {
   name: "Achmad Fahmi Ainur Ridho",
   shortName: "Achmad Fahmi Ainur Ridho",
-  mark: "FR",
   role: "Final-year Information Systems student at ITS",
   location: "Indonesia",
   email: "achmadridho.id@gmail.com",
@@ -22,7 +21,7 @@ export const profile = {
   contactPrompt:
     "Best fit for teams shipping production software or ML systems that have to hold up in the real world.",
   aboutHook:
-    "Based in Indonesia, shipping from internship work and coursework that teams can actually run.",
+    "The pivot started at KPC: building automation and embedding analytics into production software left me more interested in what the data could predict than in the interface around it. The thesis, fraud detection under real class imbalance, is where I went all in on that.",
   lastShippedLabel: "Last shipped",
   links: [
     {
@@ -149,12 +148,6 @@ export const projectCategories = [
   },
 ];
 
-export const focusItems = [
-  "Data and ML engineering work",
-  "Analytics products with strong technical execution",
-  "Backend and workflow automation close to production data",
-];
-
 export const skillGroups = [
   {
     title: "Backend & Deployment",
@@ -205,28 +198,5 @@ export const skillGroups = [
       "HR",
       "Accounting",
     ],
-  },
-];
-
-export const coursesAndCertificates = [
-  {
-    title: "Odoo ERP teaching assistant",
-    issuer: "ITS Enterprise Systems",
-    context:
-      "Sales, Inventory, HR, and Accounting modules with implementation grading",
-    year: "2024",
-  },
-  {
-    title: "Data Science Academy operations",
-    issuer: "Information Systems Expo 2024",
-    context:
-      "Python assessments, data manipulation challenges, and curriculum delivery",
-    year: "2024",
-  },
-  {
-    title: "HMSI R&D leadership",
-    issuer: "HMSI ITS",
-    context: "Process optimization, SOPs, documentation, and project delivery",
-    year: "2023 to 2024",
   },
 ];

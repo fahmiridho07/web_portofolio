@@ -13,12 +13,6 @@ export async function getSortedProjects() {
   });
 }
 
-export async function getFeaturedProjects() {
-  const projects = await getSortedProjects();
-
-  return projects.filter((project) => project.data.featured);
-}
-
 export function getCategoryMeta(categoryId: string) {
   return (
     projectCategories.find((category) => category.id === categoryId) ?? {
@@ -28,15 +22,4 @@ export function getCategoryMeta(categoryId: string) {
       logo: "/assets/marks/fr.svg",
     }
   );
-}
-
-export async function getProjectsByCategory() {
-  const projects = await getSortedProjects();
-
-  return projectCategories.map((category) => ({
-    ...category,
-    projects: projects.filter(
-      (project) => project.data.category === category.id,
-    ),
-  }));
 }

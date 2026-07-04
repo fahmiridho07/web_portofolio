@@ -5,7 +5,7 @@ summary: "A cross-platform task management desktop app built with Electron.js an
 category: "software-engineering-devops"
 status: "Completed"
 year: 2025
-role: "Software engineer"
+role: "Software engineer, team project"
 stack:
   - Electron.js
   - TypeScript
@@ -19,21 +19,20 @@ stack:
 links:
   - label: "GitHub repository"
     href: "https://github.com/PSO-B-Kelompok-13/demo-repository/"
-featured: true
 coverImage: "/assets/projects/devops-tasktracker/screenshots/github-repository.webp"
 logo: "/assets/logos/electron.svg"
-result: "Automated build and deployment via GitHub Actions and Docker, reducing delivery time by 70% according to the CV."
-metric: "70% faster"
+result: "Shipped a containerized Electron desktop app with an automated GitHub Actions to Docker to EC2 pipeline and Prometheus and Grafana monitoring, as part of a team project."
+metric: "CI/CD to EC2 + monitoring"
 proof:
   - "Electron and TypeScript desktop app"
   - "GitHub Actions and Docker delivery flow"
   - "AWS EC2 deployment with monitoring"
-priority: 4
+priority: 9
 ---
 
 ## Context
 
-TaskTracker was built as a desktop productivity application with engineering practices around delivery, deployment, and observability.
+TaskTracker was a team coursework project: a desktop productivity application built with engineering practices around delivery, deployment, and observability rather than around the task-tracking feature set itself.
 
 ## Problem
 
@@ -41,13 +40,23 @@ The project needed to combine an offline-friendly desktop interface with API int
 
 ## My Role
 
-I contributed across software engineering and DevOps work, including TypeScript implementation, CI/CD setup, containerization, cloud deployment, and monitoring support.
+Within the team, I focused on the software engineering and DevOps side: TypeScript implementation, CI/CD setup, containerization, cloud deployment, and monitoring support.
 
 ## Evidence
 
 <figure className="evidence-panel" data-artifact="Repository evidence">
-  <img src="/assets/projects/devops-tasktracker/screenshots/github-repository.webp" width="1400" height="894" loading="lazy" decoding="async" alt="GitHub repository for DevOps TaskTracker showing workflow, monitoring, public, and src project folders" />
-  <figcaption>Repository evidence: source, workflow, deployment, and monitoring folders are visible in the project repository.</figcaption>
+  <img
+    src="/assets/projects/devops-tasktracker/screenshots/github-repository.webp"
+    width="1400"
+    height="894"
+    loading="lazy"
+    decoding="async"
+    alt="GitHub repository for DevOps TaskTracker showing workflow, monitoring, public, and src project folders"
+  />
+  <figcaption>
+    Repository evidence: source, workflow, deployment, and monitoring folders
+    are visible in the project repository.
+  </figcaption>
 </figure>
 
 ## Approach
@@ -64,8 +73,8 @@ The project emphasized repeatable delivery. Docker and GitHub Actions made the d
 
 ## Result
 
-According to the CV, the automated build and deployment pipeline reduced delivery time by 70%.
+The pipeline automated build, containerization, and deployment end to end: a GitHub Actions workflow built and tested the app, packaged it into a Docker image, and shipped it to AWS EC2, with Prometheus and Grafana in place for runtime monitoring. I don't have a measured before/after baseline for delivery time, so I'm reporting the pipeline itself rather than a speed-up number.
 
 ## What I'd Improve
 
-I would add release notes per deployment, document rollback strategy, and include screenshots of the monitoring dashboard.
+I would add release notes per deployment, document a rollback strategy, include screenshots of the monitoring dashboard, and record an actual baseline so any future delivery-time claim is measured rather than assumed.

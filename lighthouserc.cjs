@@ -16,10 +16,13 @@ module.exports = {
     },
     assert: {
       assertions: {
-        "categories:performance": ["warn", { minScore: 0.8 }],
-        "categories:accessibility": ["warn", { minScore: 0.9 }],
-        "categories:best-practices": ["warn", { minScore: 0.9 }],
-        "categories:seo": ["warn", { minScore: 0.9 }],
+        // Measured mobile baseline: perf 0.93, a11y/BP/SEO 1.0. Budgets sit a
+        // little under that so a real regression trips the warning instead
+        // of hiding inside a permissive threshold.
+        "categories:performance": ["warn", { minScore: 0.85 }],
+        "categories:accessibility": ["warn", { minScore: 0.95 }],
+        "categories:best-practices": ["warn", { minScore: 0.95 }],
+        "categories:seo": ["warn", { minScore: 0.95 }],
       },
     },
     upload: {

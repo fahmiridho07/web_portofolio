@@ -15,7 +15,6 @@ stack:
   - Scikit-learn
   - Pandas
 links: []
-featured: true
 coverImage: "/assets/projects/fraud-detection-ml-pipeline/architecture.svg"
 logo: "/assets/logos/scikitlearn.svg"
 result: "AE latent-space oversampling reached 0.855 test PR-AUC after Bayesian-tuned LightGBM, beating a tuned plain-LightGBM baseline (0.850) and a matched SMOTE-NC control (0.850), and catching 41 more fraud cases than the baseline at the chosen operating threshold."
@@ -24,12 +23,12 @@ proof:
   - "0.855 test PR-AUC vs. 0.850 tuned baseline and 0.850 tuned SMOTE-NC"
   - "Autoencoder as a latent-space oversampler, not a feature extractor — that variant was tested and rejected"
   - "Bayesian Optimization (Optuna/TPE) beat random search by +0.004 validation PR-AUC at matched compute"
-priority: 1
+priority: 0
 ---
 
 ## Context
 
-This is my undergraduate thesis at Institut Teknologi Sepuluh Nopember (ITS): fraud detection on the [IEEE-CIS Fraud Detection dataset](https://www.kaggle.com/c/ieee-fraud-detection) (Kaggle, Vesta Corporation) — 590,540 e-commerce transactions, 3.5% fraud (20,663 fraud vs. 569,877 legitimate). The proposed method combines an Autoencoder with LightGBM under Bayesian Optimization; the interesting part is that the Autoencoder's *role* in that pipeline changed once I diagnosed why the original design wasn't working.
+This is my undergraduate thesis at Institut Teknologi Sepuluh Nopember (ITS): fraud detection on the [IEEE-CIS Fraud Detection dataset](https://www.kaggle.com/c/ieee-fraud-detection) (Kaggle, Vesta Corporation) — 590,540 e-commerce transactions, 3.5% fraud (20,663 fraud vs. 569,877 legitimate). The proposed method combines an Autoencoder with LightGBM under Bayesian Optimization; the interesting part is that the Autoencoder's _role_ in that pipeline changed once I diagnosed why the original design wasn't working.
 
 ## Problem
 
@@ -40,27 +39,70 @@ At 3.5% fraud, a classifier optimized for accuracy is close to useless — predi
 - **Diagnosed the original design first.** The initial plan used the Autoencoder as a feature extractor: train it on legitimate transactions, append reconstruction error and/or latent codes as extra features for LightGBM. Across every variant I tried — global and grouped reconstruction error, 32-dim latent concatenation, and a score-level ensemble — none beat the plain LightGBM baseline (deltas −0.005 to −0.024 AP, all p≈1.0 under paired bootstrap); a score ensemble gave the AE zero weight. The root cause: the AE was reconstructing the same `V`-block of engineered features LightGBM's trees already split on, so it added noise, not signal.
 - **Pivoted to latent-space oversampling.** Instead of feeding the AE's output to the classifier, I use it to synthesize fraud: train an undercomplete Autoencoder (128→64→64 bottleneck, MSE loss, Adam) on fraud-only training rows, embed those rows into latent space, run SMOTE-style k=5 interpolation between latent fraud points (Chawla et al., 2002, applied in `z`-space rather than raw feature space — a tabular adaptation of DeepSMOTE/nDeepSMOTEc), then decode the interpolated points back into synthetic fraud rows appended only to the training split.
 - **Locked the sensitivity parameters on validation, not by guesswork.** `latent_dim` and target synthetic fraud rate were chosen from a grid sweep (`latent_dim` of 8, 16, 32, or 64, crossed with a target rate of 10%, 15%, 20%, 30%, or 50%) scored by validation PR-AUC — locked at `latent_dim=64`, rate=10%.
-- **Controlled comparison.** The AE-oversampled scenario is compared against a plain LightGBM baseline and a SMOTE-NC control at the *same* target fraud rate, on the same frequency-encoded + z-scored feature representation, so the win can't be attributed to oversampling in general.
+- **Controlled comparison.** The AE-oversampled scenario is compared against a plain LightGBM baseline and a SMOTE-NC control at the _same_ target fraud rate, on the same frequency-encoded + z-scored feature representation, so the win can't be attributed to oversampling in general.
 - **Bayesian Optimization over LightGBM's hyperparameters** — Optuna with a TPE sampler, 10 trials over a 7-dimensional space (learning rate, `num_leaves`, `min_child_samples`, `subsample`, `colsample_bytree`, `reg_alpha`, `reg_lambda`), objective = validation PR-AUC, on a 2000-tree LightGBM with 100-round early stopping.
 
 ## Evidence
 
 <div className="evidence-grid evidence-grid-2">
   <figure className="evidence-panel" data-artifact="Pipeline architecture">
-    <img src="/assets/projects/fraud-detection-ml-pipeline/architecture.svg" width="1440" height="640" loading="lazy" decoding="async" alt="Two-stage pipeline diagram: data preprocessing and AE latent-space SMOTE oversampling feeding into Optuna-tuned LightGBM" />
-    <figcaption>End-to-end pipeline: preprocessing, AE-trained-on-fraud latent-space oversampling, then Bayesian-tuned LightGBM.</figcaption>
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/architecture.svg"
+      width="1440"
+      height="640"
+      loading="lazy"
+      decoding="async"
+      alt="Two-stage pipeline diagram: data preprocessing and AE latent-space SMOTE oversampling feeding into Optuna-tuned LightGBM"
+    />
+    <figcaption>
+      End-to-end pipeline: preprocessing, AE-trained-on-fraud latent-space
+      oversampling, then Bayesian-tuned LightGBM.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="PR-AUC comparison">
-    <img src="/assets/projects/fraud-detection-ml-pipeline/pr_auc_comparison.svg" width="1440" height="900" loading="lazy" decoding="async" alt="Bar chart of test PR-AUC across baseline, SMOTE-NC, and AE latent-oversampling, tuned and untuned" />
-    <figcaption>Test PR-AUC vs. baseline and SMOTE-NC, tuned and untuned: AE wins in both regimes.</figcaption>
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/pr_auc_comparison.svg"
+      width="1440"
+      height="900"
+      loading="lazy"
+      decoding="async"
+      alt="Bar chart of test PR-AUC across baseline, SMOTE-NC, and AE latent-oversampling, tuned and untuned"
+    />
+    <figcaption>
+      Test PR-AUC vs. baseline and SMOTE-NC, tuned and untuned: AE wins in both
+      regimes.
+    </figcaption>
   </figure>
-  <figure className="evidence-panel" data-artifact="Bayesian Optimization justification">
-    <img src="/assets/projects/fraud-detection-ml-pipeline/bayesopt_vs_random_search.svg" width="1440" height="640" loading="lazy" decoding="async" alt="Comparison of Bayesian Optimization (TPE) versus random search on validation PR-AUC and tuning time" />
-    <figcaption>Bayesian Optimization vs. random search, matched trial budget: +0.004 validation PR-AUC at no extra cost.</figcaption>
+  <figure
+    className="evidence-panel"
+    data-artifact="Bayesian Optimization justification"
+  >
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/bayesopt_vs_random_search.svg"
+      width="1440"
+      height="640"
+      loading="lazy"
+      decoding="async"
+      alt="Comparison of Bayesian Optimization (TPE) versus random search on validation PR-AUC and tuning time"
+    />
+    <figcaption>
+      Bayesian Optimization vs. random search, matched trial budget: +0.004
+      validation PR-AUC at no extra cost.
+    </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Confusion matrix">
-    <img src="/assets/projects/fraud-detection-ml-pipeline/confusion_matrix.svg" width="1200" height="760" loading="lazy" decoding="async" alt="Confusion matrix for the tuned AE latent-oversample model on the test set" />
-    <figcaption>Operating-point confusion matrix: 74.71% fraud recall at 89.04% precision, threshold selected on validation via F1.</figcaption>
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/confusion_matrix.svg"
+      width="1200"
+      height="760"
+      loading="lazy"
+      decoding="async"
+      alt="Confusion matrix for the tuned AE latent-oversample model on the test set"
+    />
+    <figcaption>
+      Operating-point confusion matrix: 74.71% fraud recall at 89.04% precision,
+      threshold selected on validation via F1.
+    </figcaption>
   </figure>
 </div>
 
@@ -68,7 +110,7 @@ At 3.5% fraud, a classifier optimized for accuracy is close to useless — predi
 
 **Why latent-space oversampling instead of feature extraction.** This wasn't the original plan — it's the result of a diagnosis. Reconstruction-error and latent-code features never beat the baseline because the AE was redundant with what LightGBM's trees already extracted from the same engineered features. Rather than force a feature-extractor narrative to fit disappointing numbers, I re-read where the literature (DeepSMOTE, nDeepSMOTEc) uses autoencoders for imbalanced tabular data — as a generator, not an encoder for the classifier — and that reframing is what actually worked.
 
-**Why SMOTE-NC as an explicit control, not just a second baseline.** Any oversampling method reduces the effect of class imbalance; the question that matters is whether the *autoencoder specifically* is doing something SMOTE-NC alone can't. Matching the target fraud rate between the two isolates that one variable, so the AP gap between them is attributable to the AE's on-manifold interpolation, not to "more fraud examples" in general.
+**Why SMOTE-NC as an explicit control, not just a second baseline.** Any oversampling method reduces the effect of class imbalance; the question that matters is whether the _autoencoder specifically_ is doing something SMOTE-NC alone can't. Matching the target fraud rate between the two isolates that one variable, so the AP gap between them is attributable to the AE's on-manifold interpolation, not to "more fraud examples" in general.
 
 **Why Bayesian Optimization over random or grid search.** Grid search doesn't scale past a couple of hyperparameters at this dataset size, and I wanted evidence rather than an assumption for choosing Optuna's TPE sampler over plain random search — so I re-ran the same 7-D space, same 10-trial budget, with random search as a control: TPE reached 0.8589 validation PR-AUC vs. 0.8548 for random search, in essentially the same wall-clock time.
 

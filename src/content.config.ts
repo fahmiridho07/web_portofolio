@@ -22,7 +22,6 @@ const projects = defineCollection({
     role: z.string(),
     stack: z.array(z.string()),
     links: z.array(projectLink),
-    featured: z.boolean(),
     coverImage: z.string(),
     logo: z.string().optional(),
     result: z.string().optional(),
