@@ -937,6 +937,48 @@ html[data-astro-transition] .site-footer {
   }
 }
 
+/* --------------------------------- Print ---------------------------------- */
+
+/* Recruiters save case studies with Ctrl+P: strip the chrome, keep the read */
+@media print {
+  .site-header,
+  .site-footer,
+  .skip-link,
+  .progress,
+  .case-read-nav,
+  .marquee,
+  .work-preview,
+  .hero-ornament {
+    display: none !important;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .prose .evidence-panel,
+  .case-cover,
+  .case-facts {
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
 /* --------------------------------- Mobile --------------------------------- */
 
 @media (max-width: 720px) {
