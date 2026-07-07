@@ -26,3 +26,6 @@ Thumbs.db
 
 # Editor directories
 .idea/
+
+# Claude Code local state (machine-specific, never shared)
+.claude/
