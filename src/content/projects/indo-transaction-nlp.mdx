@@ -38,6 +38,45 @@ Frontier LLMs can parse this text but need a network call, which is the wrong ar
 
 Everything: extraction schema and 12-label category taxonomy, annotation guidelines with tie-breaker rules for the genuinely ambiguous cases (is an e-wallet top-up an expense or a transfer?), synthetic data generator, rule-based baseline, evaluation harness, and the fine-tuned model.
 
+## Evidence
+
+Every number below comes out of one script: the harness writes a versioned
+JSON report per model per split, and the write-up quotes those reports —
+per-field exact-match accuracy on the same 15 held-out probe examples for
+both systems.
+
+| Field (probe split, n = 15) | B0 rules | M1 hybrid |
+| --------------------------- | -------- | --------- |
+| Amount                      | 0.93     | 0.93      |
+| Direction                   | 0.93     | 0.93      |
+| Date reference              | 0.87     | 0.87      |
+| Payment method              | 1.00     | 1.00      |
+| **Category**                | **0.73** | **0.93**  |
+| Merchant (slot F1)          | 0.86     | 0.86      |
+| **Transaction accuracy**    | **0.47** | **0.67**  |
+
+The only row that moves is category — the one field the classifier was
+trained to fix — and it drags the headline transaction accuracy up with it;
+the deterministic extraction fields stay identical because they are the same
+code in both systems. The harness run, quoted as-is:
+
+<pre>
+  <code>{`$ python scripts/run_evals.py --model m1 --split probe
+model=m1 split=probe
+  n                     15
+  amount_acc            0.9333
+  direction_acc         0.9333
+  date_ref_acc          0.8667
+  payment_method_acc    1.0
+  category_acc          0.9333
+  merchant_precision    1.0
+  merchant_recall       0.75
+  merchant_f1           0.8571
+  transaction_accuracy  0.6667
+  examples_with_errors  5
+report written: reports\\m1_probe.json`}</code>
+</pre>
+
 ## Approach
 
 - **Schema and guidelines first.** Seven extraction fields with a Pydantic schema that rejects invalid records at load time, and written annotation guidelines with explicit tie-breakers (treating a friend to a meal is `food_drink`, not social; top-ups are `transfer`; generic venues like "warteg" are not merchants, brands like "gofood" are).

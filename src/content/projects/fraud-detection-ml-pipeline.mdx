@@ -49,6 +49,7 @@ All four figures below are taken directly from the thesis paper (POMITS submissi
 <div className="evidence-grid evidence-grid-2">
   <figure
     className="evidence-panel"
+    data-kind="diagram"
     data-artifact="Pipeline diagram (from the paper)"
   >
     <img
@@ -117,6 +118,12 @@ All four figures below are taken directly from the thesis paper (POMITS submissi
 **Why Bayesian Optimization over random or grid search.** Grid search doesn't scale past a couple of hyperparameters at this dataset size, and I wanted evidence rather than an assumption for choosing Optuna's TPE sampler over plain random search — so I re-ran the same 7-D space, same 10-trial budget, with random search as a control: TPE reached 0.8589 validation PR-AUC vs. 0.8548 for random search, in essentially the same wall-clock time.
 
 ## Result
+
+| Scenario (test PR-AUC) | Untuned    | Bayesian-tuned |
+| ---------------------- | ---------- | -------------- |
+| Plain LightGBM         | 0.8084     | 0.8497         |
+| SMOTE-NC control       | 0.8157     | 0.8500         |
+| **AE latent-SMOTE**    | **0.8267** | **0.8547**     |
 
 The tuned AE latent-oversampling pipeline reaches **0.8547 test PR-AUC (Average Precision)**, vs. 0.8497 for a tuned plain-LightGBM baseline and 0.8500 for tuned SMOTE-NC. Untuned, the gap is wider (0.8267 vs. 0.8084 baseline, +0.0183). At the validation-selected operating threshold, the AE model recalls 74.71% of fraud at 89.04% precision — 41 more fraud transactions caught than the baseline (3,087 vs. 3,046 true positives), at the cost of 55 more false positives (380 vs. 325) out of 113,976 legitimate test transactions.
 

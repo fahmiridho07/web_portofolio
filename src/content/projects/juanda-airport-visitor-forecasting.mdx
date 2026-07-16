@@ -92,6 +92,14 @@ The model selection stayed evidence-led. Although CNN-LSTM was included as the m
 
 ## Result
 
+Notebook results on the 80-20 split, quoted from the model summaries:
+
+| Model (80-20 split) | R2        | MAE (visitors) |
+| ------------------- | --------- | -------------- |
+| **Random Forest**   | **0.869** | **48,156**     |
+| CNN-LSTM            | 0.347     | 54,063         |
+| Linear Regression   | 0.415     | 114,285        |
+
 Random Forest Regressor became the strongest model in the notebook, reaching R2 0.869 and MAE around 48k visitors on the 80-20 split. The result suggests that non-linear ensemble modeling was a better fit for this dataset than a simple linear baseline or the tested CNN-LSTM setup.
 
 ## What I'd Improve
