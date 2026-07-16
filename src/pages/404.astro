@@ -10,19 +10,18 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 >
   <section class="not-found">
     <div class="container not-found-inner" data-reveal>
-      <svg class="nf-scatter" viewBox="0 0 260 120" aria-hidden="true">
-        <circle class="nf-dot" cx="20" cy="88" r="4"></circle>
-        <circle class="nf-dot" cx="52" cy="52" r="4"></circle>
-        <circle class="nf-dot" cx="86" cy="94" r="4"></circle>
-        <circle class="nf-dot" cx="118" cy="40" r="4"></circle>
-        <circle class="nf-dot" cx="150" cy="82" r="4"></circle>
-        <circle class="nf-dot" cx="184" cy="56" r="4"></circle>
-        <circle class="nf-dot" cx="240" cy="92" r="4"></circle>
-        <circle class="nf-outlier" cx="216" cy="22" r="5.5"></circle>
-        <path
-          class="nf-ring"
-          d="M236 16 C 231 4, 206 2, 197 14 C 188 26, 200 40, 216 38 C 232 36, 240 26, 236 18"
-          pathLength="1"></path>
+      <svg class="nf-plot" viewBox="0 0 240 130" aria-hidden="true">
+        <path class="nf-axes" d="M24 6 V104 H232"></path>
+        <path class="nf-grid" d="M24 40 H232 M24 72 H232"></path>
+        <circle class="nf-dot" cx="44" cy="88" r="4"></circle>
+        <circle class="nf-dot" cx="68" cy="78" r="4"></circle>
+        <circle class="nf-dot" cx="92" cy="83" r="4"></circle>
+        <circle class="nf-dot" cx="116" cy="68" r="4"></circle>
+        <circle class="nf-dot" cx="140" cy="60" r="4"></circle>
+        <circle class="nf-dot" cx="164" cy="64" r="4"></circle>
+        <circle class="nf-dot" cx="188" cy="50" r="4"></circle>
+        <circle class="nf-outlier" cx="204" cy="22" r="5"></circle>
+        <circle class="nf-ring" cx="204" cy="22" r="12"></circle>
       </svg>
 
       <p class="section-label">404 &middot; anomaly detected</p>
@@ -55,15 +54,27 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     gap: 1.1rem;
   }
 
-  .nf-scatter {
+  .nf-plot {
     width: clamp(11rem, 24vw, 15rem);
     margin-bottom: 0.5rem;
     overflow: visible;
   }
 
+  .nf-axes {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1.5;
+  }
+
+  .nf-grid {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
   .nf-dot {
     fill: var(--ink);
-    opacity: 0.18;
+    opacity: 0.62;
   }
 
   .nf-outlier {
@@ -74,17 +85,18 @@ import BaseLayout from "@layouts/BaseLayout.astro";
   .nf-ring {
     fill: none;
     stroke: var(--signal);
-    stroke-width: 2.5;
-    stroke-linecap: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    opacity: 0.9;
-    animation: nf-ring-draw 700ms var(--ease-out) 350ms forwards;
+    stroke-width: 1.75;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.55);
+    animation: nf-ring-in 420ms var(--ease-out) 350ms forwards;
   }
 
-  @keyframes nf-ring-draw {
+  @keyframes nf-ring-in {
     to {
-      stroke-dashoffset: 0;
+      opacity: 0.9;
+      transform: scale(1);
     }
   }
 
@@ -112,7 +124,8 @@ import BaseLayout from "@layouts/BaseLayout.astro";
 
   @media (prefers-reduced-motion: reduce) {
     .nf-ring {
-      stroke-dashoffset: 0;
+      opacity: 0.9;
+      transform: none;
       animation: none;
     }
   }

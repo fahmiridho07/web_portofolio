@@ -711,6 +711,90 @@ select {
   text-underline-offset: 0.22em;
 }
 
+/* Data tables read like the rest of the record: hairline rules, mono
+   tabular numerals, label column left and numbers right. */
+.prose table {
+  width: 100%;
+  max-width: 66ch;
+  margin: 1.2rem 0;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.prose thead th {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.prose th,
+.prose td {
+  border-top: 1px solid var(--line);
+  padding: 0.55rem 0;
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.prose th:not(:first-child),
+.prose td:not(:first-child) {
+  padding-left: 1rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.prose td:not(:first-child) {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.prose td:first-child {
+  color: var(--ink-muted);
+}
+
+.prose td strong,
+.prose td:first-child strong {
+  color: var(--ink);
+}
+
+.prose tbody tr:last-child :is(th, td) {
+  border-bottom: 1px solid var(--line);
+}
+
+/* Terminal output is quoted as-is: an ink panel with paper text, the same
+   dark-on-light exception as badges floating over screenshots. */
+.prose pre {
+  max-width: 66ch;
+  margin: 1.2rem 0;
+  border-radius: var(--radius-md);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.74rem;
+  line-height: 1.7;
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  color: inherit;
+  font-family: var(--font-mono);
+  padding: 0;
+}
+
+.prose :not(pre) > code {
+  border-radius: var(--radius-sm);
+  background: var(--paper-soft);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.08em 0.32em;
+}
+
 .prose .evidence-panel,
 .prose .phone-gallery figure {
   position: relative;
@@ -774,6 +858,13 @@ select {
   padding: 0.32rem 0.42rem;
   text-transform: uppercase;
   transform: translateY(0.05rem);
+}
+
+/* Hand-made figures are labeled for what they are: a diagram, not evidence */
+.prose .evidence-panel[data-kind="diagram"] figcaption::before {
+  background: var(--paper-soft);
+  color: var(--ink-muted);
+  content: "Diagram";
 }
 
 .prose .evidence-grid {
@@ -948,7 +1039,7 @@ html[data-astro-transition] .site-footer {
   .case-read-nav,
   .marquee,
   .work-preview,
-  .hero-ornament {
+  .hero-plot {
     display: none !important;
   }
 

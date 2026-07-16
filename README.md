@@ -18,7 +18,7 @@ The identity is drawn from my fraud detection thesis: everything ordered and neu
 | Ink     | `#16181d` + muted steps | All content, all structure                                         |
 | Carmine | `#c92e3e`               | The single accent: anomaly marks, and anything the visitor touches |
 
-The rule is semantic, not decorative: at rest the page is neutral and ordered; anomalies and interactions get flagged red, the same gesture as circling an outlier on a chart. The motif appears as the brand mark (a scatter with one circled outlier), the hand-drawn annotation around the hero word, the hover ring on project row numbers, the flagged flagship row, and a 404 page where the missing page is the outlier.
+The rule is semantic, not decorative: at rest the page is neutral and ordered; whatever matters or reacts gets the single red accent. The motif stays quiet — a carmine period in the wordmark, a hand-drawn underline on the hero's key word, one flagged row in the project list, a results ticker of real numbers, and a 404 page where the missing page is the outlier. Hover states follow the interface-guidelines school: instant contrast (background tint, color), no decorative movement.
 
 Typography: **Fraunces** (variable, serif) carries the voice, **Inter** the UI, system mono the metadata. Structure comes from hairline rules and whitespace, not cards or shadows.
 

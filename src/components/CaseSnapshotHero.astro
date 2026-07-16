@@ -1,5 +1,5 @@
 ---
-import { getImageMeta } from "@lib/images";
+import { getResponsiveImageSources } from "@lib/images";
 import { getCategoryMeta } from "@lib/projects";
 import type { CollectionEntry } from "astro:content";
 
@@ -9,7 +9,10 @@ interface Props {
 
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
-const coverMeta = getImageMeta(project.data.coverImage);
+const cover = getResponsiveImageSources(
+  project.data.coverImage,
+  "(max-width: 900px) 100vw, 1060px",
+);
 const wordCount = (project.body ?? "").split(/\s+/).filter(Boolean).length;
 const readingMinutes = Math.max(1, Math.round(wordCount / 200));
 const facts = [
@@ -50,10 +53,12 @@ const facts = [
 
     <figure class="case-cover" data-reveal data-reveal-delay="100">
       <img
-        src={project.data.coverImage}
+        src={cover.src}
+        srcset={cover.srcset}
+        sizes={cover.srcset ? cover.sizes : undefined}
         alt={`Cover image for ${project.data.title}`}
-        width={coverMeta?.width}
-        height={coverMeta?.height}
+        width={cover.width}
+        height={cover.height}
         loading="eager"
         fetchpriority="high"
         decoding="async"

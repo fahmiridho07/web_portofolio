@@ -269,7 +269,9 @@ const projectCount = projects.length;
     font-size: 0.82rem;
     font-weight: 500;
     line-height: 1;
-    padding: 0.4rem 0;
+    /* Pad the hit area without shifting the row's visual alignment */
+    margin: -0.1rem -0.4rem;
+    padding: 0.5rem 0.4rem;
     text-decoration: underline;
     text-decoration-color: transparent;
     text-decoration-thickness: 1px;
@@ -320,7 +322,16 @@ const projectCount = projects.length;
     gap: 1rem;
     align-items: baseline;
     border-top: 1px solid var(--line);
+    /* Bleed the hover surface past the text column without moving anything */
+    margin-inline: calc(var(--space-4) * -1);
     padding-block: clamp(1rem, 2.2vw, 1.4rem);
+    padding-inline: var(--space-4);
+    transition: background var(--motion-fast) var(--ease-standard);
+  }
+
+  .archive-row:hover,
+  .archive-row:focus-visible {
+    background: var(--paper-soft);
   }
 
   .archive-row:last-child {
@@ -332,35 +343,17 @@ const projectCount = projects.length;
   }
 
   .archive-index {
-    position: relative;
     justify-self: start;
     color: var(--ink-soft);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
-  .archive-index::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1.9rem;
-    height: 1.55rem;
-    border: 1.5px solid var(--signal);
-    border-radius: 52% 48% 55% 45% / 60% 55% 45% 50%;
-    content: "";
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6) rotate(-6deg);
-    transition:
-      opacity var(--motion-medium) var(--ease-out),
-      transform var(--motion-medium) var(--ease-out);
-    pointer-events: none;
-  }
-
-  .archive-row:hover .archive-index::after,
-  .archive-row:focus-visible .archive-index::after {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(-6deg);
+  .archive-row:hover .archive-index,
+  .archive-row:focus-visible .archive-index {
+    color: var(--rust);
   }
 
   .archive-flag-dot {
@@ -386,9 +379,7 @@ const projectCount = projects.length;
     font-weight: 480;
     letter-spacing: -0.005em;
     line-height: 1.2;
-    transition:
-      color var(--motion-fast) var(--ease-standard),
-      transform var(--motion-medium) var(--ease-out);
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .archive-meta {
@@ -411,7 +402,6 @@ const projectCount = projects.length;
   .archive-row:hover .archive-title,
   .archive-row:focus-visible .archive-title {
     color: var(--rust-deep);
-    transform: translateX(0.35rem);
   }
 
   .archive-row:hover .archive-arrow,
@@ -423,6 +413,9 @@ const projectCount = projects.length;
   @media (max-width: 720px) {
     .archive-row {
       grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
+      /* Keep the hover bleed inside the narrower mobile container margin */
+      margin-inline: calc(var(--space-3) * -1);
+      padding-inline: var(--space-3);
     }
   }
 </style>

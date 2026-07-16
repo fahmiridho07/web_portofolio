@@ -2,7 +2,7 @@
 import { heroProjectSlug, homeProjectSlugs, profile, education, experiences } from "@data/profile";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getImageMeta } from "@lib/images";
+import { getResponsiveImageSources } from "@lib/images";
 import { getCategoryMeta, getSortedProjects } from "@lib/projects";
 import { getResumeAction } from "@lib/resume";
 
@@ -39,37 +39,41 @@ const heroTail = "and the machine learning behind it.";
 const heroSentence = `${heroLead} ships, ${heroTail}`;
 let heroWordIndex = 0;
 
+// The ticker runs on results, not tool names: every entry is a real number
+// from a case study on this site.
 const marqueeItems = [
-  "ASP.NET Core",
-  "Python",
-  "LightGBM",
-  "Power BI",
-  "SQL Server",
-  "TensorFlow",
-  "Optuna",
-  "Docker",
-  "Power Automate",
-  "Scikit-learn",
+  { value: "0.8547 PR-AUC", label: "fraud thesis" },
+  { value: "3,087 fraud caught", label: "89% precision" },
+  { value: "0.47 → 0.67 held-out", label: "IndoBERT hybrid" },
+  { value: "153.34 km routed", label: "ACO, 5 clusters" },
+  { value: "R² 0.869", label: "airport demand" },
+  { value: "0.852 accuracy", label: "3-class sentiment" },
+  { value: "7 features shipped", label: "ASP.NET Core prod" },
+  { value: "976k records", label: "LA crime classes" },
+  { value: "120 months", label: "forecast horizon" },
+  { value: "50+ students", label: "Odoo ERP teaching" },
 ];
 ---
 
 <BaseLayout title={pageSeo.home.title} description={pageSeo.home.description}>
   <section class="hero">
     <div class="container hero-inner" data-reveal>
-      <svg class="hero-ornament" viewBox="0 0 220 170" aria-hidden="true">
-        <circle class="orn-dot" cx="18" cy="128" r="4"></circle>
-        <circle class="orn-dot" cx="52" cy="84" r="4"></circle>
-        <circle class="orn-dot" cx="84" cy="132" r="4"></circle>
-        <circle class="orn-dot" cx="112" cy="72" r="4"></circle>
-        <circle class="orn-dot" cx="146" cy="118" r="4"></circle>
-        <circle class="orn-dot" cx="196" cy="140" r="4"></circle>
-        <circle class="orn-dot" cx="38" cy="40" r="4"></circle>
-        <circle class="orn-dot" cx="140" cy="30" r="4"></circle>
-        <circle class="orn-outlier" cx="182" cy="52" r="5.5"></circle>
-        <path
-          class="orn-ring"
-          d="M203 44 C 198 30, 172 28, 163 42 C 154 56, 168 72, 184 70 C 200 68, 207 56, 203 46"
-          pathLength="1"></path>
+      <svg class="hero-plot" viewBox="0 0 240 190" aria-hidden="true">
+        <path class="plot-axes" d="M28 8 V158 H232" pathLength="1"></path>
+        <path class="plot-grid" d="M28 58 H232 M28 108 H232"></path>
+        <g class="plot-ticks">
+          <path d="M28 58 h-4 M28 108 h-4 M78 158 v4 M128 158 v4 M178 158 v4"></path>
+        </g>
+        <circle class="plot-dot" cx="48" cy="138" r="4"></circle>
+        <circle class="plot-dot" cx="70" cy="124" r="4"></circle>
+        <circle class="plot-dot" cx="92" cy="131" r="4"></circle>
+        <circle class="plot-dot" cx="114" cy="108" r="4"></circle>
+        <circle class="plot-dot" cx="136" cy="96" r="4"></circle>
+        <circle class="plot-dot" cx="158" cy="101" r="4"></circle>
+        <circle class="plot-dot" cx="180" cy="80" r="4"></circle>
+        <circle class="plot-dot" cx="204" cy="70" r="4"></circle>
+        <circle class="plot-outlier" cx="196" cy="30" r="5"></circle>
+        <circle class="plot-ring" cx="196" cy="30" r="13"></circle>
       </svg>
 
       <p class="hero-kicker">
@@ -88,10 +92,8 @@ const marqueeItems = [
           <span class="hero-word" style={`--wi: ${heroWordIndex++}`}>
             <em class="hero-em">
               ships
-              <svg class="hero-circle" viewBox="0 0 200 60" preserveAspectRatio="none">
-                <path
-                  d="M172 10 C 152 -1, 42 -3, 18 14 C -2 29, 20 55, 96 56 C 158 57, 192 44, 183 21"
-                  pathLength="1"></path>
+              <svg class="hero-underline" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M5 13 C 56 8, 138 6, 195 9" pathLength="1"></path>
               </svg>
             </em>,
           </span>
@@ -124,7 +126,7 @@ const marqueeItems = [
   <section id="work" class="work divider">
     <div class="container">
       <div class="work-head" data-reveal>
-        <p class="section-label">Selected work</p>
+        <h2 class="section-label">Selected work</h2>
         <a class="work-all" href="/projects/" data-astro-prefetch="hover"
           >All {projectCount} projects <span aria-hidden="true">&rarr;</span></a
         >
@@ -171,14 +173,16 @@ const marqueeItems = [
     <div class="work-preview" data-work-preview aria-hidden="true">
       {
         homeProjects.map((project, index) => {
-          const meta = getImageMeta(project.data.coverImage);
+          const image = getResponsiveImageSources(project.data.coverImage, "19rem");
 
           return (
             <img
-              src={project.data.coverImage}
+              src={image.src}
+              srcset={image.srcset}
+              sizes={image.srcset ? image.sizes : undefined}
               alt=""
-              width={meta?.width}
-              height={meta?.height}
+              width={image.width}
+              height={image.height}
               loading="lazy"
               decoding="async"
               data-work-preview-image={String(index)}
@@ -191,7 +195,7 @@ const marqueeItems = [
 
   <section class="background divider">
     <div class="container">
-      <p class="section-label" data-reveal>Background</p>
+      <h2 class="section-label" data-reveal>Background</h2>
 
       <dl class="background-list">
         {
@@ -213,15 +217,18 @@ const marqueeItems = [
     </div>
   </section>
 
-  <aside class="marquee divider" aria-label="Tools I work with">
-    <p class="sr-only">{marqueeItems.join(", ")}</p>
+  <aside class="marquee divider" aria-label="Results in numbers">
+    <p class="sr-only">
+      {marqueeItems.map((item) => `${item.value} (${item.label})`).join(", ")}
+    </p>
     <div class="marquee-track" aria-hidden="true">
       {
         [0, 1].map(() => (
           <div class="marquee-group">
             {marqueeItems.map((item, index) => (
               <span class="marquee-item">
-                {item}
+                {item.value}
+                <span class="marquee-label">{item.label}</span>
                 <span class:list={["marquee-dot", index === 2 && "is-anomaly"]} />
               </span>
             ))}
@@ -284,6 +291,8 @@ const marqueeItems = [
     const images = Array.from(
       preview.querySelectorAll<HTMLImageElement>("[data-work-preview-image]"),
     );
+    const controller = new AbortController();
+    const { signal } = controller;
     let raf = 0;
     let x = 0;
     let y = 0;
@@ -314,15 +323,116 @@ const marqueeItems = [
       preview.classList.remove("is-visible");
     };
 
-    const controller = new AbortController();
-    const { signal } = controller;
-
     list.addEventListener("pointermove", onMove, { signal });
     list.addEventListener("pointerleave", onLeave, { signal });
     list.querySelectorAll<HTMLElement>("[data-work-row]").forEach((row) => {
       row.addEventListener("pointerenter", onEnter, { signal });
       row.addEventListener("focus", () => onLeave(), { signal });
     });
+
+    return () => {
+      controller.abort();
+
+      if (raf) {
+        cancelAnimationFrame(raf);
+      }
+    };
+  });
+
+  // The chart's ordered dots politely dodge the cursor; the flagged outlier
+  // holds its ground. The whole site's thesis in one interaction.
+  initOnPageLoad(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hero = document.querySelector<HTMLElement>(".hero");
+    const plot = document.querySelector<SVGSVGElement>(".hero-plot");
+
+    if (!fine || reduceMotion || !hero || !plot) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    const dots = Array.from(plot.querySelectorAll<SVGCircleElement>(".plot-dot"));
+    const state = dots.map(() => ({ x: 0, y: 0, tx: 0, ty: 0, baseX: 0, baseY: 0 }));
+    const RADIUS = 80;
+    const PUSH = 0.3;
+    let raf = 0;
+    let based = false;
+
+    const cacheBases = () => {
+      based = true;
+      dots.forEach((dot, i) => {
+        const rect = dot.getBoundingClientRect();
+        state[i].baseX = rect.left + rect.width / 2 - state[i].x;
+        state[i].baseY = rect.top + rect.height / 2 - state[i].y;
+      });
+    };
+
+    const render = () => {
+      let settled = true;
+
+      state.forEach((s, i) => {
+        s.x += (s.tx - s.x) * 0.14;
+        s.y += (s.ty - s.y) * 0.14;
+
+        if (Math.abs(s.tx - s.x) > 0.1 || Math.abs(s.ty - s.y) > 0.1) {
+          settled = false;
+        }
+
+        dots[i].style.transform = `translate(${s.x.toFixed(1)}px, ${s.y.toFixed(1)}px)`;
+      });
+
+      raf = settled ? 0 : requestAnimationFrame(render);
+    };
+
+    const wake = () => {
+      if (!raf) {
+        raf = requestAnimationFrame(render);
+      }
+    };
+
+    // Viewport-relative bases go stale on scroll/resize; re-cache lazily.
+    window.addEventListener("scroll", () => (based = false), { passive: true, signal });
+    window.addEventListener("resize", () => (based = false), { signal });
+
+    hero.addEventListener(
+      "pointermove",
+      (event) => {
+        if (!based) {
+          cacheBases();
+        }
+
+        state.forEach((s) => {
+          const dx = s.baseX - event.clientX;
+          const dy = s.baseY - event.clientY;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < RADIUS && dist > 0) {
+            const strength = (RADIUS - dist) * PUSH;
+            s.tx = (dx / dist) * strength;
+            s.ty = (dy / dist) * strength;
+          } else {
+            s.tx = 0;
+            s.ty = 0;
+          }
+        });
+        wake();
+      },
+      { passive: true, signal },
+    );
+
+    hero.addEventListener(
+      "pointerleave",
+      () => {
+        state.forEach((s) => {
+          s.tx = 0;
+          s.ty = 0;
+        });
+        wake();
+      },
+      { signal },
+    );
 
     return () => {
       controller.abort();
@@ -343,73 +453,128 @@ const marqueeItems = [
     padding-block: var(--space-hero-top) var(--space-hero-bottom);
   }
 
-  /* The anomaly mark: an ordered scatter with one flagged outlier.
-     The signature of the whole site, drawn from the fraud detection thesis.
-     Anchored to the content grid (not the viewport) so its position stays
-     proportional to the headline at every width. */
-  .hero-ornament {
+  /* A tidy miniature scatter chart: axes, faint grid, an upward trend of ink
+     dots, and one carmine outlier sitting clearly off the trend. Figurative,
+     not abstract — it reads as "finds the signal in data" without a word.
+     Anchored to the content grid so it stays proportional to the headline. */
+  .hero-plot {
     position: absolute;
-    top: -0.5rem;
+    top: 0.25rem;
     right: 0;
     z-index: 0;
-    width: clamp(8rem, 13vw, 11rem);
+    width: clamp(10rem, 16vw, 14rem);
     overflow: visible;
     pointer-events: none;
   }
 
   @media (max-width: 1100px) {
-    .hero-ornament {
+    .hero-plot {
       display: none;
     }
   }
 
-  .orn-dot {
-    fill: var(--ink);
-    opacity: 0;
-    animation: orn-dot-in 500ms var(--ease-out) forwards;
-  }
-
-  .orn-dot:nth-of-type(1) { animation-delay: 80ms; }
-  .orn-dot:nth-of-type(2) { animation-delay: 160ms; }
-  .orn-dot:nth-of-type(3) { animation-delay: 240ms; }
-  .orn-dot:nth-of-type(4) { animation-delay: 320ms; }
-  .orn-dot:nth-of-type(5) { animation-delay: 400ms; }
-  .orn-dot:nth-of-type(6) { animation-delay: 480ms; }
-  .orn-dot:nth-of-type(7) { animation-delay: 560ms; }
-  .orn-dot:nth-of-type(8) { animation-delay: 640ms; }
-
-  @keyframes orn-dot-in {
-    to {
-      opacity: 0.18;
-    }
-  }
-
-  .orn-outlier {
-    fill: var(--signal);
-    opacity: 0;
-    animation: orn-outlier-in 400ms var(--ease-out) 820ms forwards;
-  }
-
-  @keyframes orn-outlier-in {
-    to {
-      opacity: 0.85;
-    }
-  }
-
-  .orn-ring {
+  .plot-axes {
     fill: none;
-    stroke: var(--signal);
-    stroke-width: 2.5;
-    stroke-linecap: round;
+    stroke: var(--line-strong);
+    stroke-width: 1.5;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
-    opacity: 0.85;
-    animation: ring-draw 650ms var(--ease-out) 1050ms forwards;
+    animation: plot-axes-draw 700ms var(--ease-out) 100ms forwards;
   }
 
-  @keyframes ring-draw {
+  @keyframes plot-axes-draw {
     to {
       stroke-dashoffset: 0;
+    }
+  }
+
+  .plot-grid,
+  .plot-ticks path {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+    opacity: 0;
+    animation: plot-fade-in 400ms var(--ease-standard) 500ms forwards;
+  }
+
+  @keyframes plot-fade-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Dots land in reading order, like points being plotted one by one */
+  .plot-dot {
+    fill: var(--ink);
+    opacity: 0;
+    animation: plot-dot-in 320ms var(--ease-out) forwards;
+  }
+
+  .plot-dot:nth-of-type(1) { animation-delay: 620ms; }
+  .plot-dot:nth-of-type(2) { animation-delay: 700ms; }
+  .plot-dot:nth-of-type(3) { animation-delay: 780ms; }
+  .plot-dot:nth-of-type(4) { animation-delay: 860ms; }
+  .plot-dot:nth-of-type(5) { animation-delay: 940ms; }
+  .plot-dot:nth-of-type(6) { animation-delay: 1020ms; }
+  .plot-dot:nth-of-type(7) { animation-delay: 1100ms; }
+  .plot-dot:nth-of-type(8) { animation-delay: 1180ms; }
+
+  @keyframes plot-dot-in {
+    to {
+      opacity: 0.62;
+    }
+  }
+
+  .plot-outlier {
+    fill: var(--signal);
+    opacity: 0;
+    animation: plot-fade-in 320ms var(--ease-out) 1340ms forwards;
+  }
+
+  .plot-ring {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 1.75;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.55);
+    animation: plot-ring-in 420ms var(--ease-out) 1460ms forwards;
+  }
+
+  @keyframes plot-ring-in {
+    to {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .plot-axes {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+
+    .plot-grid,
+    .plot-ticks path {
+      opacity: 1;
+      animation: none;
+    }
+
+    .plot-dot {
+      opacity: 0.62;
+      animation: none;
+    }
+
+    .plot-outlier {
+      opacity: 1;
+      animation: none;
+    }
+
+    .plot-ring {
+      opacity: 0.9;
+      transform: none;
+      animation: none;
     }
   }
 
@@ -442,34 +607,35 @@ const marqueeItems = [
     font-weight: 440;
   }
 
-  /* The flagged word: a hand-drawn annotation circle, stroked in after the
-     word lands. Same gesture as circling an outlier on a chart. */
-  .hero-circle {
+  /* The flagged word: one confident hand-drawn underline, stroked in after
+     the word lands. */
+  .hero-underline {
     position: absolute;
-    inset: -0.12em -0.2em -0.1em -0.22em;
-    width: calc(100% + 0.42em);
-    /* Global svg rule clamps max-width to 100%, which pinned the circle to the
-       word box and shifted it left. Unclamp so the insets actually apply. */
+    right: -0.04em;
+    bottom: -0.16em;
+    left: -0.04em;
+    width: calc(100% + 0.08em);
+    /* Global svg rule clamps max-width to 100%; unclamp so the insets apply. */
     max-width: none;
-    height: calc(100% + 0.22em);
+    height: 0.16em;
     overflow: visible;
     pointer-events: none;
   }
 
-  .hero-circle path {
+  .hero-underline path {
     fill: none;
     stroke: var(--signal);
-    stroke-width: 4;
+    stroke-width: 4.5;
     stroke-linecap: round;
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     opacity: 0.9;
-    animation: circle-draw 850ms var(--ease-out) forwards;
-    animation-delay: calc(var(--wi) * 45ms + 400ms);
+    animation: underline-draw 600ms var(--ease-out) forwards;
+    animation-delay: calc(var(--wi) * 45ms + 420ms);
     vector-effect: non-scaling-stroke;
   }
 
-  @keyframes circle-draw {
+  @keyframes underline-draw {
     to {
       stroke-dashoffset: 0;
     }
@@ -482,22 +648,7 @@ const marqueeItems = [
       animation: none;
     }
 
-    .hero-circle path {
-      stroke-dashoffset: 0;
-      animation: none;
-    }
-
-    .orn-dot {
-      opacity: 0.18;
-      animation: none;
-    }
-
-    .orn-outlier {
-      opacity: 0.85;
-      animation: none;
-    }
-
-    .orn-ring {
+    .hero-underline path {
       stroke-dashoffset: 0;
       animation: none;
     }
@@ -579,6 +730,9 @@ const marqueeItems = [
   }
 
   .hero-link {
+    /* Pad the hit area without moving the layout */
+    margin-block: -0.45rem;
+    padding-block: 0.45rem;
     color: var(--ink);
     font-size: 0.92rem;
     font-weight: 500;
@@ -650,8 +804,16 @@ const marqueeItems = [
     gap: 1rem;
     align-items: baseline;
     border-top: 1px solid var(--line);
+    /* Bleed the hover surface past the text column without moving anything */
+    margin-inline: calc(var(--space-4) * -1);
     padding-block: clamp(1.1rem, 2.6vw, 1.7rem);
+    padding-inline: var(--space-4);
     transition: background var(--motion-fast) var(--ease-standard);
+  }
+
+  .work-row:hover,
+  .work-row:focus-visible {
+    background: var(--paper-soft);
   }
 
   .work-logo {
@@ -665,61 +827,32 @@ const marqueeItems = [
     filter: grayscale(1) contrast(1.15);
     opacity: 0.72;
     transition:
-      filter var(--motion-medium) var(--ease-standard),
-      opacity var(--motion-medium) var(--ease-standard),
-      transform var(--motion-medium) var(--ease-out);
+      filter var(--motion-fast) var(--ease-standard),
+      opacity var(--motion-fast) var(--ease-standard);
   }
 
   .work-row:hover .work-logo img,
   .work-row:focus-visible .work-logo img {
     filter: grayscale(0);
     opacity: 1;
-    transform: rotate(-8deg) scale(1.12);
   }
 
   .work-row:last-child {
     border-bottom: 1px solid var(--line);
   }
 
-  /* On hover the row number gets circled, the same flagging gesture as the
-     hero annotation */
   .work-index {
-    position: relative;
-    /* Shrink to the digits so the hover ring centers on the number, not on
-       the stretched grid cell */
     justify-self: start;
     color: var(--ink-soft);
     font-family: var(--font-mono);
     font-size: 0.72rem;
     line-height: 1;
-  }
-
-  .work-index::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1.9rem;
-    height: 1.55rem;
-    border: 1.5px solid var(--signal);
-    border-radius: 52% 48% 55% 45% / 60% 55% 45% 50%;
-    content: "";
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6) rotate(-6deg);
-    transition:
-      opacity var(--motion-medium) var(--ease-out),
-      transform var(--motion-medium) var(--ease-out);
-    pointer-events: none;
-  }
-
-  .work-row:hover .work-index::after,
-  .work-row:focus-visible .work-index::after {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(-6deg);
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .work-row:hover .work-index,
   .work-row:focus-visible .work-index {
-    color: var(--ink);
+    color: var(--rust);
   }
 
   /* The flagged row: one marked record among the ordered ones */
@@ -746,9 +879,7 @@ const marqueeItems = [
     font-weight: 480;
     letter-spacing: -0.005em;
     line-height: 1.15;
-    transition:
-      color var(--motion-fast) var(--ease-standard),
-      transform var(--motion-medium) var(--ease-out);
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .work-meta {
@@ -784,7 +915,6 @@ const marqueeItems = [
   .work-row:hover .work-title,
   .work-row:focus-visible .work-title {
     color: var(--rust-deep);
-    transform: translateX(0.4rem);
   }
 
   .work-row:hover .work-arrow,
@@ -945,7 +1075,7 @@ const marqueeItems = [
   .marquee-item {
     display: inline-flex;
     align-items: baseline;
-    gap: 1.6rem;
+    gap: 0.55rem;
     margin-right: 1.6rem;
     color: var(--ink-muted);
     font-family: var(--font-serif);
@@ -954,6 +1084,20 @@ const marqueeItems = [
     letter-spacing: -0.005em;
     line-height: 1;
     white-space: nowrap;
+  }
+
+  .marquee-item .marquee-dot {
+    margin-left: 1.05rem;
+  }
+
+  .marquee-label {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.58em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transform: translateY(-0.08em);
   }
 
   .marquee-dot {
@@ -1036,6 +1180,10 @@ const marqueeItems = [
   }
 
   .contact-links a {
+    display: inline-block;
+    /* Pad the hit area without moving the layout */
+    margin-block: -0.45rem;
+    padding-block: 0.45rem;
     color: var(--ink-muted);
     font-size: 0.84rem;
     font-weight: 500;
@@ -1063,6 +1211,10 @@ const marqueeItems = [
     .work-row {
       grid-template-columns: 1.8rem 1.7rem minmax(0, 1fr) 1.5rem;
       gap: 0.7rem;
+      /* The container's side margin shrinks to 0.75rem here; keep the hover
+         bleed inside it so nothing overflows the viewport */
+      margin-inline: calc(var(--space-3) * -1);
+      padding-inline: var(--space-3);
     }
 
     .work-metric {
