@@ -4,6 +4,10 @@ export type ImageMeta = {
 };
 
 const imageMeta: Record<string, ImageMeta> = {
+  "/assets/projects/orphanage-inspection-route-optimization/screenshots/aco-convergence-cluster0-400.webp":
+    { width: 400, height: 239 },
+  "/assets/projects/orphanage-inspection-route-optimization/screenshots/aco-convergence-cluster0-640.webp":
+    { width: 640, height: 382 },
   "/covers/fraud-detection-ml-pipeline.svg": { width: 960, height: 640 },
   "/covers/juanda-airport-visitor-forecasting.svg": { width: 960, height: 640 },
   "/covers/la-crime-type-prediction.svg": { width: 960, height: 640 },
@@ -134,10 +138,6 @@ const imageMeta: Record<string, ImageMeta> = {
     { width: 400, height: 231 },
   "/assets/projects/bank-jatim-performance-dashboard/screenshots/Dashboard_Bank_Jatim_Pusat_page-0001-640.webp":
     { width: 640, height: 370 },
-  "/assets/projects/devops-tasktracker/screenshots/github-repository-400.webp":
-    { width: 400, height: 255 },
-  "/assets/projects/devops-tasktracker/screenshots/github-repository-640.webp":
-    { width: 640, height: 409 },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report-400.webp":
     { width: 400, height: 192 },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report-640.webp":
@@ -179,10 +179,8 @@ const imageMeta: Record<string, ImageMeta> = {
       width: 1400,
       height: 810,
     },
-  "/assets/projects/devops-tasktracker/screenshots/github-repository.webp": {
-    width: 1400,
-    height: 894,
-  },
+  "/assets/projects/orphanage-inspection-route-optimization/screenshots/aco-convergence-cluster0.webp":
+    { width: 989, height: 590 },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub.webp":
     {
       width: 1386,

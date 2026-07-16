@@ -17,12 +17,12 @@ links:
     href: "https://its.id/m/OptimalisasiRutePantiAsuhan"
 coverImage: "/assets/projects/orphanage-inspection-route-optimization/screenshots/public-project-link.webp"
 logo: "/assets/logos/route.svg"
-result: "Modeled inspection routes with service time and time-window constraints, including convergence and route visualization."
-metric: "9 to 17 window"
+result: "ACO produced five feasible cluster routes totaling 153.34 km, each fitting the 09:00-17:00 inspection window; the largest cluster's route improved from 52.06 km to 45.95 km over 4,189 iterations."
+metric: "5 routes · 153.34 km total"
 proof:
-  - "Ant Colony Optimization route planning"
-  - "Service-time and working-window constraints"
-  - "Route and convergence visualization"
+  - "Five cluster routes, all within the 09:00-17:00 working window"
+  - "Cluster 0 route improved 52.06 km → 45.95 km across 4,189 ACO iterations"
+  - "Service-time and working-window constraints modeled, not assumed"
 priority: 8
 ---
 
@@ -40,6 +40,36 @@ I worked on constraint interpretation, Ant Colony Optimization implementation, r
 
 ## Evidence
 
+<figure
+  className="evidence-panel"
+  data-artifact="ACO convergence (notebook output)"
+>
+  <img
+    src="/assets/projects/orphanage-inspection-route-optimization/screenshots/aco-convergence-cluster0.webp"
+    width="989"
+    height="590"
+    loading="lazy"
+    decoding="async"
+    alt="Notebook convergence plot for cluster 0: best route distance drops from 52.06 km to 45.95 km, with the final improvement found at iteration 3,292"
+  />
+  <figcaption>
+    Notebook output: ACO convergence for the largest cluster — the best route
+    drops from 52.06 km to 45.95 km, with the winning move found deep in the
+    search at iteration 3,292.
+  </figcaption>
+</figure>
+
+Per-cluster results as printed by the optimization run:
+
+| Cluster | Optimal distance | Route time | Iterations |
+| ------- | ---------------- | ---------- | ---------- |
+| 0       | 45.95 km         | 03:55:08   | 4,189      |
+| 1       | 15.56 km         | 03:18:40   | 13,329     |
+| 2       | 33.87 km         | 05:10:38   | 7,771      |
+| 3       | 36.04 km         | 04:43:14   | 7,854      |
+| 4       | 21.92 km         | 03:56:17   | 10,383     |
+| **All** | **153.34 km**    | —          | —          |
+
 <figure className="evidence-panel" data-artifact="Notebook artifact">
   <img
     src="/assets/projects/orphanage-inspection-route-optimization/screenshots/public-project-link.webp"
@@ -50,8 +80,8 @@ I worked on constraint interpretation, Ant Colony Optimization implementation, r
     alt="Public Google Colab notebook for orphanage inspection route optimization with Python and Folium route visualization code"
   />
   <figcaption>
-    Notebook evidence: the public project artifact contains the Python
-    route-visualization workflow used for the ACO route planning work.
+    The public Colab notebook with the Python route-visualization workflow used
+    for the ACO route planning work.
   </figcaption>
 </figure>
 
@@ -68,7 +98,7 @@ The project treated the constraints as part of the system, not as afterthoughts.
 
 ## Result
 
-The project produced optimized route candidates and convergence visuals that explained how route quality changed across iterations.
+The orphanages were grouped into five clusters, and ACO produced a feasible route for every cluster — 153.34 km combined, each route fitting the 09:00-17:00 working window with per-location service time included (route times range from 3h18m to 5h10m). The convergence behavior is honest about how heuristics work in practice: two clusters kept improving deep into the search (cluster 0 found its best route at iteration 3,292), while three settled on their first good solution immediately.
 
 ## What I'd Improve
 
