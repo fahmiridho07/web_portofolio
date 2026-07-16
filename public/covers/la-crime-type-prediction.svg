@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="LA crime type prediction cover: a map-like grid of incidents with one class highlighted by a decision boundary">
+  <rect width="960" height="640" fill="#f7f7f6"/>
+  <path d="M0 160h960M0 320h960M0 480h960M240 0v640M480 0v640M720 0v640" stroke="#16181d" stroke-opacity=".06"/>
+
+  <!-- incident field -->
+  <g fill="#16181d" fill-opacity=".5">
+    <circle cx="120" cy="128" r="7"/><circle cx="196" cy="164" r="7"/><circle cx="268" cy="120" r="7"/>
+    <circle cx="348" cy="176" r="7"/><circle cx="428" cy="132" r="7"/><circle cx="508" cy="180" r="7"/>
+    <circle cx="140" cy="248" r="7"/><circle cx="224" cy="284" r="7"/><circle cx="304" cy="240" r="7"/>
+    <circle cx="592" cy="136" r="7"/><circle cx="672" cy="188" r="7"/><circle cx="760" cy="140" r="7"/>
+    <circle cx="836" cy="196" r="7"/><circle cx="704" cy="288" r="7"/><circle cx="800" cy="308" r="7"/>
+  </g>
+  <!-- the predicted class -->
+  <g fill="#c92e3e">
+    <circle cx="420" cy="268" r="9"/><circle cx="496" cy="300" r="9"/><circle cx="556" cy="252" r="9"/>
+  </g>
+  <!-- decision boundary around the class -->
+  <path d="M368 288c20-58 96-84 158-72 62 12 106 62 84 106-22 44-118 52-182 28-46-17-66-34-60-62z"
+        fill="none" stroke="#c92e3e" stroke-width="3" stroke-dasharray="4 10"/>
+  <text x="620" y="352" fill="#c92e3e" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">one of 138 classes</text>
+
+  <!-- title block -->
+  <text x="88" y="500" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800">LA Crime Type Prediction</text>
+  <text x="88" y="548" fill="#16181d" fill-opacity=".6" font-family="Inter, Arial, sans-serif" font-size="28">976k records &#183; six classical models &#183; honest baselines</text>
+</svg>

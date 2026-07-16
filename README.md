@@ -12,11 +12,11 @@ Live at **[fahmiridho.me](https://fahmiridho.me)**.
 
 The identity is drawn from my fraud detection thesis: everything ordered and neutral, one point flagged. Two inks only.
 
-| Role | Value | Job |
-| --- | --- | --- |
-| Paper | `#f7f7f6` | Neutral stage, with a subtle SVG grain overlay |
-| Ink | `#16181d` + muted steps | All content, all structure |
-| Carmine | `#c92e3e` | The single accent: anomaly marks, and anything the visitor touches |
+| Role    | Value                   | Job                                                                |
+| ------- | ----------------------- | ------------------------------------------------------------------ |
+| Paper   | `#f7f7f6`               | Neutral stage, with a subtle SVG grain overlay                     |
+| Ink     | `#16181d` + muted steps | All content, all structure                                         |
+| Carmine | `#c92e3e`               | The single accent: anomaly marks, and anything the visitor touches |
 
 The rule is semantic, not decorative: at rest the page is neutral and ordered; anomalies and interactions get flagged red, the same gesture as circling an outlier on a chart. The motif appears as the brand mark (a scatter with one circled outlier), the hand-drawn annotation around the hero word, the hover ring on project row numbers, the flagged flagship row, and a 404 page where the missing page is the outlier.
 
@@ -28,6 +28,7 @@ Typography: **Fraunces** (variable, serif) carries the voice, **Inter** the UI, 
 - **CSS scroll-driven animations with graceful fallback.** Reveals run on native `animation-timeline: view()` where supported, fall back to an IntersectionObserver, and stay visible with no JavaScript at all (`@media (scripting: none)` + `<noscript>`).
 - **Motion discipline.** Opacity and transform only, `prefers-reduced-motion` honored everywhere, no scroll hijacking, one `backdrop-filter` on the whole site (the sticky header).
 - **Content as data.** Projects are MDX in a typed content collection; ordering, flags, and evidence figures are frontmatter. SEO (OpenGraph, JSON-LD Person/CreativeWork/Breadcrumb, sitemap) is generated per page.
+- **Evidence is real.** Every image in a case study's evidence panels must be a genuine artifact: a screenshot, a notebook/tool export, or a page from a real document. Hand-made visuals are allowed only as covers or diagrams, must not imitate the look of a chart, dashboard, or screenshot, and are captioned as diagrams — never as evidence.
 - **View transitions** via Astro's ClientRouter with a persistent header and footer.
 
 ## Stack

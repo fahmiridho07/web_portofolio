@@ -16,7 +16,7 @@ stack:
   - CNN-LSTM
   - TensorFlow
 links: []
-coverImage: "/assets/projects/juanda-airport-visitor-forecasting/juanda_airport_forecasting_dashboard.svg"
+coverImage: "/covers/juanda-airport-visitor-forecasting.svg"
 logo: "/assets/logos/forecast.svg"
 result: "Random Forest Regressor produced the strongest notebook result with R2 0.869 and MAE around 48k visitors on the 80-20 split."
 metric: "R2 0.869"
@@ -41,18 +41,21 @@ I handled data preparation, descriptive analysis, outlier handling, normalizatio
 
 ## Evidence
 
-<figure className="evidence-panel" data-artifact="Forecast overview">
+<figure
+  className="evidence-panel"
+  data-artifact="Monthly trend (notebook output)"
+>
   <img
-    src="/assets/projects/juanda-airport-visitor-forecasting/juanda_airport_forecasting_dashboard.svg"
-    width="1440"
-    height="920"
+    src="/assets/projects/juanda-airport-visitor-forecasting/screenshots/monthly-trend.webp"
+    width="1156"
+    height="624"
     loading="lazy"
     decoding="async"
-    alt="Dashboard showing Juanda Airport visitor forecasting data, monthly trend, yearly average, and project metrics"
+    alt="Notebook line plot of 120 monthly Juanda Airport visitor observations, showing the pandemic collapse in 2020 and partial recovery"
   />
   <figcaption>
-    Forecasting overview: 120 monthly observations, historical demand movement,
-    and summary statistics for the airport visitor dataset.
+    Notebook output: the 120 monthly observations, including the sharp pandemic
+    drop in 2020 and the partial recovery afterwards.
   </figcaption>
 </figure>
 
@@ -68,18 +71,22 @@ I handled data preparation, descriptive analysis, outlier handling, normalizatio
 
 The model selection stayed evidence-led. Although CNN-LSTM was included as the more complex sequence model, Random Forest produced the strongest result in the notebook and was easier to explain as a portfolio-ready baseline for non-linear demand behavior.
 
-<figure className="evidence-panel" data-artifact="Model comparison">
+<figure
+  className="evidence-panel"
+  data-artifact="Random Forest fit (notebook output)"
+>
   <img
-    src="/assets/projects/juanda-airport-visitor-forecasting/juanda_model_comparison.svg"
-    width="1440"
-    height="900"
+    src="/assets/projects/juanda-airport-visitor-forecasting/screenshots/rf-forecast-vs-actual.webp"
+    width="1156"
+    height="701"
     loading="lazy"
     decoding="async"
-    alt="Model comparison for Juanda forecasting showing R2 and MAE across Linear Regression, Random Forest, and CNN-LSTM"
+    alt="Notebook plot of Random Forest forecasts against actual monthly visitors across 80-20, 70-30, and 60-40 splits"
   />
   <figcaption>
-    Model comparison: Random Forest reached R2 0.869 with MAE around 48k
-    visitors on the 80-20 split.
+    Notebook output: Random Forest forecast against actual data across the three
+    train-test splits — R2 0.869 with MAE around 48k visitors on the 80-20
+    split.
   </figcaption>
 </figure>
 

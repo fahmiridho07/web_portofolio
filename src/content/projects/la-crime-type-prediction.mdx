@@ -20,7 +20,7 @@ stack:
 links:
   - label: "Project link"
     href: "https://its.id/m/PredictiveAnalyticsCrimeLA"
-coverImage: "/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg"
+coverImage: "/covers/la-crime-type-prediction.svg"
 logo: "/assets/logos/scikitlearn.svg"
 result: "SVM with RBF kernel became the strongest deployable baseline with accuracy 0.321 and macro F1 0.303 across 138 modeled classes."
 metric: "138 classes"
@@ -45,20 +45,28 @@ I worked on data preparation, model comparison, imbalance handling, and evaluati
 
 ## Evidence
 
-<figure className="evidence-panel" data-artifact="Dataset profile">
+<figure
+  className="evidence-panel"
+  data-artifact="Feature correlation (notebook output)"
+>
   <img
-    src="/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg"
-    width="1440"
-    height="960"
+    src="/assets/projects/la-crime-type-prediction/screenshots/correlation-heatmap.webp"
+    width="601"
+    height="519"
     loading="lazy"
     decoding="async"
-    alt="Los Angeles crime prediction dashboard showing raw records, modeled classes, balanced records, top crime types, day-night split, zones, and top areas"
+    alt="Notebook Spearman correlation heatmap across the candidate features, flagging the strong Reporting District to Area correlation"
   />
   <figcaption>
-    Dataset evidence: 976k raw records, 138 modeled classes, and a balanced
-    13,800-row modeling dataset.
+    Notebook output: Spearman correlation across candidate features. The strong
+    Reporting District &#8596; Area pair drove the redundant-column removal in
+    feature selection.
   </figcaption>
 </figure>
+
+The dataset itself: 976k raw records from 2020-2024, reduced to 138 modeled
+classes after removing single-instance targets, then balanced to a 13,800-row
+modeling dataset (100 samples per class).
 
 ## Approach
 
@@ -72,36 +80,41 @@ I worked on data preparation, model comparison, imbalance handling, and evaluati
 
 The project compared several model families instead of relying on a single high-level score. I treated SVM with RBF kernel as the strongest deployable baseline because it led accuracy and macro F1, while the BPNN result required audit despite a high AUC value.
 
-<div className="evidence-grid">
-  <figure className="evidence-panel" data-artifact="ML workflow">
-    <img
-      src="/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg"
-      width="1440"
-      height="760"
-      loading="lazy"
-      decoding="async"
-      alt="Machine learning workflow diagram covering data preparation, exploratory analysis, model experimentation, evaluation, and model selection"
-    />
-    <figcaption>
-      Workflow evidence: data preparation, EDA, class balancing, model
-      experimentation, evaluation, and selection.
-    </figcaption>
-  </figure>
-  <figure className="evidence-panel" data-artifact="Model comparison">
-    <img
-      src="/assets/projects/la-crime-type-prediction/la_model_comparison.svg"
-      width="1440"
-      height="900"
-      loading="lazy"
-      decoding="async"
-      alt="Model comparison for LA Crime classification showing accuracy, F1, and AUC across tested models"
-    />
-    <figcaption>
-      Model evidence: SVM RBF led the usable baseline results with accuracy
-      0.321 and macro F1 0.303.
-    </figcaption>
-  </figure>
-</div>
+<figure
+  className="evidence-panel"
+  data-artifact="ML workflow (illustrative diagram)"
+>
+  <img
+    src="/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg"
+    width="1440"
+    height="760"
+    loading="lazy"
+    decoding="async"
+    alt="Illustrative workflow diagram covering data preparation, exploratory analysis, model experimentation, evaluation, and model selection"
+  />
+  <figcaption>
+    Workflow diagram (made for this write-up, not a tool export): data
+    preparation, EDA, class balancing, model experimentation, evaluation, and
+    selection.
+  </figcaption>
+</figure>
+
+Test-set results for the best configuration of each model family, as printed in
+the notebook:
+
+| Model                 | Accuracy  | Macro F1  | Macro AUC ROC |
+| --------------------- | --------- | --------- | ------------- |
+| **SVM (RBF, C = 10)** | **0.321** | **0.303** | **0.658**     |
+| KNN (k = 3)           | 0.279     | 0.252     | 0.637         |
+| Logistic Regression   | 0.104     | 0.069     | 0.549         |
+| Naive Bayes           | 0.078     | 0.048     | 0.536         |
+| Decision Tree         | 0.074     | 0.039     | 0.534         |
+| BPNN                  | 0.000     | 0.000     | 0.793         |
+
+The BPNN row is the audit flag mentioned above: a 0.793 AUC next to zero
+accuracy points to a label-mapping problem in the notebook's output layer, not
+a usable model — so it was excluded from baseline selection rather than
+reported as a win.
 
 ## Result
 

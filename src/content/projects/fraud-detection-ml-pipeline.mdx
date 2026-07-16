@@ -15,7 +15,7 @@ stack:
   - Scikit-learn
   - Pandas
 links: []
-coverImage: "/assets/projects/fraud-detection-ml-pipeline/architecture.svg"
+coverImage: "/covers/fraud-detection-ml-pipeline.svg"
 logo: "/assets/logos/scikitlearn.svg"
 result: "AE latent-space oversampling reached 0.855 test PR-AUC after Bayesian-tuned LightGBM, beating a tuned plain-LightGBM baseline (0.850) and a matched SMOTE-NC control (0.850), and catching 41 more fraud cases than the baseline at the chosen operating threshold."
 metric: "0.855 PR-AUC (AP) · 74.7% recall @ 89% precision"
@@ -44,64 +44,66 @@ At 3.5% fraud, a classifier optimized for accuracy is close to useless — predi
 
 ## Evidence
 
+All four figures below are taken directly from the thesis paper (POMITS submission); axis labels and annotations are in Indonesian because that is the language of the original document.
+
 <div className="evidence-grid evidence-grid-2">
-  <figure className="evidence-panel" data-artifact="Pipeline architecture">
+  <figure
+    className="evidence-panel"
+    data-artifact="Pipeline diagram (from the paper)"
+  >
     <img
-      src="/assets/projects/fraud-detection-ml-pipeline/architecture.svg"
-      width="1440"
-      height="640"
+      src="/assets/projects/fraud-detection-ml-pipeline/pipeline-architecture.webp"
+      width="1600"
+      height="1336"
       loading="lazy"
       decoding="async"
-      alt="Two-stage pipeline diagram: data preprocessing and AE latent-space SMOTE oversampling feeding into Optuna-tuned LightGBM"
+      alt="Pipeline diagram from the thesis paper: fraud samples encoded to latent space, SMOTE interpolation, decoded synthetic fraud merged with training data, then LightGBM"
     />
     <figcaption>
-      End-to-end pipeline: preprocessing, AE-trained-on-fraud latent-space
-      oversampling, then Bayesian-tuned LightGBM.
+      Pipeline diagram from the paper: AE-trained-on-fraud latent-space
+      oversampling, synthetic fraud merged into training data, then LightGBM.
     </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="PR-AUC comparison">
     <img
-      src="/assets/projects/fraud-detection-ml-pipeline/pr_auc_comparison.svg"
-      width="1440"
-      height="900"
+      src="/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison.webp"
+      width="1565"
+      height="1135"
       loading="lazy"
       decoding="async"
-      alt="Bar chart of test PR-AUC across baseline, SMOTE-NC, and AE latent-oversampling, tuned and untuned"
+      alt="Bar chart from the thesis paper: test PR-AUC across baseline, SMOTE, and AE latent-SMOTE, standard and tuned — AE latent-SMOTE best at 0.8547"
     />
     <figcaption>
-      Test PR-AUC vs. baseline and SMOTE-NC, tuned and untuned: AE wins in both
-      regimes.
+      Test PR-AUC per scenario, untuned and tuned: AE latent-SMOTE leads in both
+      regimes (0.8547 tuned vs. 0.8497 baseline and 0.8500 SMOTE).
     </figcaption>
   </figure>
-  <figure
-    className="evidence-panel"
-    data-artifact="Bayesian Optimization justification"
-  >
+  <figure className="evidence-panel" data-artifact="Precision-Recall curves">
     <img
-      src="/assets/projects/fraud-detection-ml-pipeline/bayesopt_vs_random_search.svg"
-      width="1440"
-      height="640"
+      src="/assets/projects/fraud-detection-ml-pipeline/pr-curve.webp"
+      width="1291"
+      height="1116"
       loading="lazy"
       decoding="async"
-      alt="Comparison of Bayesian Optimization (TPE) versus random search on validation PR-AUC and tuning time"
+      alt="Precision-Recall curves on the test set for baseline (AP 0.8497), SMOTE (AP 0.8500), and AE latent-SMOTE (AP 0.8547)"
     />
     <figcaption>
-      Bayesian Optimization vs. random search, matched trial budget: +0.004
-      validation PR-AUC at no extra cost.
+      Test-set Precision-Recall curves for the three scenarios; the AE
+      latent-SMOTE curve dominates in the high-precision region.
     </figcaption>
   </figure>
   <figure className="evidence-panel" data-artifact="Confusion matrix">
     <img
-      src="/assets/projects/fraud-detection-ml-pipeline/confusion_matrix.svg"
-      width="1200"
-      height="760"
+      src="/assets/projects/fraud-detection-ml-pipeline/confusion-matrix.webp"
+      width="903"
+      height="902"
       loading="lazy"
       decoding="async"
-      alt="Confusion matrix for the tuned AE latent-oversample model on the test set"
+      alt="Confusion matrix from the thesis paper: 113,596 true negatives, 380 false positives, 1,045 false negatives, 3,087 true positives"
     />
     <figcaption>
-      Operating-point confusion matrix: 74.71% fraud recall at 89.04% precision,
-      threshold selected on validation via F1.
+      Operating-point confusion matrix from the paper: 3,087 fraud caught, 1,045
+      missed, 380 false alarms — 74.71% recall at 89.04% precision.
     </figcaption>
   </figure>
 </div>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="Fraud detection cover: a field of legitimate transactions with rare fraud points feeding an oversampling pipeline">
+  <rect width="960" height="640" fill="#f7f7f6"/>
+  <path d="M0 160h960M0 320h960M0 480h960M240 0v640M480 0v640M720 0v640" stroke="#16181d" stroke-opacity=".06"/>
+
+  <!-- transaction field: mostly legitimate (ink), rare fraud (carmine) -->
+  <g fill="#16181d" fill-opacity=".55">
+    <circle cx="110" cy="120" r="7"/><circle cx="168" cy="176" r="7"/><circle cx="224" cy="112" r="7"/>
+    <circle cx="130" cy="236" r="7"/><circle cx="206" cy="268" r="7"/><circle cx="282" cy="204" r="7"/>
+    <circle cx="98" cy="312" r="7"/><circle cx="176" cy="336" r="7"/><circle cx="258" cy="300" r="7"/>
+    <circle cx="322" cy="140" r="7"/><circle cx="344" cy="252" r="7"/><circle cx="300" cy="352" r="7"/>
+  </g>
+  <g fill="#c92e3e">
+    <circle cx="252" cy="168" r="9"/>
+    <circle cx="150" cy="292" r="9"/>
+  </g>
+  <!-- synthetic points interpolated between the two fraud cases -->
+  <path d="M252 168L150 292" stroke="#c92e3e" stroke-width="2" stroke-dasharray="2 8"/>
+  <circle cx="218" cy="209" r="5" fill="none" stroke="#c92e3e" stroke-width="2"/>
+  <circle cx="184" cy="251" r="5" fill="none" stroke="#c92e3e" stroke-width="2"/>
+
+  <!-- pipeline arrow -->
+  <path d="M400 232h116" fill="none" stroke="#16181d" stroke-width="2"/>
+  <path d="M516 232l-14-8v16z" fill="#16181d"/>
+
+  <!-- classifier block -->
+  <rect x="544" y="118" width="328" height="228" fill="none" stroke="#16181d" stroke-width="2"/>
+  <text x="576" y="176" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">encode &#8594; z-space</text>
+  <text x="576" y="220" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">interpolate fraud</text>
+  <text x="576" y="264" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">decode &#8594; train</text>
+  <path d="M544 290h328" stroke="#16181d" stroke-opacity=".2"/>
+  <text x="576" y="322" fill="#16181d" fill-opacity=".55" font-family="Consolas, Menlo, monospace" font-size="20">3.5% fraud, 96.5% noise</text>
+
+  <!-- title block -->
+  <text x="88" y="500" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800">Fraud Detection Pipeline</text>
+  <text x="88" y="548" fill="#16181d" fill-opacity=".6" font-family="Inter, Arial, sans-serif" font-size="28">autoencoder oversampling &#183; LightGBM &#183; undergraduate thesis</text>
+</svg>

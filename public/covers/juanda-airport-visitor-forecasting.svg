@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="Juanda Airport forecasting cover: a monthly visitor series with a forecast continuation">
+  <rect width="960" height="640" fill="#f7f7f6"/>
+  <path d="M0 160h960M0 320h960M0 480h960M240 0v640M480 0v640M720 0v640" stroke="#16181d" stroke-opacity=".06"/>
+
+  <!-- observed series: demand, collapse, recovery -->
+  <path d="M88 200l56-36 52 24 54-44 56 30 50-18 46 160 44 22 48-52 54-40 62-22"
+        fill="none" stroke="#16181d" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="#16181d">
+    <circle cx="88" cy="200" r="6"/><circle cx="144" cy="164" r="6"/><circle cx="196" cy="188" r="6"/>
+    <circle cx="250" cy="144" r="6"/><circle cx="306" cy="174" r="6"/><circle cx="356" cy="156" r="6"/>
+    <circle cx="402" cy="316" r="6"/><circle cx="446" cy="338" r="6"/><circle cx="494" cy="286" r="6"/>
+    <circle cx="548" cy="246" r="6"/><circle cx="610" cy="224" r="6"/>
+  </g>
+  <!-- forecast continuation -->
+  <path d="M610 224l58-18 56 8 58-22 62-10" fill="none" stroke="#c92e3e" stroke-width="4" stroke-dasharray="4 12" stroke-linecap="round"/>
+  <circle cx="610" cy="224" r="9" fill="#c92e3e"/>
+  <text x="672" y="140" fill="#c92e3e" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">next 12 months</text>
+
+  <!-- title block -->
+  <text x="88" y="500" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800">Juanda Airport Forecasting</text>
+  <text x="88" y="548" fill="#16181d" fill-opacity=".6" font-family="Inter, Arial, sans-serif" font-size="28">monthly visitors &#183; regression vs ensemble vs CNN-LSTM</text>
+</svg>

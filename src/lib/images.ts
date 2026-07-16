@@ -4,6 +4,104 @@ export type ImageMeta = {
 };
 
 const imageMeta: Record<string, ImageMeta> = {
+  "/covers/fraud-detection-ml-pipeline.svg": { width: 960, height: 640 },
+  "/covers/juanda-airport-visitor-forecasting.svg": { width: 960, height: 640 },
+  "/covers/la-crime-type-prediction.svg": { width: 960, height: 640 },
+  "/covers/indo-transaction-nlp.svg": { width: 960, height: 640 },
+  "/assets/projects/fraud-detection-ml-pipeline/pipeline-architecture.webp": {
+    width: 1600,
+    height: 1336,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison.webp": {
+    width: 1565,
+    height: 1135,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-curve.webp": {
+    width: 1291,
+    height: 1116,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/confusion-matrix.webp": {
+    width: 903,
+    height: 902,
+  },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/monthly-trend.webp":
+    { width: 1156, height: 624 },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/rf-forecast-vs-actual.webp":
+    { width: 1156, height: 701 },
+  "/assets/projects/la-crime-type-prediction/screenshots/correlation-heatmap.webp":
+    { width: 601, height: 519 },
+  "/assets/projects/fraud-detection-ml-pipeline/pipeline-architecture-400.webp":
+    { width: 400, height: 334 },
+  "/assets/projects/fraud-detection-ml-pipeline/pipeline-architecture-640.webp":
+    { width: 640, height: 534 },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison-400.webp": {
+    width: 400,
+    height: 290,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison-640.webp": {
+    width: 640,
+    height: 464,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-curve-400.webp": {
+    width: 400,
+    height: 346,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/pr-curve-640.webp": {
+    width: 640,
+    height: 553,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/confusion-matrix-400.webp": {
+    width: 400,
+    height: 400,
+  },
+  "/assets/projects/fraud-detection-ml-pipeline/confusion-matrix-640.webp": {
+    width: 640,
+    height: 639,
+  },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/monthly-trend-400.webp":
+    { width: 400, height: 216 },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/monthly-trend-640.webp":
+    { width: 640, height: 345 },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/rf-forecast-vs-actual-400.webp":
+    { width: 400, height: 243 },
+  "/assets/projects/juanda-airport-visitor-forecasting/screenshots/rf-forecast-vs-actual-640.webp":
+    { width: 640, height: 388 },
+  "/assets/projects/sriwijayaair-review-sentiment/case-overview-400.webp": {
+    width: 400,
+    height: 248,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/case-overview-640.webp": {
+    width: 640,
+    height: 397,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/model-performance-400.webp": {
+    width: 400,
+    height: 154,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/model-performance-640.webp": {
+    width: 640,
+    height: 247,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/confusion-matrix-400.webp": {
+    width: 400,
+    height: 238,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/confusion-matrix-640.webp": {
+    width: 640,
+    height: 381,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/negative-review-signals-400.webp":
+    { width: 400, height: 242 },
+  "/assets/projects/sriwijayaair-review-sentiment/negative-review-signals-640.webp":
+    { width: 640, height: 387 },
+  "/assets/projects/sriwijayaair-review-sentiment/error-analysis-400.webp": {
+    width: 400,
+    height: 224,
+  },
+  "/assets/projects/sriwijayaair-review-sentiment/error-analysis-640.webp": {
+    width: 640,
+    height: 358,
+  },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub-400.webp":
     { width: 400, height: 192 },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub-640.webp":
@@ -85,16 +183,6 @@ const imageMeta: Record<string, ImageMeta> = {
     width: 1400,
     height: 894,
   },
-  "/assets/projects/juanda-airport-visitor-forecasting/juanda_airport_forecasting_dashboard.svg":
-    {
-      width: 1440,
-      height: 920,
-    },
-  "/assets/projects/juanda-airport-visitor-forecasting/juanda_model_comparison.svg":
-    {
-      width: 1440,
-      height: 900,
-    },
   "/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/01-help-hub.webp":
     {
       width: 1386,
@@ -145,15 +233,6 @@ const imageMeta: Record<string, ImageMeta> = {
       width: 352,
       height: 785,
     },
-  "/assets/projects/la-crime-type-prediction/la_crime_prediction_dashboard.svg":
-    {
-      width: 1440,
-      height: 960,
-    },
-  "/assets/projects/la-crime-type-prediction/la_model_comparison.svg": {
-    width: 1440,
-    height: 900,
-  },
   "/assets/projects/la-crime-type-prediction/ml_workflow_diagram.svg": {
     width: 1440,
     height: 760,
