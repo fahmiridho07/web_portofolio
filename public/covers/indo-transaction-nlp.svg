@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-label="Indonesian transaction understanding cover: informal text parsed into structured fields">
+  <rect width="960" height="640" fill="#f7f7f6"/>
+  <path d="M0 160h960M0 320h960M0 480h960M240 0v640M480 0v640M720 0v640" stroke="#16181d" stroke-opacity=".06"/>
+
+  <!-- utterance -->
+  <text x="88" y="150" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="600">kemarin beli kopi</text>
+  <text x="88" y="204" fill="#c92e3e" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="800">25rb</text>
+  <text x="196" y="204" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="40" font-weight="600">di gofood</text>
+
+  <!-- parse arrow -->
+  <path d="M88 248v56h330" fill="none" stroke="#16181d" stroke-width="2"/>
+  <path d="M418 296l-14-8v16z" fill="#16181d"/>
+
+  <!-- structured output -->
+  <rect x="446" y="118" width="426" height="250" fill="none" stroke="#16181d" stroke-width="2"/>
+  <text x="478" y="172" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">amount     25000</text>
+  <text x="478" y="216" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">category   food_drink</text>
+  <text x="478" y="260" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">merchant   gofood</text>
+  <text x="478" y="304" fill="#16181d" font-family="Consolas, Menlo, monospace" font-size="26">date_ref   yesterday</text>
+  <path d="M446 330h426" stroke="#16181d" stroke-opacity=".2"/>
+  <text x="478" y="356" fill="#16181d" fill-opacity=".55" font-family="Consolas, Menlo, monospace" font-size="20">measured, not assumed</text>
+
+  <!-- title block -->
+  <text x="88" y="500" fill="#16181d" font-family="Inter, Arial, sans-serif" font-size="54" font-weight="800">Indonesian Transaction NLP</text>
+  <text x="88" y="548" fill="#16181d" fill-opacity=".6" font-family="Inter, Arial, sans-serif" font-size="28">dataset &#183; small model &#183; evals harness</text>
+</svg>
