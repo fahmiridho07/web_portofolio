@@ -2,7 +2,9 @@
 import { profile } from "@data/profile";
 
 const year = new Date().getFullYear();
-const externalLinks = profile.links.filter((link) => link.href.startsWith("http"));
+const externalLinks = profile.links.filter((link) =>
+  link.href.startsWith("http"),
+);
 ---
 
 <footer
@@ -27,7 +29,10 @@ const externalLinks = profile.links.filter((link) => link.href.startsWith("http"
       }
     </ul>
 
-    <p class="footer-meta">Surabaya, ID <span class="footer-dot" aria-hidden="true"></span> {year}</p>
+    <p class="footer-meta">
+      Surabaya, ID <span class="footer-dot" aria-hidden="true"></span>
+      {year}
+    </p>
   </div>
 </footer>
 
@@ -96,7 +101,9 @@ const externalLinks = profile.links.filter((link) => link.href.startsWith("http"
     height: 0.32rem;
     border-radius: 999px;
     background: var(--signal);
-    box-shadow: 0 0 0 2.5px transparent, 0 0 0 1px var(--signal) inset;
+    box-shadow:
+      0 0 0 2.5px transparent,
+      0 0 0 1px var(--signal) inset;
     outline: 1px solid color-mix(in srgb, var(--signal) 55%, transparent);
     outline-offset: 2px;
     margin-inline: 0.15rem;

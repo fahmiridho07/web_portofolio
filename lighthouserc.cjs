@@ -10,7 +10,7 @@ module.exports = {
         "http://localhost/404.html",
       ],
       settings: {
-        preset: "desktop",
+        preset: "mobile",
       },
       numberOfRuns: 1,
     },

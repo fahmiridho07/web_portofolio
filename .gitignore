@@ -30,3 +30,5 @@ Thumbs.db
 # Claude Code local state (machine-specific, never shared)
 .claude/
 CLAUDE.md
+.playwright-cli/
+output/

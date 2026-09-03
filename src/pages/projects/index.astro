@@ -34,13 +34,26 @@ const projectCount = projects.length;
   <section class="project-index divider">
     <div class="container project-work">
       <div class="archive-toolbar" data-reveal>
-        <p class="filter-status" data-filter-status aria-live="polite">{projectCount} shown</p>
+        <p class="filter-status" data-filter-status aria-live="polite">
+          {projectCount} shown
+        </p>
 
-        <div class="filter-tabs" role="toolbar" aria-label="Project category filters" data-filter-tabs>
-          <button type="button" data-project-filter="" aria-pressed="true">All</button>
+        <div
+          class="filter-tabs"
+          role="toolbar"
+          aria-label="Project category filters"
+          data-filter-tabs
+        >
+          <button type="button" data-project-filter="" aria-pressed="true"
+            >All</button
+          >
           {
             activeCategories.map((category) => (
-              <button type="button" data-project-filter={category.id} aria-pressed="false">
+              <button
+                type="button"
+                data-project-filter={category.id}
+                aria-pressed="false"
+              >
                 {category.title}
               </button>
             ))
@@ -63,6 +76,7 @@ const projectCount = projects.length;
           projects.map((project, index) => {
             const category = getCategoryMeta(project.data.category);
             const metric = project.data.metric ?? project.data.status;
+            const logo = project.data.logo ?? category.logo;
             const isAnomaly = project.data.slug === heroProjectSlug;
 
             return (
@@ -73,12 +87,29 @@ const projectCount = projects.length;
                 data-category={project.data.category}
                 data-reveal
               >
-                <span class="archive-index">{String(index + 1).padStart(2, "0")}</span>
+                <span class="archive-index">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span class="archive-logo" aria-hidden="true">
+                  {logo && (
+                    <img
+                      src={logo}
+                      alt=""
+                      width="22"
+                      height="22"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                </span>
                 <span class="archive-copy">
                   <span class="archive-title">{project.data.title}</span>
                   <span class="archive-meta">
-                    {category.title} &middot; {project.data.year} &middot; {metric}
-                    {isAnomaly && <span class="archive-flag-dot" aria-hidden="true" />}
+                    {category.title} &middot; {project.data.year} &middot;{" "}
+                    {metric}
+                    {isAnomaly && (
+                      <span class="archive-flag-dot" aria-hidden="true" />
+                    )}
                   </span>
                 </span>
                 <span class="archive-arrow" aria-hidden="true">
@@ -99,18 +130,29 @@ const projectCount = projects.length;
       const filterTabs = Array.from(
         document.querySelectorAll<HTMLButtonElement>("[data-project-filter]"),
       );
-      const filterTabList = document.querySelector<HTMLElement>("[data-filter-tabs]");
+      const filterTabList =
+        document.querySelector<HTMLElement>("[data-filter-tabs]");
       const list = document.querySelector<HTMLElement>("[data-filter-list]");
-      const items = Array.from(document.querySelectorAll<HTMLElement>("[data-category]"));
-      const filterStatus = document.querySelector<HTMLElement>("[data-filter-status]");
-      const resetFilter = document.querySelector<HTMLButtonElement>("[data-filter-reset]");
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const items = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-category]"),
+      );
+      const filterStatus = document.querySelector<HTMLElement>(
+        "[data-filter-status]",
+      );
+      const resetFilter = document.querySelector<HTMLButtonElement>(
+        "[data-filter-reset]",
+      );
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
       const controller = new AbortController();
       const { signal } = controller;
 
       const updateFilterStatus = (active: string) => {
         const visibleItems = items.filter((item) => !item.hidden);
-        const activeTab = filterTabs.find((item) => (item.dataset.projectFilter ?? "") === active);
+        const activeTab = filterTabs.find(
+          (item) => (item.dataset.projectFilter ?? "") === active,
+        );
         const activeLabel = activeTab?.textContent?.trim() ?? "";
 
         if (filterStatus) {
@@ -131,7 +173,8 @@ const projectCount = projects.length;
       );
 
       const readFilterFromUrl = () => {
-        const value = new URL(window.location.href).searchParams.get("category") ?? "";
+        const value =
+          new URL(window.location.href).searchParams.get("category") ?? "";
         return allowedFilters.has(value) ? value : "";
       };
 
@@ -150,7 +193,10 @@ const projectCount = projects.length;
       const applyFilter = (active: string, syncUrl = true) => {
         list?.classList.add("is-filtering");
         filterTabs.forEach((item) => {
-          item.setAttribute("aria-pressed", String((item.dataset.projectFilter ?? "") === active));
+          item.setAttribute(
+            "aria-pressed",
+            String((item.dataset.projectFilter ?? "") === active),
+          );
         });
 
         if (syncUrl) {
@@ -170,9 +216,13 @@ const projectCount = projects.length;
       };
 
       filterTabs.forEach((tab) => {
-        tab.addEventListener("click", () => applyFilter(tab.dataset.projectFilter ?? ""), {
-          signal,
-        });
+        tab.addEventListener(
+          "click",
+          () => applyFilter(tab.dataset.projectFilter ?? ""),
+          {
+            signal,
+          },
+        );
       });
 
       filterTabList?.addEventListener(
@@ -194,9 +244,11 @@ const projectCount = projects.length;
 
           let nextIndex = currentIndex;
           if (key === "ArrowLeft") {
-            nextIndex = currentIndex === 0 ? filterTabs.length - 1 : currentIndex - 1;
+            nextIndex =
+              currentIndex === 0 ? filterTabs.length - 1 : currentIndex - 1;
           } else if (key === "ArrowRight") {
-            nextIndex = currentIndex === filterTabs.length - 1 ? 0 : currentIndex + 1;
+            nextIndex =
+              currentIndex === filterTabs.length - 1 ? 0 : currentIndex + 1;
           } else if (key === "Home") {
             nextIndex = 0;
           } else if (key === "End") {
@@ -318,7 +370,7 @@ const projectCount = projects.length;
 
   .archive-row {
     display: grid;
-    grid-template-columns: 3rem minmax(0, 1fr) 2rem;
+    grid-template-columns: 2.2rem 1.8rem minmax(0, 1fr) 2rem;
     gap: 1rem;
     align-items: baseline;
     border-top: 1px solid var(--line);
@@ -327,6 +379,25 @@ const projectCount = projects.length;
     padding-block: clamp(1rem, 2.2vw, 1.4rem);
     padding-inline: var(--space-4);
     transition: background var(--motion-fast) var(--ease-standard);
+  }
+
+  .archive-logo {
+    align-self: center;
+  }
+
+  .archive-logo img {
+    width: 1.4rem;
+    height: 1.4rem;
+    object-fit: contain;
+    filter: grayscale(1) contrast(1.15);
+    opacity: 0.72;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .archive-row:hover .archive-logo img,
+  .archive-row:focus-visible .archive-logo img {
+    filter: grayscale(0);
+    opacity: 1;
   }
 
   .archive-row:hover,
@@ -412,7 +483,7 @@ const projectCount = projects.length;
 
   @media (max-width: 720px) {
     .archive-row {
-      grid-template-columns: 2rem minmax(0, 1fr) 1.5rem;
+      grid-template-columns: 1.8rem 1.6rem minmax(0, 1fr) 1.5rem;
       /* Keep the hover bleed inside the narrower mobile container margin */
       margin-inline: calc(var(--space-3) * -1);
       padding-inline: var(--space-3);

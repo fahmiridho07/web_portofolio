@@ -19,6 +19,7 @@ const projects = defineCollection({
     category: z.enum(projectCategoryIds),
     status: z.string(),
     year: z.number(),
+    updatedAt: z.coerce.date().optional(),
     role: z.string(),
     stack: z.array(z.string()),
     links: z.array(projectLink),

@@ -36,7 +36,12 @@ const isActive = (href: string) => {
   transition:animate="none"
 >
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label={`${profile.name} home`} data-astro-prefetch="hover">
+    <a
+      class="brand"
+      href="/"
+      aria-label={`${profile.name} home`}
+      data-astro-prefetch="hover"
+    >
       Fahmi Ridho<span class="brand-dot" aria-hidden="true">.</span>
     </a>
 
@@ -50,7 +55,9 @@ const isActive = (href: string) => {
                 href={item.href}
                 aria-current={isActive(item.href) ? "page" : undefined}
                 data-astro-prefetch={
-                  item.href.startsWith("/") && !item.href.includes("#") ? "hover" : undefined
+                  item.href.startsWith("/") && !item.href.includes("#")
+                    ? "hover"
+                    : undefined
                 }
               >
                 {item.label}
@@ -75,24 +82,28 @@ const isActive = (href: string) => {
 
     const pathname = normalizePath(window.location.pathname);
 
-    document.querySelectorAll<HTMLAnchorElement>(".site-header .nav-link").forEach((link) => {
-      const href = link.getAttribute("href") ?? "";
+    document
+      .querySelectorAll<HTMLAnchorElement>(".site-header .nav-link")
+      .forEach((link) => {
+        const href = link.getAttribute("href") ?? "";
 
-      if (href.startsWith("/#")) {
-        link.removeAttribute("aria-current");
-        return;
-      }
+        if (href.startsWith("/#")) {
+          link.removeAttribute("aria-current");
+          return;
+        }
 
-      const target = normalizePath(href.split("#")[0] ?? href);
-      const active =
-        href === "/" ? pathname === "/" : pathname === target || pathname.startsWith(`${target}/`);
+        const target = normalizePath(href.split("#")[0] ?? href);
+        const active =
+          href === "/"
+            ? pathname === "/"
+            : pathname === target || pathname.startsWith(`${target}/`);
 
-      if (active) {
-        link.setAttribute("aria-current", "page");
-      } else {
-        link.removeAttribute("aria-current");
-      }
-    });
+        if (active) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
   });
 </script>
 

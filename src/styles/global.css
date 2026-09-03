@@ -297,39 +297,12 @@ select {
   padding-block-end: var(--space-section-end);
 }
 
-.section {
-  padding-block: var(--space-section);
-}
-
-.section-tight {
-  padding-block: var(--space-section-tight);
-}
-
-.stack-sm {
-  display: grid;
-  gap: var(--space-stack-sm);
-}
-
-.stack-md {
-  display: grid;
-  gap: var(--space-stack-md);
-}
-
-.stack-lg {
-  display: grid;
-  gap: var(--space-stack-lg);
-}
-
-.section-head h2,
-.section-head .display,
-.work-header h2,
 .section-label + :is(h1, h2, h3, .display) {
   margin-top: var(--label-gap);
 }
 
 /* ------------------------------- Typography ------------------------------ */
 
-.eyebrow,
 .section-label {
   margin: 0;
   color: var(--ink-soft);
@@ -360,16 +333,6 @@ select {
   color: var(--rust-deep);
 }
 
-.work-header h2,
-.trust-headline,
-.section-head h2 {
-  font-family: var(--font-serif);
-  font-weight: 470 !important;
-  letter-spacing: -0.005em !important;
-  line-height: 1.15 !important;
-}
-
-.lead,
 .prose,
 .prose p {
   color: var(--ink-muted);
@@ -377,166 +340,16 @@ select {
   line-height: 1.68;
 }
 
-.lead {
-  max-width: 52ch;
-  margin: var(--space-stack-md) 0 0;
-}
-
-.muted {
-  color: var(--ink-muted);
-}
-
-.soft {
-  color: var(--ink-soft);
-}
-
-.pill,
-.status-dot {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--ink-muted);
-  padding: 0.34rem 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1;
-}
-
-/* Text links with the editorial underline */
-.button {
-  display: inline-flex;
-  min-height: 1.5rem;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  text-decoration: underline;
-  text-decoration-color: var(--line-strong);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.32em;
-  transition:
-    color var(--motion-fast) var(--ease-standard),
-    text-decoration-color var(--motion-fast) var(--ease-standard);
-}
-
-.button:hover {
-  color: var(--rust);
-  text-decoration-color: var(--rust);
-}
-
-.button-primary {
-  color: var(--rust-deep);
-}
-
-.button-secondary {
-  color: var(--ink-muted);
-}
-
 /* --------------------------- Surfaces (all flat) -------------------------- */
 
-.glass-backdrop,
-.glass-backdrop-chrome {
+.glass-backdrop {
   /* Glass retired: structure comes from hairlines now */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
 
-.glass-chrome-bar {
-  border-bottom: 1px solid var(--line);
-  background: var(--header-bg);
-  -webkit-backdrop-filter: blur(var(--glass-blur-chrome));
-  backdrop-filter: blur(var(--glass-blur-chrome));
-}
-
-.glass-segment {
-  display: inline-flex;
-  flex-shrink: 0;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  padding: 0.18rem;
-}
-
-.glass-segment-indicator {
-  position: absolute;
-  top: 0.18rem;
-  left: 0;
-  z-index: 0;
-  border-radius: var(--radius-pill);
-  background: var(--ink);
-  pointer-events: none;
-}
-
-.glass-brand-chip {
-  display: inline-grid;
-  width: 1.75rem;
-  height: 1.75rem;
-  flex-shrink: 0;
-  place-items: center;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: transparent;
-}
-
-.surface,
-.glass-surface,
-.glass-panel,
-.glass-elevated,
-.glass-card,
-.glass-dark {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  background: #ffffff;
-}
-
-.glass-chip,
-.glass-chip-dark,
-.glass-pill-dark {
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--ink-muted);
-}
-
-.glass-badge-dark {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-pill);
-  background: var(--glass-dark-badge-bg);
-  color: #ffffff;
-}
-
 .divider {
   border-top: 1px solid var(--line);
-}
-
-/* Former dark sections are plain paper now; pages set their own copy colors */
-.dark-section {
-  color: inherit;
-}
-
-.dark-section .section-label,
-.dark-section .eyebrow {
-  color: var(--ink-soft);
-}
-
-.dark-hero-shell {
-  position: relative;
-  overflow: clip;
-  background: var(--paper);
-  color: var(--ink);
-  padding-block: var(--space-hero-top) var(--space-hero-bottom);
-}
-
-.dark-hero-grid {
-  display: none;
 }
 
 .dark-cta-row {

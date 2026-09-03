@@ -6,12 +6,14 @@ import sharp from "sharp";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const projectsDir = join(root, "src", "content", "projects");
 const publicDir = join(root, "public");
-const imagesTsPath = join(root, "src", "lib", "images.ts");
+const generatedImagesPath = join(root, "src", "lib", "images.generated.ts");
 const variantWidths = [400, 640];
 
 const imagePaths = new Set();
 
-for (const file of readdirSync(projectsDir).filter((name) => name.endsWith(".mdx"))) {
+for (const file of readdirSync(projectsDir).filter((name) =>
+  name.endsWith(".mdx"),
+)) {
   const source = readFileSync(join(projectsDir, file), "utf8");
 
   const coverMatch = source.match(/^coverImage:\s*"(.+?)"/m);
@@ -19,7 +21,9 @@ for (const file of readdirSync(projectsDir).filter((name) => name.endsWith(".mdx
     imagePaths.add(coverMatch[1]);
   }
 
-  for (const match of source.matchAll(/src="(\/assets\/projects\/[^"]+\.webp)"/g)) {
+  for (const match of source.matchAll(
+    /src="(\/assets\/projects\/[^"]+\.webp)"/g,
+  )) {
     imagePaths.add(match[1]);
   }
 }
@@ -70,24 +74,27 @@ for (const imagePath of imagePaths) {
   }
 }
 
-const imagesSource = readFileSync(imagesTsPath, "utf8");
-const marker = "const imageMeta: Record<string, ImageMeta> = {";
+const imagesSource = readFileSync(generatedImagesPath, "utf8");
+const marker = "export const imageMeta: Record<string, ImageMeta> = {";
 const markerIndex = imagesSource.indexOf(marker);
 
 if (markerIndex === -1) {
-  throw new Error("Could not find imageMeta block in images.ts");
+  throw new Error(`Could not find imageMeta block in ${generatedImagesPath}`);
 }
 
 const insertLines = metadata
   .filter((entry) => !imagesSource.includes(`"${entry.path}"`))
-  .map((entry) => `  "${entry.path}": { width: ${entry.width}, height: ${entry.height} },`)
+  .map(
+    (entry) =>
+      `  "${entry.path}": { width: ${entry.width}, height: ${entry.height} },`,
+  )
   .join("\n");
 
 if (insertLines) {
   const insertAt = markerIndex + marker.length;
   const next = `${imagesSource.slice(0, insertAt)}\n${insertLines}${imagesSource.slice(insertAt)}`;
-  writeFileSync(imagesTsPath, next);
-  console.log(`updated ${imagesTsPath}`);
+  writeFileSync(generatedImagesPath, next);
+  console.log(`updated ${generatedImagesPath}`);
 } else {
-  console.log("images.ts already has responsive variant metadata");
+  console.log(`${generatedImagesPath} already has responsive variant metadata`);
 }

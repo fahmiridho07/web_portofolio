@@ -2,7 +2,10 @@
 import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
 import ContentImage from "@components/ContentImage.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import { getCaseStudyNavSections, getCaseStudySectionMap } from "@lib/case-study";
+import {
+  getCaseStudyNavSections,
+  getCaseStudySectionMap,
+} from "@lib/case-study";
 import { getImageMeta } from "@lib/images";
 import {
   getBreadcrumbSchema,
@@ -30,11 +33,17 @@ const allProjects = await getCollection("projects");
 const relatedProjects = allProjects
   .filter((entry) => entry.data.slug !== project.data.slug)
   .sort((a, b) => {
-    if (a.data.category === project.data.category && b.data.category !== project.data.category) {
+    if (
+      a.data.category === project.data.category &&
+      b.data.category !== project.data.category
+    ) {
       return -1;
     }
 
-    if (a.data.category !== project.data.category && b.data.category === project.data.category) {
+    if (
+      a.data.category !== project.data.category &&
+      b.data.category === project.data.category
+    ) {
       return 1;
     }
 
@@ -92,13 +101,27 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     <section id="case-study" class="case-body">
       <div class="container case-body-inner">
         <nav class="case-read-nav" aria-label="Case study quick navigation">
-          <a class="archive-return" href="/projects/" data-astro-prefetch="hover"><span aria-hidden="true">&lt;-</span> All projects</a>
+          <a
+            class="archive-return"
+            href="/projects/"
+            data-astro-prefetch="hover"
+            ><span aria-hidden="true">&lt;-</span> All projects</a
+          >
           <div class="read-flow">
             <p class="section-label">Read flow</p>
-            <a class="read-flow-link" href="#case-study" data-case-nav-link aria-current="location">Overview</a>
+            <a
+              class="read-flow-link"
+              href="#case-study"
+              data-case-nav-link
+              aria-current="location">Overview</a
+            >
             {
               caseNavSections.map((section) => (
-                <a class="read-flow-link" href={`#${section.id}`} data-case-nav-link>
+                <a
+                  class="read-flow-link"
+                  href={`#${section.id}`}
+                  data-case-nav-link
+                >
                   {section.label}
                 </a>
               ))
@@ -127,9 +150,15 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
           </div>
           <div class="related-list">
             {relatedProjects.map((entry) => (
-              <a class="related-row" href={`/projects/${entry.data.slug}/`} data-astro-prefetch="hover">
+              <a
+                class="related-row"
+                href={`/projects/${entry.data.slug}/`}
+                data-astro-prefetch="hover"
+              >
                 <span class="related-title">{entry.data.title}</span>
-                <span class="related-meta">{entry.data.metric ?? entry.data.status}</span>
+                <span class="related-meta">
+                  {entry.data.metric ?? entry.data.status}
+                </span>
                 <span class="related-arrow" aria-hidden="true">
                   -&gt;
                 </span>
@@ -147,7 +176,9 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
         <p class="section-label">Archive</p>
         <h2>All projects.</h2>
       </div>
-      <a href="/projects/" data-astro-prefetch="hover">View index <span aria-hidden="true">-&gt;</span></a>
+      <a href="/projects/" data-astro-prefetch="hover"
+        >View index <span aria-hidden="true">-&gt;</span></a
+      >
     </div>
   </section>
 
@@ -156,13 +187,19 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     import { initOnPageLoad } from "@lib/page-script";
 
     initOnPageLoad(() => {
-      const caseRoot = document.querySelector<HTMLElement>("[data-case-sections]");
+      const caseRoot = document.querySelector<HTMLElement>(
+        "[data-case-sections]",
+      );
       const caseSectionMap: CaseStudySection[] = caseRoot?.dataset.caseSections
         ? JSON.parse(caseRoot.dataset.caseSections)
         : [];
 
-      const progress = document.querySelector<HTMLElement>("[data-case-progress]");
-      const progressTrack = document.querySelector<HTMLElement>("[data-case-progress-track]");
+      const progress = document.querySelector<HTMLElement>(
+        "[data-case-progress]",
+      );
+      const progressTrack = document.querySelector<HTMLElement>(
+        "[data-case-progress-track]",
+      );
       const controller = new AbortController();
       const { signal } = controller;
       let progressFrame = 0;
@@ -170,33 +207,47 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
       const updateProgress = () => {
         window.cancelAnimationFrame(progressFrame);
         progressFrame = window.requestAnimationFrame(() => {
-          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const max =
+            document.documentElement.scrollHeight - window.innerHeight;
           const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
           const percent = Math.round(value * 100);
           progress?.style.setProperty("transform", `scaleX(${value})`);
           progressTrack?.setAttribute("aria-valuenow", String(percent));
-          progressTrack?.classList.toggle("is-active", percent > 2 && percent < 98);
+          progressTrack?.classList.toggle(
+            "is-active",
+            percent > 2 && percent < 98,
+          );
         });
       };
 
-      document.querySelectorAll<HTMLHeadingElement>(".prose h2").forEach((heading) => {
-        const label = heading.textContent?.trim();
-        const section = caseSectionMap.find((item) => item.label === label);
+      document
+        .querySelectorAll<HTMLHeadingElement>(".prose h2")
+        .forEach((heading) => {
+          const label = heading.textContent?.trim();
+          const section = caseSectionMap.find((item) => item.label === label);
 
-        if (section && !document.getElementById(section.id)) {
-          heading.id = section.id;
-        }
-      });
+          if (section && !document.getElementById(section.id)) {
+            heading.id = section.id;
+          }
+        });
 
-      const readLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-case-nav-link]"));
+      const readLinks = Array.from(
+        document.querySelectorAll<HTMLAnchorElement>("[data-case-nav-link]"),
+      );
       const sections = readLinks
         .map((link) => {
           const id = link.hash.slice(1);
           const section = document.getElementById(id);
           return section ? { id, link, section } : null;
         })
-        .filter((item): item is { id: string; link: HTMLAnchorElement; section: HTMLElement } =>
-          Boolean(item),
+        .filter(
+          (
+            item,
+          ): item is {
+            id: string;
+            link: HTMLAnchorElement;
+            section: HTMLElement;
+          } => Boolean(item),
         );
 
       const setActiveSection = (activeId: string) => {
@@ -213,10 +264,13 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 
       const updateActiveSection = () => {
         const anchorLine = window.innerHeight * 0.28;
-        const active = sections.reduce<(typeof sections)[number] | null>((current, item) => {
-          const rect = item.section.getBoundingClientRect();
-          return rect.top <= anchorLine ? item : current;
-        }, sections[0] ?? null);
+        const active = sections.reduce<(typeof sections)[number] | null>(
+          (current, item) => {
+            const rect = item.section.getBoundingClientRect();
+            return rect.top <= anchorLine ? item : current;
+          },
+          sections[0] ?? null,
+        );
 
         if (active) {
           setActiveSection(active.id);
@@ -236,9 +290,15 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 
       updateProgress();
       updateActiveSection();
-      window.addEventListener("scroll", updateProgress, { passive: true, signal });
+      window.addEventListener("scroll", updateProgress, {
+        passive: true,
+        signal,
+      });
       window.addEventListener("resize", updateProgress, { signal });
-      window.addEventListener("scroll", updateActiveSection, { passive: true, signal });
+      window.addEventListener("scroll", updateActiveSection, {
+        passive: true,
+        signal,
+      });
       window.addEventListener("resize", updateActiveSection, { signal });
 
       return () => {

@@ -17,7 +17,11 @@ const wordCount = (project.body ?? "").split(/\s+/).filter(Boolean).length;
 const readingMinutes = Math.max(1, Math.round(wordCount / 200));
 const facts = [
   { label: "Role", value: project.data.role },
-  { label: "Outcome", value: project.data.metric ?? project.data.status, highlight: true },
+  {
+    label: "Outcome",
+    value: project.data.metric ?? project.data.status,
+    highlight: true,
+  },
   { label: "Status", value: `${project.data.status} / ${project.data.year}` },
   { label: "Stack", value: project.data.stack.slice(0, 5).join(" · ") },
 ];
@@ -73,7 +77,9 @@ const facts = [
               {fact.highlight && <span class="fact-dot" aria-hidden="true" />}
               {fact.label}
             </dt>
-            <dd class:list={[fact.highlight && "is-highlight"]}>{fact.value}</dd>
+            <dd class:list={[fact.highlight && "is-highlight"]}>
+              {fact.value}
+            </dd>
           </div>
         ))
       }

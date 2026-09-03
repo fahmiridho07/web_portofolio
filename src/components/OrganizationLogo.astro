@@ -26,7 +26,12 @@ const sizes = `${displayWidth}px`;
 {
   logo && (
     <span
-      class:list={["org-logo", "glass-backdrop", `is-${size}`, isWide && "is-wide"]}
+      class:list={[
+        "org-logo",
+        "glass-backdrop",
+        `is-${size}`,
+        isWide && "is-wide",
+      ]}
       style={`--org-logo-width: ${displayWidth}px; --org-logo-height: ${displayHeight}px;`}
     >
       <img

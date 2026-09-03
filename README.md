@@ -27,7 +27,7 @@ Typography: **Fraunces** (variable, serif) carries the voice, **Inter** the UI, 
 - **Static-first, zero framework runtime.** Astro 6 static output; the only client JavaScript is a few small vanilla scripts (reveal fallback, cursor-following project preview, category filter, reading progress).
 - **CSS scroll-driven animations with graceful fallback.** Reveals run on native `animation-timeline: view()` where supported, fall back to an IntersectionObserver, and stay visible with no JavaScript at all (`@media (scripting: none)` + `<noscript>`).
 - **Motion discipline.** Opacity and transform only, `prefers-reduced-motion` honored everywhere, no scroll hijacking, one `backdrop-filter` on the whole site (the sticky header).
-- **Content as data.** Projects are MDX in a typed content collection; ordering, flags, and evidence figures are frontmatter. SEO (OpenGraph, JSON-LD Person/CreativeWork/Breadcrumb, sitemap) is generated per page.
+- **Content as data.** Projects are MDX in a typed content collection; ordering and evidence figures are frontmatter, with optional explicit `updatedAt` dates for sitemap metadata. Content and built-route integrity checks run as part of validation. SEO (OpenGraph, JSON-LD Person/CreativeWork/Breadcrumb, sitemap) is generated per page.
 - **Evidence is real.** Every image in a case study's evidence panels must be a genuine artifact: a screenshot, a notebook/tool export, or a page from a real document. Hand-made visuals are allowed only as covers or diagrams, must not imitate the look of a chart, dashboard, or screenshot, and are captioned as diagrams — never as evidence.
 - **View transitions** via Astro's ClientRouter with a persistent header and footer.
 
@@ -54,7 +54,7 @@ sharp for the image pipeline · Cloudflare Pages
 ```bash
 npm install
 npm run dev        # dev server
-npm run validate   # astro check + production build
+npm run validate   # content check + astro check + production build + dist check
 npm run format     # prettier
 ```
 

@@ -1,5 +1,6 @@
 ---
 import OrganizationLogo from "@components/OrganizationLogo.astro";
+import PersonalTextureBento from "@components/PersonalTextureBento.astro";
 import {
   education,
   experiences,
@@ -25,7 +26,15 @@ const profileImageMeta = getImageMeta(profileImage);
 
 const allProjects = await getSortedProjects();
 const heroProject =
-  allProjects.find((project) => project.data.slug === heroProjectSlug) ?? allProjects[0];
+  allProjects.find((project) => project.data.slug === heroProjectSlug) ??
+  allProjects[0];
+
+const capabilityPills = [
+  "AI/ML & Latent Oversampling",
+  "Full-Stack .NET & APIs",
+  "Data Systems & Benchmarking",
+  "Enterprise ERP & Automation",
+];
 ---
 
 <BaseLayout
@@ -37,17 +46,37 @@ const heroProject =
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
+  <!-- ABOUT HERO -->
   <section class="about-hero">
     <div class="container about-hero-inner" data-reveal>
-      <p class="about-kicker">{profile.name} &middot; {profile.role}</p>
+      <div class="about-hero-top">
+        <p class="about-kicker">{profile.name} &middot; {profile.role}</p>
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          OPEN FOR 2026 ROLES
+        </div>
+      </div>
+
       <h1 class="display">{profile.headline}</h1>
+
+      <!-- Core Capability Badges -->
+      <div class="capability-row">
+        {
+          capabilityPills.map((cap) => (
+            <span class="capability-pill">{cap}</span>
+          ))
+        }
+      </div>
+
       <p class="role-signal">{profile.roleSignal}</p>
+
       <p class="about-facts">
         {profile.availability} &middot; GPA {gpaShort} &middot; Surabaya, Indonesia
       </p>
     </div>
   </section>
 
+  <!-- PROFILE STRIP -->
   <section class="profile-strip divider">
     <div class="container profile-card" data-reveal>
       <figure class="portrait">
@@ -61,6 +90,9 @@ const heroProject =
           loading="lazy"
           decoding="async"
         />
+        <figcaption class="portrait-caption">
+          Achmad Fahmi Ainur Ridho &middot; ITS Surabaya
+        </figcaption>
       </figure>
 
       <div class="profile-copy">
@@ -68,19 +100,30 @@ const heroProject =
         <p class="profile-hook">{profile.aboutHook}</p>
         {
           heroProject && (
-            <a class="profile-shipped" href={`/projects/${heroProject.data.slug}/`} data-astro-prefetch="hover">
-              {profile.lastShippedLabel}: {heroProject.data.title}
-              <span aria-hidden="true">-&gt;</span>
-            </a>
+            <div class="profile-shipped-box">
+              <span class="shipped-badge">CURRENT THESIS FOCUS</span>
+              <a
+                class="profile-shipped"
+                href={`/projects/${heroProject.data.slug}/`}
+                data-astro-prefetch="hover"
+              >
+                {heroProject.data.title} &middot; 0.855 PR-AUC
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
           )
         }
       </div>
     </div>
   </section>
 
+  <!-- EDUCATION SECTION -->
   <section class="about-section divider">
     <div class="container">
-      <h2 class="section-label" data-reveal>Education</h2>
+      <div class="section-heading-wrap" data-reveal>
+        <p class="section-label">Academic Formation</p>
+        <h2 class="about-section-title">Education & Research</h2>
+      </div>
 
       <div class="edu-row" data-reveal>
         <div class="edu-org">
@@ -88,6 +131,10 @@ const heroProject =
           <div>
             <p class="edu-name">{education.institution}</p>
             <p class="edu-degree">{education.degree}</p>
+            <p class="edu-thesis-highlight">
+              <strong>Thesis:</strong> Latent-space Autoencoder oversampling for extreme
+              class imbalance in fraud detection (0.8547 test PR-AUC).
+            </p>
           </div>
         </div>
         <dl class="edu-facts">
@@ -97,7 +144,7 @@ const heroProject =
           </div>
           <div>
             <dt>GPA</dt>
-            <dd>{education.gpa}</dd>
+            <dd class="highlight-carmine">{education.gpa}</dd>
           </div>
           <div>
             <dt>Focus</dt>
@@ -108,35 +155,53 @@ const heroProject =
     </div>
   </section>
 
+  <!-- EXPERIENCE SECTION -->
   <section class="about-section divider">
     <div class="container">
-      <h2 class="section-label" data-reveal>Experience</h2>
+      <div class="section-heading-wrap" data-reveal>
+        <p class="section-label">Production & Leadership</p>
+        <h2 class="about-section-title">Verified Experience</h2>
+      </div>
 
       <ol class="xp-list">
         {
           experiences.map((item, index) => (
-            <li class="xp-row" data-reveal data-reveal-delay={String((index + 1) * 50)}>
-              <p class="xp-period">{item.period}</p>
+            <li
+              class="xp-row"
+              data-reveal
+              data-reveal-delay={String((index + 1) * 50)}
+            >
+              <div class="xp-sidebar">
+                <p class="xp-period">{item.period}</p>
+                <span class="xp-index">0{index + 1}</span>
+              </div>
 
               <div class="xp-content">
                 <div class="xp-org">
-                  <OrganizationLogo organization={item.organization} size="sm" />
-                  <span>{item.organization}</span>
+                  <OrganizationLogo
+                    organization={item.organization}
+                    size="sm"
+                  />
+                  <span class="xp-org-name">{item.organization}</span>
                 </div>
                 <h3 class="xp-role">{item.role}</h3>
                 <p class="xp-summary">{item.summary}</p>
-                <p class="xp-proof">{item.proof}</p>
-                {
-                  item.relatedProjectSlug && (
-                    <a
-                      class="xp-link"
-                      href={`/projects/${item.relatedProjectSlug}/`}
-                      data-astro-prefetch="hover"
-                    >
-                      See the build <span aria-hidden="true">-&gt;</span>
-                    </a>
-                  )
-                }
+
+                <div class="xp-proof-badge">
+                  <span class="proof-label">DELIVERABLES:</span>
+                  <span class="proof-value">{item.proof}</span>
+                </div>
+
+                {item.relatedProjectSlug && (
+                  <a
+                    class="xp-link"
+                    href={`/projects/${item.relatedProjectSlug}/`}
+                    data-astro-prefetch="hover"
+                  >
+                    Inspect project architecture{" "}
+                    <span aria-hidden="true">&rarr;</span>
+                  </a>
+                )}
               </div>
             </li>
           ))
@@ -145,16 +210,31 @@ const heroProject =
     </div>
   </section>
 
+  <!-- SKILLS MATRIX -->
   <section class="about-section divider">
     <div class="container">
-      <h2 class="section-label" data-reveal>Skills</h2>
+      <div class="section-heading-wrap" data-reveal>
+        <p class="section-label">Stack & Machinery</p>
+        <h2 class="about-section-title">Technical Competencies</h2>
+      </div>
 
       <div class="skills-grid">
         {
           skillGroups.map((group, index) => (
-            <div class="skills-col" data-reveal data-reveal-delay={String((index + 1) * 50)}>
-              <h3>{group.title}</h3>
-              <p>{group.items.join(" · ")}</p>
+            <div
+              class="skills-col"
+              data-reveal
+              data-reveal-delay={String((index + 1) * 50)}
+            >
+              <div class="skills-col-header">
+                <span class="skill-group-num">0{index + 1}</span>
+                <h3>{group.title}</h3>
+              </div>
+              <div class="skill-chips-wrap">
+                {group.items.map((skill) => (
+                  <span class="skill-chip">{skill}</span>
+                ))}
+              </div>
             </div>
           ))
         }
@@ -162,15 +242,26 @@ const heroProject =
     </div>
   </section>
 
+  <!-- WORKING STYLE & PRINCIPLES -->
   <section class="working-style divider">
     <div class="container">
-      <h2 class="section-label" data-reveal>Working style</h2>
+      <div class="section-heading-wrap" data-reveal>
+        <p class="section-label">Engineering Invariants</p>
+        <h2 class="about-section-title">How I Build & Ship</h2>
+      </div>
 
       <div class="why-grid">
         {
           whyMeItems.map((item, index) => (
-            <article class="why-card" data-reveal data-reveal-delay={String((index + 1) * 60)}>
-              <span class="why-index">0{index + 1}</span>
+            <article
+              class="why-card"
+              data-reveal
+              data-reveal-delay={String((index + 1) * 60)}
+            >
+              <div class="why-card-top">
+                <span class="why-index">RULE 0{index + 1}</span>
+                <span class="why-dot" aria-hidden="true" />
+              </div>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
             </article>
@@ -179,18 +270,29 @@ const heroProject =
       </div>
     </div>
   </section>
+
+  <!-- ANALOG RITUALS & CRAFT BENTO -->
+  <PersonalTextureBento />
 </BaseLayout>
 
 <style>
   /* -------------------------------- Hero -------------------------------- */
 
   .about-hero {
-    padding-block: var(--space-hero-top) var(--space-hero-bottom);
+    padding-block: var(--space-hero-top) clamp(2rem, 4vw, 3.5rem);
   }
 
   .about-hero-inner {
     display: grid;
     gap: 1.25rem;
+  }
+
+  .about-hero-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
   }
 
   .about-kicker,
@@ -204,16 +306,69 @@ const heroProject =
     text-transform: uppercase;
   }
 
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.4);
+    animation: status-pulse 2s infinite;
+  }
+
+  @keyframes status-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(201, 46, 62, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0);
+    }
+  }
+
   .about-hero .display {
     max-width: 880px;
     font-size: clamp(2.3rem, 4.8vw, 3.9rem);
   }
 
+  .capability-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .capability-pill {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius-pill);
+  }
+
   .role-signal {
-    max-width: 44ch;
+    max-width: 48ch;
     margin: 0;
     color: var(--ink-muted);
-    font-size: clamp(0.92rem, 1.3vw, 1rem);
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
     line-height: 1.6;
   }
 
@@ -221,7 +376,7 @@ const heroProject =
 
   .profile-card {
     display: grid;
-    grid-template-columns: minmax(11rem, 0.26fr) minmax(0, 1fr);
+    grid-template-columns: minmax(12rem, 0.28fr) minmax(0, 1fr);
     gap: clamp(1.5rem, 4vw, 3rem);
     align-items: center;
   }
@@ -231,6 +386,7 @@ const heroProject =
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
+    background: #ffffff;
   }
 
   .portrait img {
@@ -239,13 +395,25 @@ const heroProject =
     object-fit: cover;
   }
 
+  .portrait-caption {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    padding: 0.5rem 0.75rem;
+    border-top: 1px solid var(--line);
+    background: var(--paper-soft);
+    text-align: center;
+  }
+
   .profile-copy {
     display: grid;
-    gap: 0.85rem;
+    gap: 1rem;
   }
 
   .profile-summary {
-    max-width: 34ch;
+    max-width: 36ch;
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
@@ -256,76 +424,112 @@ const heroProject =
   }
 
   .profile-hook {
-    max-width: 52ch;
+    max-width: 56ch;
     margin: 0;
     color: var(--ink-muted);
     font-size: 0.92rem;
     line-height: 1.65;
   }
 
+  .profile-shipped-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    width: fit-content;
+  }
+
+  .shipped-badge {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--signal);
+    text-transform: uppercase;
+  }
+
   .profile-shipped {
     display: inline-flex;
-    width: fit-content;
-    align-items: baseline;
-    gap: 0.35rem;
-    color: var(--ink-muted);
-    font-size: 0.84rem;
-    font-weight: 500;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink);
+    font-size: 0.86rem;
+    font-weight: 600;
     text-decoration: underline;
     text-decoration-color: var(--line-strong);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.32em;
-    transition:
-      color var(--motion-fast) var(--ease-standard),
-      text-decoration-color var(--motion-fast) var(--ease-standard);
+    text-underline-offset: 0.3em;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .profile-shipped:hover {
-    color: var(--rust);
-    text-decoration-color: var(--rust);
+    color: var(--signal);
   }
 
-  .profile-shipped span {
-    transition: transform var(--motion-fast) var(--ease-out);
+  /* ------------------------------ Sections ------------------------------ */
+
+  .section-heading-wrap {
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
   }
 
-  .profile-shipped:hover span {
-    transform: translateX(3px);
+  .about-section-title {
+    margin: 0.4rem 0 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 480;
+    letter-spacing: -0.01em;
   }
 
   /* ------------------------------ Education ------------------------------ */
 
   .edu-row {
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     gap: 1.5rem 3rem;
-    margin-top: clamp(1.25rem, 3vw, 2rem);
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    padding-block: clamp(1.1rem, 2.6vw, 1.6rem);
+    padding-block: clamp(1.2rem, 2.6vw, 1.8rem);
   }
 
   .edu-org {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     gap: 1rem;
-    align-items: center;
+    align-items: start;
   }
 
   .edu-name {
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-size: clamp(1.2rem, 2vw, 1.45rem);
     font-weight: 490;
     line-height: 1.25;
   }
 
   .edu-degree {
-    margin: 0.25rem 0 0;
+    margin: 0.25rem 0 0.5rem;
     color: var(--ink-muted);
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     line-height: 1.5;
+  }
+
+  .edu-thesis-highlight {
+    margin: 0.4rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .edu-thesis-highlight strong {
+    color: var(--ink);
   }
 
   .edu-facts {
@@ -353,25 +557,36 @@ const heroProject =
     line-height: 1.45;
   }
 
+  .highlight-carmine {
+    color: var(--signal-deep) !important;
+    font-weight: 650 !important;
+  }
+
   /* ------------------------------ Experience ----------------------------- */
 
   .xp-list {
     display: grid;
-    margin: clamp(1.25rem, 3vw, 2rem) 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
   }
 
   .xp-row {
     display: grid;
-    grid-template-columns: minmax(9rem, 0.24fr) minmax(0, 1fr);
-    gap: 0.75rem 3rem;
+    grid-template-columns: minmax(7rem, 0.22fr) minmax(0, 1fr);
+    gap: 1rem 3rem;
     border-top: 1px solid var(--line);
-    padding-block: clamp(1.25rem, 2.8vw, 1.85rem);
+    padding-block: clamp(1.4rem, 3vw, 2rem);
   }
 
   .xp-row:last-child {
     border-bottom: 1px solid var(--line);
+  }
+
+  .xp-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 
   .xp-period {
@@ -380,13 +595,20 @@ const heroProject =
     font-family: var(--font-mono);
     font-size: 0.72rem;
     letter-spacing: 0.06em;
-    line-height: 1.7;
+    line-height: 1.5;
     text-transform: uppercase;
+  }
+
+  .xp-index {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--signal);
+    font-weight: 600;
   }
 
   .xp-content {
     display: grid;
-    gap: 0.55rem;
+    gap: 0.65rem;
     justify-items: start;
   }
 
@@ -394,8 +616,11 @@ const heroProject =
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
+  }
+
+  .xp-org-name {
     color: var(--ink-muted);
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 500;
   }
 
@@ -403,57 +628,60 @@ const heroProject =
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+    font-size: clamp(1.25rem, 2.2vw, 1.65rem);
     font-weight: 480;
     letter-spacing: -0.005em;
     line-height: 1.2;
   }
 
   .xp-summary {
-    max-width: 62ch;
+    max-width: 64ch;
     margin: 0;
     color: var(--ink-muted);
     font-size: 0.9rem;
     line-height: 1.65;
   }
 
-  .xp-proof {
-    margin: 0;
-    color: var(--ink-soft);
+  .xp-proof-badge {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.45rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .proof-label {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    line-height: 1.6;
-    text-transform: uppercase;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .proof-value {
+    color: var(--ink);
+    font-weight: 500;
   }
 
   .xp-link {
     display: inline-flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.35rem;
-    color: var(--ink-muted);
+    color: var(--signal-deep);
     font-size: 0.82rem;
     font-weight: 500;
     text-decoration: underline;
-    text-decoration-color: var(--line-strong);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.32em;
-    transition:
-      color var(--motion-fast) var(--ease-standard),
-      text-decoration-color var(--motion-fast) var(--ease-standard);
+    text-underline-offset: 0.3em;
+    margin-top: 0.25rem;
+    transition: color var(--motion-fast) var(--ease-standard);
   }
 
   .xp-link:hover {
-    color: var(--rust);
-    text-decoration-color: var(--rust);
-  }
-
-  .xp-link span {
-    transition: transform var(--motion-fast) var(--ease-out);
-  }
-
-  .xp-link:hover span {
-    transform: translateX(3px);
+    color: var(--signal);
   }
 
   /* -------------------------------- Skills ------------------------------- */
@@ -462,28 +690,58 @@ const heroProject =
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(1.25rem, 3vw, 2.5rem);
-    margin-top: clamp(1.25rem, 3vw, 2rem);
   }
 
   .skills-col {
     border-top: 1px solid var(--line);
-    padding-top: 1.1rem;
+    padding-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .skills-col-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.65rem;
+  }
+
+  .skill-group-num {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--signal);
+    font-weight: 600;
   }
 
   .skills-col h3 {
-    margin: 0 0 0.6rem;
+    margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 500;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
-  .skills-col p {
-    margin: 0;
+  .skill-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .skill-chip {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
     color: var(--ink-muted);
-    font-size: 0.88rem;
-    line-height: 1.85;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.55rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .skill-chip:hover {
+    border-color: var(--ink);
+    color: var(--ink);
   }
 
   /* ---------------------------- Working style ---------------------------- */
@@ -495,30 +753,50 @@ const heroProject =
   .why-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.25rem, 3vw, 2.5rem);
-    margin-top: clamp(1.25rem, 3vw, 2rem);
+    gap: clamp(1.25rem, 3vw, 2rem);
   }
 
   .why-card {
     display: grid;
     align-content: start;
-    gap: 0.6rem;
-    border-top: 1px solid var(--line);
-    padding-top: 1.1rem;
+    gap: 0.75rem;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: clamp(1.2rem, 2.4vw, 1.6rem);
+    transition: border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .why-card:hover {
+    border-color: var(--line-strong);
+  }
+
+  .why-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .why-index {
     color: var(--signal);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    line-height: 1;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .why-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--ink-soft);
   }
 
   .why-card h3 {
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 500;
     line-height: 1.25;
   }
@@ -538,7 +816,7 @@ const heroProject =
     }
 
     .portrait {
-      max-width: 20rem;
+      max-width: 18rem;
     }
 
     .edu-row {
@@ -555,7 +833,7 @@ const heroProject =
   @media (max-width: 720px) {
     .xp-row {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: 0.6rem;
     }
 
     .edu-facts {
