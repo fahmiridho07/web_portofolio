@@ -1,10 +1,8 @@
 ---
-// about.astro: Creative Editorial Dossier & Engineering Methodology
-// Fully differentiated from Home.
-// 1. Creative, Animated, Fun Hero with Holographic Portrait Card, Spinning Emblem, and Live Local Clock
-// 2. Interactive Evolution Roadmap (4 Milestones across academic & enterprise career)
-// 3. The Engineering Pipeline Schematic (4-step build methodology)
-// 4. Clean Editorial Next-Steps Bridge (Zero contact duplication with Home)
+// about.astro: Minimalist, Video-Animated About Experience
+// Text is kept to the absolute bare minimum.
+// Driven by a cinematic 60fps generative video-like animation stage and clean portrait frame.
+// Zero contact duplication with Home. Zero text clutter or icon gimmicks.
 
 import { education } from "@data/profile";
 import { pageSeo } from "@data/seo";
@@ -23,72 +21,27 @@ const profileImageSrcset =
 const profileImageMeta = getImageMeta(profileImage);
 const resumeAction = getResumeAction();
 
-// Evolution Milestones (Chronological Career & Research Roadmap)
-const evolutionPhases = [
-  {
-    phase: "PHASE 01",
-    period: "2022 &ndash; 2023",
-    title: "Foundations & Systems Architecture",
-    badge: "ITS SURABAYA",
-    desc: "Mastered algorithmic complexity, relational database modeling, and software design patterns. Explored how raw data flows through backend pipelines.",
-    highlight:
-      "Academic GPA 3.62 &middot; Teaching Assistant in Enterprise Systems",
-  },
-  {
-    phase: "PHASE 02",
-    period: "2024",
-    title: "Production Enterprise Engineering",
-    badge: "PT KALTIM PRIMA COAL",
-    desc: "Engineered and stabilized enterprise innovation platform (IdeKU V3) on ASP.NET Core for 5,000+ mining employees. Delivered RBAC security, embedded Power BI analytics, and automated supervisor approval workflows.",
-    highlight: "Enterprise Scale &middot; Zero Production Downtime",
-  },
-  {
-    phase: "PHASE 03",
-    period: "2025 &ndash; 2026",
-    title: "Machine Learning & Latent Research",
-    badge: "UNDERGRADUATE THESIS",
-    desc: "Tackled extreme class imbalance in financial transaction datasets. Designed deep generative Autoencoders to oversample latent representations without data leakage, paired with Bayesian-tuned LightGBM.",
-    highlight: "0.8547 PR-AUC &middot; Bayesian Optuna Tuning",
-  },
-  {
-    phase: "PHASE 04",
-    period: "2026 &amp; BEYOND",
-    title: "The Horizon: Systems + Intelligence",
-    badge: "OPEN TO ROLES",
-    desc: "Bridging the gap between scalable enterprise infrastructure and intelligent machine learning models. Ready to ship high-impact software starting from 2026.",
-    highlight: "Software Engineering &middot; AI/ML Engineering",
-  },
-];
-
-// Engineering Pipeline Steps (Mental Model & Build Methodology)
-const pipelineSteps = [
+const quickMilestones = [
   {
     num: "01",
-    step: "SCHEMA & BOUNDARIES",
-    title: "Architecture First",
-    desc: "Establish domain models, strict type contracts, and database constraints before writing business logic.",
-    pill: "Domain-Driven Design",
+    label: "ACADEMIC BASE",
+    title: "ITS Surabaya &middot; GPA " + gpaShort,
+    detail:
+      "Information Systems undergraduate, graduating 2026. Teaching assistant in enterprise systems.",
   },
   {
     num: "02",
-    step: "RESILIENT CORE",
-    title: "Clean API Execution",
-    desc: "Build lightweight ASP.NET Core services with dependency injection, RBAC security, and automated error handling.",
-    pill: "C# &middot; ASP.NET Core",
+    label: "PRODUCTION SCALE",
+    title: "PT Kaltim Prima Coal",
+    detail:
+      "Full-stack ASP.NET Core platform & Power BI analytics deployed for 5,000+ mining employees.",
   },
   {
     num: "03",
-    step: "EMPIRICAL MODELING",
-    title: "Zero-Leakage ML",
-    desc: "Strict cross-validation splits, latent space oversampling, and precision-recall optimization for skewed data.",
-    pill: "LightGBM &middot; PyTorch",
-  },
-  {
-    num: "04",
-    step: "PRODUCTION POLISH",
-    title: "Verified Delivery",
-    desc: "Sub-millisecond API response benchmarking, automated test suites, and sub-second web render times.",
-    pill: "100/100 Lighthouse",
+    label: "AI RESEARCH",
+    title: "Latent Autoencoders",
+    detail:
+      "Undergraduate thesis on extreme class imbalance fraud detection achieving 0.855 PR-AUC.",
   },
 ];
 ---
@@ -102,247 +55,128 @@ const pipelineSteps = [
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <!-- CHAPTER 1: CREATIVE ANIMATED DOSSIER HERO -->
-  <section class="creative-hero">
-    <div class="container" data-reveal>
-      <!-- Top Creative Meta Strip -->
-      <div class="hero-top-strip">
-        <div class="creator-chip">
-          <span class="chip-dot"></span>
-          <span>Achmad Fahmi Ainur Ridho &middot; Ridho</span>
+  <div class="about-page-wrap">
+    <!-- HERO HEADER: MINIMAL & BOLD -->
+    <header class="about-hero">
+      <div class="container" data-reveal>
+        <div class="hero-top-row">
+          <span class="hero-label">ACHMAD FAHMI AINUR RIDHO</span>
+          <span class="hero-status">
+            <span class="status-beacon"></span>
+            OPEN TO 2026 ROLES
+          </span>
         </div>
 
-        <div class="live-clock-pill" data-live-clock>
-          <span class="clock-icon">&bull;</span>
-          <span class="clock-city">Surabaya, ID</span>
-          <span class="clock-time" data-clock-time>--:-- WIB</span>
-        </div>
-      </div>
+        <h1 class="display about-headline">
+          Building software with architectural care and training models with
+          scientific discipline.
+        </h1>
 
-      <div class="hero-creative-grid">
-        <!-- Left: Punchy Narrative & Live Attributes -->
-        <div class="hero-narrative-box">
-          <div class="headline-wrapper">
-            <h1 class="display hero-creative-title">
-              I build software with <span class="highlight-ink"
-                >architectural care</span
-              > and train models with <span class="highlight-carmine"
-                >scientific discipline<span class="dot-beacon"></span></span
-              >.
-            </h1>
-          </div>
-
-          <p class="hero-creative-lead">
-            Final-year Information Systems student at ITS Surabaya moving deep
-            into AI engineering. My journey began in full-stack .NET enterprise
-            systems, but working with real production databases quickly revealed
-            that what data predicts is even more interesting than the UI wrapped
-            around it.
-          </p>
-
-          <!-- Interactive Curiosity Chips -->
-          <div class="curiosity-pills">
-            <div class="curiosity-pill" data-bounce-pill>
-              <span class="pill-emoji">🏛️</span>
-              <span>ITS Surabaya &middot; GPA {gpaShort}</span>
-            </div>
-            <div class="curiosity-pill" data-bounce-pill>
-              <span class="pill-emoji">⚡</span>
-              <span>Full-Stack .NET &middot; C#</span>
-            </div>
-            <div class="curiosity-pill" data-bounce-pill>
-              <span class="pill-emoji">🔬</span>
-              <span>AI Research &middot; Latent Oversampling</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Creative Holographic Portrait Stage with Spinning Emblem & Interactive Stickers -->
-        <div class="hero-stage-box">
-          <div class="holographic-stage" data-holo-stage>
-            <!-- Spinning Editorial Emblem -->
-            <div class="spinning-emblem" aria-hidden="true">
-              <svg viewBox="0 0 100 100" class="emblem-svg">
-                <path
-                  id="circlePath"
-                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                  fill="none"></path>
-                <text
-                  font-size="10.5"
-                  font-family="monospace"
-                  letter-spacing="2px"
-                  fill="currentColor"
-                >
-                  <textPath href="#circlePath">
-                    ✦ ARCHITECT ✦ RESEARCHER ✦ BUILDER
-                  </textPath>
-                </text>
-              </svg>
-              <div class="emblem-center-dot"></div>
-            </div>
-
-            <!-- The Tactile ID Badge / Portrait Card -->
-            <div class="hologram-card" data-holo-card>
-              <div class="card-sheen" data-card-sheen></div>
-
-              <!-- Floating Interactive Sticker 1 (Top Left) -->
-              <div class="card-sticker sticker-role" data-sticker>
-                <span class="sticker-ping"></span>
-                <span>SYSTEMS &amp; AI</span>
-              </div>
-
-              <!-- Floating Interactive Sticker 2 (Bottom Right) -->
-              <div class="card-sticker sticker-thesis" data-sticker>
-                <span>0.855 PR-AUC &bull; THESIS</span>
-              </div>
-
-              <!-- Photo Viewfinder Frame -->
-              <div class="card-photo-frame">
-                <img
-                  src={profileImage}
-                  srcset={profileImageSrcset}
-                  sizes="(max-width: 900px) calc(100vw - 2rem), 320px"
-                  alt="Portrait of Achmad Fahmi Ainur Ridho"
-                  width={profileImageMeta?.width}
-                  height={profileImageMeta?.height}
-                  loading="eager"
-                  decoding="async"
-                  class="card-img"
-                />
-                <!-- Camera Crosshair Grid -->
-                <div class="camera-reticle" aria-hidden="true">
-                  <div class="reticle-target"></div>
-                </div>
-              </div>
-
-              <div class="card-footer-telemetry">
-                <span class="telemetry-tag">ID: RIDHO-2026</span>
-                <span class="telemetry-status">OPEN TO ROLES</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CHAPTER 2: INTERACTIVE EVOLUTION ROADMAP -->
-  <section class="roadmap-section divider" data-reveal>
-    <div class="container">
-      <div class="section-header">
-        <div class="header-badge">
-          <span class="badge-num">01</span>
-          <span class="badge-title">CAREER &amp; ACADEMIC EVOLUTION</span>
-        </div>
-        <h2 class="section-heading">How I got here: 4 key milestones.</h2>
-        <p class="section-subhead">
-          From algorithmic fundamentals to enterprise mining production and
-          generative AI thesis research.
+        <p class="about-lead">
+          Final-year Information Systems student at ITS Surabaya moving deep
+          into AI engineering. Focused on production enterprise backends and
+          machine learning pipelines.
         </p>
       </div>
+    </header>
 
-      <div class="roadmap-timeline">
-        <!-- Connecting Line Visual -->
-        <div class="roadmap-spine" aria-hidden="true"></div>
+    <!-- CINEMATIC VIDEO-ANIMATED REEL STAGE -->
+    <section class="reel-section" data-reveal>
+      <div class="container">
+        <div class="reel-stage" data-reel-stage>
+          <!-- Video Screen Bar -->
+          <div class="reel-screen-bar">
+            <div class="screen-lights">
+              <span class="light l-red"></span>
+              <span class="light l-yellow"></span>
+              <span class="light l-green"></span>
+            </div>
+            <span class="screen-title"
+              >neural_matrix_stream.mp4 &middot; 60 FPS</span
+            >
+            <span class="screen-tag">LIVE CANVAS REEL</span>
+          </div>
 
-        <div class="roadmap-nodes">
+          <!-- Video Canvas Simulation -->
+          <div class="canvas-viewport">
+            <canvas
+              id="latentReelCanvas"
+              class="reel-canvas"
+              width="960"
+              height="480"></canvas>
+
+            <!-- Minimal Widescreen Overlay HUD -->
+            <div class="canvas-hud" aria-hidden="true">
+              <span class="hud-item top-l">MODEL: AUTOENCODER_V3</span>
+              <span class="hud-item top-r">LATENT_DIM: 64 // OPTUNA</span>
+              <span class="hud-item bot-l">SURABAYA, ID // 2026</span>
+              <span class="hud-item bot-r">STATUS: CONVERGED</span>
+            </div>
+
+            <!-- Portrait Cutout Badge -->
+            <div class="portrait-badge" title="Achmad Fahmi Ainur Ridho">
+              <img
+                src={profileImage}
+                srcset={profileImageSrcset}
+                sizes="120px"
+                alt="Portrait of Achmad Fahmi Ainur Ridho"
+                width={profileImageMeta?.width}
+                height={profileImageMeta?.height}
+                loading="eager"
+                decoding="async"
+                class="badge-photo"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ULTRA-LEAN MILESTONES (3 CLEAN ROWS, MINIMAL TEXT) -->
+    <section class="milestones-section divider" data-reveal>
+      <div class="container">
+        <div class="milestones-grid">
           {
-            evolutionPhases.map((phase, idx) => (
-              <div class="roadmap-card" data-phase-index={idx}>
-                <div class="card-marker">
-                  <span class="marker-dot" />
-                  <span class="marker-pulse" />
-                </div>
-                <div class="card-content">
-                  <div class="card-meta">
-                    <span class="phase-code">{phase.phase}</span>
-                    <span class="phase-period" set:html={phase.period} />
-                    <span class="phase-badge">{phase.badge}</span>
-                  </div>
-                  <h3 class="phase-title">{phase.title}</h3>
-                  <p class="phase-desc">{phase.desc}</p>
-                  <div class="phase-highlight">
-                    <span class="highlight-bullet" aria-hidden="true">
-                      &bull;
-                    </span>
-                    <span set:html={phase.highlight} />
-                  </div>
-                </div>
+            quickMilestones.map((m) => (
+              <div class="milestone-box">
+                <span class="m-num">{m.num}</span>
+                <span class="m-label">{m.label}</span>
+                <h2 class="m-title" set:html={m.title} />
+                <p class="m-detail">{m.detail}</p>
               </div>
             ))
           }
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CHAPTER 3: THE ENGINEERING PIPELINE SCHEMATIC -->
-  <section class="pipeline-section divider" data-reveal>
-    <div class="container">
-      <div class="section-header">
-        <div class="header-badge">
-          <span class="badge-num">02</span>
-          <span class="badge-title">THE METHODOLOGY</span>
-        </div>
-        <h2 class="section-heading">How I build systems that endure.</h2>
-        <p class="section-subhead">
-          A disciplined 4-stage pipeline that ensures code is maintainable,
-          models are sound, and delivery is verified.
-        </p>
-      </div>
+    <!-- EDITORIAL BRIDGE (NEXT STEPS & CREDENTIALS) -->
+    <section class="next-bridge divider" data-reveal>
+      <div class="container bridge-inner">
+        <div class="bridge-content">
+          <p class="bridge-tag">NEXT STEPS</p>
+          <h2 class="bridge-headline">Inspect the technical case studies.</h2>
+          <p class="bridge-sub">
+            Every project includes architecture diagrams, verified PR-AUC
+            benchmarks, and production learnings.
+          </p>
 
-      <div class="pipeline-grid">
-        {
-          pipelineSteps.map((s, idx) => (
-            <div class="pipeline-card">
-              <div class="pipeline-card-head">
-                <span class="pipeline-num">{s.num}</span>
-                <span class="pipeline-step-name">{s.step}</span>
-              </div>
-              <h3 class="pipeline-title">{s.title}</h3>
-              <p class="pipeline-desc">{s.desc}</p>
-              <div class="pipeline-pill" set:html={s.pill} />
-              {idx < 3 && (
-                <div class="pipeline-arrow" aria-hidden="true">
-                  &rarr;
-                </div>
-              )}
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- CHAPTER 4: EDITORIAL NEXT STEPS (Zero Redundancy with Home Contact) -->
-  <section class="editorial-bridge-section divider" data-reveal>
-    <div class="container bridge-container">
-      <div class="bridge-card">
-        <span class="bridge-kicker">WHAT NEXT</span>
-        <h2 class="bridge-title">Inspect the technical proof.</h2>
-        <p class="bridge-lead">
-          Every project includes architecture diagrams, verified metrics,
-          trade-off analyses, and production learnings.
-        </p>
-
-        <div class="bridge-actions">
-          <a
-            href="/projects/"
-            class="primary-projects-btn"
-            data-astro-prefetch="hover"
-          >
-            Explore All 11 Projects &amp; Case Studies
-            <span aria-hidden="true">&rarr;</span>
-          </a>
-
-          <div class="bridge-channels">
-            <span class="channels-label">Or explore credentials:</span>
-            <div class="channels-links">
+          <div class="bridge-links-row">
+            <a
+              href="/projects/"
+              class="cta-projects-btn"
+              data-astro-prefetch="hover"
+            >
+              View All 11 Projects &amp; Case Studies <span aria-hidden="true"
+                >&rarr;</span
+              >
+            </a>
+            <div class="credential-pills">
               <a
                 href="https://id.linkedin.com/in/fahmiridho"
                 target="_blank"
                 rel="noreferrer"
-                class="bridge-pill"
+                class="cred-pill"
               >
                 LinkedIn <span aria-hidden="true">&nearr;</span>
               </a>
@@ -350,14 +184,14 @@ const pipelineSteps = [
                 href="https://github.com/fahmiridho07"
                 target="_blank"
                 rel="noreferrer"
-                class="bridge-pill"
+                class="cred-pill"
               >
                 GitHub <span aria-hidden="true">&nearr;</span>
               </a>
               <a
                 href={resumeAction.href}
                 download={resumeAction.download ? "" : undefined}
-                class="bridge-pill bridge-resume"
+                class="cred-pill cred-resume"
               >
                 {resumeAction.label}
                 <span aria-hidden="true">&darr;</span>
@@ -366,687 +200,445 @@ const pipelineSteps = [
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
   import { initOnPageLoad } from "@lib/page-script";
 
   initOnPageLoad(() => {
-    // 1. Real-Time Surabaya Clock (WIB = UTC+7)
-    const clockEl = document.querySelector<HTMLElement>("[data-clock-time]");
-    if (clockEl) {
-      const updateClock = () => {
-        const now = new Date();
-        const options: Intl.DateTimeFormatOptions = {
-          timeZone: "Asia/Jakarta",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        };
-        clockEl.textContent = `${now.toLocaleTimeString("en-GB", options)} WIB`;
-      };
-      updateClock();
-      const timer = window.setInterval(updateClock, 1000);
-      window.addEventListener("astro:before-swap", () => clearInterval(timer), {
-        once: true,
-      });
-    }
+    const canvas = document.getElementById(
+      "latentReelCanvas",
+    ) as HTMLCanvasElement | null;
+    if (!canvas) return;
 
-    // 2. 3D Holographic Card Mouse Tilt & Sheen Reflection
-    const card = document.querySelector<HTMLElement>("[data-holo-card]");
-    const sheen = document.querySelector<HTMLElement>("[data-card-sheen]");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (card && !reduceMotion) {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-        const y =
-          (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-        const rotX = -y * 8;
-        const rotY = x * 8;
-        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+    // Resize canvas internal buffer to fit CSS display smoothly
+    const updateCanvasSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(rect.width * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+    };
+    updateCanvasSize();
+    window.addEventListener("resize", updateCanvasSize, { passive: true });
 
-        if (sheen) {
-          const sheenX = ((e.clientX - rect.left) / rect.width) * 100;
-          const sheenY = ((e.clientY - rect.top) / rect.height) * 100;
-          sheen.style.background = `radial-gradient(circle at ${sheenX}% ${sheenY}%, rgba(255,255,255,0.45) 0%, transparent 60%)`;
-        }
-      });
+    // Generative Wave & Particle Network Simulation (Video-like animation loop)
+    const numPoints = 42;
+    const points: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      isAnomaly: boolean;
+    }> = [];
 
-      card.addEventListener("mouseleave", () => {
-        card.style.transform =
-          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-        if (sheen) sheen.style.background = "none";
-      });
-
-      // Interactive Click Squish
-      card.addEventListener("click", () => {
-        card.classList.add("is-squished");
-        window.setTimeout(() => card.classList.remove("is-squished"), 400);
+    for (let i = 0; i < numPoints; i++) {
+      points.push({
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.0012,
+        vy: (Math.random() - 0.5) * 0.0012,
+        radius: Math.random() * 2 + 1.5,
+        isAnomaly: i === 0, // Primary highlighted anomaly node
       });
     }
 
-    // 3. Interactive Bouncing Stickers and Curiosity Chips
-    const bounceElements = Array.from(
-      document.querySelectorAll<HTMLElement>(
-        "[data-sticker], [data-bounce-pill]",
-      ),
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    let targetMouseX = 0.5;
+    let targetMouseY = 0.5;
+
+    canvas.addEventListener(
+      "mousemove",
+      (e) => {
+        const rect = canvas.getBoundingClientRect();
+        targetMouseX = (e.clientX - rect.left) / rect.width;
+        targetMouseY = (e.clientY - rect.top) / rect.height;
+      },
+      { passive: true },
     );
-    bounceElements.forEach((el) => {
-      el.addEventListener("click", (e) => {
-        e.stopPropagation();
-        el.classList.add("is-bouncing");
-        window.setTimeout(() => el.classList.remove("is-bouncing"), 500);
-      });
-    });
+
+    let animationId = 0;
+    let t = 0;
+
+    const render = () => {
+      if (!ctx) return;
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Smooth mouse follow
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      // Dark obsidian background with subtle gradient
+      const bgGrad = ctx.createRadialGradient(
+        w * mouseX,
+        h * mouseY,
+        40,
+        w * 0.5,
+        h * 0.5,
+        Math.max(w, h) * 0.75,
+      );
+      bgGrad.addColorStop(0, "#1a1c23");
+      bgGrad.addColorStop(1, "#101114");
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // Fine architectural grid
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.035)";
+      ctx.lineWidth = 1;
+      const gridSize = Math.floor(w / 16);
+      for (let x = 0; x < w; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Sine wave manifold stream (Mathematical Latent Flow)
+      ctx.lineWidth = 1.5;
+      for (let layer = 0; layer < 3; layer++) {
+        ctx.beginPath();
+        const freq = 0.004 + layer * 0.002;
+        const amp = h * (0.12 + layer * 0.04);
+        const yBase = h * 0.5 + Math.sin(t * 0.5 + layer) * (h * 0.08);
+
+        ctx.strokeStyle =
+          layer === 0 ? "rgba(201, 46, 62, 0.45)" : "rgba(255, 255, 255, 0.12)";
+
+        for (let x = 0; x <= w; x += 6) {
+          const y = yBase + Math.sin(x * freq + t + layer * 1.5) * amp;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      // Update and connect particle network
+      const maxDist = w * 0.18;
+      for (let i = 0; i < points.length; i++) {
+        const p = points[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce boundaries
+        if (p.x < 0.02 || p.x > 0.98) p.vx *= -1;
+        if (p.y < 0.05 || p.y > 0.95) p.vy *= -1;
+
+        const px = p.x * w;
+        const py = p.y * h;
+
+        // Draw connections
+        for (let j = i + 1; j < points.length; j++) {
+          const p2 = points[j];
+          const p2x = p2.x * w;
+          const p2y = p2.y * h;
+          const dx = px - p2x;
+          const dy = py - p2y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDist) {
+            const alpha = (1 - dist / maxDist) * 0.18;
+            ctx.strokeStyle =
+              p.isAnomaly || p2.isAnomaly
+                ? `rgba(201, 46, 62, ${alpha * 2})`
+                : `rgba(255, 255, 255, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(p2x, p2y);
+            ctx.stroke();
+          }
+        }
+
+        // Draw node
+        ctx.beginPath();
+        if (p.isAnomaly) {
+          // Carmine Anomaly Beacon Node
+          const pulseR = p.radius * 2.5 + Math.sin(t * 3) * 3;
+          ctx.arc(px, py, pulseR, 0, Math.PI * 2);
+          ctx.fillStyle = "#c92e3e";
+          ctx.fill();
+
+          // Concentric pulse wave
+          ctx.beginPath();
+          ctx.arc(px, py, pulseR * 2, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(201, 46, 62, 0.4)";
+          ctx.stroke();
+        } else {
+          ctx.arc(px, py, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+          ctx.fill();
+        }
+      }
+
+      t += 0.015;
+      if (!reduceMotion) {
+        animationId = requestAnimationFrame(render);
+      }
+    };
+
+    render();
+
+    window.addEventListener(
+      "astro:before-swap",
+      () => {
+        if (animationId) cancelAnimationFrame(animationId);
+      },
+      { once: true },
+    );
   });
 </script>
 
 <style>
-  /* ------------------------------- Creative Dossier Hero ------------------------------- */
+  /* ------------------------------- Layout Wrapper ------------------------------- */
 
-  .creative-hero {
-    padding-block: var(--space-hero-top) clamp(3.5rem, 7vw, 6rem);
+  .about-page-wrap {
     background: var(--paper);
-    position: relative;
-    overflow: hidden;
   }
 
-  .hero-top-strip {
+  /* ------------------------------- Hero Section ------------------------------- */
+
+  .about-hero {
+    padding-top: var(--space-hero-top);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .hero-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    margin-bottom: clamp(1.8rem, 3.5vw, 2.75rem);
+    margin-bottom: 1.5rem;
     flex-wrap: wrap;
   }
 
-  .creator-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+  .hero-label {
     font-family: var(--font-mono);
     font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
     font-weight: 600;
+  }
+
+  .hero-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     color: var(--ink);
     background: #ffffff;
     border: 1px solid var(--line);
-    padding: 0.3rem 0.75rem;
+    padding: 0.28rem 0.75rem;
     border-radius: var(--radius-pill);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
   }
 
-  .chip-dot {
+  .status-beacon {
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: var(--signal);
+    box-shadow: 0 0 8px rgba(201, 46, 62, 0.8);
   }
 
-  .live-clock-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--ink-soft);
-    background: var(--paper-soft);
-    border: 1px solid var(--line);
-    padding: 0.28rem 0.75rem;
-    border-radius: var(--radius-pill);
-  }
-
-  .clock-icon {
-    color: #2e7d32;
-    animation: clock-pulse 1.8s infinite;
-  }
-
-  @keyframes clock-pulse {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  .clock-time {
-    color: var(--ink);
-    font-weight: 600;
-  }
-
-  /* Hero Grid */
-  .hero-creative-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    gap: clamp(2.5rem, 5vw, 5.5rem);
-    align-items: center;
-  }
-
-  .hero-narrative-box {
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-  }
-
-  .hero-creative-title {
-    margin: 0;
+  .about-headline {
+    margin: 0 0 1.25rem;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+    font-size: clamp(2.3rem, 5vw, 4rem);
     font-weight: 480;
     line-height: 1.1;
     letter-spacing: -0.015em;
+    max-width: 26ch;
   }
 
-  .highlight-ink {
-    color: var(--ink);
-    border-bottom: 2px solid var(--line-strong);
-    padding-bottom: 1px;
-  }
-
-  .highlight-carmine {
-    color: var(--signal-deep);
-    position: relative;
-  }
-
-  .dot-beacon {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--signal);
-    margin-left: 4px;
-    box-shadow: 0 0 10px rgba(201, 46, 62, 0.6);
-  }
-
-  .hero-creative-lead {
+  .about-lead {
     margin: 0;
     color: var(--ink-muted);
-    font-size: clamp(1.02rem, 1.4vw, 1.15rem);
-    line-height: 1.7;
-    max-width: 52ch;
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+    line-height: 1.65;
+    max-width: 54ch;
   }
 
-  /* Curiosity Pills */
-  .curiosity-pills {
+  /* ------------------------------- Reel Section (Video Screen) ------------------------------- */
+
+  .reel-section {
+    padding-bottom: clamp(3.5rem, 7vw, 6rem);
+  }
+
+  .reel-stage {
+    position: relative;
+    background: #101114;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(22, 24, 29, 0.12);
+  }
+
+  .reel-screen-bar {
+    height: 36px;
+    background: #181a20;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.65rem;
-    padding-top: 0.5rem;
-  }
-
-  .curiosity-pill {
-    display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--ink);
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(22, 24, 29, 0.03);
-    transition: all var(--motion-fast) var(--ease-standard);
+    justify-content: space-between;
+    padding-inline: 14px;
   }
 
-  .curiosity-pill:hover {
-    border-color: var(--ink);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(22, 24, 29, 0.06);
-  }
-
-  .curiosity-pill.is-bouncing {
-    animation: spring-squish 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  /* Right Stage: Holographic Portrait */
-  .hero-stage-box {
+  .screen-lights {
     display: flex;
-    justify-content: center;
-    position: relative;
+    gap: 6px;
   }
 
-  .holographic-stage {
-    position: relative;
-    width: 100%;
-    max-width: 340px;
-  }
-
-  /* Spinning Emblem */
-  .spinning-emblem {
-    position: absolute;
-    top: -38px;
-    right: -38px;
-    width: 96px;
-    height: 96px;
-    color: var(--ink);
-    z-index: 10;
-    pointer-events: none;
-    animation: emblem-rotate 24s linear infinite;
-  }
-
-  @keyframes emblem-rotate {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-
-  .emblem-svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .emblem-center-dot {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .light {
     width: 8px;
     height: 8px;
     border-radius: 999px;
-    background: var(--signal);
   }
 
-  /* Hologram Card */
-  .hologram-card {
-    position: relative;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: 12px;
-    box-shadow: 0 20px 48px rgba(22, 24, 29, 0.08);
-    transform-style: preserve-3d;
-    transition: transform var(--motion-fast) var(--ease-standard);
-    cursor: pointer;
+  .l-red {
+    background: #e63946;
+  }
+  .l-yellow {
+    background: #f4a261;
+  }
+  .l-green {
+    background: #2a9d8f;
   }
 
-  .hologram-card.is-squished {
-    animation: card-squish 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  @keyframes card-squish {
-    0% {
-      transform: scale(1);
-    }
-    40% {
-      transform: scale(0.96) rotate(-1deg);
-    }
-    70% {
-      transform: scale(1.02) rotate(1deg);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .card-sheen {
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius-md);
-    pointer-events: none;
-    z-index: 5;
-    transition: background 0.1s ease;
-  }
-
-  /* Card Stickers */
-  .card-sticker {
-    position: absolute;
-    z-index: 6;
+  .screen-title {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.06em;
+  }
+
+  .screen-tag {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
     font-weight: 700;
-    padding: 0.26rem 0.65rem;
+    color: var(--signal);
+    background: rgba(201, 46, 62, 0.15);
+    border: 1px solid rgba(201, 46, 62, 0.4);
+    padding: 0.15rem 0.5rem;
     border-radius: var(--radius-pill);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform var(--motion-fast) var(--ease-standard);
+    letter-spacing: 0.08em;
   }
 
-  .card-sticker:hover {
-    transform: scale(1.1) !important;
-  }
-
-  .card-sticker.is-bouncing {
-    animation: spring-squish 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .sticker-role {
-    top: -10px;
-    left: -12px;
-    background: var(--ink);
-    color: #ffffff;
-    transform: rotate(-6deg);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .sticker-ping {
-    width: 5px;
-    height: 5px;
-    border-radius: 999px;
-    background: var(--signal);
-  }
-
-  .sticker-thesis {
-    bottom: 35px;
-    right: -14px;
-    background: #ffffff;
-    color: var(--signal-deep);
-    border: 1px solid rgba(201, 46, 62, 0.3);
-    transform: rotate(4deg);
-  }
-
-  @keyframes spring-squish {
-    0% {
-      transform: scale(1);
-    }
-    40% {
-      transform: scale(1.2) rotate(6deg);
-    }
-    70% {
-      transform: scale(0.92) rotate(-4deg);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  /* Photo Container & Reticle */
-  .card-photo-frame {
+  .canvas-viewport {
     position: relative;
     width: 100%;
-    aspect-ratio: 0.88;
+    aspect-ratio: 16 / 9;
+    max-height: 520px;
     overflow: hidden;
-    border-radius: var(--radius-sm);
-    background: var(--paper-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .card-img {
+  .reel-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .canvas-hud {
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.1em;
+  }
+
+  .hud-item {
+    position: absolute;
+  }
+
+  .top-l {
+    top: 0;
+    left: 0;
+  }
+  .top-r {
+    top: 0;
+    right: 0;
+  }
+  .bot-l {
+    bottom: 0;
+    left: 0;
+  }
+  .bot-r {
+    bottom: 0;
+    right: 0;
+  }
+
+  /* Floating Portrait Badge in Corner of Video Screen */
+  .portrait-badge {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 90px;
+    height: 90px;
+    border-radius: var(--radius-sm);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    background: #16181d;
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .portrait-badge:hover {
+    transform: scale(1.08);
+    border-color: var(--signal);
+  }
+
+  .badge-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .camera-reticle {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  /* ------------------------------- Milestones Section ------------------------------- */
 
-  .reticle-target {
-    width: 24px;
-    height: 24px;
-    border: 1px dashed rgba(255, 255, 255, 0.5);
-    border-radius: 999px;
-  }
-
-  .card-footer-telemetry {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 10px;
-    padding-inline: 4px;
-    font-family: var(--font-mono);
-    font-size: 0.64rem;
-    color: var(--ink-soft);
-  }
-
-  .telemetry-status {
-    color: var(--signal-deep);
-    font-weight: 700;
-  }
-
-  /* ------------------------------- Section Common Headers ------------------------------- */
-
-  .section-header {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.65rem;
-  }
-
-  .header-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-soft);
-  }
-
-  .badge-num {
-    color: var(--signal);
-    font-weight: 700;
-  }
-
-  .section-heading {
-    margin: 0;
-    color: var(--ink);
-    font-family: var(--font-serif);
-    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
-    font-weight: 480;
-    line-height: 1.14;
-    letter-spacing: -0.01em;
-  }
-
-  .section-subhead {
-    margin: 0;
-    color: var(--ink-muted);
-    font-size: clamp(1rem, 1.4vw, 1.1rem);
-    line-height: 1.65;
-    max-width: 56ch;
-  }
-
-  /* ---------------------- Chapter 2: Interactive Roadmap ---------------------- */
-
-  .roadmap-section {
-    padding-block: clamp(4rem, 8vw, 6.5rem);
+  .milestones-section {
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
     background: var(--paper);
   }
 
-  .roadmap-timeline {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .roadmap-spine {
-    position: absolute;
-    left: 20px;
-    top: 20px;
-    bottom: 20px;
-    width: 2px;
-    background: var(--line);
-  }
-
-  .roadmap-nodes {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.75rem, 3.5vw, 2.75rem);
-  }
-
-  .roadmap-card {
-    position: relative;
+  .milestones-grid {
     display: grid;
-    grid-template-columns: 42px minmax(0, 1fr);
-    gap: 1.5rem;
-    align-items: flex-start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .card-marker {
-    position: relative;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .marker-dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 999px;
-    background: #ffffff;
-    border: 3px solid var(--ink);
-    z-index: 2;
-    transition: all var(--motion-fast) var(--ease-standard);
-  }
-
-  .roadmap-card:hover .marker-dot {
-    border-color: var(--signal);
-    background: var(--signal);
-  }
-
-  .marker-pulse {
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    border-radius: 999px;
-    border: 1px solid var(--line-strong);
-    z-index: 1;
-  }
-
-  .card-content {
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: clamp(1.5rem, 3vw, 2.25rem);
+  .milestone-box {
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    transition: all var(--motion-fast) var(--ease-standard);
+    gap: 0.4rem;
+    padding-top: 1rem;
+    border-top: 1.5px solid var(--line-strong);
   }
 
-  .roadmap-card:hover .card-content {
-    border-color: var(--ink);
-    transform: translateX(4px);
-    box-shadow: 0 8px 24px rgba(22, 24, 29, 0.04);
-  }
-
-  .card-meta {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.6rem 1rem;
-  }
-
-  .phase-code {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: var(--signal-deep);
-    letter-spacing: 0.08em;
-  }
-
-  .phase-period {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--ink-soft);
-  }
-
-  .phase-badge {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    color: var(--ink);
-    background: var(--paper-soft);
-    border: 1px solid var(--line);
-    padding: 0.15rem 0.5rem;
-    border-radius: var(--radius-pill);
-  }
-
-  .phase-title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.25;
-  }
-
-  .phase-desc {
-    margin: 0;
-    font-size: 0.96rem;
-    color: var(--ink-muted);
-    line-height: 1.65;
-    max-width: 60ch;
-  }
-
-  .phase-highlight {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-top: 0.25rem;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--signal-deep);
-  }
-
-  .highlight-bullet {
-    color: var(--signal);
-  }
-
-  /* ------------------- Chapter 3: Engineering Pipeline ------------------- */
-
-  .pipeline-section {
-    padding-block: clamp(4rem, 8vw, 6.5rem);
-    background: var(--paper);
-  }
-
-  .pipeline-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-
-  .pipeline-card {
-    position: relative;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: clamp(1.4rem, 2.5vw, 1.85rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 240px;
-    transition: all var(--motion-fast) var(--ease-standard);
-  }
-
-  .pipeline-card:hover {
-    border-color: var(--ink);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 28px rgba(22, 24, 29, 0.05);
-  }
-
-  .pipeline-card-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-  }
-
-  .pipeline-num {
+  .m-num {
     font-family: var(--font-mono);
     font-size: 1.4rem;
     font-weight: 700;
@@ -1054,163 +646,116 @@ const pipelineSteps = [
     line-height: 1;
   }
 
-  .pipeline-step-name {
+  .m-label {
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    letter-spacing: 0.1em;
+    font-size: 0.62rem;
     color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  .pipeline-title {
-    margin: 0 0 0.5rem;
+  .m-title {
+    margin: 0.25rem 0 0;
     font-family: var(--font-serif);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 500;
     color: var(--ink);
-    line-height: 1.2;
   }
 
-  .pipeline-desc {
-    margin: 0 0 1rem;
-    font-size: 0.88rem;
+  .m-detail {
+    margin: 0;
+    font-size: 0.92rem;
     color: var(--ink-muted);
     line-height: 1.6;
   }
 
-  .pipeline-pill {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--ink);
-    background: var(--paper-soft);
-    border: 1px solid var(--line);
-    padding: 0.25rem 0.55rem;
-    border-radius: var(--radius-pill);
-    display: inline-block;
-    align-self: flex-start;
-  }
+  /* ------------------------------- Next Bridge Section ------------------------------- */
 
-  .pipeline-arrow {
-    position: absolute;
-    top: 50%;
-    right: -16px;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    color: var(--ink-soft);
-    z-index: 2;
-  }
-
-  /* --------------------- Chapter 4: Editorial Bridge Section --------------------- */
-
-  .editorial-bridge-section {
-    padding-block: clamp(4.5rem, 9vw, 7.5rem);
+  .next-bridge {
+    padding-block: clamp(4rem, 8vw, 6.5rem);
     background: var(--paper);
   }
 
-  .bridge-container {
+  .bridge-inner {
     display: flex;
     justify-content: center;
   }
 
-  .bridge-card {
+  .bridge-content {
     width: 100%;
-    max-width: 780px;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: clamp(2.5rem, 5vw, 4rem);
+    max-width: 760px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 16px 40px rgba(22, 24, 29, 0.04);
   }
 
-  .bridge-kicker {
+  .bridge-tag {
+    margin: 0 0 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     color: var(--ink-soft);
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
   }
 
-  .bridge-title {
+  .bridge-headline {
     margin: 0 0 0.75rem;
     color: var(--ink);
     font-family: var(--font-serif);
     font-size: clamp(2rem, 4.5vw, 3.2rem);
     font-weight: 480;
-    line-height: 1.12;
+    line-height: 1.15;
   }
 
-  .bridge-lead {
-    margin: 0 0 2.25rem;
+  .bridge-sub {
+    margin: 0 0 2rem;
     color: var(--ink-muted);
     font-size: 1.05rem;
     line-height: 1.6;
     max-width: 48ch;
   }
 
-  .bridge-actions {
+  .bridge-links-row {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.75rem;
     width: 100%;
   }
 
-  .primary-projects-btn {
+  .cta-projects-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.5rem;
     background: var(--ink);
     color: var(--paper);
     font-family: var(--font-mono);
     font-size: 0.82rem;
     font-weight: 600;
-    padding: 0.95rem 1.8rem;
+    padding: 0.95rem 1.85rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .primary-projects-btn:hover {
+  .cta-projects-btn:hover {
     background: var(--signal-deep);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(201, 46, 62, 0.25);
   }
 
-  .bridge-channels {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    border-top: 1px solid var(--line);
-    padding-top: 1.5rem;
-    width: 100%;
-  }
-
-  .channels-label {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .channels-links {
+  .credential-pills {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.65rem;
   }
 
-  .bridge-pill {
+  .cred-pill {
     font-family: var(--font-mono);
     font-size: 0.74rem;
     color: var(--ink-muted);
-    background: var(--paper-soft);
+    background: #ffffff;
     border: 1px solid var(--line);
     padding: 0.35rem 0.75rem;
     border-radius: var(--radius-pill);
@@ -1218,92 +763,46 @@ const pipelineSteps = [
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .bridge-pill:hover {
+  .cred-pill:hover {
     border-color: var(--ink);
     color: var(--ink);
-    background: #ffffff;
   }
 
-  .bridge-resume {
+  .cred-resume {
     color: var(--signal-deep);
     border-color: rgba(201, 46, 62, 0.25);
   }
 
-  .bridge-resume:hover {
+  .cred-resume:hover {
     border-color: var(--signal);
     color: var(--signal);
   }
 
   /* ------------------------------- Responsive ------------------------------- */
 
-  @media (max-width: 990px) {
-    .pipeline-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .pipeline-arrow {
-      display: none;
-    }
-  }
-
   @media (max-width: 900px) {
-    .hero-creative-grid {
+    .milestones-grid {
       grid-template-columns: 1fr;
-      text-align: center;
+      gap: 2rem;
     }
 
-    .hero-creative-lead {
-      margin-inline: auto;
+    .canvas-viewport {
+      aspect-ratio: 4 / 3;
     }
 
-    .curiosity-pills {
-      justify-content: center;
-    }
-
-    .roadmap-spine {
-      left: 14px;
-    }
-
-    .roadmap-card {
-      grid-template-columns: 30px minmax(0, 1fr);
-      gap: 1rem;
-    }
-
-    .card-marker {
-      width: 30px;
-      height: 30px;
-    }
-
-    .marker-dot {
-      width: 10px;
-      height: 10px;
-      border-width: 2px;
-    }
-
-    .marker-pulse {
-      width: 18px;
-      height: 18px;
-    }
-
-    .spinning-emblem {
-      right: 0;
-      top: -30px;
-      width: 76px;
-      height: 76px;
+    .portrait-badge {
+      width: 65px;
+      height: 65px;
+      bottom: 14px;
+      right: 14px;
     }
   }
 
   @media (max-width: 600px) {
-    .pipeline-grid {
-      grid-template-columns: 1fr;
-    }
-    .hero-top-strip {
-      justify-content: center;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .spinning-emblem {
-      animation: none;
+    .hero-top-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
   }
 </style>
