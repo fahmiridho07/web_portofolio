@@ -1,5 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#16181d"/>
-  <text x="14" y="47" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="600" fill="#f7f7f6">F</text>
-  <circle cx="47" cy="44" r="5.5" fill="#c92e3e"/>
+  <!-- Dark Obsidian Container Badge for High Contrast on all Browser Chrome Themes -->
+  <rect width="64" height="64" rx="16" fill="#121316"/>
+  
+  <!-- Isometric 3D Builder Prism (Minimalist Illustration Mark) -->
+  <!-- Top Facet (Light/Illuminated Plane) -->
+  <polygon points="32,13 50,23.5 32,34 14,23.5" fill="#ffffff"/>
+  
+  <!-- Left Facet (Midtone Architectural Plane) -->
+  <polygon points="14,23.5 32,34 32,53 14,42.5" fill="#a4a7b0"/>
+  
+  <!-- Right Facet (Deep Shadow Plane) -->
+  <polygon points="32,34 50,23.5 50,42.5 32,53" fill="#4d515a"/>
+  
+  <!-- Architectural Seam Lines -->
+  <line x1="32" y1="34" x2="32" y2="53" stroke="#121316" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="14" y1="23.5" x2="32" y2="34" stroke="#121316" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="50" y1="23.5" x2="32" y2="34" stroke="#121316" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Focal Anomaly Node (The Carmine Signal) -->
+  <circle cx="32" cy="23.5" r="4.5" fill="#c92e3e"/>
+  <circle cx="32" cy="23.5" r="8" fill="none" stroke="#c92e3e" stroke-width="1" opacity="0.5"/>
 </svg>
