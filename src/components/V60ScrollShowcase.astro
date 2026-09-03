@@ -1,0 +1,971 @@
+---
+// V60ScrollShowcase.astro: 3D V60 Coffee Dripper & Scroll-Driven Extraction Showcase
+// Features a serene, grounded V60 extraction simulation:
+// As the visitor scrolls through the project stories, the coffee liquid progressively rises
+// from empty bloom to 500ml full carafe, accompanied by a clean, rhythmic falling drop.
+// Clean, steady, and focused: zero spinning rotation, zero glare/sheen, zero background box.
+import { getResponsiveImageSources } from "@lib/images";
+import { getSortedProjects } from "@lib/projects";
+
+const allProjects = await getSortedProjects();
+
+interface ShowcaseItem {
+  slug: string;
+  number: string;
+  discipline: string;
+  title: string;
+  headline: string;
+  impact: string;
+  tags: string[];
+}
+
+const showcaseData: ShowcaseItem[] = [
+  {
+    slug: "fraud-detection-ml-pipeline",
+    number: "01",
+    discipline: "Machine Learning & Research",
+    title: "Fraud Detection AI",
+    headline:
+      "Catching payment fraud before transactions settle with deep signal processing.",
+    impact:
+      "Engineered under 1:590 class imbalance with 89% precision on IEEE-CIS benchmarks.",
+    tags: ["Machine Learning", "Python", "Optuna", "Signals"],
+  },
+  {
+    slug: "medimate-medicine-reminder-app",
+    number: "02",
+    discipline: "Mobile Product Design",
+    title: "MediMate Healthcare",
+    headline:
+      "A calm, reliable Flutter companion for daily prescription routines.",
+    impact:
+      "Intuitive timeline schedule, local notification triggers, and zero-latency storage.",
+    tags: ["Flutter", "Dart", "Material 3", "Android"],
+  },
+  {
+    slug: "kpc-ideku-v3-dotnet-stabilization",
+    number: "03",
+    discipline: "Enterprise Software Architecture",
+    title: "Mining Operations Platform",
+    headline:
+      "Stabilizing mission-critical ASP.NET Core workflows for 5,000+ mining personnel.",
+    impact:
+      "Hardened role-based access control, embedded live telemetry analytics, and reduced query latency.",
+    tags: ["ASP.NET Core", "C#", "SQL Server", "Enterprise"],
+  },
+  {
+    slug: "scent2me-perfume-recommendation",
+    number: "04",
+    discipline: "AI Recommendation Engine",
+    title: "Scent2Me Fragrance AI",
+    headline:
+      "Vector similarity engine finding signature fragrances from olfactory preferences.",
+    impact:
+      "TF-IDF vector matching across 1,000+ fragrance notes with live FastAPI recommendations.",
+    tags: ["FastAPI", "Vector Similarity", "Python", "Web"],
+  },
+  {
+    slug: "orphanage-inspection-route-optimization",
+    number: "05",
+    discipline: "Operations Research & Algorithms",
+    title: "Social Inspection Routing",
+    headline:
+      "Ant Colony Optimization computing optimal inspection routes across 24 orphanages.",
+    impact:
+      "Grouped 5 district clusters to compress inspection travel down to 153.34 km within strict working hours.",
+    tags: ["Algorithm Design", "Optimization", "Python", "Heuristics"],
+  },
+];
+
+const projectStories = showcaseData
+  .map((item) => {
+    const proj = allProjects.find((p) => p.data.slug === item.slug);
+    if (!proj) return null;
+    return {
+      ...item,
+      proj,
+      image: getResponsiveImageSources(
+        proj.data.coverImage,
+        "(max-width: 960px) 100vw, 52vw",
+      ),
+    };
+  })
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
+---
+
+<section class="v60-showcase-section" id="projects" data-v60-showcase>
+  <div class="container">
+    <div class="v60-section-header" data-reveal>
+      <div class="header-tag-row">
+        <span class="header-kicker">SELECTED SHIPPED WORK</span>
+        <span class="header-separator">&middot;</span>
+        <span class="header-sub">SCROLL-DRIVEN EXTRACTION</span>
+      </div>
+      <h2 class="section-display-title">
+        Crafted systems, interface design &amp; intelligence.
+      </h2>
+    </div>
+
+    <!-- MAIN TWO-COLUMN EDITORIAL LAYOUT -->
+    <div class="v60-layout-grid">
+      <!-- COLUMN 1: Pinned Sticky V60 Centerpiece (Pure Floating Object, Steady & Focused) -->
+      <div class="v60-sticky-col" data-v60-sticky>
+        <div class="v60-stage-viewport">
+          {/* Subtle Ambient Lighting Glow */}
+          <div class="v60-ambient-glow" aria-hidden="true"></div>
+
+          {/* V60 Object Rig (Steady, No Spin, No Glare) */}
+          <div class="v60-kinetic-rig">
+            <div class="v60-model-wrapper">
+              {
+                /* Layer 1: Base Empty V60 Dripper & Carafe (Transparent Cutout) */
+              }
+              <img
+                src="/assets/floating/v60-empty-transparent.webp"
+                srcset="/assets/floating/v60-empty-400.webp 400w, /assets/floating/v60-empty-transparent.webp 1024w"
+                sizes="(max-width: 960px) 240px, 380px"
+                alt="Studio render of Hario V60 dripper with empty glass range server"
+                width="1024"
+                height="1024"
+                loading="eager"
+                decoding="async"
+                class="v60-layer v60-base-layer"
+              />
+
+              {
+                /* Layer 2: Progressive Coffee Liquid Level (Rises dynamically on scroll) */
+              }
+              <div
+                class="v60-liquid-mask-wrapper"
+                data-liquid-wrapper
+                aria-hidden="true"
+              >
+                <img
+                  src="/assets/floating/v60-full-transparent.webp"
+                  srcset="/assets/floating/v60-full-400.webp 400w, /assets/floating/v60-full-transparent.webp 1024w"
+                  sizes="(max-width: 960px) 240px, 380px"
+                  alt=""
+                  width="1024"
+                  height="1024"
+                  loading="eager"
+                  decoding="async"
+                  class="v60-layer v60-liquid-layer"
+                  data-liquid-layer
+                />
+                {/* Surface Meniscus Ripple Shimmer */}
+                <div class="v60-surface-ripple" data-surface-ripple></div>
+              </div>
+
+              {/* Layer 3: Animated Extraction Drip Droplet */}
+              <div class="v60-drip-stream" data-drip-stream aria-hidden="true">
+                <div class="coffee-drop" data-coffee-drop></div>
+              </div>
+
+              {/* Layer 4: Final Steam Particles (Activated when full) */}
+              <div
+                class="v60-steam-particles"
+                data-steam-particles
+                aria-hidden="true"
+              >
+                <span class="steam-plume plume-1"></span>
+                <span class="steam-plume plume-2"></span>
+                <span class="steam-plume plume-3"></span>
+              </div>
+            </div>
+
+            {/* Static Soft Ground Shadow Base */}
+            <div class="v60-ground-shadow" aria-hidden="true"></div>
+          </div>
+
+          {/* Minimalist Extraction Telemetry Status Pill */}
+          <div class="v60-telemetry-pill" aria-hidden="true">
+            <span class="telemetry-live-dot" data-telemetry-dot></span>
+            <span class="telemetry-label" data-v60-status
+              >EXTRACTION 01 / 05 &middot; BLOOM STAGE &middot; 45ml</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMN 2: Naturally Scrolling Project Stories -->
+      <div class="v60-stream-col">
+        {
+          projectStories.map((story, idx) => (
+            <article
+              class="v60-project-card"
+              data-project-card
+              data-project-index={idx}
+              data-reveal
+            >
+              <a
+                href={`/projects/${story.proj.data.slug}/`}
+                class="card-inner-link"
+                data-astro-prefetch="hover"
+              >
+                {/* Card Header */}
+                <div class="card-meta-bar">
+                  <div class="card-num-badge">
+                    <span class="num-text">{story.number}</span>
+                    <span class="slash">/</span>
+                    <span class="total">05</span>
+                  </div>
+                  <span class="card-discipline">{story.discipline}</span>
+                </div>
+
+                {/* Visual Cover Mockup */}
+                <div class="card-visual-frame">
+                  <img
+                    src={story.image.src}
+                    srcset={story.image.srcset}
+                    sizes={story.image.srcset ? story.image.sizes : undefined}
+                    alt={story.title}
+                    width={story.image.width}
+                    height={story.image.height}
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    class="card-cover-img"
+                  />
+                  <div class="visual-hover-sheen" aria-hidden="true" />
+                </div>
+
+                {/* Story Narrative */}
+                <div class="card-narrative">
+                  <h3 class="card-title">
+                    {story.title}
+                    <span class="title-arrow" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </h3>
+                  <p class="card-lead">{story.headline}</p>
+                  <p class="card-impact">{story.impact}</p>
+
+                  <div class="card-stack-pills">
+                    {story.tags.map((tag) => (
+                      <span class="stack-pill">{tag}</span>
+                    ))}
+                  </div>
+
+                  <div class="card-cta-row">
+                    <span class="cta-label">Explore Full Case Study</span>
+                    <span class="cta-arrow-box" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 16 16"
+                        width="12"
+                        height="12"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M3 8h10M9 4l4 4-4 4" />
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Section Bottom CTA -->
+    <div class="v60-bottom-action" data-reveal>
+      <a href="/projects/" class="catalogue-btn" data-astro-prefetch="hover">
+        <span
+          >Browse All {allProjects.length} Shipped Projects &amp; Lab Code</span
+        >
+        <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const section = document.querySelector<HTMLElement>("[data-v60-showcase]");
+    const liquidWrapper = document.querySelector<HTMLElement>(
+      "[data-liquid-wrapper]",
+    );
+    const surfaceRipple = document.querySelector<HTMLElement>(
+      "[data-surface-ripple]",
+    );
+    const dripDrop = document.querySelector<HTMLElement>("[data-coffee-drop]");
+    const steamGroup = document.querySelector<HTMLElement>(
+      "[data-steam-particles]",
+    );
+    const statusText = document.querySelector<HTMLElement>("[data-v60-status]");
+    const telemetryDot = document.querySelector<HTMLElement>(
+      "[data-telemetry-dot]",
+    );
+
+    if (!section || !liquidWrapper) return;
+
+    let currentProgress = 0;
+    let targetProgress = 0;
+    let rafId = 0;
+
+    // Carafe Liquid Geometry:
+    // Bottom of carafe liquid: 89.8%
+    // Top of full carafe (500ml): 60.5%
+    const BOTTOM_PERCENT = 89.8;
+    const TOP_PERCENT = 60.5;
+
+    const onScroll = () => {
+      const rect = section.getBoundingClientRect();
+      const sectionTop = rect.top + window.scrollY;
+      const sectionHeight = rect.height;
+      const windowHeight = window.innerHeight;
+
+      const scrollDist = window.scrollY - sectionTop;
+      const maxScroll = sectionHeight - windowHeight;
+      targetProgress = Math.max(
+        0,
+        Math.min(1, maxScroll > 0 ? scrollDist / maxScroll : 0),
+      );
+
+      // Dynamic telemetry status update
+      if (statusText) {
+        const stepNum = Math.min(5, Math.floor(targetProgress * 5) + 1);
+        const currentMl = Math.round(targetProgress * 500);
+        if (targetProgress >= 0.95) {
+          statusText.textContent = `EXTRACTION COMPLETE \u00B7 500ml / 500ml \u00B7 FILTERED TO PERFECTION`;
+          if (telemetryDot) telemetryDot.style.background = "#22c55e"; // Fresh green signal
+        } else if (targetProgress < 0.1) {
+          statusText.textContent = `EXTRACTION 01 / 05 \u00B7 BLOOM DEGASSING \u00B7 45ml`;
+          if (telemetryDot) telemetryDot.style.background = "var(--signal)";
+        } else {
+          statusText.textContent = `EXTRACTION 0${stepNum} / 05 \u00B7 ${currentMl}ml / 500ml \u00B7 FLOW ACTIVE`;
+          if (telemetryDot) telemetryDot.style.background = "var(--signal)";
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    let dripClock = 0;
+    const animate = () => {
+      dripClock += 0.04;
+
+      // Smooth progress interpolation for liquid level
+      currentProgress += (targetProgress - currentProgress) * 0.075;
+
+      // Calculate vertical clip-path for liquid rising
+      const currentLiquidTop =
+        BOTTOM_PERCENT - currentProgress * (BOTTOM_PERCENT - TOP_PERCENT);
+      liquidWrapper.style.clipPath = `inset(${currentLiquidTop.toFixed(2)}% 0 0 0)`;
+
+      // Position the surface ripple meniscus exactly at the rising liquid top
+      if (surfaceRipple) {
+        surfaceRipple.style.top = `${currentLiquidTop.toFixed(2)}%`;
+        const waveScale = 1 + Math.sin(dripClock * 3) * 0.04;
+        surfaceRipple.style.transform = `scaleY(${waveScale.toFixed(2)})`;
+      }
+
+      // Animated falling coffee drop (from dripper spout y=49.5% down to current liquid level)
+      if (dripDrop) {
+        if (currentProgress >= 0.98) {
+          // Finished: stop dripping
+          dripDrop.style.opacity = "0";
+        } else {
+          dripDrop.style.opacity = "1";
+          const dripCycle = (dripClock * 1.5) % 1; // 0.0 to 1.0 cycle
+          const startY = 49.5; // dripper bottom spout percent
+          const endY = currentLiquidTop;
+          const dropY = startY + dripCycle * (endY - startY);
+          dripDrop.style.top = `${dropY.toFixed(1)}%`;
+          dripDrop.style.transform = `translate(-50%, -50%) scale(${1 - dripCycle * 0.3})`;
+        }
+      }
+
+      // Steam animation when full
+      if (steamGroup) {
+        if (currentProgress >= 0.92) {
+          steamGroup.style.opacity = "1";
+        } else {
+          steamGroup.style.opacity = "0";
+        }
+      }
+
+      rafId = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafId);
+    };
+  });
+</script>
+
+<style>
+  .v60-showcase-section {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 7rem);
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    overflow-x: clip;
+  }
+
+  .v60-section-header {
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .header-tag-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .header-kicker {
+    color: var(--signal);
+  }
+
+  .header-separator {
+    color: var(--line-strong);
+  }
+
+  .section-display-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+    font-weight: 480;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 24ch;
+  }
+
+  /* ------------------ TWO-COLUMN EDITORIAL GRID ------------------ */
+  .v60-layout-grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.86fr) minmax(0, 1.14fr);
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+    position: relative;
+  }
+
+  /* Sticky Left Column (Pure Floating Object, Steady & Focused) */
+  .v60-sticky-col {
+    position: sticky;
+    top: clamp(75px, 12vh, 110px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 5;
+    background: transparent;
+  }
+
+  .v60-stage-viewport {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: clamp(440px, 64vh, 560px);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+  }
+
+  .v60-ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(280px, 32vw, 400px);
+    height: clamp(280px, 32vw, 400px);
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(201, 46, 62, 0.04) 0%,
+      rgba(22, 24, 29, 0.015) 50%,
+      transparent 72%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* V60 Object Rig */
+  .v60-kinetic-rig {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .v60-model-wrapper {
+    position: relative;
+    width: clamp(260px, 28vw, 360px);
+    aspect-ratio: 1 / 1;
+    user-select: none;
+  }
+
+  /* Layers: Base Empty V60 & Rising Liquid */
+  .v60-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .v60-base-layer {
+    z-index: 1;
+    filter: drop-shadow(0 20px 42px rgba(22, 24, 29, 0.09));
+  }
+
+  .v60-liquid-mask-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    will-change: clip-path;
+  }
+
+  .v60-liquid-layer {
+    z-index: 2;
+  }
+
+  /* Surface Meniscus Ripple Shimmer */
+  .v60-surface-ripple {
+    position: absolute;
+    left: 28%;
+    width: 44%;
+    height: 5px;
+    border-radius: 999px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.5) 50%,
+      transparent 100%
+    );
+    box-shadow: 0 0 8px rgba(235, 150, 40, 0.4);
+    z-index: 3;
+    pointer-events: none;
+    will-change: top, transform;
+  }
+
+  /* Animated Coffee Drip Droplet */
+  .v60-drip-stream {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .coffee-drop {
+    position: absolute;
+    left: 50%;
+    width: 7px;
+    height: 11px;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    background: #4a210a;
+    box-shadow: 0 1px 4px rgba(40, 16, 4, 0.6);
+    transform: translate(-50%, -50%);
+    will-change: top, transform, opacity;
+  }
+
+  /* Steam Plumes when Full */
+  .v60-steam-particles {
+    position: absolute;
+    top: 48%;
+    left: 48%;
+    transform: translate(-50%, -100%);
+    display: flex;
+    gap: 12px;
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .steam-plume {
+    width: 4px;
+    height: 28px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.4) 0%,
+      transparent 100%
+    );
+    filter: blur(2px);
+    animation: steam-rise 2.2s infinite ease-out;
+  }
+
+  .plume-2 {
+    animation-delay: 0.7s;
+    height: 36px;
+  }
+
+  .plume-3 {
+    animation-delay: 1.4s;
+    height: 24px;
+  }
+
+  @keyframes steam-rise {
+    0% {
+      transform: translateY(0) scaleX(1);
+      opacity: 0;
+    }
+    40% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(-24px) scaleX(2.5);
+      opacity: 0;
+    }
+  }
+
+  /* Static Ground Shadow Base */
+  .v60-ground-shadow {
+    width: clamp(160px, 20vw, 240px);
+    height: 20px;
+    border-radius: 999px;
+    background: rgba(22, 24, 29, 0.12);
+    filter: blur(14px);
+    margin-top: -16px;
+    pointer-events: none;
+  }
+
+  /* Status Telemetry Pill */
+  .v60-telemetry-pill {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0.95rem;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 16px rgba(22, 24, 29, 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    user-select: none;
+  }
+
+  .telemetry-live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 8px rgba(201, 46, 62, 0.6);
+    transition: background 0.3s ease;
+  }
+
+  /* Right Column Project Cards Stream */
+  .v60-stream-col {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .v60-project-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard);
+  }
+
+  .v60-project-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 42px rgba(22, 24, 29, 0.08);
+  }
+
+  .card-inner-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Card Meta Bar */
+  .card-meta-bar {
+    padding: 1.15rem 1.4rem;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--paper-soft);
+  }
+
+  .card-num-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .card-num-badge .slash {
+    color: var(--ink-muted);
+    opacity: 0.5;
+  }
+
+  .card-num-badge .total {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .card-discipline {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Card Visual Frame */
+  .card-visual-frame {
+    position: relative;
+    overflow: hidden;
+    background: #111317;
+    aspect-ratio: 16 / 9.5;
+  }
+
+  .card-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .v60-project-card:hover .card-cover-img {
+    transform: scale(1.035);
+  }
+
+  .visual-hover-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(22, 24, 29, 0.03) 60%,
+      rgba(22, 24, 29, 0.15) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Card Narrative Content */
+  .card-narrative {
+    padding: clamp(1.4rem, 3vw, 1.85rem);
+  }
+
+  .card-title {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-serif);
+    font-size: clamp(1.45rem, 2.2vw, 1.85rem);
+    font-weight: 480;
+    line-height: 1.2;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .v60-project-card:hover .card-title {
+    color: var(--signal-deep);
+  }
+
+  .title-arrow {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    transition:
+      transform var(--motion-fast) var(--ease-out),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  .v60-project-card:hover .title-arrow {
+    transform: translate(4px, -2px);
+    color: var(--signal);
+  }
+
+  .card-lead {
+    margin: 0 0 0.5rem;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--ink);
+    font-weight: 450;
+  }
+
+  .card-impact {
+    margin: 0 0 1.25rem;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+  }
+
+  .card-stack-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .stack-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-cta-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .v60-project-card:hover .card-cta-row {
+    color: var(--signal);
+  }
+
+  .cta-arrow-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .v60-project-card:hover .cta-arrow-box {
+    transform: translateX(4px);
+  }
+
+  /* Section Bottom Action */
+  .v60-bottom-action {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(3.5rem, 7vw, 5.5rem);
+  }
+
+  .catalogue-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.95rem 1.8rem;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    transition:
+      background var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard);
+  }
+
+  .catalogue-btn:hover {
+    background: var(--signal-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 46, 62, 0.25);
+  }
+
+  .btn-arrow {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .catalogue-btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ------------------- RESPONSIVENESS ------------------- */
+  @media (max-width: 959px) {
+    .v60-layout-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .v60-sticky-col {
+      position: sticky;
+      top: 56px;
+      z-index: 10;
+      width: 100%;
+      background: rgba(247, 247, 246, 0.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding-block: 0.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .v60-stage-viewport {
+      max-width: 100%;
+      height: 250px;
+      padding: 0.4rem;
+    }
+
+    .v60-model-wrapper {
+      width: clamp(150px, 34vw, 190px);
+    }
+
+    .v60-telemetry-pill {
+      font-size: 0.56rem;
+      padding: 0.25rem 0.65rem;
+    }
+
+    .catalogue-btn {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v60-project-card {
+      transition: none;
+    }
+    .card-cover-img {
+      transition: none;
+    }
+  }
+</style>

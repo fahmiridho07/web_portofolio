@@ -1,0 +1,753 @@
+---
+// RocketIntro.astro: Fullscreen 3D Rocket Launch Opening Sequence (Scene 0 -> Scene 1)
+// Completely hides the navbar and all other elements (z-index: 9999 + html.intro-active).
+// Zero UI clutter: No skip text, no ESC buttons. Pure, clean rocket in the center.
+// Fun, dynamic launch: Engine rumble, ignition blast, shockwave ring,
+// and an energetic upward pull transition into Scene 1 with sliding navbar.
+---
+
+<script is:inline>
+  // Synchronously hide the navbar before initial paint to prevent any flicker
+  (function () {
+    try {
+      var seen = sessionStorage.getItem("fahmi_rocket_intro_shown");
+      var forceReplay = window.location.search.indexOf("intro=replay") !== -1;
+      if (!seen || forceReplay) {
+        document.documentElement.classList.add("intro-active");
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<aside
+  class="rocket-intro-stage"
+  data-rocket-intro
+  aria-label="3D Rocket Launch Introduction"
+  role="dialog"
+  aria-modal="true"
+  tabindex="-1"
+>
+  <!-- Optional Video Element (Plays if dynamic source is provided) -->
+  <video
+    class="rocket-video"
+    data-rocket-video
+    playsinline
+    muted
+    aria-hidden="true"></video>
+
+  <!-- Built-in 3D Animated Rocket Stage -->
+  <div class="rocket-scene" data-rocket-scene aria-hidden="true">
+    <!-- Expanding Sonic Shockwave Rings on Blast-off -->
+    <div class="sonic-shockwave" data-sonic-wave>
+      <span class="shockwave-ring ring-1"></span>
+      <span class="shockwave-ring ring-2"></span>
+    </div>
+
+    <!-- Atmospheric Launch Smoke Plumes -->
+    <div class="launch-atmosphere">
+      <div class="smoke-puff puff-1"></div>
+      <div class="smoke-puff puff-2"></div>
+      <div class="smoke-puff puff-3"></div>
+      <div class="smoke-puff puff-4"></div>
+    </div>
+
+    <!-- The 3D Rocket Assembly -->
+    <div class="rocket-vessel" data-rocket-vessel>
+      <!-- Rocket Body / Fuselage -->
+      <div class="rocket-body">
+        <!-- Nosecone -->
+        <div class="nose-cone">
+          <span class="nose-carmine-tip"></span>
+        </div>
+
+        <!-- Cockpit Port Window -->
+        <div class="cockpit-port">
+          <span class="port-glass"></span>
+        </div>
+
+        <!-- Carmine Racing Stripe Decal -->
+        <div class="body-racing-stripe"></div>
+
+        <!-- Stabilizer Aerodynamic Fins -->
+        <div class="rocket-fin fin-left"></div>
+        <div class="rocket-fin fin-center"></div>
+        <div class="rocket-fin fin-right"></div>
+
+        <!-- Engine Thruster Nozzle -->
+        <div class="engine-nozzle"></div>
+      </div>
+
+      <!-- Propulsion Flame System (Multi-layered fire) -->
+      <div class="thruster-exhaust" data-thruster-exhaust>
+        <div class="exhaust-fire fire-outer"></div>
+        <div class="exhaust-fire fire-inner"></div>
+        <div class="exhaust-fire fire-core"></div>
+        <div class="exhaust-sparkles"></div>
+      </div>
+    </div>
+
+    <!-- Ground Launch Shadow -->
+    <div class="launch-shadow" data-launch-shadow></div>
+  </div>
+</aside>
+
+<noscript>
+  <style>
+    .rocket-intro-stage {
+      display: none !important;
+    }
+    html.intro-active .site-header {
+      opacity: 1 !important;
+      transform: none !important;
+      pointer-events: auto !important;
+    }
+  </style>
+</noscript>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const stage = document.querySelector<HTMLElement>("[data-rocket-intro]");
+    if (!stage) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const urlParams = new URLSearchParams(window.location.search);
+    const forceReplay = urlParams.get("intro") === "replay";
+
+    // 1. Session Storage check: Play once per browser session unless ?intro=replay
+    try {
+      const alreadySeen = sessionStorage.getItem("fahmi_rocket_intro_shown");
+      if ((alreadySeen && !forceReplay) || reduceMotion) {
+        document.documentElement.classList.remove("intro-active");
+        stage.style.display = "none";
+        return;
+      }
+    } catch {
+      // Graceful fallback for restricted storage
+    }
+
+    // Ensure html has intro-active while intro is running
+    document.documentElement.classList.add("intro-active");
+
+    const video = stage.querySelector<HTMLVideoElement>("[data-rocket-video]");
+    const rocketVessel = stage.querySelector<HTMLElement>(
+      "[data-rocket-vessel]",
+    );
+    const exhaust = stage.querySelector<HTMLElement>("[data-thruster-exhaust]");
+    const shadow = stage.querySelector<HTMLElement>("[data-launch-shadow]");
+    const scene = stage.querySelector<HTMLElement>("[data-rocket-scene]");
+
+    let isDismissed = false;
+    const timeouts: number[] = [];
+
+    // Fun transition dismiss into Scene 1
+    const dismissIntro = (fast = false) => {
+      if (isDismissed) return;
+      isDismissed = true;
+
+      try {
+        sessionStorage.setItem("fahmi_rocket_intro_shown", "1");
+      } catch {}
+
+      timeouts.forEach((t) => window.clearTimeout(t));
+
+      if (fast) {
+        document.documentElement.classList.remove("intro-active");
+        stage.style.display = "none";
+        return;
+      }
+
+      // Fun upward curtain pull & reveal
+      stage.classList.add("is-exiting-up");
+
+      // Reveal the navbar smoothly sliding down from top
+      window.setTimeout(() => {
+        document.documentElement.classList.remove("intro-active");
+      }, 200);
+
+      // Clean up overlay when upward sweep finishes (700ms)
+      window.setTimeout(() => {
+        stage.style.display = "none";
+      }, 720);
+    };
+
+    // User instant bypass (click or scroll or ESC key)
+    stage.addEventListener("click", () => dismissIntro(false));
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+        dismissIntro(false);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown, { once: true });
+
+    const onScrollOrTouch = () => {
+      dismissIntro(false);
+      window.removeEventListener("wheel", onScrollOrTouch);
+      window.removeEventListener("touchmove", onScrollOrTouch);
+    };
+    window.addEventListener("wheel", onScrollOrTouch, { passive: true });
+    window.addEventListener("touchmove", onScrollOrTouch, { passive: true });
+
+    // 2. Video Player: Plays if dynamic video src is provided
+    let videoIsPlaying = false;
+
+    if (video && video.getAttribute("src")) {
+      video.addEventListener("loadeddata", () => {
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              videoIsPlaying = true;
+              video.classList.add("is-active");
+              if (scene) scene.style.display = "none";
+            })
+            .catch(() => {
+              // Auto-play was blocked or failed; proceed with 3D canvas animation
+            });
+        }
+      });
+
+      video.addEventListener("ended", () => {
+        dismissIntro(false);
+      });
+
+      timeouts.push(
+        window.setTimeout(() => {
+          if (videoIsPlaying) {
+            dismissIntro(false);
+          }
+        }, 3100),
+      );
+    }
+
+    // 3. Built-in Dynamic 3D Rocket Choreography
+    // Stage 1 (0.0s - 0.7s): Pre-launch subtle hover rumble
+    // Stage 2 (0.75s): Thruster ignition with fiery exhaust flare & smoke
+    timeouts.push(
+      window.setTimeout(() => {
+        if (isDismissed || videoIsPlaying) return;
+        stage.classList.add("is-ignited");
+        if (exhaust) exhaust.classList.add("ignited");
+      }, 750),
+    );
+
+    // Stage 3 (1.45s): Blast off! Upward acceleration & shockwave burst
+    timeouts.push(
+      window.setTimeout(() => {
+        if (isDismissed || videoIsPlaying) return;
+        stage.classList.add("is-launching");
+        if (rocketVessel) rocketVessel.classList.add("flying-up");
+        if (shadow) shadow.classList.add("shadow-fade");
+      }, 1450),
+    );
+
+    // Stage 4 (2.6s): Rocket pierces through ceiling, pulling stage up into Scene 1
+    timeouts.push(
+      window.setTimeout(() => {
+        if (isDismissed) return;
+        dismissIntro(false);
+      }, 2600),
+    );
+
+    // Replay helper
+    (window as unknown as Record<string, unknown>).replayRocketIntro = () => {
+      try {
+        sessionStorage.removeItem("fahmi_rocket_intro_shown");
+      } catch {}
+      window.location.search = "?intro=replay";
+    };
+
+    return () => {
+      timeouts.forEach((t) => window.clearTimeout(t));
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("wheel", onScrollOrTouch);
+      window.removeEventListener("touchmove", onScrollOrTouch);
+    };
+  });
+</script>
+
+<style>
+  /* ---------------------------------------------------------------------------
+     Fullscreen 3D Rocket Launch Stage
+     Highest stacking context (z-index: 9999).
+     Zero clutter, no skip text, perfectly centered.
+  --------------------------------------------------------------------------- */
+
+  .rocket-intro-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: var(--paper, #f7f7f6);
+    color: var(--ink, #16181d);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+    pointer-events: auto;
+    will-change: transform, opacity;
+    transition:
+      transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 720ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Fun Upward Screen Pull Reveal */
+  .rocket-intro-stage.is-exiting-up {
+    transform: translateY(-100%);
+    opacity: 0.95;
+    pointer-events: none;
+  }
+
+  /* Fullscreen Video Support */
+  .rocket-video {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: contain;
+    opacity: 0;
+    z-index: 2;
+    transition: opacity 300ms ease;
+  }
+
+  .rocket-video.is-active {
+    opacity: 1;
+  }
+
+  /* ----------------------- 3D ROCKET ANIMATION SCENE ------------------------ */
+
+  .rocket-scene {
+    position: relative;
+    width: min(440px, 92vw);
+    height: clamp(380px, 60vh, 520px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  /* Rocket Vessel */
+  .rocket-vessel {
+    position: relative;
+    width: 76px;
+    height: 190px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 4;
+    transform: translateY(0);
+    animation: idleVibrate 0.75s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes idleVibrate {
+    0% {
+      transform: translateY(-2px) rotate(-0.5deg);
+    }
+    100% {
+      transform: translateY(2px) rotate(0.5deg);
+    }
+  }
+
+  /* Screen rumble during ignition */
+  .is-ignited .rocket-vessel {
+    animation: launchRumble 0.08s infinite alternate !important;
+  }
+
+  @keyframes launchRumble {
+    0% {
+      transform: translate(-1.5px, 1px);
+    }
+    100% {
+      transform: translate(1.5px, -1px);
+    }
+  }
+
+  /* High-energy liftoff acceleration */
+  .rocket-vessel.flying-up {
+    animation: launchAscend 1.35s cubic-bezier(0.5, 0, 0.15, 1) forwards !important;
+  }
+
+  @keyframes launchAscend {
+    0% {
+      transform: translateY(0) scale(1);
+    }
+    18% {
+      transform: translateY(14px) scale(0.97); /* Deep recoil */
+    }
+    100% {
+      transform: translateY(-145vh) scale(0.92); /* Shoots clean off screen */
+    }
+  }
+
+  /* ---------------------------- Rocket Geometry ----------------------------- */
+
+  .rocket-body {
+    position: relative;
+    width: 68px;
+    height: 160px;
+    background: linear-gradient(
+      90deg,
+      #dcdcd9 0%,
+      #ffffff 35%,
+      #f2f2ef 70%,
+      #c4c4c0 100%
+    );
+    border-radius: 50% 50% 12% 12% / 65% 65% 12% 12%;
+    border: 1.5px solid var(--ink, #16181d);
+    box-shadow:
+      inset -5px 0 12px rgba(22, 24, 29, 0.18),
+      inset 5px 0 10px rgba(255, 255, 255, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 3;
+  }
+
+  /* Nosecone */
+  .nose-cone {
+    position: absolute;
+    top: -26px;
+    width: 34px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nose-carmine-tip {
+    width: 16px;
+    height: 26px;
+    background: var(--signal, #c92e3e);
+    border-radius: 50% 50% 0 0;
+    border: 1.5px solid var(--ink, #16181d);
+    border-bottom: none;
+    box-shadow: inset 2px 0 4px rgba(255, 255, 255, 0.5);
+  }
+
+  /* Cockpit Port Window */
+  .cockpit-port {
+    position: absolute;
+    top: 40px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--ink, #16181d);
+    border: 2px solid var(--paper, #f7f7f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(22, 24, 29, 0.25);
+  }
+
+  .port-glass {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #717d91 0%, #16181d 100%);
+    box-shadow: inset 1px 1px 3px rgba(255, 255, 255, 0.7);
+  }
+
+  /* Carmine Racing Stripe */
+  .body-racing-stripe {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    height: 11px;
+    background: var(--signal, #c92e3e);
+    border-top: 1px solid var(--ink, #16181d);
+    border-bottom: 1px solid var(--ink, #16181d);
+  }
+
+  /* Aerodynamic Stabilizer Fins */
+  .rocket-fin {
+    position: absolute;
+    bottom: -8px;
+    width: 28px;
+    height: 56px;
+    background: var(--signal, #c92e3e);
+    border: 1.5px solid var(--ink, #16181d);
+    z-index: -1;
+  }
+
+  .fin-left {
+    left: -22px;
+    border-radius: 100% 0 0 16% / 60% 0 0 40%;
+    transform: rotate(8deg);
+    box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.25);
+  }
+
+  .fin-right {
+    right: -22px;
+    border-radius: 0 100% 16% 0 / 0 60% 40% 0%;
+    transform: rotate(-8deg);
+    box-shadow: inset 2px 0 4px rgba(255, 255, 255, 0.4);
+  }
+
+  .fin-center {
+    position: absolute;
+    bottom: -6px;
+    width: 8px;
+    height: 52px;
+    background: var(--signal-deep, #a8242f);
+    border-radius: 4px;
+    border: 1px solid var(--ink, #16181d);
+    z-index: 4;
+  }
+
+  /* Engine Thruster Nozzle */
+  .engine-nozzle {
+    position: absolute;
+    bottom: -15px;
+    width: 30px;
+    height: 17px;
+    background: #16181d;
+    border-radius: 4px 4px 8px 8px;
+    border: 1.5px solid #000;
+  }
+
+  /* --------------------- EXHAUST PROPULSION FLAMES -------------------------- */
+
+  .thruster-exhaust {
+    position: absolute;
+    top: 154px;
+    width: 48px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform-origin: top center;
+    transform: scaleY(0);
+    transition:
+      opacity 220ms ease,
+      transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
+  }
+
+  .thruster-exhaust.ignited {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .exhaust-fire {
+    position: absolute;
+    top: 0;
+    border-radius: 50% 50% 50% 50% / 20% 20% 80% 80%;
+    transform-origin: top center;
+    animation: flameTurbulence 0.09s infinite alternate;
+  }
+
+  .fire-outer {
+    width: 44px;
+    height: 125px;
+    background: linear-gradient(
+      180deg,
+      #c92e3e 0%,
+      #e84d5e 40%,
+      rgba(201, 46, 62, 0.1) 90%,
+      transparent 100%
+    );
+    box-shadow: 0 0 28px rgba(201, 46, 62, 0.7);
+  }
+
+  .fire-inner {
+    width: 28px;
+    height: 90px;
+    background: linear-gradient(
+      180deg,
+      #ffa133 0%,
+      #ff5722 50%,
+      transparent 100%
+    );
+    box-shadow: 0 0 20px rgba(255, 161, 51, 0.8);
+  }
+
+  .fire-core {
+    width: 16px;
+    height: 52px;
+    background: linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #ffe885 80%,
+      transparent 100%
+    );
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.95);
+  }
+
+  @keyframes flameTurbulence {
+    0% {
+      transform: scaleX(0.92) scaleY(0.95) rotate(-1.5deg);
+    }
+    100% {
+      transform: scaleX(1.08) scaleY(1.05) rotate(1.5deg);
+    }
+  }
+
+  /* ----------------------- SONIC SHOCKWAVE BURST ---------------------------- */
+
+  .sonic-shockwave {
+    position: absolute;
+    bottom: 45px;
+    width: 200px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .shockwave-ring {
+    position: absolute;
+    width: 60px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--signal, #c92e3e);
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  .is-launching .ring-1 {
+    animation: shockwaveBurst 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+  }
+
+  .is-launching .ring-2 {
+    animation: shockwaveBurst 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) 0.15s forwards;
+  }
+
+  @keyframes shockwaveBurst {
+    0% {
+      opacity: 0.85;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(5.5);
+      border-width: 1px;
+    }
+  }
+
+  /* ---------------------------- SMOKE PUFFS --------------------------------- */
+
+  .launch-atmosphere {
+    position: absolute;
+    bottom: 35px;
+    width: 360px;
+    height: 130px;
+    pointer-events: none;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+  .smoke-puff {
+    position: absolute;
+    bottom: 0;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(225, 225, 222, 0.8) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transform: scale(0.3);
+    transition:
+      opacity 400ms ease,
+      transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .is-ignited .smoke-puff {
+    opacity: 0.9;
+    transform: scale(2.4);
+  }
+
+  .is-launching .smoke-puff {
+    opacity: 0.25;
+    transform: scale(3.8) translateY(25px);
+    transition:
+      opacity 950ms ease,
+      transform 1200ms ease;
+  }
+
+  .puff-1 {
+    left: 20%;
+    transition-delay: 50ms;
+  }
+  .puff-2 {
+    left: 40%;
+  }
+  .puff-3 {
+    right: 40%;
+    transition-delay: 80ms;
+  }
+  .puff-4 {
+    right: 20%;
+    transition-delay: 110ms;
+  }
+
+  /* Ground Launch Shadow */
+  .launch-shadow {
+    position: absolute;
+    bottom: 25px;
+    width: 110px;
+    height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse,
+      rgba(22, 24, 29, 0.3) 0%,
+      transparent 75%
+    );
+    transition:
+      transform 1200ms cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 800ms ease;
+    z-index: 0;
+  }
+
+  .launch-shadow.shadow-fade {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+
+  /* --------------------------- Accessibility -------------------------------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .rocket-intro-stage {
+      display: none !important;
+    }
+  }
+
+  @media (scripting: none) {
+    .rocket-intro-stage {
+      display: none !important;
+    }
+  }
+</style>
+
+<style is:global>
+  /* ---------------------------------------------------------------------------
+     GLOBAL NAVBAR & SCENE 1 ENTER BEHAVIOR
+     Hides navbar during intro, then smoothly slides it down when intro ends.
+  --------------------------------------------------------------------------- */
+
+  /* Navbar hidden state during intro */
+  html.intro-active .site-header {
+    opacity: 0 !important;
+    transform: translateY(-100%) !important;
+    pointer-events: none !important;
+  }
+
+  /* Navbar entrance transition */
+  .site-header {
+    transition:
+      transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 500ms ease !important;
+  }
+</style>

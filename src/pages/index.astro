@@ -1,27 +1,28 @@
 ---
-// index.astro: Visual, Playful, Scroll-Driven Homepage Experience
+// index.astro: Creative, Visual-First, Design-Forward Homepage Experience
 // Story Architecture:
+// Scene 0: Fullscreen 3D Rocket Launch Video Intro (RocketIntro.astro)
 // Scenes 1-4: Pinned Continuous Storytelling Stage (ScrollStoryStage.astro)
-// Scene 5: Interactive Engineering Lab & Exhibits (VisualProjectExhibits.astro)
+// Scene 5: 3D V60 Coffee Dripper & Scroll-Driven Project Showcase (V60ScrollShowcase.astro)
 // Scene 6: Warm Minimalist Sign-off & Contact (FriendlyContact.astro)
 
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
+import RocketIntro from "@components/RocketIntro.astro";
 import ScrollStoryStage from "@components/ScrollStoryStage.astro";
-import TelemetryGrid from "@components/TelemetryGrid.astro";
-import VisualProjectExhibits from "@components/VisualProjectExhibits.astro";
+import V60ScrollShowcase from "@components/V60ScrollShowcase.astro";
 import FriendlyContact from "@components/FriendlyContact.astro";
 ---
 
 <BaseLayout title={pageSeo.home.title} description={pageSeo.home.description}>
+  {/* SCENE 0: Fullscreen 3D Rocket Launch Video Intro */}
+  <RocketIntro />
+
   {/* SCENES 1 to 4: Pinned Scroll-Driven Storytelling Stage */}
   <ScrollStoryStage />
 
-  {/* VERIFIED PROOF: Engineering Telemetry & Shipped Outcomes */}
-  <TelemetryGrid />
-
-  {/* SCENE 5: Interactive Engineering Lab & Exhibits */}
-  <VisualProjectExhibits />
+  {/* SCENE 5: 3D V60 Coffee Dripper & Scroll-Driven Project Showcase */}
+  <V60ScrollShowcase />
 
   {/* SCENE 6: Warm Minimal Sign-off & Contact */}
   <FriendlyContact />

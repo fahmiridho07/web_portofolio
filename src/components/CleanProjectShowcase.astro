@@ -23,9 +23,18 @@ const friendlyProjectMap: Record<
     plainHeadline:
       "Catching payment fraud with machine learning before transactions settle.",
     humanImpact:
-      "Tested on 590,000 transactions with 89% precision under extreme class imbalance.",
-    badge: "Undergraduate Thesis",
-    tags: ["Machine Learning", "Python", "Optuna"],
+      "Engineered under 1:590 class imbalance with 89% precision on IEEE-CIS benchmarks.",
+    badge: "Flagship ML & Research",
+    tags: ["Machine Learning", "Python", "Optuna", "Signals"],
+  },
+  "medimate-medicine-reminder-app": {
+    humanTitle: "MediMate Healthcare",
+    plainHeadline:
+      "Clean Flutter mobile experience for personal prescription routines.",
+    humanImpact:
+      "Intuitive timeline schedule, local reminder triggers, and zero-latency storage.",
+    badge: "Mobile UI & Experience",
+    tags: ["Flutter", "Dart", "Material 3", "Android"],
   },
   "kpc-ideku-v3-dotnet-stabilization": {
     humanTitle: "Mining Operations Platform",
@@ -34,33 +43,24 @@ const friendlyProjectMap: Record<
     humanImpact:
       "Fixed security access control, embedded live analytics, and cut query latency.",
     badge: "Enterprise .NET",
-    tags: ["ASP.NET Core", "C#", "Enterprise"],
+    tags: ["ASP.NET Core", "C#", "SQL Server", "Enterprise"],
   },
-  "orphanage-inspection-route-optimization": {
-    humanTitle: "Social Inspection Routing",
+  "scent2me-perfume-recommendation": {
+    humanTitle: "Scent2Me Fragrance AI",
     plainHeadline:
-      "Ant Colony algorithm finding the fastest inspection routes across 24 orphanages.",
+      "Interactive fragrance discovery matching personal scent preferences.",
     humanImpact:
-      "Grouped 5 district clusters to cut inspection travel distance down to 153 km.",
-    badge: "Operations Research",
-    tags: ["Algorithm Design", "Optimization", "Python"],
-  },
-  "juanda-airport-visitor-forecasting": {
-    humanTitle: "Airport Passenger Forecast",
-    plainHeadline:
-      "Predicting monthly flight passenger surges to help airport logistics staff ahead of time.",
-    humanImpact:
-      "Accurate 10-year historical backtesting with high correlation to real flight demand.",
-    badge: "Forecasting",
-    tags: ["Time Series", "Data Science", "Python"],
+      "TF-IDF vector matching across 1,000+ fragrance notes with live FastAPI recommendations.",
+    badge: "Vector Search",
+    tags: ["FastAPI", "Vector Similarity", "Python", "Web"],
   },
 };
 
 const selectedSlugs = [
   "fraud-detection-ml-pipeline",
+  "medimate-medicine-reminder-app",
   "kpc-ideku-v3-dotnet-stabilization",
-  "orphanage-inspection-route-optimization",
-  "juanda-airport-visitor-forecasting",
+  "scent2me-perfume-recommendation",
 ];
 
 const showcaseList = selectedSlugs
@@ -81,18 +81,26 @@ const showcaseList = selectedSlugs
 ---
 
 <section id="work" class="showcase-section divider">
-  <div class="container">
+  <!-- Ambient 3D Geometric Accents (Pure visual decoration, zero text) -->
+  <div class="ambient-3d-scene" aria-hidden="true">
+    <div class="ambient-shape shape-cube">
+      <div class="cube-facet-amb f-front"></div>
+      <div class="cube-facet-amb f-top"></div>
+      <div class="cube-facet-amb f-right"></div>
+    </div>
+    <div class="ambient-shape shape-ring"></div>
+  </div>
+
+  <div class="container relative-z">
     <!-- Header -->
     <div class="showcase-header" data-reveal>
       <div>
-        <p class="section-kicker">SELECTED WORK</p>
-        <h2 class="showcase-title">
-          Things I&rsquo;ve built that actually ship.
-        </h2>
+        <p class="section-kicker">CURATED WORKS & DESIGN</p>
+        <h2 class="showcase-title">Selected builds &amp; interface craft.</h2>
       </div>
       <p class="showcase-lead">
-        Real software in production and machine learning models tested under
-        real-world constraints, explained simply.
+        A selection of shipped software, mobile experiences, and applied machine
+        learning systems built with relentless attention to design and code.
       </p>
     </div>
 
@@ -104,6 +112,7 @@ const showcaseList = selectedSlugs
           return (
             <article
               class:list={["project-card", isLead && "is-lead-card"]}
+              data-card-tilt
               data-reveal
               data-reveal-delay={String(idx * 70)}
             >
@@ -177,10 +186,129 @@ const showcaseList = selectedSlugs
   </div>
 </section>
 
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const cards = document.querySelectorAll<HTMLElement>("[data-card-tilt]");
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    if (reduceMotion || window.innerWidth < 900) return;
+
+    cards.forEach((card) => {
+      let isHovered = false;
+
+      card.addEventListener("mouseenter", () => {
+        isHovered = true;
+        card.style.transition =
+          "transform 140ms ease-out, box-shadow 140ms ease-out";
+      });
+
+      card.addEventListener("mousemove", (e) => {
+        if (!isHovered) return;
+        const rect = card.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotX = -y * 8;
+        const rotY = x * 8;
+        card.style.transform = `perspective(1000px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) translateY(-4px)`;
+      });
+
+      card.addEventListener("mouseleave", () => {
+        isHovered = false;
+        card.style.transition =
+          "transform 360ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 360ms ease-out";
+        card.style.transform =
+          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+      });
+    });
+  });
+</script>
+
 <style>
   .showcase-section {
-    padding-block: clamp(3rem, 6vw, 5rem);
+    position: relative;
+    padding-block: clamp(3.5rem, 7vw, 6rem);
     background: var(--paper);
+    overflow: hidden;
+  }
+
+  .relative-z {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Ambient 3D Geometric Accents (Pure visual depth decoration) */
+  .ambient-3d-scene {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .ambient-shape {
+    position: absolute;
+    transform-style: preserve-3d;
+  }
+
+  .shape-cube {
+    top: 6%;
+    right: 4%;
+    width: 72px;
+    height: 72px;
+    transform: rotateX(24deg) rotateY(-32deg);
+    animation: ambient-drift 18s ease-in-out infinite alternate;
+  }
+
+  .cube-facet-amb {
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--line-strong);
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: inset 0 0 14px rgba(22, 24, 29, 0.02);
+  }
+
+  .cube-facet-amb.f-top {
+    transform: rotateX(90deg) translateZ(36px);
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  .cube-facet-amb.f-right {
+    transform: rotateY(90deg) translateZ(36px);
+    background: rgba(238, 238, 236, 0.6);
+  }
+
+  .cube-facet-amb.f-front {
+    transform: translateZ(36px);
+  }
+
+  .shape-ring {
+    bottom: 10%;
+    left: 2%;
+    width: 100px;
+    height: 100px;
+    border: 1.5px dashed rgba(201, 46, 62, 0.22);
+    border-radius: 999px;
+    transform: rotateX(68deg) rotateZ(25deg);
+    animation: ambient-spin 28s linear infinite;
+  }
+
+  @keyframes ambient-drift {
+    0% {
+      transform: rotateX(24deg) rotateY(-32deg) translateY(0);
+    }
+    100% {
+      transform: rotateX(34deg) rotateY(-18deg) translateY(-18px);
+    }
+  }
+
+  @keyframes ambient-spin {
+    to {
+      transform: rotateX(68deg) rotateZ(385deg);
+    }
   }
 
   .showcase-header {
