@@ -1,0 +1,346 @@
+---
+// FriendlyContact.astro: Warm, Inviting, Minimalist Contact Section
+// Replaces the dense text-heavy contact block with an approachable, clean card,
+// 1-click email copy button with toast feedback, and clear social links.
+import { profile } from "@data/profile";
+import { getResumeAction } from "@lib/resume";
+
+const resumeAction = getResumeAction();
+---
+
+<section id="contact" class="contact-section divider">
+  <div class="container contact-container" data-reveal>
+    <div class="contact-card">
+      <div class="contact-kicker">
+        <span class="status-indicator"></span>
+        AVAILABLE FOR 2026 ROLES & COLLABORATION
+      </div>
+
+      <h2 class="contact-heading">Let&rsquo;s build something great.</h2>
+
+      <p class="contact-subhead">
+        Whether you have an engineering role, a machine learning challenge, or
+        simply want to talk about coffee brewing & systems craft—I&rsquo;d love
+        to connect.
+      </p>
+
+      <!-- Primary Action: Interactive Email Bar -->
+      <div class="email-action-box" data-email-box>
+        <span class="email-address">{profile.email}</span>
+
+        <div class="action-buttons">
+          <button
+            type="button"
+            class="copy-btn"
+            data-copy-email
+            data-email={profile.email}
+            aria-label="Copy email address to clipboard"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              width="13"
+              height="13"
+              fill="currentColor"
+              aria-hidden="true"
+              class="copy-icon"
+            >
+              <path
+                d="M4 2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"
+              ></path>
+            </svg>
+            <span class="copy-label" data-copy-label>Copy</span>
+          </button>
+
+          <a href={profile.emailHref} class="send-btn">
+            Send Email
+            <span aria-hidden="true">&nearr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Clean Social & Resume Links -->
+      <div class="contact-channels">
+        <span class="channels-label">Direct channels:</span>
+        <div class="channels-list">
+          <a
+            href="https://id.linkedin.com/in/fahmiridho"
+            target="_blank"
+            rel="noreferrer"
+            class="channel-pill"
+          >
+            LinkedIn <span aria-hidden="true">&nearr;</span>
+          </a>
+          <a
+            href="https://github.com/fahmiridho07"
+            target="_blank"
+            rel="noreferrer"
+            class="channel-pill"
+          >
+            GitHub <span aria-hidden="true">&nearr;</span>
+          </a>
+          <a
+            href={resumeAction.href}
+            download={resumeAction.download ? "" : undefined}
+            class="channel-pill channel-resume"
+          >
+            {resumeAction.label}
+            <span aria-hidden="true">&darr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const copyBtn =
+      document.querySelector<HTMLButtonElement>("[data-copy-email]");
+    if (!copyBtn) return;
+
+    const copyLabel = copyBtn.querySelector<HTMLElement>("[data-copy-label]");
+    const email = copyBtn.dataset.email || "achmadridho.id@gmail.com";
+
+    copyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(email);
+        if (copyLabel) copyLabel.textContent = "Copied!";
+        copyBtn.classList.add("is-copied");
+
+        window.setTimeout(() => {
+          if (copyLabel) copyLabel.textContent = "Copy";
+          copyBtn.classList.remove("is-copied");
+        }, 2200);
+      } catch (err) {
+        // Fallback if clipboard API is blocked
+        window.location.href = `mailto:${email}`;
+      }
+    });
+  });
+</script>
+
+<style>
+  .contact-section {
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    background: var(--paper);
+  }
+
+  .contact-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .contact-card {
+    width: 100%;
+    max-width: 760px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: clamp(2rem, 4.5vw, 3.5rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 12px 36px rgba(22, 24, 29, 0.04);
+  }
+
+  .contact-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.35rem 0.8rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 1.25rem;
+  }
+
+  .status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.4);
+    animation: contact-pulse 2s infinite;
+  }
+
+  @keyframes contact-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(201, 46, 62, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0);
+    }
+  }
+
+  .contact-heading {
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 480;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+
+  .contact-subhead {
+    max-width: 48ch;
+    margin: 0 0 2rem;
+    color: var(--ink-muted);
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+
+  /* Interactive Email Box */
+  .email-action-box {
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 0.45rem 0.5rem 0.45rem 1.25rem;
+    margin-bottom: 2rem;
+    transition: border-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .email-action-box:hover {
+    border-color: var(--line-strong);
+  }
+
+  .email-address {
+    font-family: var(--font-mono);
+    font-size: clamp(0.82rem, 1.6vw, 0.92rem);
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 1px solid var(--line);
+    background: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--ink);
+    padding: 0.48rem 0.8rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .copy-btn:hover {
+    border-color: var(--ink);
+    background: var(--paper-soft);
+  }
+
+  .copy-btn.is-copied {
+    border-color: #2e7d32;
+    color: #2e7d32;
+    background: rgba(46, 125, 50, 0.08);
+  }
+
+  .send-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 500;
+    padding: 0.52rem 1rem;
+    border-radius: var(--radius-pill);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .send-btn:hover {
+    background: var(--signal-deep);
+  }
+
+  /* Channels */
+  .contact-channels {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    width: 100%;
+  }
+
+  .channels-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .channels-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .channel-pill {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-muted);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.32rem 0.65rem;
+    border-radius: var(--radius-pill);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .channel-pill:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: #ffffff;
+  }
+
+  .channel-resume {
+    color: var(--signal-deep);
+    border-color: rgba(201, 46, 62, 0.25);
+  }
+
+  .channel-resume:hover {
+    border-color: var(--signal);
+    color: var(--signal);
+  }
+
+  @media (max-width: 580px) {
+    .email-action-box {
+      border-radius: var(--radius-md);
+      padding: 0.85rem;
+      justify-content: center;
+    }
+    .action-buttons {
+      width: 100%;
+      justify-content: center;
+      margin-top: 0.4rem;
+    }
+  }
+</style>

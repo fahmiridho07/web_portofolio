@@ -1,0 +1,462 @@
+---
+// CleanProjectShowcase.astro: Human-Friendly, Visual-First Project Showcase
+// Solves the "text-heavy, nobody reads it" problem with large imagery,
+// 1-sentence plain-English benefits, clean tags, and direct CTA buttons.
+import { getResponsiveImageSources } from "@lib/images";
+import { getSortedProjects } from "@lib/projects";
+
+const allProjects = await getSortedProjects();
+
+// Plain-English translations of project benefits for ordinary visitors & recruiters
+const friendlyProjectMap: Record<
+  string,
+  {
+    humanTitle: string;
+    plainHeadline: string;
+    humanImpact: string;
+    badge?: string;
+    tags: string[];
+  }
+> = {
+  "fraud-detection-ml-pipeline": {
+    humanTitle: "Fraud Detection AI",
+    plainHeadline:
+      "Catching payment fraud with machine learning before transactions settle.",
+    humanImpact:
+      "Tested on 590,000 transactions with 89% precision under extreme class imbalance.",
+    badge: "Undergraduate Thesis",
+    tags: ["Machine Learning", "Python", "Optuna"],
+  },
+  "kpc-ideku-v3-dotnet-stabilization": {
+    humanTitle: "Mining Operations Platform",
+    plainHeadline:
+      "Stabilizing mission-critical ASP.NET Core workflows for 5,000+ mining staff.",
+    humanImpact:
+      "Fixed security access control, embedded live analytics, and cut query latency.",
+    badge: "Enterprise .NET",
+    tags: ["ASP.NET Core", "C#", "Enterprise"],
+  },
+  "orphanage-inspection-route-optimization": {
+    humanTitle: "Social Inspection Routing",
+    plainHeadline:
+      "Ant Colony algorithm finding the fastest inspection routes across 24 orphanages.",
+    humanImpact:
+      "Grouped 5 district clusters to cut inspection travel distance down to 153 km.",
+    badge: "Operations Research",
+    tags: ["Algorithm Design", "Optimization", "Python"],
+  },
+  "juanda-airport-visitor-forecasting": {
+    humanTitle: "Airport Passenger Forecast",
+    plainHeadline:
+      "Predicting monthly flight passenger surges to help airport logistics staff ahead of time.",
+    humanImpact:
+      "Accurate 10-year historical backtesting with high correlation to real flight demand.",
+    badge: "Forecasting",
+    tags: ["Time Series", "Data Science", "Python"],
+  },
+};
+
+const selectedSlugs = [
+  "fraud-detection-ml-pipeline",
+  "kpc-ideku-v3-dotnet-stabilization",
+  "orphanage-inspection-route-optimization",
+  "juanda-airport-visitor-forecasting",
+];
+
+const showcaseList = selectedSlugs
+  .map((slug) => {
+    const proj = allProjects.find((p) => p.data.slug === slug);
+    const friendly = friendlyProjectMap[slug];
+    if (!proj || !friendly) return null;
+    return {
+      proj,
+      friendly,
+      image: getResponsiveImageSources(
+        proj.data.coverImage,
+        "(max-width: 900px) 100vw, 48vw",
+      ),
+    };
+  })
+  .filter((item): item is NonNullable<typeof item> => Boolean(item));
+---
+
+<section id="work" class="showcase-section divider">
+  <div class="container">
+    <!-- Header -->
+    <div class="showcase-header" data-reveal>
+      <div>
+        <p class="section-kicker">SELECTED WORK</p>
+        <h2 class="showcase-title">
+          Things I&rsquo;ve built that actually ship.
+        </h2>
+      </div>
+      <p class="showcase-lead">
+        Real software in production and machine learning models tested under
+        real-world constraints—explained simply.
+      </p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="cards-grid">
+      {
+        showcaseList.map(({ proj, friendly, image }, idx) => {
+          const isLead = idx === 0;
+          return (
+            <article
+              class:list={["project-card", isLead && "is-lead-card"]}
+              data-reveal
+              data-reveal-delay={String(idx * 70)}
+            >
+              <a
+                href={`/projects/${proj.data.slug}/`}
+                class="card-inner"
+                data-astro-prefetch="hover"
+              >
+                {/* Visual Cover */}
+                <div class="card-visual">
+                  <img
+                    src={image.src}
+                    srcset={image.srcset}
+                    sizes={image.srcset ? image.sizes : undefined}
+                    alt={friendly.humanTitle}
+                    width={image.width}
+                    height={image.height}
+                    loading={isLead ? "eager" : "lazy"}
+                    decoding="async"
+                    class="project-img"
+                  />
+                  {friendly.badge && (
+                    <span class="project-badge">
+                      <span class="badge-dot" />
+                      {friendly.badge}
+                    </span>
+                  )}
+                </div>
+
+                {/* Text Content: Ultra-Concise & Scannable */}
+                <div class="card-details">
+                  <div class="card-top-row">
+                    <h3 class="card-heading">
+                      {friendly.humanTitle}
+                      <span class="arrow-icon" aria-hidden="true">
+                        &rarr;
+                      </span>
+                    </h3>
+                  </div>
+
+                  <p class="card-headline">{friendly.plainHeadline}</p>
+                  <p class="card-impact">{friendly.humanImpact}</p>
+
+                  <div class="card-tags">
+                    {friendly.tags.map((tag) => (
+                      <span class="tag-pill">{tag}</span>
+                    ))}
+                  </div>
+
+                  <div class="card-cta">
+                    <span class="cta-text">Read Case Study</span>
+                    <span class="cta-arrow" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })
+      }
+    </div>
+
+    <!-- Footer Action -->
+    <div class="showcase-footer" data-reveal>
+      <a href="/projects/" class="view-all-btn" data-astro-prefetch="hover">
+        Browse All {allProjects.length} Projects & Case Studies
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .showcase-section {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--paper);
+  }
+
+  .showcase-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 1.5rem 3rem;
+    align-items: baseline;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .showcase-title {
+    margin: 0.5rem 0 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 470;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .showcase-lead {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .project-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .project-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(22, 24, 29, 0.06);
+  }
+
+  /* Lead flagship card spans both columns on desktop */
+  .project-card.is-lead-card {
+    grid-column: 1 / -1;
+    border-top: 3px solid var(--signal);
+  }
+
+  .card-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .is-lead-card .card-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+
+  .card-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.6;
+    background: var(--paper-soft);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .is-lead-card .card-visual {
+    aspect-ratio: auto;
+    min-height: 300px;
+    border-bottom: none;
+    border-right: 1px solid var(--line);
+  }
+
+  .project-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--motion-slow) var(--ease-out);
+  }
+
+  .project-card:hover .project-img {
+    transform: scale(1.03);
+  }
+
+  .project-badge {
+    position: absolute;
+    top: 0.85rem;
+    left: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(22, 24, 29, 0.9);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--signal);
+  }
+
+  .card-details {
+    padding: clamp(1.25rem, 2.5vw, 1.85rem);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-heading {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .is-lead-card .card-heading {
+    font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  }
+
+  .project-card:hover .card-heading {
+    color: var(--signal-deep);
+  }
+
+  .arrow-icon {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    transition:
+      transform var(--motion-fast) var(--ease-out),
+      color var(--motion-fast) var(--ease-standard);
+  }
+
+  .project-card:hover .arrow-icon {
+    transform: translateX(4px);
+    color: var(--signal);
+  }
+
+  .card-headline {
+    margin: 0 0 0.5rem;
+    font-size: 0.96rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .card-impact {
+    margin: 0 0 1.25rem;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--ink-muted);
+    flex-grow: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tag-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    border-top: 1px solid var(--line);
+    padding-top: 0.85rem;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .project-card:hover .card-cta {
+    color: var(--signal);
+  }
+
+  .cta-arrow {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .project-card:hover .cta-arrow {
+    transform: translateX(3px);
+  }
+
+  /* Footer */
+  .showcase-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius-pill);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .view-all-btn:hover {
+    background: var(--signal-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201, 46, 62, 0.2);
+  }
+
+  @media (max-width: 900px) {
+    .showcase-header {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+    .is-lead-card .card-inner {
+      grid-template-columns: 1fr;
+    }
+    .is-lead-card .card-visual {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      min-height: 220px;
+    }
+  }
+</style>
