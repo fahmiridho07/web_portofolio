@@ -1,0 +1,1026 @@
+---
+// ScrollStoryStage.astro: Continuous Scroll-Driven Storytelling Canvas (Scenes 1 to 5)
+// Transforms scrolling into an interactive narrative:
+// Scene 1: Hey, I'm Fahmi. (Kinetic Builder Core)
+// Scene 2: I like building things. (Morphing into modular structures)
+// Scene 3: Software. (Minimal interfaces & flowing pulses)
+// Scene 4: And lately, I've been curious about AI. (Organic clustering & outlier detection)
+// Scene 5: Playful moment. (Interactive bouncing craft tokens)
+---
+
+<div class="story-track" data-story-track>
+  <div class="story-sticky">
+    <!-- Ambient Canvas Grid -->
+    <div class="canvas-grid" aria-hidden="true">
+      <div class="grid-pattern"></div>
+      <div class="ambient-glow" data-ambient-glow></div>
+    </div>
+
+    <!-- Central Kinetic Canvas (Morphs across scenes) -->
+    <div class="kinetic-stage" data-kinetic-stage>
+      <!-- SCENE 1: Kinetic Builder's Core -->
+      <div class="kinetic-scene scene-1" data-scene="1">
+        <div class="core-cube-wrapper" data-core-cube>
+          <div class="cube-facet front">
+            <span class="facet-glyph">{`{ }`}</span>
+          </div>
+          <div class="cube-facet back"></div>
+          <div class="cube-facet right">
+            <span class="facet-glyph">&lt;/&gt;</span>
+          </div>
+          <div class="cube-facet left"></div>
+          <div class="cube-facet top">
+            <span class="facet-dot"></span>
+          </div>
+          <div class="cube-facet bottom"></div>
+          <div class="cube-shadow"></div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: Modular Assembly (Blocks & Beams) -->
+      <div class="kinetic-scene scene-2" data-scene="2">
+        <div class="assembly-rig">
+          <div class="beam beam-h"></div>
+          <div class="beam beam-v"></div>
+          <div class="module-block block-a"></div>
+          <div class="module-block block-b"></div>
+          <div class="module-block block-c"></div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: Minimal Floating Interfaces -->
+      <div class="kinetic-scene scene-3" data-scene="3">
+        <div class="software-rig">
+          <div class="window-frame window-main">
+            <div class="window-bar">
+              <span class="win-dot"></span>
+              <span class="win-dot"></span>
+              <span class="win-dot"></span>
+            </div>
+            <div class="window-body">
+              <div class="code-line line-1"></div>
+              <div class="code-line line-2"></div>
+              <div class="code-line line-3"></div>
+            </div>
+          </div>
+          <div class="window-frame window-sub">
+            <div class="pulse-pipe"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: Organic AI Clustering & Anomaly -->
+      <div class="kinetic-scene scene-4" data-scene="4">
+        <div class="ai-cluster-rig" data-ai-cluster>
+          <!-- Normal cluster nodes -->
+          <div class="cluster-node n-1"></div>
+          <div class="cluster-node n-2"></div>
+          <div class="cluster-node n-3"></div>
+          <div class="cluster-node n-4"></div>
+          <div class="cluster-node n-5"></div>
+          <div class="cluster-node n-6"></div>
+          <div class="cluster-node n-7"></div>
+          <!-- Anomaly Outlier Node -->
+          <div class="anomaly-node" data-anomaly-node>
+            <span class="anomaly-pulse"></span>
+            <span class="anomaly-tag">Pattern caught</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5: Playful Craft Tokens -->
+      <div class="kinetic-scene scene-5" data-scene="5">
+        <div class="playground-rig" data-playground>
+          <button
+            type="button"
+            class="craft-token token-coffee"
+            data-token="coffee"
+            aria-label="Coffee token"
+          >
+            <span class="token-icon">☕</span>
+            <span class="token-label">V60 Bloom</span>
+          </button>
+          <button
+            type="button"
+            class="craft-token token-shuttle"
+            data-token="badminton"
+            aria-label="Badminton token"
+          >
+            <span class="token-icon">🏸</span>
+            <span class="token-label">28 lbs Smash</span>
+          </button>
+          <button
+            type="button"
+            class="craft-token token-run"
+            data-token="running"
+            aria-label="Running token"
+          >
+            <span class="token-icon">⚡</span>
+            <span class="token-label">178 SPM</span>
+          </button>
+          <button
+            type="button"
+            class="craft-token token-cinema"
+            data-token="cinema"
+            aria-label="Cinema token"
+          >
+            <span class="token-icon">🎬</span>
+            <span class="token-label">35mm Lens</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Narrative Typography Panels (One per scene, cross-faded by scroll) -->
+    <div class="narrative-overlay">
+      <div class="container narrative-container">
+        <!-- Scene 1 Text -->
+        <div class="narrative-pane pane-1 active" data-pane="1">
+          <p class="pane-kicker">Achmad Fahmi Ainur Ridho</p>
+          <h1 class="pane-title display">Hey, I&rsquo;m Fahmi.</h1>
+          <p class="pane-lead">
+            Full-stack engineer & AI researcher from Surabaya, Indonesia.
+          </p>
+          <div class="scroll-cue">
+            <span class="cue-mouse">
+              <span class="cue-wheel"></span>
+            </span>
+            <span class="cue-text">Scroll to explore</span>
+          </div>
+        </div>
+
+        <!-- Scene 2 Text -->
+        <div class="narrative-pane pane-2" data-pane="2">
+          <p class="pane-kicker">01 &middot; Drive</p>
+          <h2 class="pane-title display">I like building things.</h2>
+          <p class="pane-lead">
+            From back-end architecture to user interfaces—turning ideas into
+            working reality.
+          </p>
+        </div>
+
+        <!-- Scene 3 Text -->
+        <div class="narrative-pane pane-3" data-pane="3">
+          <p class="pane-kicker">02 &middot; Engineering</p>
+          <h2 class="pane-title display">Software.</h2>
+          <p class="pane-lead">
+            Reliable enterprise systems, clean APIs, and workflows that just
+            work.
+          </p>
+        </div>
+
+        <!-- Scene 4 Text -->
+        <div class="narrative-pane pane-4" data-pane="4">
+          <p class="pane-kicker">03 &middot; Exploration</p>
+          <h2 class="pane-title display">
+            And lately, I&rsquo;ve been curious about AI.
+          </h2>
+          <p class="pane-lead">
+            Finding order in complex data. Teaching algorithms to catch what
+            humans miss.
+          </p>
+        </div>
+
+        <!-- Scene 5 Text -->
+        <div class="narrative-pane pane-5" data-pane="5">
+          <p class="pane-kicker">04 &middot; Personality</p>
+          <h2 class="pane-title display">The craft in everyday rituals.</h2>
+          <p class="pane-lead">Tap or click any token below to play.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="progress-bar-wrap" aria-hidden="true">
+      <div class="progress-bar-fill" data-story-progress></div>
+      <span class="progress-step-text" data-story-step>01 / 05</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const track = document.querySelector<HTMLElement>("[data-story-track]");
+    if (!track) return;
+
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    const panes = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-pane]"),
+    );
+    const scenes = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-scene]"),
+    );
+    const progressBar = track.querySelector<HTMLElement>(
+      "[data-story-progress]",
+    );
+    const progressStep = track.querySelector<HTMLElement>("[data-story-step]");
+    const coreCube = track.querySelector<HTMLElement>("[data-core-cube]");
+    const stage = track.querySelector<HTMLElement>("[data-kinetic-stage]");
+    const ambientGlow = track.querySelector<HTMLElement>("[data-ambient-glow]");
+    const tokens = Array.from(
+      track.querySelectorAll<HTMLButtonElement>("[data-token]"),
+    );
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Mouse Parallax on Desktop
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let raf = 0;
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (reduceMotion || !stage) return;
+      const rect = stage.getBoundingClientRect();
+      const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      const y = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      targetX = Math.max(-1, Math.min(1, x));
+      targetY = Math.max(-1, Math.min(1, y));
+
+      if (!raf) raf = requestAnimationFrame(updateParallax);
+    };
+
+    const updateParallax = () => {
+      mouseX += (targetX - mouseX) * 0.08;
+      mouseY += (targetY - mouseY) * 0.08;
+
+      if (coreCube) {
+        const rotY = -24 + mouseX * 22;
+        const rotX = 18 - mouseY * 18;
+        coreCube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      }
+
+      if (
+        Math.abs(targetX - mouseX) > 0.001 ||
+        Math.abs(targetY - mouseY) > 0.001
+      ) {
+        raf = requestAnimationFrame(updateParallax);
+      } else {
+        raf = 0;
+      }
+    };
+
+    window.addEventListener("pointermove", onPointerMove, {
+      passive: true,
+      signal,
+    });
+
+    // Interactive Click Squish on Core Cube
+    if (coreCube) {
+      coreCube.addEventListener("click", () => {
+        coreCube.classList.add("is-squished");
+        window.setTimeout(() => coreCube.classList.remove("is-squished"), 400);
+      });
+    }
+
+    // Playful Tokens Click Effect
+    tokens.forEach((token) => {
+      token.addEventListener("click", (e) => {
+        e.preventDefault();
+        token.classList.add("is-bouncing");
+        window.setTimeout(() => token.classList.remove("is-bouncing"), 600);
+      });
+    });
+
+    // Scroll Choreography
+    const onScroll = () => {
+      if (reduceMotion) return;
+
+      const rect = track.getBoundingClientRect();
+      const totalDist = track.offsetHeight - window.innerHeight;
+      if (totalDist <= 0) return;
+
+      const progress = Math.max(0, Math.min(1, -rect.top / totalDist));
+
+      // Update progress bar
+      if (progressBar) {
+        progressBar.style.transform = `scaleX(${progress})`;
+      }
+
+      // Determine active scene (1 to 5)
+      const sceneIndex = Math.min(4, Math.floor(progress * 5));
+      const currentStep = sceneIndex + 1;
+
+      if (progressStep) {
+        progressStep.textContent = `0${currentStep} / 05`;
+      }
+
+      // Toggle Panes and Scenes
+      panes.forEach((pane, idx) => {
+        const isActive = idx === sceneIndex;
+        pane.classList.toggle("active", isActive);
+      });
+
+      scenes.forEach((sc, idx) => {
+        const isActive = idx === sceneIndex;
+        sc.classList.toggle("active", isActive);
+      });
+
+      // Shift Ambient Glow Hue based on scene
+      if (ambientGlow) {
+        if (sceneIndex === 3) {
+          // AI anomaly scene -> warm red accent
+          ambientGlow.style.background =
+            "radial-gradient(circle, rgba(201, 46, 62, 0.14) 0%, rgba(247, 247, 246, 0) 70%)";
+        } else {
+          ambientGlow.style.background =
+            "radial-gradient(circle, rgba(22, 24, 29, 0.05) 0%, rgba(247, 247, 246, 0) 70%)";
+        }
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true, signal });
+    onScroll();
+
+    return () => {
+      controller.abort();
+      if (raf) cancelAnimationFrame(raf);
+    };
+  });
+</script>
+
+<style>
+  /* Track: High enough to give spacious, controlled scroll time */
+  .story-track {
+    position: relative;
+    height: 480vh;
+    background: var(--paper);
+  }
+
+  /* Sticky Viewport Container */
+  .story-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Ambient Grid & Glow */
+  .canvas-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .grid-pattern {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(22, 24, 29, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(22, 24, 29, 0.035) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .ambient-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65vw;
+    height: 65vw;
+    max-width: 700px;
+    max-height: 700px;
+    border-radius: 999px;
+    background: radial-gradient(
+      circle,
+      rgba(22, 24, 29, 0.05) 0%,
+      rgba(247, 247, 246, 0) 70%
+    );
+    filter: blur(60px);
+    transition: background 0.8s ease;
+  }
+
+  /* Kinetic Centerpiece Stage */
+  .kinetic-stage {
+    position: absolute;
+    top: 50%;
+    right: clamp(4%, 12vw, 18%);
+    transform: translateY(-50%);
+    width: clamp(280px, 36vw, 440px);
+    height: clamp(280px, 36vw, 440px);
+    perspective: 1200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .kinetic-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+    transition: all 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .kinetic-scene.active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+
+  /* ------------------- SCENE 1: Kinetic Cube ------------------- */
+  .core-cube-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    transform-style: preserve-3d;
+    transform: rotateX(18deg) rotateY(-24deg);
+    cursor: pointer;
+    transition: transform 0.25s ease-out;
+  }
+
+  .core-cube-wrapper.is-squished {
+    transform: scale3d(1.15, 0.85, 1.15) rotateX(18deg) rotateY(-24deg) !important;
+  }
+
+  .cube-facet {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1.5px solid var(--line-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 12px rgba(22, 24, 29, 0.02);
+  }
+
+  .cube-facet.front {
+    transform: translateZ(70px);
+  }
+  .cube-facet.back {
+    transform: rotateY(180deg) translateZ(70px);
+    background: #f0f0ee;
+  }
+  .cube-facet.right {
+    transform: rotateY(90deg) translateZ(70px);
+    background: #eaeaea;
+  }
+  .cube-facet.left {
+    transform: rotateY(-90deg) translateZ(70px);
+  }
+  .cube-facet.top {
+    transform: rotateX(90deg) translateZ(70px);
+    background: #ffffff;
+  }
+  .cube-facet.bottom {
+    transform: rotateX(-90deg) translateZ(70px);
+    background: #e0e0de;
+  }
+
+  .facet-glyph {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .facet-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 12px rgba(201, 46, 62, 0.4);
+  }
+
+  .cube-shadow {
+    position: absolute;
+    bottom: -50px;
+    left: 10px;
+    width: 120px;
+    height: 30px;
+    border-radius: 999px;
+    background: rgba(22, 24, 29, 0.12);
+    filter: blur(14px);
+    transform: rotateX(90deg);
+  }
+
+  /* ---------------- SCENE 2: Modular Assembly ----------------- */
+  .assembly-rig {
+    position: relative;
+    width: 220px;
+    height: 220px;
+  }
+
+  .beam {
+    position: absolute;
+    background: var(--line-strong);
+  }
+
+  .beam-h {
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+  }
+
+  .beam-v {
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+  }
+
+  .module-block {
+    position: absolute;
+    border: 1px solid var(--ink);
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(22, 24, 29, 0.06);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .block-a {
+    width: 70px;
+    height: 70px;
+    top: 20px;
+    left: 20px;
+    border-top: 3px solid var(--signal);
+  }
+
+  .block-b {
+    width: 90px;
+    height: 60px;
+    bottom: 25px;
+    left: 15px;
+  }
+
+  .block-c {
+    width: 80px;
+    height: 80px;
+    top: 40px;
+    right: 15px;
+  }
+
+  /* ------------------ SCENE 3: Software Rig ------------------- */
+  .software-rig {
+    position: relative;
+    width: 260px;
+    height: 200px;
+  }
+
+  .window-frame {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 10px 28px rgba(22, 24, 29, 0.08);
+  }
+
+  .window-main {
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 140px;
+  }
+
+  .window-bar {
+    height: 22px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-soft);
+    display: flex;
+    align-items: center;
+    padding-inline: 8px;
+    gap: 5px;
+  }
+
+  .win-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--ink-soft);
+  }
+
+  .window-body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .code-line {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--line);
+  }
+
+  .line-1 {
+    width: 45%;
+    background: var(--signal);
+    opacity: 0.8;
+  }
+  .line-2 {
+    width: 75%;
+  }
+  .line-3 {
+    width: 60%;
+  }
+
+  .window-sub {
+    bottom: 0;
+    right: 0;
+    width: 140px;
+    height: 90px;
+    background: #ffffff;
+    border-top: 2px solid var(--ink);
+  }
+
+  .pulse-pipe {
+    position: absolute;
+    top: -24px;
+    left: 20px;
+    width: 2px;
+    height: 24px;
+    background: var(--signal);
+  }
+
+  /* ----------------- SCENE 4: AI Cluster Rig ------------------ */
+  .ai-cluster-rig {
+    position: relative;
+    width: 260px;
+    height: 240px;
+  }
+
+  .cluster-node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: var(--ink-muted);
+    opacity: 0.6;
+    animation: node-float 4s ease-in-out infinite alternate;
+  }
+
+  .n-1 {
+    top: 30%;
+    left: 25%;
+  }
+  .n-2 {
+    top: 45%;
+    left: 35%;
+    animation-delay: 0.4s;
+  }
+  .n-3 {
+    top: 60%;
+    left: 20%;
+    animation-delay: 0.8s;
+  }
+  .n-4 {
+    top: 35%;
+    left: 45%;
+    animation-delay: 1.2s;
+  }
+  .n-5 {
+    top: 55%;
+    left: 50%;
+    animation-delay: 1.6s;
+  }
+  .n-6 {
+    top: 25%;
+    left: 60%;
+    animation-delay: 2s;
+  }
+  .n-7 {
+    top: 65%;
+    left: 40%;
+    animation-delay: 2.4s;
+  }
+
+  @keyframes node-float {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(4px, -6px);
+    }
+  }
+
+  .anomaly-node {
+    position: absolute;
+    top: 30%;
+    right: 15%;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: var(--signal);
+    box-shadow: 0 0 16px rgba(201, 46, 62, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .anomaly-pulse {
+    position: absolute;
+    inset: -6px;
+    border: 1.5px solid var(--signal);
+    border-radius: 999px;
+    animation: anomaly-wave 2s infinite;
+  }
+
+  @keyframes anomaly-wave {
+    0% {
+      transform: scale(0.8);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(2.2);
+      opacity: 0;
+    }
+  }
+
+  .anomaly-tag {
+    position: absolute;
+    top: -24px;
+    right: -10px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    background: #ffffff;
+    border: 1px solid rgba(201, 46, 62, 0.3);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  /* ----------------- SCENE 5: Craft Playground ---------------- */
+  .playground-rig {
+    position: relative;
+    width: 280px;
+    height: 240px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .craft-token {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(22, 24, 29, 0.04);
+    transition: all 0.25s var(--ease-standard);
+  }
+
+  .craft-token:hover {
+    border-color: var(--ink);
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 10px 24px rgba(22, 24, 29, 0.08);
+  }
+
+  .craft-token.is-bouncing {
+    animation: token-bounce 0.5s ease-out;
+  }
+
+  @keyframes token-bounce {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.2) rotate(6deg);
+    }
+    70% {
+      transform: scale(0.9) rotate(-3deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .token-icon {
+    font-size: 1.8rem;
+  }
+
+  .token-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ---------------- Narrative Typography Overlay ---------------- */
+  .narrative-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .narrative-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .narrative-pane {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    max-width: 580px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+
+  .narrative-pane.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .pane-kicker {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .pane-title {
+    margin: 0 0 1rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 480;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .pane-lead {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    line-height: 1.65;
+    max-width: 44ch;
+  }
+
+  /* Scroll Cue in Scene 1 */
+  .scroll-cue {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 2rem;
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cue-mouse {
+    width: 16px;
+    height: 24px;
+    border: 1.5px solid var(--ink-soft);
+    border-radius: 999px;
+    display: flex;
+    justify-content: center;
+    padding-top: 4px;
+  }
+
+  .cue-wheel {
+    width: 3px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--signal);
+    animation: wheel-nudge 1.6s infinite ease-in-out;
+  }
+
+  @keyframes wheel-nudge {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    75% {
+      transform: translateY(6px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 0;
+    }
+  }
+
+  /* Progress Bar */
+  .progress-bar-wrap {
+    position: absolute;
+    bottom: 2rem;
+    left: clamp(1rem, 4vw, 3rem);
+    right: clamp(1rem, 4vw, 3rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .progress-bar-fill {
+    height: 2px;
+    background: var(--ink);
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0.2);
+    transition: transform 0.2s ease-out;
+  }
+
+  .progress-step-text {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ---------------- Mobile Adjustments ---------------- */
+  @media (max-width: 900px) {
+    .story-track {
+      height: 380vh;
+    }
+
+    .kinetic-stage {
+      top: 28%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      width: 240px;
+      height: 240px;
+    }
+
+    .narrative-pane {
+      top: 54%;
+      text-align: center;
+      max-width: 100%;
+    }
+
+    .pane-lead {
+      margin-inline: auto;
+    }
+
+    .scroll-cue {
+      justify-content: center;
+    }
+  }
+
+  /* ---------------- Reduced Motion Fallback ---------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .story-track {
+      height: auto;
+    }
+    .story-sticky {
+      position: static;
+      height: auto;
+      padding-block: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+    .kinetic-stage {
+      position: static;
+      transform: none;
+    }
+    .narrative-overlay {
+      position: static;
+    }
+    .narrative-pane {
+      position: static;
+      opacity: 1;
+      transform: none;
+      margin-bottom: 2rem;
+    }
+    .kinetic-scene {
+      position: static;
+      opacity: 1;
+      transform: none;
+      margin-bottom: 2rem;
+    }
+    .progress-bar-wrap {
+      display: none;
+    }
+  }
+</style>

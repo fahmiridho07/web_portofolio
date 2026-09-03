@@ -1,0 +1,581 @@
+---
+// VisualProjectExhibits.astro: Scene 6 Visual Project Preview
+// Replaces text-heavy project cards with 3 animated, conceptual exhibits:
+// 1. Fraud Detection: Transaction stream with flagged outlier
+// 2. Route Optimization: Converging ant paths across coordinates
+// 3. Demand Forecasting: Minimal historical curve projecting into the future
+---
+
+<section id="work" class="exhibits-section divider">
+  <div class="container">
+    <!-- Header -->
+    <div class="exhibits-header" data-reveal>
+      <p class="section-kicker">SCENE 06 &middot; DISCOVERY</p>
+      <h2 class="exhibits-title">Ideas turned into working systems.</h2>
+      <p class="exhibits-subhead">
+        Visual glimpses into real projects. Click any exhibit to inspect the
+        full engineering case study.
+      </p>
+    </div>
+
+    <!-- The 3 Visual Exhibits -->
+    <div class="exhibits-stack">
+      <!-- EXHIBIT 1: Fraud Detection -->
+      <article class="exhibit-card exhibit-fraud" data-reveal>
+        <a
+          href="/projects/fraud-detection-ml-pipeline/"
+          class="exhibit-link"
+          data-astro-prefetch="hover"
+        >
+          <div class="exhibit-visual">
+            <div class="stream-container" data-stream>
+              <div class="stream-track">
+                <div class="stream-item item-ok">
+                  <span class="stream-id">TX #4820</span>
+                  <span class="stream-status ok">CLEARED</span>
+                </div>
+                <div class="stream-item item-ok">
+                  <span class="stream-id">TX #4821</span>
+                  <span class="stream-status ok">CLEARED</span>
+                </div>
+                <div class="stream-item item-flagged">
+                  <span class="stream-id">TX #4822</span>
+                  <span class="stream-status flag">ANOMALY CAUGHT</span>
+                  <span class="stream-radar"></span>
+                </div>
+                <div class="stream-item item-ok">
+                  <span class="stream-id">TX #4823</span>
+                  <span class="stream-status ok">CLEARED</span>
+                </div>
+                <div class="stream-item item-ok">
+                  <span class="stream-id">TX #4824</span>
+                  <span class="stream-status ok">CLEARED</span>
+                </div>
+              </div>
+              <div class="scanner-line"></div>
+            </div>
+          </div>
+
+          <div class="exhibit-copy">
+            <div class="copy-badge">01 &middot; Machine Learning</div>
+            <h3 class="copy-title">Fraud Detection</h3>
+            <p class="copy-desc">
+              Teaching machines to spot suspicious transactions.
+            </p>
+            <span class="copy-cta">
+              Explore Case Study <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
+        </a>
+      </article>
+
+      <!-- EXHIBIT 2: Route Optimization -->
+      <article class="exhibit-card exhibit-routing" data-reveal>
+        <a
+          href="/projects/orphanage-inspection-route-optimization/"
+          class="exhibit-link"
+          data-astro-prefetch="hover"
+        >
+          <div class="exhibit-visual">
+            <svg class="routing-svg" viewBox="0 0 360 220" aria-hidden="true">
+              <!-- Coordinates Grid -->
+              <g class="routing-grid">
+                <line x1="20" y1="50" x2="340" y2="50"></line>
+                <line x1="20" y1="110" x2="340" y2="110"></line>
+                <line x1="20" y1="170" x2="340" y2="170"></line>
+              </g>
+
+              <!-- Converging Optimal Route Paths -->
+              <path
+                class="route-converged path-1"
+                d="M40,160 L90,110 L140,140 L80,180 Z"></path>
+              <path
+                class="route-converged path-2"
+                d="M140,140 L200,80 L250,110 L210,160 Z"></path>
+              <path
+                class="route-converged path-3"
+                d="M200,80 L270,40 L320,80 L290,120 Z"></path>
+
+              <!-- Map Nodes -->
+              <circle cx="40" cy="160" r="4" class="node-depot"></circle>
+              <circle cx="90" cy="110" r="3.5" class="node-point"></circle>
+              <circle cx="140" cy="140" r="3.5" class="node-point"></circle>
+              <circle cx="80" cy="180" r="3.5" class="node-point"></circle>
+              <circle cx="200" cy="80" r="3.5" class="node-point"></circle>
+              <circle cx="250" cy="110" r="3.5" class="node-point"></circle>
+              <circle cx="210" cy="160" r="3.5" class="node-point"></circle>
+              <circle cx="270" cy="40" r="3.5" class="node-point"></circle>
+              <circle cx="320" cy="80" r="3.5" class="node-point"></circle>
+              <circle cx="290" cy="120" r="3.5" class="node-point"></circle>
+            </svg>
+            <span class="route-live-tag">Converged: 5 loops</span>
+          </div>
+
+          <div class="exhibit-copy">
+            <div class="copy-badge">02 &middot; Algorithms</div>
+            <h3 class="copy-title">Route Optimization</h3>
+            <p class="copy-desc">
+              Finding better paths with algorithms inspired by ants.
+            </p>
+            <span class="copy-cta">
+              Explore Case Study <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
+        </a>
+      </article>
+
+      <!-- EXHIBIT 3: Demand Forecasting -->
+      <article class="exhibit-card exhibit-forecasting" data-reveal>
+        <a
+          href="/projects/juanda-airport-visitor-forecasting/"
+          class="exhibit-link"
+          data-astro-prefetch="hover"
+        >
+          <div class="exhibit-visual">
+            <svg class="forecast-svg" viewBox="0 0 360 220" aria-hidden="true">
+              <!-- Confidence Envelope Area -->
+              <polygon
+                points="200,90 270,60 340,40 340,160 270,140 200,90"
+                class="forecast-area"></polygon>
+
+              <!-- Historical Solid Curve -->
+              <path
+                class="forecast-history"
+                d="M30,150 Q70,170 110,130 T170,110 T200,90"></path>
+
+              <!-- Predicted Dotted Curve -->
+              <path
+                class="forecast-projected"
+                d="M200,90 Q240,75 280,95 T340,85"></path>
+
+              <!-- Today Separator Marker -->
+              <line x1="200" y1="20" x2="200" y2="200" class="today-marker"
+              ></line>
+              <text x="204" y="36" class="today-text">PROJECTED</text>
+
+              <!-- Glowing Tip -->
+              <circle cx="200" cy="90" r="5" class="forecast-pivot"></circle>
+            </svg>
+            <span class="forecast-live-tag">Model Projection</span>
+          </div>
+
+          <div class="exhibit-copy">
+            <div class="copy-badge">03 &middot; Time Series</div>
+            <h3 class="copy-title">Forecasting</h3>
+            <p class="copy-desc">Trying to predict what comes next.</p>
+            <span class="copy-cta">
+              Explore Case Study <span aria-hidden="true">&rarr;</span>
+            </span>
+          </div>
+        </a>
+      </article>
+    </div>
+
+    <!-- Archive Action -->
+    <div class="exhibits-footer" data-reveal>
+      <a href="/projects/" class="all-projects-btn" data-astro-prefetch="hover">
+        Browse all 11 projects & case studies
+        <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .exhibits-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
+    background: var(--paper);
+  }
+
+  .exhibits-header {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .section-kicker {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+  }
+
+  .exhibits-title {
+    margin: 0 0 0.75rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    font-weight: 470;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+
+  .exhibits-subhead {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 52ch;
+  }
+
+  /* Exhibits Stack */
+  .exhibits-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .exhibit-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .exhibit-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(22, 24, 29, 0.06);
+  }
+
+  .exhibit-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+
+  /* Visual Container */
+  .exhibit-visual {
+    position: relative;
+    background: #fdfdfc;
+    border-right: 1px solid var(--line);
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Copy Container */
+  .exhibit-copy {
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .copy-badge {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .copy-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+    font-weight: 480;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .exhibit-card:hover .copy-title {
+    color: var(--signal-deep);
+  }
+
+  .copy-desc {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    max-width: 36ch;
+  }
+
+  .copy-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .exhibit-card:hover .copy-cta {
+    transform: translateX(4px);
+    color: var(--signal);
+  }
+
+  /* ---------------- EXHIBIT 1: Transaction Stream ---------------- */
+  .stream-container {
+    position: relative;
+    width: 100%;
+    padding-inline: 1rem;
+    overflow: hidden;
+  }
+
+  .stream-track {
+    display: flex;
+    gap: 12px;
+    animation: conveyor 14s linear infinite;
+    width: max-content;
+  }
+
+  @keyframes conveyor {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .stream-item {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: 0 4px 12px rgba(22, 24, 29, 0.04);
+  }
+
+  .stream-id {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+  }
+
+  .stream-status {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .stream-status.ok {
+    color: var(--ink-muted);
+  }
+
+  .stream-item.item-flagged {
+    position: relative;
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.03);
+  }
+
+  .stream-status.flag {
+    color: var(--signal);
+  }
+
+  .stream-radar {
+    position: absolute;
+    inset: -4px;
+    border: 1.5px solid var(--signal);
+    border-radius: var(--radius-sm);
+    animation: radar-pulse 2s infinite;
+  }
+
+  @keyframes radar-pulse {
+    0% {
+      transform: scale(0.95);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0;
+    }
+  }
+
+  .scanner-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1.5px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--signal),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* ---------------- EXHIBIT 2: Routing Coordinates ---------------- */
+  .routing-svg {
+    width: 85%;
+    height: auto;
+  }
+
+  .routing-grid line {
+    stroke: var(--line);
+    stroke-dasharray: 4 4;
+  }
+
+  .route-converged {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .path-1 {
+    stroke: var(--signal);
+    opacity: 0.9;
+  }
+  .path-2 {
+    stroke: var(--ink);
+    opacity: 0.75;
+  }
+  .path-3 {
+    stroke: var(--ink-soft);
+    opacity: 0.6;
+  }
+
+  .node-depot {
+    fill: var(--signal);
+  }
+
+  .node-point {
+    fill: var(--ink);
+  }
+
+  .route-live-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--line);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* ---------------- EXHIBIT 3: Time Series Forecast ---------------- */
+  .forecast-svg {
+    width: 85%;
+    height: auto;
+  }
+
+  .forecast-area {
+    fill: rgba(201, 46, 62, 0.06);
+  }
+
+  .forecast-history {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+  }
+
+  .forecast-projected {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.5;
+    stroke-dasharray: 5 4;
+    stroke-linecap: round;
+  }
+
+  .today-marker {
+    stroke: var(--line-strong);
+    stroke-dasharray: 3 3;
+    stroke-width: 1.5;
+  }
+
+  .today-text {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    fill: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+
+  .forecast-pivot {
+    fill: var(--signal);
+    animation: pivot-ping 2s infinite ease-in-out;
+  }
+
+  @keyframes pivot-ping {
+    0% {
+      r: 4px;
+    }
+    50% {
+      r: 6px;
+    }
+    100% {
+      r: 4px;
+    }
+  }
+
+  .forecast-live-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--signal-deep);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(201, 46, 62, 0.25);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Exhibits Footer */
+  .exhibits-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .all-projects-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.85rem 1.6rem;
+    border-radius: var(--radius-pill);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .all-projects-btn:hover {
+    background: var(--signal-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 46, 62, 0.2);
+  }
+
+  @media (max-width: 900px) {
+    .exhibit-link {
+      grid-template-columns: 1fr;
+    }
+    .exhibit-visual {
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+      min-height: 200px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stream-track {
+      animation: none;
+    }
+    .stream-radar {
+      animation: none;
+    }
+    .forecast-pivot {
+      animation: none;
+    }
+  }
+</style>
