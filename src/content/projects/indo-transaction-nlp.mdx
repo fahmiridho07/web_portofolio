@@ -5,7 +5,7 @@ summary: "An evals-first NLP pipeline that parses informal Indonesian money-talk
 category: "machine-learning-data-science"
 status: "In progress"
 year: 2026
-role: "Sole author — dataset design, baselines, model, and evaluation harness"
+role: "Sole author: dataset design, baselines, model, and evaluation harness"
 stack:
   - Python
   - PyTorch
@@ -19,19 +19,19 @@ logo: "/assets/logos/scikitlearn.svg"
 result: "A fine-tuned IndoBERT category classifier hybridized with deterministic extraction rules lifted held-out transaction accuracy from 0.47 to 0.67 (category accuracy 0.73 to 0.93) over the rule baseline, measured by the project's own evals harness on a probe set neither system saw during development."
 metric: "0.47 → 0.67 held-out transaction accuracy"
 proof:
-  - "Transaction accuracy 0.47 → 0.67 and category accuracy 0.73 → 0.93 on the held-out probe — same harness, same split, both models"
+  - "Transaction accuracy 0.47 → 0.67 and category accuracy 0.73 → 0.93 on the held-out probe, evaluated on the same harness and split across both models"
   - "Measurement before modeling: a frozen evals harness with per-field metrics existed before any model was trained"
-  - "Rule baseline scored 1.00 on the data its rules were developed against and 0.47 held-out — quantifying exactly why a learned model is needed"
+  - "Rule baseline scored 1.00 on the data its rules were developed against and 0.47 held-out, quantifying exactly why a learned model is needed"
 priority: 1.5
 ---
 
 ## Context
 
-Indonesians record expenses the way they talk: "kemarin beli kopi 25rb di gofood pake gopay" — slang, amount shorthand (25rb, 2,5jt, sejuta), Indo-English code-switching, and relative dates. Turning that into structured data (amount, category, merchant, payment method, date) is the capture step every local finance app needs, and no public Indonesian dataset covers it. Indonesian is a high-population, low-resource language in NLP; this project builds the missing piece from scratch: schema, annotation guidelines, data, baselines, a fine-tuned model, and — before any of the modeling — an evaluation harness.
+Indonesians record expenses the way they talk: "kemarin beli kopi 25rb di gofood pake gopay", featuring slang, amount shorthand (25rb, 2,5jt, sejuta), Indo-English code-switching, and relative dates. Turning that into structured data (amount, category, merchant, payment method, date) is the capture step every local finance app needs, and no public Indonesian dataset covers it. Indonesian is a high-population, low-resource language in NLP; this project builds the missing piece from scratch: schema, annotation guidelines, data, baselines, a fine-tuned model, and, before any of the modeling, an evaluation harness.
 
 ## Problem
 
-Frontier LLMs can parse this text but need a network call, which is the wrong architecture for private financial data, and their per-request cost is hard to justify for a single-purpose extraction task. A small specialized model that runs on-device is the right shape — but "right shape" has to be proven with numbers, not vibes: against a rule baseline, on data the model has never seen, with per-field metrics.
+Frontier LLMs can parse this text but need a network call, which is the wrong architecture for private financial data, and their per-request cost is hard to justify for a single-purpose extraction task. A small specialized model that runs on-device is the right shape, but "right shape" has to be proven with numbers, not vibes: against a rule baseline, on data the model has never seen, with per-field metrics.
 
 ## My Role
 
@@ -40,8 +40,8 @@ Everything: extraction schema and 12-label category taxonomy, annotation guideli
 ## Evidence
 
 Every number below comes out of one script: the harness writes a versioned
-JSON report per model per split, and the write-up quotes those reports —
-per-field exact-match accuracy on the same 15 held-out probe examples for
+JSON report per model per split, and the write-up quotes those reports,
+reporting per-field exact-match accuracy on the same 15 held-out probe examples for
 both systems.
 
 | Field (probe split, n = 15) | B0 rules | M1 hybrid |
@@ -54,8 +54,8 @@ both systems.
 | Merchant (slot F1)          | 0.86     | 0.86      |
 | **Transaction accuracy**    | **0.47** | **0.67**  |
 
-The only row that moves is category — the one field the classifier was
-trained to fix — and it drags the headline transaction accuracy up with it;
+The only row that moves is category (the one field the classifier was
+trained to fix), dragging the headline transaction accuracy up with it;
 the deterministic extraction fields stay identical because they are the same
 code in both systems. The harness run, quoted as-is:
 
@@ -81,13 +81,13 @@ report written: reports\\m1_probe.json`}</code>
 - **Schema and guidelines first.** Seven extraction fields with a Pydantic schema that rejects invalid records at load time, and written annotation guidelines with explicit tie-breakers (treating a friend to a meal is `food_drink`, not social; top-ups are `transfer`; generic venues like "warteg" are not merchants, brands like "gofood" are).
 - **Evals harness before any model.** A CLI (`run_evals.py --model X --split Y`) computes per-field exact-match accuracy, merchant slot F1, and a headline transaction accuracy (all non-null gold fields correct), and writes a versioned JSON report. Every number in this write-up comes out of that one script.
 - **Rule baseline (B0) as the floor.** Regex + dictionaries for amounts (25rb / 2,5jt / sejuta / bare numbers), direction keywords, brand and payment-method lexicons with span-based disambiguation ("pake gopay" is a payment method; "topup gopay" makes gopay the counterparty).
-- **A held-out probe set that the rules never saw.** B0 scores a perfect 1.00 on the 30 seed examples its rules were developed against — a number that means nothing, which is the point. On 15 held-out probe examples it drops to 0.47 transaction accuracy, failing exactly where hand-written rules run out: spelled-out numbers ("lima puluh ribu"), brand typos ("gofud"), keyword-less categories ("arisan"), and unseen date forms.
+- **A held-out probe set that the rules never saw.** B0 scores a perfect 1.00 on the 30 seed examples its rules were developed against, but that score simply reflects the rules' development set. On 15 held-out probe examples it drops to 0.47 transaction accuracy, failing exactly where hand-written rules run out: spelled-out numbers ("lima puluh ribu"), brand typos ("gofud"), keyword-less categories ("arisan"), and unseen date forms.
 - **Synthetic training data, honestly labeled.** A seeded generator composes ~400 training utterances from slot banks (items, venues, payment methods, amount renderings, date phrases); every record carries `source: synthetic`, the probe set is verified disjoint from training by a test, and the plan's human-written golden set stays a separate, unbuilt milestone rather than a claim.
 - **Hybrid M1: learn what rules can't, keep rules where they win.** Category classification is where B0 is weakest, so that field gets a fine-tuned IndoBERT (indobert-base-p1) classifier trained on the synthetic set (CPU-only, minutes), while deterministic rules keep the extraction fields. Both models run through the same harness on the same probe set.
 
 ## Key Decisions
 
-**Why the harness came before the model.** A model without a measurement is a demo. Building `run_evals.py` first meant the baseline, the probe gap, and the model comparison all use identical definitions — and a regression on the frozen split fails loudly instead of silently.
+**Why the harness came before the model.** A model without a measurement is a demo. Building `run_evals.py` first meant the baseline, the probe gap, and the model comparison all use identical definitions, so a regression on the frozen split fails loudly instead of silently.
 
 **Why a hybrid instead of end-to-end.** B0's extraction fields (amount 0.93, payment method 1.00 on probe) are already strong and fully interpretable; its category accuracy (0.73) is the bottleneck. Fine-tuning a classifier for exactly the weak field is cheaper, more debuggable, and more honest than replacing working deterministic code with a model.
 
@@ -95,14 +95,14 @@ report written: reports\\m1_probe.json`}</code>
 
 ## Result
 
-The hybrid M1 — IndoBERT (indobert-base-p1) fine-tuned for category over ~400 synthetic examples in four CPU-only epochs, plus B0's deterministic extractors — went through the same harness, on the same held-out probe, as the baseline. **Transaction accuracy rose from 0.47 to 0.67**, driven entirely by the field the model was trained to fix: **category accuracy went from 0.73 to 0.93**, while the rule-owned extraction fields stayed put (amount 0.93, payment method 1.00, merchant F1 0.86).
+The hybrid M1 (IndoBERT fine-tuned for category over ~400 synthetic examples in four CPU-only epochs, plus B0's deterministic extractors) went through the same harness, on the same held-out probe, as the baseline. **Transaction accuracy rose from 0.47 to 0.67**, driven entirely by the field the model was trained to fix: **category accuracy went from 0.73 to 0.93**, while the rule-owned extraction fields stayed put (amount 0.93, payment method 1.00, merchant F1 0.86).
 
-Two details matter more than the headline. First, the remaining probe failures are now extraction, not classification — spelled-out amounts ("lima puluh ribu"), a brand typo ("gofud"), an unseen relative date ("bulan depan"), and one income utterance with no income keyword — which is a concrete, prioritized worklist rather than a vague "model needs to be better." Second, on the seed split the classifier scores _below_ the rules (0.93 vs 1.00): it stopped memorizing the seed set's quirks and generalizes instead, which is the trade you want and exactly what the two-split setup exists to reveal.
+Two details matter more than the headline. First, the remaining probe failures are now extraction, not classification: spelled-out amounts ("lima puluh ribu"), a brand typo ("gofud"), an unseen relative date ("bulan depan"), and one income utterance with no income keyword, which is a concrete, prioritized worklist rather than a vague "model needs to be better." Second, on the seed split the classifier scores _below_ the rules (0.93 vs 1.00): it stopped memorizing the seed set's quirks and generalizes instead, which is the trade you want and exactly what the two-split setup exists to reveal.
 
-All current numbers are on synthetic data (AI-drafted probe, generator-built training set) — labeled as such throughout the repo. The next milestone is the human-written golden set (60 frozen examples), which converts these preliminary numbers into citable ones; after that, a HuggingFace dataset/model release and a cost-latency benchmark against a few-shot frontier-LLM baseline.
+All current numbers are on synthetic data (AI-drafted probe, generator-built training set), labeled as such throughout the repo. The next milestone is the human-written golden set (60 frozen examples), which converts these preliminary numbers into citable ones; after that, a HuggingFace dataset/model release and a cost-latency benchmark against a few-shot frontier-LLM baseline.
 
 ## What I'd Improve
 
-- Replace the AI-drafted probe with the human-written frozen golden set before quoting any number externally — the probe measures generalization beyond the rules, but it shares authorship with the training generator's design.
+- Replace the AI-drafted probe with the human-written frozen golden set before quoting any number externally, because the probe measures generalization beyond the rules, but it shares authorship with the training generator's design.
 - Add the few-shot frontier-LLM baseline (B1) for the quality-ceiling and cost-per-1,000-parses comparison the project is designed around.
 - Distill or quantize the classifier (ONNX) and measure CPU latency to complete the on-device story.

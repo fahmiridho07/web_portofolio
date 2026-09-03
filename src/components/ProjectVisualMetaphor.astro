@@ -1,0 +1,1689 @@
+---
+// ProjectVisualMetaphor.astro: Dedicated Visual Metaphors & Art-Directed Real Evidence
+// Adheres strictly to "The Anomaly" design system (Paper #f7f7f6, Ink #16181d, Carmine #c92e3e).
+// Communicates the core idea of each project through visual interaction before technical text.
+
+interface Props {
+  slug: string;
+  mode?: "hero" | "stage" | "mobile";
+  class?: string;
+}
+
+const { slug, mode = "stage", class: className } = Astro.props;
+---
+
+<div
+  class:list={[
+    "project-metaphor",
+    `metaphor-${slug}`,
+    `mode-${mode}`,
+    className,
+  ]}
+  data-slug={slug}
+>
+  {/* PROJECT 01: FRAUD DETECTION ML PIPELINE */}
+  {
+    slug === "fraud-detection-ml-pipeline" && (
+      <div class="metaphor-canvas canvas-fraud">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Signal Detection</span>
+        </div>
+
+        <div class="fraud-stream-wrapper">
+          <div class="fraud-stream-track" aria-hidden="true">
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 941</span>
+              <span class="tx-amt">$42.50</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 942</span>
+              <span class="tx-amt">$17.10</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 943</span>
+              <span class="tx-amt">$84.00</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 944</span>
+              <span class="tx-amt">$9.95</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-anomaly">
+              <span class="tx-id">TX 945</span>
+              <span class="tx-amt">$1,294.00</span>
+              <span class="tx-status flag">&bull; ANOMALY</span>
+              <span class="tx-sonar-ring" />
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 946</span>
+              <span class="tx-amt">$14.20</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 947</span>
+              <span class="tx-amt">$7.50</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 948</span>
+              <span class="tx-amt">$92.30</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+            <div class="tx-card tx-clean">
+              <span class="tx-id">TX 949</span>
+              <span class="tx-amt">$31.00</span>
+              <span class="tx-status">CLEARED</span>
+            </div>
+          </div>
+          <div class="scanner-sweep" aria-hidden="true" />
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">0.855</span>
+              <span class="climax-unit">PR-AUC</span>
+            </div>
+            <p class="climax-desc">
+              74.7% recall at 89% precision &middot; 3,087 fraud caught
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison-640.webp"
+              alt="Thesis PR-AUC comparison curves"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Latent oversampling vs. SMOTE-NC baseline</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 02: ORPHANAGE INSPECTION ROUTE OPTIMIZATION */}
+  {
+    slug === "orphanage-inspection-route-optimization" && (
+      <div class="metaphor-canvas canvas-aco">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Route Convergence</span>
+        </div>
+
+        <div class="aco-viz-area">
+          <svg viewBox="0 0 420 180" class="aco-svg" aria-hidden="true">
+            <defs>
+              <radialGradient id="aco-depot-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#c92e3e" stop-opacity="0.35" />
+                <stop offset="100%" stop-color="#c92e3e" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+
+            <g class="aco-grid">
+              <line x1="30" y1="40" x2="390" y2="40" />
+              <line x1="30" y1="90" x2="390" y2="90" />
+              <line x1="30" y1="140" x2="390" y2="140" />
+              <line x1="110" y1="15" x2="110" y2="165" />
+              <line x1="210" y1="15" x2="210" y2="165" />
+              <line x1="310" y1="15" x2="310" y2="165" />
+            </g>
+
+            <g class="aco-faint-trails">
+              <path d="M50,90 L100,40 L190,30 L160,90 Z" class="faint-trail" />
+              <path
+                d="M160,90 L220,150 L300,140 L260,80 Z"
+                class="faint-trail"
+              />
+              <path d="M50,90 L90,150 L170,160 L160,90 Z" class="faint-trail" />
+              <path
+                d="M260,80 L320,40 L380,60 L350,110 Z"
+                class="faint-trail"
+              />
+            </g>
+
+            <g class="aco-converged-routes">
+              <path
+                d="M50,90 L95,45 L150,65 L120,115 Z"
+                class="route-converged loop-1"
+              />
+              <path
+                d="M150,65 L210,35 L265,60 L230,110 Z"
+                class="route-converged loop-2"
+              />
+              <path
+                d="M265,60 L325,25 L380,65 L340,115 Z"
+                class="route-converged loop-3"
+              />
+              <path
+                d="M120,115 L175,165 L230,150 L200,115 Z"
+                class="route-converged loop-4"
+              />
+              <path
+                d="M230,110 L280,160 L345,155 L310,115 Z"
+                class="route-converged loop-5"
+              />
+            </g>
+
+            <circle cx="50" cy="90" r="14" fill="url(#aco-depot-glow)" />
+            <circle cx="50" cy="90" r="5" class="depot-node" />
+            <text x="50" y="110" class="node-caption">
+              DEPOT
+            </text>
+
+            <circle cx="95" cy="45" r="3.2" class="orphanage-node" />
+            <circle cx="150" cy="65" r="3.2" class="orphanage-node" />
+            <circle cx="120" cy="115" r="3.2" class="orphanage-node" />
+            <circle cx="210" cy="35" r="3.2" class="orphanage-node" />
+            <circle cx="265" cy="60" r="3.2" class="orphanage-node" />
+            <circle cx="230" cy="110" r="3.2" class="orphanage-node" />
+            <circle cx="325" cy="25" r="3.2" class="orphanage-node" />
+            <circle cx="380" cy="65" r="3.2" class="orphanage-node" />
+            <circle cx="340" cy="115" r="3.2" class="orphanage-node" />
+            <circle cx="175" cy="165" r="3.2" class="orphanage-node" />
+            <circle cx="230" cy="150" r="3.2" class="orphanage-node" />
+            <circle cx="280" cy="160" r="3.2" class="orphanage-node" />
+            <circle cx="345" cy="155" r="3.2" class="orphanage-node" />
+          </svg>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">153.34</span>
+              <span class="climax-unit">km</span>
+            </div>
+            <p class="climax-desc">
+              5 cluster routes within the 09:00 to 17:00 window
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/orphanage-inspection-route-optimization/screenshots/aco-convergence-cluster0-640.webp"
+              alt="ACO convergence plot"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              Ant colony convergence over 4,189 iterations
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 03: JUANDA AIRPORT VISITOR FORECASTING */}
+  {
+    slug === "juanda-airport-visitor-forecasting" && (
+      <div class="metaphor-canvas canvas-forecast">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Horizon Projection</span>
+        </div>
+
+        <div class="forecast-viz-area">
+          <svg viewBox="0 0 420 180" class="forecast-svg" aria-hidden="true">
+            <line x1="30" y1="150" x2="390" y2="150" class="forecast-axis" />
+            <text x="32" y="166" class="axis-label">
+              2014
+            </text>
+            <text x="215" y="166" class="axis-label highlight">
+              120 MONTHS
+            </text>
+            <text x="345" y="166" class="axis-label">
+              FUTURE
+            </text>
+
+            <polygon
+              points="215,80 270,45 380,30 380,130 270,110 215,80"
+              class="forecast-envelope"
+            />
+
+            <path
+              d="M30,125 Q65,145 100,115 T160,105 T215,80"
+              class="historical-line"
+            />
+
+            <path d="M215,80 Q260,60 305,85 T380,70" class="predicted-line" />
+
+            <line x1="215" y1="20" x2="215" y2="150" class="now-marker" />
+            <circle cx="215" cy="80" r="4.5" class="now-pivot" />
+          </svg>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">R&sup2; 0.869</span>
+              <span class="climax-unit">Model Fit</span>
+            </div>
+            <p class="climax-desc">
+              Random Forest fit on 10 years of monthly passenger data
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/juanda-airport-visitor-forecasting/screenshots/rf-forecast-vs-actual-640.webp"
+              alt="Forecast vs actual test plot"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Forecast vs. actual counts on test split</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 04: SRIWIJAYA AIR REVIEW SENTIMENT ANALYSIS */}
+  {
+    slug === "sriwijayaair-review-sentiment" && (
+      <div class="metaphor-canvas canvas-sentiment">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Aspect Extraction</span>
+        </div>
+
+        <div class="sentiment-stream">
+          <div class="sentiment-row pos-row">
+            <div class="sentiment-quote">
+              &ldquo;Pelayanannya sangat memuaskan dan cepat saat
+              check-in.&rdquo;
+            </div>
+            <div class="token-flow">
+              <span class="token-item">pelayanan</span>
+              <span class="token-plus">+</span>
+              <span class="token-item">sangat</span>
+              <span class="token-plus">+</span>
+              <span class="token-item pos-token">memuaskan</span>
+              <span class="badge-sentiment pos-badge">POSITIVE</span>
+            </div>
+          </div>
+
+          <div class="sentiment-row neg-row">
+            <div class="sentiment-quote">
+              &ldquo;Aplikasi sering force close dan gagal saat bayar
+              tiket.&rdquo;
+            </div>
+            <div class="token-flow">
+              <span class="token-item neg-token">force close</span>
+              <span class="token-plus">+</span>
+              <span class="token-item neg-token">gagal bayar</span>
+              <span class="badge-sentiment neg-badge">NEGATIVE: PAYMENT</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">0.852</span>
+              <span class="climax-unit">Accuracy</span>
+            </div>
+            <p class="climax-desc">
+              1,756 passenger reviews classified with aspect-level complaint
+              tags
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/sriwijayaair-review-sentiment/negative-review-signals-640.webp"
+              alt="Negative review complaint distribution"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Complaint category distribution</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 05: KPC PO WORKFLOW AUTOMATION */}
+  {
+    slug === "kpc-power-automate-po-automation" && (
+      <div class="metaphor-canvas canvas-automation">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Workflow Pipeline</span>
+        </div>
+
+        <div class="workflow-steps-grid">
+          <div class="wf-card">
+            <span class="wf-step">01</span>
+            <strong class="wf-title">Vendor Form</strong>
+            <span class="wf-sub">Request Intake</span>
+          </div>
+          <div class="wf-card">
+            <span class="wf-step">02</span>
+            <strong class="wf-title">Power Automate</strong>
+            <span class="wf-sub">Validation</span>
+          </div>
+          <div class="wf-card active-wf">
+            <span class="wf-step">03</span>
+            <strong class="wf-title">Adaptive Cards</strong>
+            <span class="wf-sub">Approval</span>
+          </div>
+          <div class="wf-card">
+            <span class="wf-step">04</span>
+            <strong class="wf-title">B-Simpel</strong>
+            <span class="wf-sub">Official Letter</span>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">3</span>
+              <span class="climax-unit">User Tests</span>
+            </div>
+            <p class="climax-desc">
+              Automated vendor request to signed appointment letter
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/kpc-power-automate-po-automation/screenshots/01-microsoft-forms-po-request-640.webp"
+              alt="Microsoft Forms intake interface"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Vendor intake portal</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 06: IDEKU V3 ASP.NET CORE STABILIZATION */}
+  {
+    slug === "kpc-ideku-v3-dotnet-stabilization" && (
+      <div class="metaphor-canvas canvas-software">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">System Hardening</span>
+        </div>
+
+        <div class="arch-triad-grid">
+          <div class="triad-card">
+            <span class="triad-pill">SECURITY</span>
+            <strong class="triad-title">RBAC Access</strong>
+            <p class="triad-text">Escalation vectors closed</p>
+          </div>
+          <div class="triad-card">
+            <span class="triad-pill">DATABASE</span>
+            <strong class="triad-title">Task.WhenAll</strong>
+            <p class="triad-text">Query latency optimizations</p>
+          </div>
+          <div class="triad-card active-triad">
+            <span class="triad-pill active">ANALYTICS</span>
+            <strong class="triad-title">Power BI</strong>
+            <p class="triad-text">Executive reports embedded</p>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">14</span>
+              <span class="climax-unit">Shipped</span>
+            </div>
+            <p class="climax-desc">
+              7 features and 7 query performance fixes deployed to production
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/kpc-ideku-v3-dotnet-stabilization/screenshots/04-power-bi-report-640.webp"
+              alt="Embedded Power BI report"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Embedded Power BI report in IdeKU</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 07: INDONESIAN TRANSACTION UNDERSTANDING */}
+  {
+    slug === "indo-transaction-nlp" && (
+      <div class="metaphor-canvas canvas-indo-nlp">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Entity Extraction</span>
+        </div>
+
+        <div class="nlp-evals-display">
+          <div class="nlp-input-row">
+            <span class="nlp-meta-label">INPUT</span>
+            <code class="nlp-speech">
+              &ldquo;kemarin beli kopi 25rb di gofood&rdquo;
+            </code>
+          </div>
+          <div class="nlp-arrow-line">IndoBERT Extraction</div>
+          <div class="nlp-output-block">
+            <span class="nlp-meta-label">STRUCTURED RECORD</span>
+            <pre>
+              <code>{`{ "date": "2026-03-02", "item": "kopi", "amount": 25000, "category": "Food" }`}</code>
+            </pre>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">0.67</span>
+              <span class="climax-unit">Probe Score</span>
+            </div>
+            <p class="climax-desc">
+              Probe accuracy increased from 0.47 to 0.67 with 0.93 category
+              accuracy
+            </p>
+          </div>
+
+          <figure class="evidence-box svg-box">
+            <img
+              src="/covers/indo-transaction-nlp.svg"
+              alt="IndoBERT evaluation harness architecture"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Evaluation harness pipeline</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 08: BANK JATIM PERFORMANCE DASHBOARD */}
+  {
+    slug === "bank-jatim-performance-dashboard" && (
+      <div class="metaphor-canvas canvas-bank">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Scorecard Architecture</span>
+        </div>
+
+        <div class="bsc-quad-grid">
+          <div class="bsc-item">
+            <span class="bsc-tier">P1</span>
+            <strong class="bsc-name">Corporate Contribution</strong>
+            <span class="bsc-role">Strategic IT Alignment</span>
+          </div>
+          <div class="bsc-item">
+            <span class="bsc-tier">P2</span>
+            <strong class="bsc-name">User Orientation</strong>
+            <span class="bsc-role">Branch Service SLA</span>
+          </div>
+          <div class="bsc-item highlight-item">
+            <span class="bsc-tier">P3</span>
+            <strong class="bsc-name">Operational Excellence</strong>
+            <span class="bsc-role">System Uptime</span>
+          </div>
+          <div class="bsc-item">
+            <span class="bsc-tier">P4</span>
+            <strong class="bsc-name">Future Orientation</strong>
+            <span class="bsc-role">Modernization</span>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">4</span>
+              <span class="climax-unit">Perspectives</span>
+            </div>
+            <p class="climax-desc">
+              IT performance metrics mapped to board objectives
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/bank-jatim-performance-dashboard/screenshots/Dashboard_Bank_Jatim_Pusat_page-0001-640.webp"
+              alt="Power BI executive dashboard overview"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Executive balanced scorecard</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 09: LA CRIME TYPE PREDICTION */}
+  {
+    slug === "la-crime-type-prediction" && (
+      <div class="metaphor-canvas canvas-crime">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Decision Boundary</span>
+        </div>
+
+        <div class="crime-space-area">
+          <div class="point-cloud-frame" aria-hidden="true">
+            <span class="dot-cluster d-1" />
+            <span class="dot-cluster d-2" />
+            <span class="dot-cluster d-3" />
+            <span class="dot-cluster d-target" />
+            <span class="dot-cluster d-4" />
+            <span class="dot-cluster d-5" />
+            <div class="decision-hyperplane">
+              <span class="hyperplane-pill">SVM RBF</span>
+            </div>
+          </div>
+
+          <div class="stats-pills-row">
+            <div class="pill-stat">
+              <span>Raw Records</span>
+              <strong>976k</strong>
+            </div>
+            <div class="pill-stat">
+              <span>Sampled</span>
+              <strong>13.8k</strong>
+            </div>
+            <div class="pill-stat">
+              <span>Classes</span>
+              <strong>138</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">138</span>
+              <span class="climax-unit">Classes</span>
+            </div>
+            <p class="climax-desc">
+              SVM RBF baseline across 138 crime categories
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/la-crime-type-prediction/screenshots/correlation-heatmap.webp"
+              alt="Correlation matrix across incident attributes"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>
+              Correlation matrix across incident attributes
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 10: SCENT2ME PERFUME RECOMMENDATION */}
+  {
+    slug === "scent2me-perfume-recommendation" && (
+      <div class="metaphor-canvas canvas-scent">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Vector Similarity</span>
+        </div>
+
+        <div class="scent-pyramid-container">
+          <div class="scent-tier tier-top">
+            <span class="tier-label">TOP</span>
+            <span class="tier-notes">Bergamot &middot; Mandarin</span>
+          </div>
+          <div class="scent-tier tier-heart">
+            <span class="tier-label">HEART</span>
+            <span class="tier-notes">Lavender &middot; Patchouli</span>
+          </div>
+          <div class="scent-tier tier-base active-tier">
+            <span class="tier-label">BASE</span>
+            <span class="tier-notes">Cedarwood &middot; Ambroxan</span>
+          </div>
+          <div class="cosine-match-pill">Cosine similarity: 0.94</div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">TF-IDF</span>
+              <span class="climax-unit">Cosine Match</span>
+            </div>
+            <p class="climax-desc">
+              Content based recommendations with live FastAPI backend
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/scent2me-perfume-recommendation/screenshots/03-results-640.webp"
+              alt="Perfume recommendation results interface"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Matched fragrance recommendations</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+
+  {/* PROJECT 11: MEDIMATE MEDICINE REMINDER APP */}
+  {
+    slug === "medimate-medicine-reminder-app" && (
+      <div class="metaphor-canvas canvas-medimate">
+        <div class="canvas-kicker-bar">
+          <span class="kicker-concept">Regimen Schedule</span>
+        </div>
+
+        <div class="med-regimen-list">
+          <div class="regimen-slot active-slot">
+            <span class="slot-clock">08:00</span>
+            <div class="slot-info">
+              <strong>Amoxicillin</strong>
+              <span>500mg</span>
+            </div>
+            <span class="badge-alarm">&bull; ACTIVE</span>
+          </div>
+          <div class="regimen-slot">
+            <span class="slot-clock">13:00</span>
+            <div class="slot-info">
+              <strong>Paracetamol</strong>
+              <span>650mg</span>
+            </div>
+            <span class="badge-scheduled">SCHEDULED</span>
+          </div>
+          <div class="regimen-slot">
+            <span class="slot-clock">20:00</span>
+            <div class="slot-info">
+              <strong>Multivitamin</strong>
+              <span>1 tablet</span>
+            </div>
+            <span class="badge-scheduled">SCHEDULED</span>
+          </div>
+        </div>
+
+        <div class="stage-footer-split">
+          <div class="narrative-climax">
+            <div class="climax-num-group">
+              <span class="climax-val">Verified</span>
+              <span class="climax-unit">Android Build</span>
+            </div>
+            <p class="climax-desc">
+              Local reminder scheduling and Material 3 CRUD on Flutter
+            </p>
+          </div>
+
+          <figure class="evidence-box">
+            <img
+              src="/assets/projects/medimate-medicine-reminder-app/screenshots/01-home.webp"
+              alt="Flutter medicine reminder home screen"
+              width="280"
+              height="130"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>Prescription schedule interface</figcaption>
+          </figure>
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .project-metaphor {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .metaphor-canvas {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mode-mobile .metaphor-canvas {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .canvas-kicker-bar {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+  }
+
+  .kicker-concept {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* ------------------- STAGE FOOTER SPLIT (CLIMAX + EVIDENCE) ------------------- */
+  .stage-footer-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 0.8rem;
+    margin-top: 0.15rem;
+  }
+
+  .narrative-climax {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .climax-num-group {
+    display: flex;
+    align-items: baseline;
+    gap: 0.45rem;
+  }
+
+  .climax-val {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 2.8vw, 2.35rem);
+    font-weight: 520;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .climax-unit {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--signal-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .climax-desc {
+    margin: 0;
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* Evidence Box Preview */
+  .evidence-box {
+    margin: 0;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .evidence-box img {
+    width: 100%;
+    height: auto;
+    max-height: 90px;
+    object-fit: cover;
+    display: block;
+    background: #ffffff;
+  }
+
+  .evidence-box.svg-box img {
+    object-fit: contain;
+    padding: 0.45rem;
+    max-height: 90px;
+  }
+
+  .evidence-box figcaption {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    padding: 0.35rem 0.55rem;
+    border-top: 1px solid var(--line);
+    background: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ------------------- 01: FRAUD TRANSACTION STREAM ------------------- */
+  .fraud-stream-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 0.65rem 0;
+    border-radius: var(--radius-sm);
+    background: var(--paper-soft);
+  }
+
+  .fraud-stream-track {
+    display: flex;
+    gap: 0.75rem;
+    width: max-content;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    animation: stream-scroll 24s linear infinite;
+  }
+
+  @keyframes stream-scroll {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+
+  .tx-card {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 105px;
+  }
+
+  .tx-id {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+  }
+
+  .tx-amt {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .tx-status {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    font-weight: 700;
+    color: #436b4f;
+    letter-spacing: 0.05em;
+  }
+
+  .tx-anomaly {
+    position: relative;
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.05);
+  }
+
+  .tx-status.flag {
+    color: var(--signal);
+  }
+
+  .tx-sonar-ring {
+    position: absolute;
+    inset: -3px;
+    border: 1.5px solid var(--signal);
+    border-radius: var(--radius-sm);
+    will-change: transform, opacity;
+    animation: sonar 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes sonar {
+    0% {
+      transform: scale(0.97);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.12);
+      opacity: 0;
+    }
+  }
+
+  .scanner-sweep {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 48%;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      var(--signal),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* ------------------- 02: ACO ROUTING ------------------- */
+  .aco-viz-area {
+    width: 100%;
+    background: var(--paper-soft);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+  }
+
+  .aco-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 155px;
+  }
+
+  .aco-grid line {
+    stroke: var(--line);
+    stroke-dasharray: 4 4;
+  }
+
+  .faint-trail {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+    opacity: 0.25;
+  }
+
+  .route-converged {
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .loop-1 {
+    stroke: var(--signal);
+  }
+  .loop-2 {
+    stroke: var(--ink);
+    stroke-width: 1.6;
+    opacity: 0.85;
+  }
+  .loop-3 {
+    stroke: var(--signal);
+    stroke-dasharray: 5 3;
+  }
+  .loop-4 {
+    stroke: var(--ink);
+    stroke-width: 1.6;
+    opacity: 0.85;
+  }
+  .loop-5 {
+    stroke: var(--signal);
+  }
+
+  .depot-node {
+    fill: var(--signal);
+    stroke: #ffffff;
+    stroke-width: 1.5;
+  }
+
+  .node-caption {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    font-weight: 700;
+    fill: var(--signal-deep);
+    letter-spacing: 0.08em;
+  }
+
+  .orphanage-node {
+    fill: var(--ink);
+    stroke: #ffffff;
+    stroke-width: 1;
+  }
+
+  /* ------------------- 03: FORECASTING ------------------- */
+  .forecast-viz-area {
+    width: 100%;
+    background: var(--paper-soft);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+  }
+
+  .forecast-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 155px;
+  }
+
+  .forecast-axis {
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .axis-label {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    fill: var(--ink-soft);
+    letter-spacing: 0.08em;
+  }
+
+  .axis-label.highlight {
+    fill: var(--signal-deep);
+    font-weight: 700;
+  }
+
+  .forecast-envelope {
+    fill: rgba(201, 46, 62, 0.08);
+    stroke: rgba(201, 46, 62, 0.25);
+    stroke-dasharray: 3 3;
+  }
+
+  .historical-line {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+  }
+
+  .predicted-line {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.2;
+    stroke-dasharray: 4 3;
+    stroke-linecap: round;
+  }
+
+  .now-marker {
+    stroke: var(--signal);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 3;
+  }
+
+  .now-pivot {
+    fill: var(--signal);
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    transform-origin: 215px 80px;
+    transform-box: view-box;
+    will-change: transform;
+    animation: pivot-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes pivot-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+  }
+
+  /* ------------------- 04: SENTIMENT ANALYSIS ------------------- */
+  .sentiment-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .sentiment-row {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .sentiment-row.pos-row {
+    border-left: 3px solid #436b4f;
+  }
+
+  .sentiment-row.neg-row {
+    border-left: 3px solid var(--signal);
+  }
+
+  .sentiment-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.84rem;
+    color: var(--ink);
+  }
+
+  .token-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+  }
+
+  .token-item {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-sm);
+    color: var(--ink-muted);
+  }
+
+  .token-item.pos-token {
+    background: rgba(67, 107, 79, 0.1);
+    color: #436b4f;
+    font-weight: 600;
+  }
+
+  .token-item.neg-token {
+    background: var(--accent-dim);
+    color: var(--signal-deep);
+    font-weight: 600;
+  }
+
+  .token-plus {
+    color: var(--ink-soft);
+  }
+
+  .badge-sentiment {
+    padding: 0.12rem 0.4rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .pos-badge {
+    background: rgba(67, 107, 79, 0.12);
+    color: #436b4f;
+  }
+
+  .neg-badge {
+    background: var(--accent-dim);
+    color: var(--signal-deep);
+  }
+
+  /* ------------------- 05: KPC PO AUTOMATION ------------------- */
+  .workflow-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.4rem;
+  }
+
+  .wf-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .wf-card.active-wf {
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.04);
+  }
+
+  .wf-step {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .wf-title {
+    font-size: 0.72rem;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .wf-sub {
+    font-size: 0.6rem;
+    color: var(--ink-muted);
+  }
+
+  /* ------------------- 06: IDEKU V3 SOFTWARE STABILIZATION ------------------- */
+  .arch-triad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .triad-card {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .triad-card.active-triad {
+    border-color: var(--signal);
+  }
+
+  .triad-pill {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+
+  .triad-pill.active {
+    color: var(--signal);
+  }
+
+  .triad-title {
+    font-family: var(--font-serif);
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .triad-text {
+    margin: 0;
+    font-size: 0.66rem;
+    color: var(--ink-muted);
+    line-height: 1.35;
+  }
+
+  /* ------------------- 07: INDO TRANSACTION NLP ------------------- */
+  .nlp-evals-display {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .nlp-meta-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.15rem;
+  }
+
+  .nlp-speech {
+    display: block;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink);
+  }
+
+  .nlp-arrow-line {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--signal-deep);
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .nlp-output-block pre {
+    margin: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.5rem 0.7rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.64rem;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
+  }
+
+  /* ------------------- 08: BANK JATIM ------------------- */
+  .bsc-quad-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .bsc-item {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .bsc-item.highlight-item {
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.04);
+  }
+
+  .bsc-tier {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 700;
+    color: var(--signal-deep);
+  }
+
+  .bsc-name {
+    font-size: 0.74rem;
+    color: var(--ink);
+  }
+
+  .bsc-role {
+    font-size: 0.62rem;
+    color: var(--ink-muted);
+  }
+
+  /* ------------------- 09: LA CRIME ------------------- */
+  .crime-space-area {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem;
+  }
+
+  .point-cloud-frame {
+    position: relative;
+    height: 36px;
+  }
+
+  .dot-cluster {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ink-soft);
+  }
+
+  .d-1 {
+    top: 8px;
+    left: 14%;
+  }
+  .d-2 {
+    top: 18px;
+    left: 32%;
+  }
+  .d-3 {
+    top: 6px;
+    left: 74%;
+  }
+  .d-4 {
+    top: 22px;
+    left: 58%;
+  }
+  .d-5 {
+    top: 12px;
+    left: 86%;
+  }
+  .d-target {
+    top: 9px;
+    left: 46%;
+    width: 7px;
+    height: 7px;
+    background: var(--signal);
+    box-shadow: 0 0 0 3px rgba(201, 46, 62, 0.2);
+  }
+
+  .decision-hyperplane {
+    border-top: 1.5px dashed var(--signal);
+    position: relative;
+    margin-top: 0.85rem;
+  }
+
+  .hyperplane-pill {
+    position: absolute;
+    top: -8px;
+    right: 8px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.1rem 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    color: var(--signal-deep);
+    border-radius: var(--radius-pill);
+  }
+
+  .stats-pills-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+    border-top: 1px solid var(--line);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .pill-stat span {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    color: var(--ink-soft);
+  }
+
+  .pill-stat strong {
+    font-size: 0.76rem;
+    color: var(--ink);
+  }
+
+  /* ------------------- 10: SCENT2ME ------------------- */
+  .scent-pyramid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .scent-tier {
+    width: 100%;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .tier-top {
+    width: 75%;
+  }
+  .tier-heart {
+    width: 88%;
+  }
+  .tier-base {
+    width: 100%;
+  }
+
+  .scent-tier.active-tier {
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.04);
+  }
+
+  .tier-label {
+    font-family: var(--font-mono);
+    font-size: 0.56rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+
+  .tier-notes {
+    font-size: 0.66rem;
+    color: var(--ink-muted);
+  }
+
+  .cosine-match-pill {
+    margin-top: 0.25rem;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.16rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+  }
+
+  /* ------------------- 11: MEDIMATE ------------------- */
+  .med-regimen-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .regimen-slot {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .regimen-slot.active-slot {
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.04);
+  }
+
+  .slot-clock {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .slot-info strong {
+    font-size: 0.72rem;
+    color: var(--ink);
+    margin-right: 0.3rem;
+  }
+
+  .slot-info span {
+    font-size: 0.62rem;
+    color: var(--ink-muted);
+  }
+
+  .badge-alarm {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    font-weight: 700;
+    color: var(--signal);
+    letter-spacing: 0.05em;
+  }
+
+  .badge-scheduled {
+    font-family: var(--font-mono);
+    font-size: 0.54rem;
+    color: var(--ink-soft);
+  }
+
+  /* ------------------- MODE-MOBILE SPECIFIC OVERRIDES ------------------- */
+  .mode-mobile .stage-footer-split {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .mode-mobile .evidence-box img {
+    max-height: 140px;
+    object-fit: contain;
+  }
+  .mode-mobile .workflow-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.45rem;
+  }
+  .mode-mobile .arch-triad-grid {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+  .mode-mobile .bsc-quad-grid {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+  .mode-mobile .tier-top,
+  .mode-mobile .tier-heart,
+  .mode-mobile .tier-base {
+    width: 100%;
+  }
+
+  /* ------------------- RESPONSIVE & REDUCED MOTION ------------------- */
+  @media (max-width: 960px) {
+    .stage-footer-split {
+      grid-template-columns: 1fr;
+      gap: 0.85rem;
+    }
+    .evidence-box img {
+      max-height: 140px;
+      object-fit: contain;
+    }
+    .workflow-steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.45rem;
+    }
+    .arch-triad-grid {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+    .bsc-quad-grid {
+      grid-template-columns: 1fr;
+      gap: 0.45rem;
+    }
+    .tier-top,
+    .tier-heart,
+    .tier-base {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .workflow-steps-grid {
+      grid-template-columns: 1fr;
+    }
+    .stats-pills-row {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.35rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .stats-pills-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fraud-stream-track {
+      animation: none;
+    }
+    .tx-sonar-ring {
+      animation: none;
+    }
+    .now-pivot {
+      animation: none;
+    }
+  }
+</style>

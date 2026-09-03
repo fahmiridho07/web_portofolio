@@ -1,11 +1,8 @@
 ---
 import CaseSnapshotHero from "@components/CaseSnapshotHero.astro";
 import ContentImage from "@components/ContentImage.astro";
+import ProjectVisualMetaphor from "@components/ProjectVisualMetaphor.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
-import {
-  getCaseStudyNavSections,
-  getCaseStudySectionMap,
-} from "@lib/case-study";
 import { getImageMeta } from "@lib/images";
 import {
   getBreadcrumbSchema,
@@ -50,6 +47,7 @@ const relatedProjects = allProjects
     return a.data.priority - b.data.priority;
   })
   .slice(0, 2);
+
 const siteUrl = Astro.site?.href ?? Astro.url.origin;
 const projectOg = getProjectOpenGraph(project.data);
 const projectOgImage = getImageMeta(project.data.coverImage);
@@ -68,8 +66,6 @@ const breadcrumbSchema = getBreadcrumbSchema(siteUrl, [
   { name: project.data.title, path: `/projects/${project.data.slug}/` },
 ]);
 const articlePublishedTime = `${project.data.year}-01-01T00:00:00.000Z`;
-const caseNavSections = getCaseStudyNavSections(project.body ?? "");
-const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
 ---
 
 <BaseLayout
@@ -83,63 +79,76 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   ogImageWidth={projectOgImage?.width}
   ogImageHeight={projectOgImage?.height}
 >
-  <article data-case-sections={JSON.stringify(caseSectionMap)}>
+  <article class="project-editorial-showcase">
+    {/* 01. 3D KINETIC HERO SHOWCASE */}
     <CaseSnapshotHero project={project} />
 
-    <div
-      class="progress"
-      role="progressbar"
-      aria-label="Reading progress"
-      aria-valuemin="0"
-      aria-valuemax="100"
-      aria-valuenow="0"
-      data-case-progress-track
-    >
-      <span data-case-progress></span>
-    </div>
+    {/* 02. SYSTEM BLUEPRINT & VISUAL EVIDENCE */}
+    <section id="visual-evidence" class="visual-exhibit-section divider">
+      <div class="container">
+        <div class="exhibit-header" data-reveal>
+          <p class="section-label">Visual Exhibit</p>
+          <h2 class="exhibit-title">System Blueprint &amp; Verification.</h2>
+          <p class="exhibit-subhead">
+            Algorithmic mechanism and measured empirical evidence from the
+            shipped system.
+          </p>
+        </div>
 
-    <section id="case-study" class="case-body">
-      <div class="container case-body-inner">
-        <nav class="case-read-nav" aria-label="Case study quick navigation">
-          <a
-            class="archive-return"
-            href="/projects/"
-            data-astro-prefetch="hover"
-            ><span aria-hidden="true">&lt;-</span> All projects</a
-          >
-          <div class="read-flow">
-            <p class="section-label">Read flow</p>
-            <a
-              class="read-flow-link"
-              href="#case-study"
-              data-case-nav-link
-              aria-current="location">Overview</a
-            >
-            {
-              caseNavSections.map((section) => (
-                <a
-                  class="read-flow-link"
-                  href={`#${section.id}`}
-                  data-case-nav-link
-                >
-                  {section.label}
-                </a>
-              ))
-            }
+        <div class="exhibit-metaphor-shell" data-reveal data-reveal-delay="40">
+          <ProjectVisualMetaphor slug={project.data.slug} mode="stage" />
+        </div>
+      </div>
+    </section>
+
+    {/* 03. THE TRIAD: 3 VERIFIED TAKEAWAYS (CLEAN & MINIMAL) */}
+    {
+      project.data.proof && project.data.proof.length > 0 && (
+        <section class="triad-section divider">
+          <div class="container">
+            <div class="triad-header" data-reveal>
+              <p class="section-label">Engineering Takeaways</p>
+              <h2 class="triad-title">Key Pillars &amp; Findings.</h2>
+            </div>
+
+            <div class="triad-grid" data-reveal data-reveal-delay="40">
+              {project.data.proof.map((proofPoint, idx) => (
+                <div class="triad-card">
+                  <span class="triad-idx">0{idx + 1}</span>
+                  <p class="triad-desc">{proofPoint}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </nav>
+        </section>
+      )
+    }
 
-        <div class="case-reading">
-          <div class="case-deep-dive" data-reveal>
+    {/* 04. DISCREET TECHNICAL SPEC DRAWER (FOR TECHNICAL EVALUATORS) */}
+    <section class="technical-drawer-section divider">
+      <div class="container">
+        <details class="academic-drawer" id="methodology-notes">
+          <summary class="drawer-summary">
+            <div class="summary-left">
+              <span class="drawer-bullet" aria-hidden="true">&plus;</span>
+              <span class="drawer-title"
+                >Technical Specification &amp; Methodology Notes</span
+              >
+            </div>
+            <span class="drawer-hint">Expand paper spec</span>
+          </summary>
+
+          <div class="drawer-body">
             <div class="prose">
               <Content components={{ img: ContentImage }} />
             </div>
           </div>
-        </div>
+        </details>
       </div>
     </section>
   </article>
 
+  {/* 05. RELATED WORK */}
   {
     relatedProjects.length > 0 && (
       <section class="related-section divider">
@@ -170,6 +179,7 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     )
   }
 
+  {/* 06. ARCHIVE RETURN */}
   <section class="case-exit divider">
     <div class="container case-exit-card">
       <div>
@@ -183,256 +193,209 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
   </section>
 
   <script>
-    import type { CaseStudySection } from "@lib/case-study";
     import { initOnPageLoad } from "@lib/page-script";
 
     initOnPageLoad(() => {
-      const caseRoot = document.querySelector<HTMLElement>(
-        "[data-case-sections]",
-      );
-      const caseSectionMap: CaseStudySection[] = caseRoot?.dataset.caseSections
-        ? JSON.parse(caseRoot.dataset.caseSections)
-        : [];
+      const drawer =
+        document.querySelector<HTMLDetailsElement>("#methodology-notes");
+      if (!drawer) return;
 
-      const progress = document.querySelector<HTMLElement>(
-        "[data-case-progress]",
-      );
-      const progressTrack = document.querySelector<HTMLElement>(
-        "[data-case-progress-track]",
-      );
-      const controller = new AbortController();
-      const { signal } = controller;
-      let progressFrame = 0;
+      const hint = drawer.querySelector<HTMLElement>(".drawer-hint");
 
-      const updateProgress = () => {
-        window.cancelAnimationFrame(progressFrame);
-        progressFrame = window.requestAnimationFrame(() => {
-          const max =
-            document.documentElement.scrollHeight - window.innerHeight;
-          const value = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
-          const percent = Math.round(value * 100);
-          progress?.style.setProperty("transform", `scaleX(${value})`);
-          progressTrack?.setAttribute("aria-valuenow", String(percent));
-          progressTrack?.classList.toggle(
-            "is-active",
-            percent > 2 && percent < 98,
-          );
-        });
-      };
-
-      document
-        .querySelectorAll<HTMLHeadingElement>(".prose h2")
-        .forEach((heading) => {
-          const label = heading.textContent?.trim();
-          const section = caseSectionMap.find((item) => item.label === label);
-
-          if (section && !document.getElementById(section.id)) {
-            heading.id = section.id;
-          }
-        });
-
-      const readLinks = Array.from(
-        document.querySelectorAll<HTMLAnchorElement>("[data-case-nav-link]"),
-      );
-      const sections = readLinks
-        .map((link) => {
-          const id = link.hash.slice(1);
-          const section = document.getElementById(id);
-          return section ? { id, link, section } : null;
-        })
-        .filter(
-          (
-            item,
-          ): item is {
-            id: string;
-            link: HTMLAnchorElement;
-            section: HTMLElement;
-          } => Boolean(item),
-        );
-
-      const setActiveSection = (activeId: string) => {
-        readLinks.forEach((link) => {
-          const isActive = link.hash === `#${activeId}`;
-
-          if (isActive) {
-            link.setAttribute("aria-current", "location");
-          } else {
-            link.removeAttribute("aria-current");
-          }
-        });
-      };
-
-      const updateActiveSection = () => {
-        const anchorLine = window.innerHeight * 0.28;
-        const active = sections.reduce<(typeof sections)[number] | null>(
-          (current, item) => {
-            const rect = item.section.getBoundingClientRect();
-            return rect.top <= anchorLine ? item : current;
-          },
-          sections[0] ?? null,
-        );
-
-        if (active) {
-          setActiveSection(active.id);
+      drawer.addEventListener("toggle", () => {
+        if (hint) {
+          hint.textContent = drawer.open
+            ? "Collapse paper spec"
+            : "Expand paper spec";
         }
-      };
+      });
 
-      let sectionObserver: IntersectionObserver | undefined;
-
-      if ("IntersectionObserver" in window) {
-        sectionObserver = new IntersectionObserver(updateActiveSection, {
-          rootMargin: "-22% 0px -64% 0px",
-          threshold: [0, 0.25, 0.7],
-        });
-
-        sections.forEach((item) => sectionObserver?.observe(item.section));
+      // Auto open if linked directly with #methodology-notes
+      if (window.location.hash === "#methodology-notes") {
+        drawer.open = true;
       }
-
-      updateProgress();
-      updateActiveSection();
-      window.addEventListener("scroll", updateProgress, {
-        passive: true,
-        signal,
-      });
-      window.addEventListener("resize", updateProgress, { signal });
-      window.addEventListener("scroll", updateActiveSection, {
-        passive: true,
-        signal,
-      });
-      window.addEventListener("resize", updateActiveSection, { signal });
-
-      return () => {
-        controller.abort();
-        window.cancelAnimationFrame(progressFrame);
-        sectionObserver?.disconnect();
-      };
     });
   </script>
 </BaseLayout>
 
 <style>
-  .progress {
-    position: sticky;
-    top: 3.55rem;
-    z-index: 45;
-    height: 2px;
-    overflow: hidden;
-    background: var(--line);
-    transition: opacity var(--motion-fast) var(--ease-standard);
+  .project-editorial-showcase {
+    background: var(--paper);
   }
 
-  .progress span {
-    position: relative;
-    display: block;
-    width: 100%;
-    height: 100%;
-    background: var(--rust);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 90ms linear;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .progress {
-      display: none;
-    }
-  }
-
-  .case-body,
-  .related-section,
-  .case-exit {
+  /* ---------------------- Visual Exhibit Section ---------------------- */
+  .visual-exhibit-section {
     background: var(--paper);
     padding-block: var(--space-section-before) var(--space-section-after);
   }
 
-  .case-body-inner {
+  .exhibit-header {
     display: grid;
-    grid-template-columns: minmax(9rem, 0.22fr) minmax(0, 860px);
-    gap: var(--gap-grid-lg);
-    align-items: start;
+    gap: 0.5rem;
+    max-width: 680px;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
   }
 
-  .case-read-nav {
-    position: sticky;
-    top: 5rem;
-    display: grid;
-    gap: var(--space-stack-md);
-    min-width: 0;
+  .exhibit-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    font-weight: 480;
+    line-height: 1.15;
+    color: var(--ink);
+    letter-spacing: -0.01em;
   }
 
-  .read-flow {
-    display: grid;
-    gap: var(--space-stack-xs);
+  .exhibit-subhead {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: clamp(0.95rem, 1.3vw, 1.05rem);
+    line-height: 1.6;
   }
 
-  .read-flow .section-label {
-    margin: 0 0 0.08rem;
+  .exhibit-metaphor-shell {
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
   }
 
-  .read-flow-link {
-    display: inline-flex;
-    width: fit-content;
-    border-left: 1.5px solid transparent;
-    color: var(--ink-soft);
-    font-size: 0.78rem;
-    font-weight: 500;
-    line-height: 1.2;
-    padding: 0.28rem 0 0.28rem 0.7rem;
-    transition:
-      border-color var(--motion-fast) var(--ease-standard),
-      color var(--motion-fast) var(--ease-standard);
+  /* ---------------------- The Triad Section (Key Takeaways) ---------------------- */
+  .triad-section {
+    background: var(--paper);
+    padding-block: var(--space-section-before) var(--space-section-after);
   }
 
-  .read-flow-link:hover {
-    border-left-color: var(--line-strong);
+  .triad-header {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .triad-title {
+    margin: 0.4rem 0 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+    font-weight: 480;
+    line-height: 1.15;
     color: var(--ink);
   }
 
-  .read-flow-link[aria-current="location"] {
-    border-left-color: var(--rust);
-    color: var(--rust-deep);
+  .triad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
   }
 
-  .archive-return {
-    display: inline-flex;
-    width: fit-content;
-    align-items: baseline;
-    gap: 0.35rem;
+  .triad-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .triad-idx {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--signal-deep);
+    letter-spacing: 0.08em;
+  }
+
+  .triad-desc {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
     color: var(--ink-muted);
-    font-size: 0.8rem;
+  }
+
+  /* ---------------------- Discreet Technical Drawer ---------------------- */
+  .technical-drawer-section {
+    background: var(--paper);
+    padding-block: clamp(2rem, 4vw, 3rem);
+  }
+
+  .academic-drawer {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper-soft);
+    overflow: hidden;
+    transition: background var(--motion-fast) var(--ease-standard);
+  }
+
+  .academic-drawer[open] {
+    background: #ffffff;
+  }
+
+  .drawer-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .drawer-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .drawer-summary:hover {
+    color: var(--signal-deep);
+  }
+
+  .summary-left {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .drawer-bullet {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    color: var(--signal);
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .academic-drawer[open] .drawer-bullet {
+    transform: rotate(45deg);
+  }
+
+  .drawer-title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
     font-weight: 500;
-    line-height: 1;
-    padding-block: 0.25rem;
+    color: var(--ink);
   }
 
-  .archive-return:hover {
-    color: var(--rust);
+  .drawer-hint {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
 
-  .archive-return span,
-  .case-exit-card a span {
-    display: inline-block;
-    transition: transform var(--motion-fast) var(--ease-out);
+  .drawer-body {
+    border-top: 1px solid var(--line);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: #ffffff;
   }
 
-  .archive-return:hover span {
-    transform: translateX(-3px);
-  }
-
-  .case-reading,
   .prose {
-    max-width: 860px;
-    min-width: 0;
+    max-width: 820px;
+    margin-inline: auto;
   }
 
-  .case-reading {
-    display: grid;
-    gap: var(--gap-grid-lg);
-  }
-
-  .case-deep-dive {
-    display: grid;
-    gap: var(--space-stack-md);
+  /* ---------------------- Related & Exit Sections ---------------------- */
+  .related-section,
+  .case-exit {
+    background: var(--paper);
+    padding-block: var(--space-section-before) var(--space-section-after);
   }
 
   .related-heading {
@@ -547,55 +510,47 @@ const caseSectionMap = getCaseStudySectionMap(project.body ?? "");
     transform: translateX(3px);
   }
 
-  @media (max-width: 820px) {
-    .case-body-inner {
+  @media (max-width: 860px) {
+    .triad-grid {
       grid-template-columns: 1fr;
-    }
-
-    .case-read-nav {
-      position: static;
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .read-flow {
-      display: flex;
-      flex: 1 1 100%;
-      flex-wrap: wrap;
-      gap: 0.42rem;
-    }
-
-    .read-flow .section-label {
-      flex: 1 1 100%;
+      gap: 1rem;
     }
 
     .case-exit-card {
       grid-template-columns: 1fr;
     }
 
-    .read-flow-link {
-      border-left: 0;
-      border-bottom: 1.5px solid transparent;
-      padding: 0.25rem 0;
-      margin-right: 0.9rem;
-    }
-
-    .read-flow-link:hover {
-      border-bottom-color: var(--line-strong);
-    }
-
-    .read-flow-link[aria-current="location"] {
-      border-bottom-color: var(--rust);
+    .case-exit-card a {
+      justify-self: start;
     }
   }
 
-  @media (max-width: 760px) {
-    .case-brief-grid article {
-      min-height: auto;
+  @media (max-width: 640px) {
+    .related-row {
+      grid-template-columns: minmax(0, 1fr) 1.5rem;
+      grid-template-areas:
+        "title arrow"
+        "meta arrow";
+      gap: 0.35rem 0.75rem;
     }
 
-    .case-exit-card a {
-      justify-self: start;
+    .related-title {
+      grid-area: title;
+    }
+
+    .related-meta {
+      grid-area: meta;
+      text-align: left;
+    }
+
+    .related-arrow {
+      grid-area: arrow;
+      align-self: center;
+    }
+
+    .summary-left {
+      flex-wrap: wrap;
+      gap: 0.4rem;
     }
   }
 </style>

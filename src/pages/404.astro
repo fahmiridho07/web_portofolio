@@ -127,6 +127,21 @@ import BaseLayout from "@layouts/BaseLayout.astro";
     margin-top: 0.75rem;
   }
 
+  @media (max-width: 480px) {
+    .nf-actions {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 0.55rem;
+    }
+
+    .nf-actions .dark-cta {
+      width: 100%;
+      justify-content: center;
+      min-height: 42px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .nf-ring {
       opacity: 0.9;

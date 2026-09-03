@@ -1,226 +1,394 @@
 ---
-// VisualProjectExhibits.astro: Scene 6 Visual Project Preview
-// Replaces text-heavy project cards with 3 animated, conceptual exhibits:
-// 1. Fraud Detection: Transaction stream with flagged outlier
-// 2. Route Optimization: Converging ant paths across coordinates
-// 3. Demand Forecasting: Minimal historical curve projecting into the future
+// VisualProjectExhibits.astro: Interactive Engineering Lab & Exhibits
+// Provides tangible, playful micro-sandboxes where visitors can test algorithms live:
+// 1. Fraud Detection: Live anomaly injection & latent space radar
+// 2. Route Optimization: Ant colony convergence solver & cluster cycler
+// 3. Demand Forecasting: Multi-horizon projection & confidence envelope
 ---
 
 <section id="work" class="exhibits-section divider">
   <div class="container">
-    <!-- Header -->
+    {/* Header */}
     <div class="exhibits-header" data-reveal>
       <div class="header-tag">
-        <span class="tag-num">06</span>
-        <span class="tag-title">DISCOVERY</span>
+        <span class="tag-pulse"></span>
+        <span class="tag-title">Interactive Lab</span>
       </div>
-      <h2 class="exhibits-title">Ideas turned into working systems.</h2>
+      <h2 class="exhibits-title">Working systems you can test.</h2>
       <p class="exhibits-subhead">
-        Visual glimpses into real engineering projects. Click any exhibit to
-        inspect the full case study and code architecture.
+        Real algorithms from my shipped work. Inject anomalies, solve routes,
+        and project time horizons before diving into code.
       </p>
     </div>
 
-    <!-- The 3 Visual Exhibits -->
+    {/* The 3 Interactive Exhibits */}
     <div class="exhibits-stack">
-      <!-- EXHIBIT 1: Fraud Detection -->
-      <article class="exhibit-card exhibit-fraud" data-reveal>
-        <a
-          href="/projects/fraud-detection-ml-pipeline/"
-          class="exhibit-link"
-          data-astro-prefetch="hover"
-        >
+      {/* EXHIBIT 1: Fraud Detection */}
+      <article class="exhibit-card exhibit-fraud" data-reveal data-card-tilt>
+        <div class="exhibit-inner">
           <div class="exhibit-visual">
             <div class="visual-backdrop" aria-hidden="true">
               <div class="grid-mesh"></div>
             </div>
 
-            <div class="stream-container" data-stream>
-              <div class="stream-track">
-                <div class="stream-item item-ok">
-                  <div class="item-head">
-                    <span class="stream-id">TX #4820</span>
-                    <span class="stream-amount">$124.50</span>
+            <div class="visual-interactive-zone">
+              <div class="stream-container" data-stream>
+                <div class="stream-track" data-fraud-track>
+                  <div class="stream-item item-ok">
+                    <div class="item-head">
+                      <span class="stream-id">TX 4820</span>
+                      <span class="stream-amount">$124.50</span>
+                    </div>
+                    <span class="stream-status ok">&bull; CLEARED</span>
                   </div>
-                  <span class="stream-status ok">&bull; CLEARED</span>
+                  <div class="stream-item item-ok">
+                    <div class="item-head">
+                      <span class="stream-id">TX 4821</span>
+                      <span class="stream-amount">$89.00</span>
+                    </div>
+                    <span class="stream-status ok">&bull; CLEARED</span>
+                  </div>
+                  <div class="stream-item item-flagged" data-primary-anomaly>
+                    <div class="item-head">
+                      <span class="stream-id">TX 4822</span>
+                      <span class="stream-amount">$4,920.00</span>
+                    </div>
+                    <span class="stream-status flag">&bull; ANOMALY</span>
+                    <span class="stream-radar"></span>
+                  </div>
+                  <div class="stream-item item-ok">
+                    <div class="item-head">
+                      <span class="stream-id">TX 4823</span>
+                      <span class="stream-amount">$32.10</span>
+                    </div>
+                    <span class="stream-status ok">&bull; CLEARED</span>
+                  </div>
+                  <div class="stream-item item-ok">
+                    <div class="item-head">
+                      <span class="stream-id">TX 4824</span>
+                      <span class="stream-amount">$215.80</span>
+                    </div>
+                    <span class="stream-status ok">&bull; CLEARED</span>
+                  </div>
+                  <div class="stream-item item-ok">
+                    <div class="item-head">
+                      <span class="stream-id">TX 4825</span>
+                      <span class="stream-amount">$14.50</span>
+                    </div>
+                    <span class="stream-status ok">&bull; CLEARED</span>
+                  </div>
                 </div>
-                <div class="stream-item item-ok">
-                  <div class="item-head">
-                    <span class="stream-id">TX #4821</span>
-                    <span class="stream-amount">$89.00</span>
-                  </div>
-                  <span class="stream-status ok">&bull; CLEARED</span>
-                </div>
-                <div class="stream-item item-flagged">
-                  <div class="item-head">
-                    <span class="stream-id">TX #4822</span>
-                    <span class="stream-amount">$4,920.00</span>
-                  </div>
-                  <span class="stream-status flag">&bull; ANOMALY CAUGHT</span>
-                  <span class="stream-radar"></span>
-                </div>
-                <div class="stream-item item-ok">
-                  <div class="item-head">
-                    <span class="stream-id">TX #4823</span>
-                    <span class="stream-amount">$32.10</span>
-                  </div>
-                  <span class="stream-status ok">&bull; CLEARED</span>
-                </div>
-                <div class="stream-item item-ok">
-                  <div class="item-head">
-                    <span class="stream-id">TX #4824</span>
-                    <span class="stream-amount">$215.80</span>
-                  </div>
-                  <span class="stream-status ok">&bull; CLEARED</span>
+                <div class="scanner-laser" aria-hidden="true"></div>
+              </div>
+
+              {/* Interactive Lab Control Bar */}
+              <div class="lab-control-bar">
+                <button
+                  type="button"
+                  class="lab-action-btn"
+                  data-inject-fraud
+                  aria-label="Inject simulated fraudulent transaction"
+                >
+                  <span class="btn-icon">&plus;</span>
+                  <span>Inject Anomaly Payload</span>
+                </button>
+                <div class="lab-status-pill" data-fraud-status>
+                  <span class="status-dot"></span>
+                  <span class="status-msg"
+                    >Scanner active &middot; 1:590 Imbalance</span
+                  >
                 </div>
               </div>
-              <div class="scanner-laser" aria-hidden="true"></div>
             </div>
-            <span class="exhibit-pill"
-              >Live Inference &middot; Latent Oversampling</span
-            >
           </div>
 
           <div class="exhibit-copy">
             <div class="copy-badge">01 &middot; Machine Learning</div>
-            <h3 class="copy-title">Fraud Detection</h3>
+            <h3 class="copy-title">
+              <a
+                href="/projects/fraud-detection-ml-pipeline/"
+                class="title-link"
+              >
+                Fraud Detection Pipeline
+              </a>
+            </h3>
             <p class="copy-desc">
-              Teaching machines to spot suspicious transactions before they
-              settle.
+              Detecting fraudulent payment transactions under heavy class
+              imbalance using latent oversampling and LightGBM.
             </p>
+
+            <div class="metric-preview-row">
+              <div class="metric-block">
+                <span class="m-val">0.855</span>
+                <span class="m-lbl">PR-AUC</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val" data-fraud-caught-counter>3,087</span>
+                <span class="m-lbl">Caught</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val">89%</span>
+                <span class="m-lbl">Precision</span>
+              </div>
+            </div>
+
             <div class="copy-action">
-              <span class="cta-text">Explore Case Study</span>
-              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              <a
+                href="/projects/fraud-detection-ml-pipeline/"
+                class="cta-button"
+                data-astro-prefetch="hover"
+              >
+                <span>View Case Study</span>
+                <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              </a>
             </div>
           </div>
-        </a>
+        </div>
       </article>
 
-      <!-- EXHIBIT 2: Route Optimization -->
-      <article class="exhibit-card exhibit-routing" data-reveal>
-        <a
-          href="/projects/orphanage-inspection-route-optimization/"
-          class="exhibit-link"
-          data-astro-prefetch="hover"
-        >
+      {/* EXHIBIT 2: Route Optimization */}
+      <article class="exhibit-card exhibit-routing" data-reveal data-card-tilt>
+        <div class="exhibit-inner">
           <div class="exhibit-visual">
             <div class="visual-backdrop" aria-hidden="true">
               <div class="grid-mesh"></div>
             </div>
 
-            <svg class="routing-svg" viewBox="0 0 380 240" aria-hidden="true">
-              <!-- Coordinates Grid -->
-              <g class="routing-grid">
-                <line x1="20" y1="60" x2="360" y2="60"></line>
-                <line x1="20" y1="120" x2="360" y2="120"></line>
-                <line x1="20" y1="180" x2="360" y2="180"></line>
-                <line x1="100" y1="20" x2="100" y2="220"></line>
-                <line x1="200" y1="20" x2="200" y2="220"></line>
-                <line x1="300" y1="20" x2="300" y2="220"></line>
-              </g>
+            <div class="visual-interactive-zone">
+              <svg class="routing-svg" viewBox="0 0 380 220" aria-hidden="true">
+                <g class="routing-grid">
+                  <line x1="20" y1="55" x2="360" y2="55"></line>
+                  <line x1="20" y1="110" x2="360" y2="110"></line>
+                  <line x1="20" y1="165" x2="360" y2="165"></line>
+                  <line x1="95" y1="20" x2="95" y2="200"></line>
+                  <line x1="190" y1="20" x2="190" y2="200"></line>
+                  <line x1="285" y1="20" x2="285" y2="200"></line>
+                </g>
 
-              <!-- Converging Optimal Route Paths -->
-              <path
-                class="route-converged path-1"
-                d="M40,160 L90,110 L140,140 L80,180 Z"></path>
-              <path
-                class="route-converged path-2"
-                d="M140,140 L200,80 L250,110 L210,160 Z"></path>
-              <path
-                class="route-converged path-3"
-                d="M200,80 L270,40 L330,80 L290,130 Z"></path>
+                {/* Dynamic SVG Routes for Clusters */}
+                <g class="aco-paths" data-aco-paths>
+                  <path
+                    class="route-converged path-active loop-1"
+                    d="M40,150 L95,85 L145,115 L80,165 Z"></path>
+                  <path
+                    class="route-converged path-active loop-2"
+                    d="M145,115 L205,55 L255,95 L215,145 Z"></path>
+                  <path
+                    class="route-converged path-active loop-3"
+                    d="M205,55 L285,35 L340,75 L300,125 Z"></path>
+                </g>
 
-              <!-- Map Nodes -->
-              <circle cx="40" cy="160" r="5" class="node-depot"></circle>
-              <circle cx="90" cy="110" r="3.5" class="node-point"></circle>
-              <circle cx="140" cy="140" r="3.5" class="node-point"></circle>
-              <circle cx="80" cy="180" r="3.5" class="node-point"></circle>
-              <circle cx="200" cy="80" r="3.5" class="node-point"></circle>
-              <circle cx="250" cy="110" r="3.5" class="node-point"></circle>
-              <circle cx="210" cy="160" r="3.5" class="node-point"></circle>
-              <circle cx="270" cy="40" r="3.5" class="node-point"></circle>
-              <circle cx="330" cy="80" r="3.5" class="node-point"></circle>
-              <circle cx="290" cy="130" r="3.5" class="node-point"></circle>
-            </svg>
-            <span class="exhibit-pill"
-              >Ant Colony &middot; 5 Optimal Clusters</span
-            >
+                {/* Map Nodes */}
+                <circle cx="40" cy="150" r="5.5" class="node-depot"></circle>
+                <text x="40" y="172" class="node-text">DEPOT</text>
+                <circle cx="95" cy="85" r="3.5" class="node-point"></circle>
+                <circle cx="145" cy="115" r="3.5" class="node-point"></circle>
+                <circle cx="80" cy="165" r="3.5" class="node-point"></circle>
+                <circle cx="205" cy="55" r="3.5" class="node-point"></circle>
+                <circle cx="255" cy="95" r="3.5" class="node-point"></circle>
+                <circle cx="215" cy="145" r="3.5" class="node-point"></circle>
+                <circle cx="285" cy="35" r="3.5" class="node-point"></circle>
+                <circle cx="340" cy="75" r="3.5" class="node-point"></circle>
+                <circle cx="300" cy="125" r="3.5" class="node-point"></circle>
+              </svg>
+
+              {/* Interactive Lab Control Bar */}
+              <div class="lab-control-bar">
+                <button
+                  type="button"
+                  class="lab-action-btn"
+                  data-run-aco
+                  aria-label="Run Ant Colony Optimization simulation"
+                >
+                  <span class="btn-icon">&#x21bb;</span>
+                  <span>Solve Optimal Path</span>
+                </button>
+                <div class="cluster-pill-group">
+                  <button
+                    type="button"
+                    class="cluster-pill is-active"
+                    data-cluster="all"
+                  >
+                    5 Clusters
+                  </button>
+                  <button
+                    type="button"
+                    class="cluster-pill"
+                    data-cluster="north"
+                  >
+                    North
+                  </button>
+                  <button
+                    type="button"
+                    class="cluster-pill"
+                    data-cluster="coast"
+                  >
+                    Coast
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="exhibit-copy">
-            <div class="copy-badge">02 &middot; Algorithms</div>
-            <h3 class="copy-title">Route Optimization</h3>
+            <div class="copy-badge">02 &middot; Operations Research</div>
+            <h3 class="copy-title">
+              <a
+                href="/projects/orphanage-inspection-route-optimization/"
+                class="title-link"
+              >
+                Ant Colony Route Optimization
+              </a>
+            </h3>
             <p class="copy-desc">
-              Finding better paths with algorithms inspired by nature and ants.
+              Multi-cluster vehicle routing across 24 inspection sites,
+              constrained by operational daylight hours.
             </p>
+
+            <div class="metric-preview-row">
+              <div class="metric-block">
+                <span class="m-val" data-aco-km-counter>153.34</span>
+                <span class="m-lbl">Kilometers</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val">24</span>
+                <span class="m-lbl">Locations</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val">4,189</span>
+                <span class="m-lbl">Iterations</span>
+              </div>
+            </div>
+
             <div class="copy-action">
-              <span class="cta-text">Explore Case Study</span>
-              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              <a
+                href="/projects/orphanage-inspection-route-optimization/"
+                class="cta-button"
+                data-astro-prefetch="hover"
+              >
+                <span>View Case Study</span>
+                <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              </a>
             </div>
           </div>
-        </a>
+        </div>
       </article>
 
-      <!-- EXHIBIT 3: Demand Forecasting -->
-      <article class="exhibit-card exhibit-forecasting" data-reveal>
-        <a
-          href="/projects/juanda-airport-visitor-forecasting/"
-          class="exhibit-link"
-          data-astro-prefetch="hover"
-        >
+      {/* EXHIBIT 3: Demand Forecasting */}
+      <article
+        class="exhibit-card exhibit-forecasting"
+        data-reveal
+        data-card-tilt
+      >
+        <div class="exhibit-inner">
           <div class="exhibit-visual">
             <div class="visual-backdrop" aria-hidden="true">
               <div class="grid-mesh"></div>
             </div>
 
-            <svg class="forecast-svg" viewBox="0 0 380 240" aria-hidden="true">
-              <!-- Confidence Envelope Area -->
-              <polygon
-                points="200,100 270,65 350,45 350,175 270,155 200,100"
-                class="forecast-area"></polygon>
+            <div class="visual-interactive-zone">
+              <svg
+                class="forecast-svg"
+                viewBox="0 0 380 220"
+                aria-hidden="true"
+              >
+                <polygon
+                  points="190,95 260,60 350,40 350,165 260,145 190,95"
+                  class="forecast-area"
+                  data-forecast-envelope></polygon>
 
-              <!-- Historical Solid Curve -->
-              <path
-                class="forecast-history"
-                d="M30,165 Q70,185 110,140 T170,120 T200,100"></path>
+                <path
+                  class="forecast-history"
+                  d="M30,155 Q70,175 110,130 T160,110 T190,95"></path>
 
-              <!-- Predicted Dotted Curve -->
-              <path
-                class="forecast-projected"
-                d="M200,100 Q240,80 280,105 T350,90"></path>
+                <path
+                  class="forecast-projected"
+                  d="M190,95 Q235,75 280,95 T350,85"
+                  data-forecast-line></path>
 
-              <!-- Today Separator Marker -->
-              <line x1="200" y1="25" x2="200" y2="215" class="today-marker"
-              ></line>
-              <text x="206" y="42" class="today-text">PROJECTED &rarr;</text>
+                <line x1="190" y1="20" x2="190" y2="195" class="today-marker"
+                ></line>
+                <text x="196" y="36" class="today-text">PROJECTED</text>
+                <circle cx="190" cy="95" r="4.5" class="forecast-pivot"
+                ></circle>
+              </svg>
 
-              <!-- Glowing Pivot Point -->
-              <circle cx="200" cy="100" r="5" class="forecast-pivot"></circle>
-            </svg>
-            <span class="exhibit-pill"
-              >Time Series &middot; SARIMA &amp; LSTM</span
-            >
+              {/* Interactive Lab Control Bar */}
+              <div class="lab-control-bar">
+                <span class="lab-label">Horizon:</span>
+                <div class="horizon-pill-group">
+                  <button
+                    type="button"
+                    class="horizon-pill is-active"
+                    data-horizon="12"
+                  >
+                    12 Mo
+                  </button>
+                  <button type="button" class="horizon-pill" data-horizon="24">
+                    24 Mo
+                  </button>
+                  <button type="button" class="horizon-pill" data-horizon="36">
+                    36 Mo
+                  </button>
+                </div>
+                <div class="lab-status-pill">
+                  <span class="status-msg" data-horizon-status
+                    >R&sup2; 0.869 Model Fit</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="exhibit-copy">
-            <div class="copy-badge">03 &middot; Data Science</div>
-            <h3 class="copy-title">Forecasting</h3>
+            <div class="copy-badge">03 &middot; Time Series &amp; ML</div>
+            <h3 class="copy-title">
+              <a
+                href="/projects/juanda-airport-visitor-forecasting/"
+                class="title-link"
+              >
+                Airport Passenger Forecasting
+              </a>
+            </h3>
             <p class="copy-desc">
-              Trying to predict what comes next so teams can prepare ahead.
+              Ten years of monthly passenger traffic modeled to project terminal
+              capacity and post-shock recovery curves.
             </p>
+
+            <div class="metric-preview-row">
+              <div class="metric-block">
+                <span class="m-val">R&sup2; 0.869</span>
+                <span class="m-lbl">Accuracy</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val">120</span>
+                <span class="m-lbl">Months Data</span>
+              </div>
+              <div class="metric-block">
+                <span class="m-val">Random Forest</span>
+                <span class="m-lbl">Best Fit</span>
+              </div>
+            </div>
+
             <div class="copy-action">
-              <span class="cta-text">Explore Case Study</span>
-              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              <a
+                href="/projects/juanda-airport-visitor-forecasting/"
+                class="cta-button"
+                data-astro-prefetch="hover"
+              >
+                <span>View Case Study</span>
+                <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+              </a>
             </div>
           </div>
-        </a>
+        </div>
       </article>
     </div>
 
-    <!-- Archive Action -->
+    {/* Footer Navigation */}
     <div class="exhibits-footer" data-reveal>
       <a href="/projects/" class="all-projects-btn" data-astro-prefetch="hover">
-        Browse all 11 projects &amp; case studies
+        Explore full catalogue with 11 projects &amp; case studies
         <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
@@ -231,39 +399,197 @@
   import { initOnPageLoad } from "@lib/page-script";
 
   initOnPageLoad(() => {
-    const cards = Array.from(
-      document.querySelectorAll<HTMLElement>(".exhibit-card"),
-    );
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    if (reduceMotion) return;
 
-    cards.forEach((card) => {
-      const onMove = (e: MouseEvent) => {
-        const rect = card.getBoundingClientRect();
-        const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-        const y =
-          (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-        const tiltX = -y * 3.5;
-        const tiltY = x * 3.5;
-        card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-4px)`;
-      };
+    // 1. 3D Tilt & Magnetic Cursor Highlight on Cards
+    const tiltCards = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-card-tilt]"),
+    );
+    if (!reduceMotion) {
+      tiltCards.forEach((card) => {
+        const onMove = (e: MouseEvent) => {
+          const rect = card.getBoundingClientRect();
+          const x =
+            (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+          const y =
+            (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+          const tiltX = -y * 2.8;
+          const tiltY = x * 2.8;
+          card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translate3d(0, -3px, 0)`;
+        };
 
-      const onLeave = () => {
-        card.style.transform =
-          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-      };
+        const onLeave = () => {
+          card.style.transform =
+            "perspective(1000px) rotateX(0deg) rotateY(0deg) translate3d(0, 0, 0)";
+        };
 
-      card.addEventListener("mousemove", onMove, { passive: true });
-      card.addEventListener("mouseleave", onLeave);
+        card.addEventListener("mousemove", onMove, { passive: true });
+        card.addEventListener("mouseleave", onLeave);
+      });
+    }
+
+    // 2. Interactive Feature: Fraud Anomaly Injection
+    const injectBtn = document.querySelector<HTMLButtonElement>(
+      "[data-inject-fraud]",
+    );
+    const fraudTrack =
+      document.querySelector<HTMLElement>("[data-fraud-track]");
+    const fraudStatus = document.querySelector<HTMLElement>(
+      "[data-fraud-status] .status-msg",
+    );
+    const fraudCounter = document.querySelector<HTMLElement>(
+      "[data-fraud-caught-counter]",
+    );
+    let caughtCount = 3087;
+
+    injectBtn?.addEventListener("click", () => {
+      caughtCount += 1;
+      if (fraudCounter) {
+        fraudCounter.textContent = caughtCount.toLocaleString();
+        fraudCounter.style.transform = "scale(1.2)";
+        fraudCounter.style.color = "var(--signal)";
+        setTimeout(() => {
+          fraudCounter.style.transform = "scale(1)";
+          fraudCounter.style.color = "var(--ink)";
+        }, 300);
+      }
+
+      if (fraudStatus) {
+        fraudStatus.textContent =
+          "Outlier intercepted: TX #9420 ($8,450.00) · 4.82σ distance";
+        fraudStatus.style.color = "var(--signal)";
+      }
+
+      if (fraudTrack) {
+        const newCard = document.createElement("div");
+        newCard.className = "stream-item item-flagged newly-injected";
+        newCard.innerHTML = `
+          <div class="item-head">
+            <span class="stream-id">TX 9420</span>
+            <span class="stream-amount">$8,450.00</span>
+          </div>
+          <span class="stream-status flag">&bull; ANOMALY CAUGHT</span>
+          <span class="stream-radar"></span>
+        `;
+        fraudTrack.prepend(newCard);
+
+        setTimeout(() => {
+          newCard.classList.remove("newly-injected");
+        }, 1200);
+      }
+    });
+
+    // 3. Interactive Feature: ACO Path Solver
+    const runAcoBtn =
+      document.querySelector<HTMLButtonElement>("[data-run-aco]");
+    const acoPaths =
+      document.querySelectorAll<SVGPathElement>(".aco-paths path");
+    const kmCounter = document.querySelector<HTMLElement>(
+      "[data-aco-km-counter]",
+    );
+    const clusterPills = Array.from(
+      document.querySelectorAll<HTMLButtonElement>(".cluster-pill"),
+    );
+
+    runAcoBtn?.addEventListener("click", () => {
+      acoPaths.forEach((path) => {
+        path.style.strokeDasharray = "300";
+        path.style.strokeDashoffset = "300";
+        path.style.transition =
+          "stroke-dashoffset 900ms cubic-bezier(0.16, 1, 0.3, 1)";
+        requestAnimationFrame(() => {
+          path.style.strokeDashoffset = "0";
+        });
+      });
+
+      if (kmCounter) {
+        kmCounter.textContent = "184.20";
+        setTimeout(() => {
+          kmCounter.textContent = "168.10";
+        }, 280);
+        setTimeout(() => {
+          kmCounter.textContent = "153.34";
+        }, 650);
+      }
+    });
+
+    clusterPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        clusterPills.forEach((p) => p.classList.remove("is-active"));
+        pill.classList.add("is-active");
+
+        const cluster = pill.dataset.cluster;
+        acoPaths.forEach((path, idx) => {
+          if (cluster === "all") {
+            path.style.opacity = "1";
+            path.style.strokeWidth = "2.2";
+          } else if (cluster === "north" && idx === 0) {
+            path.style.opacity = "1";
+            path.style.strokeWidth = "3";
+          } else if (cluster === "coast" && idx === 2) {
+            path.style.opacity = "1";
+            path.style.strokeWidth = "3";
+          } else {
+            path.style.opacity = "0.2";
+            path.style.strokeWidth = "1.5";
+          }
+        });
+      });
+    });
+
+    // 4. Interactive Feature: Horizon Projection Switcher
+    const horizonPills = Array.from(
+      document.querySelectorAll<HTMLButtonElement>(".horizon-pill"),
+    );
+    const forecastLine = document.querySelector<SVGPathElement>(
+      "[data-forecast-line]",
+    );
+    const forecastEnvelope = document.querySelector<SVGPolygonElement>(
+      "[data-forecast-envelope]",
+    );
+    const horizonStatus = document.querySelector<HTMLElement>(
+      "[data-horizon-status]",
+    );
+
+    horizonPills.forEach((pill) => {
+      pill.addEventListener("click", () => {
+        horizonPills.forEach((p) => p.classList.remove("is-active"));
+        pill.classList.add("is-active");
+
+        const horizon = pill.dataset.horizon;
+        if (horizon === "12") {
+          forecastLine?.setAttribute("d", "M190,95 Q235,75 280,95 T350,85");
+          forecastEnvelope?.setAttribute(
+            "points",
+            "190,95 260,60 350,40 350,165 260,145 190,95",
+          );
+          if (horizonStatus) horizonStatus.textContent = "R² 0.869 Model Fit";
+        } else if (horizon === "24") {
+          forecastLine?.setAttribute("d", "M190,95 Q240,65 295,85 T370,70");
+          forecastEnvelope?.setAttribute(
+            "points",
+            "190,95 265,48 370,25 370,180 265,155 190,95",
+          );
+          if (horizonStatus)
+            horizonStatus.textContent = "24 Mo Horizon · Upper Bound: +14%";
+        } else if (horizon === "36") {
+          forecastLine?.setAttribute("d", "M190,95 Q250,55 310,80 T375,60");
+          forecastEnvelope?.setAttribute(
+            "points",
+            "190,95 270,35 375,15 375,195 270,165 190,95",
+          );
+          if (horizonStatus)
+            horizonStatus.textContent =
+              "36 Mo Long Horizon · Confidence Interval: 95%";
+        }
+      });
     });
   });
 </script>
 
 <style>
-  /* ------------------------------- Section & Header ------------------------------- */
-
   .exhibits-section {
     padding-block: clamp(4.5rem, 9vw, 7.5rem);
     background: var(--paper);
@@ -274,6 +600,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    max-width: 820px;
   }
 
   .header-tag {
@@ -281,14 +608,30 @@
     align-items: center;
     gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--ink-soft);
   }
 
-  .tag-num {
-    color: var(--signal);
-    font-weight: 700;
+  .tag-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--signal);
+    animation: beacon 2s infinite ease-in-out;
+  }
+
+  @keyframes beacon {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
   }
 
   .exhibits-title {
@@ -306,15 +649,14 @@
     color: var(--ink-muted);
     font-size: clamp(1rem, 1.4vw, 1.12rem);
     line-height: 1.65;
-    max-width: 52ch;
+    max-width: 58ch;
   }
 
-  /* ------------------------------- Exhibits Stack ------------------------------- */
-
+  /* ------------------- Exhibits Stack ------------------- */
   .exhibits-stack {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.75rem, 3.5vw, 2.75rem);
+    gap: clamp(2rem, 4vw, 3rem);
   }
 
   .exhibit-card {
@@ -322,35 +664,34 @@
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     overflow: hidden;
-    transition: all var(--motion-fast) var(--ease-standard);
+    box-shadow: 0 10px 32px rgba(22, 24, 29, 0.04);
+    transition:
+      box-shadow 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
   }
 
   .exhibit-card:hover {
     border-color: var(--ink);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 36px rgba(22, 24, 29, 0.06);
+    box-shadow: 0 16px 44px rgba(22, 24, 29, 0.08);
   }
 
-  .exhibit-link {
+  .exhibit-inner {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    color: inherit;
-    text-decoration: none;
-    height: 100%;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+    min-height: 380px;
   }
 
-  /* ------------------------------- Visual Area ------------------------------- */
-
+  /* ------------------- Visual Area & Interactive Zone ------------------- */
   .exhibit-visual {
     position: relative;
     background: #fcfcfb;
     border-right: 1px solid var(--line);
-    min-height: 280px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-between;
     overflow: hidden;
-    padding: 2rem;
   }
 
   .visual-backdrop {
@@ -360,114 +701,55 @@
   }
 
   .grid-mesh {
-    position: absolute;
-    inset: 0;
+    width: 100%;
+    height: 100%;
     background-image:
-      linear-gradient(to right, rgba(22, 24, 29, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(22, 24, 29, 0.03) 1px, transparent 1px);
-    background-size: 32px 32px;
+      linear-gradient(to right, rgba(22, 24, 29, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(22, 24, 29, 0.035) 1px, transparent 1px);
+    background-size: 24px 24px;
   }
 
-  .exhibit-pill {
-    position: absolute;
-    bottom: 12px;
-    right: 14px;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    color: var(--ink-soft);
-    background: rgba(255, 255, 255, 0.94);
-    border: 1px solid var(--line);
-    padding: 0.22rem 0.55rem;
-    border-radius: var(--radius-pill);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  }
-
-  /* -------------------------------- Copy Area -------------------------------- */
-
-  .exhibit-copy {
-    padding: clamp(2rem, 4vw, 3.25rem);
+  .visual-interactive-zone {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 0.75rem;
+    justify-content: space-between;
+    height: 100%;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    gap: 1.25rem;
   }
 
-  .copy-badge {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--ink-soft);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .copy-title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
-    font-weight: 500;
-    color: var(--ink);
-    letter-spacing: -0.01em;
-    transition: color var(--motion-fast) var(--ease-standard);
-  }
-
-  .exhibit-card:hover .copy-title {
-    color: var(--signal-deep);
-  }
-
-  .copy-desc {
-    margin: 0 0 0.75rem;
-    font-size: 1.02rem;
-    color: var(--ink-muted);
-    line-height: 1.6;
-    max-width: 38ch;
-  }
-
-  .copy-action {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--signal-deep);
-    transition: transform var(--motion-fast) var(--ease-standard);
-  }
-
-  .exhibit-card:hover .copy-action {
-    transform: translateX(4px);
-    color: var(--signal);
-  }
-
-  .cta-arrow {
-    transition: transform var(--motion-fast) var(--ease-out);
-  }
-
-  .exhibit-card:hover .cta-arrow {
-    transform: translateX(3px);
-  }
-
-  /* ------------------- EXHIBIT 1: Transaction Stream ------------------- */
-
+  /* ------------------- Fraud Stream Track ------------------- */
   .stream-container {
     position: relative;
-    width: 100%;
     overflow: hidden;
-    padding-block: 0.5rem;
+    padding: 0.75rem 0;
+    border-radius: var(--radius-sm);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
   }
 
   .stream-track {
     display: flex;
-    gap: 14px;
-    animation: conveyor-scroll 16s linear infinite;
+    gap: 0.85rem;
     width: max-content;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    animation: stream-scroll 24s linear infinite;
   }
 
-  @keyframes conveyor-scroll {
+  .stream-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes stream-scroll {
     0% {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     100% {
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
     }
   }
 
@@ -475,69 +757,85 @@
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    padding: 0.85rem 1.15rem;
+    padding: 0.55rem 0.85rem;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-width: 130px;
-    box-shadow: 0 4px 14px rgba(22, 24, 29, 0.04);
+    gap: 0.2rem;
+    min-width: 110px;
+    transition: transform 240ms var(--ease-standard);
+  }
+
+  .stream-item.newly-injected {
+    animation: inject-pulse 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes inject-pulse {
+    0% {
+      transform: scale(0.8) translateY(-8px);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.08);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
   }
 
   .item-head {
     display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
+    flex-direction: column;
   }
 
   .stream-id {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.6rem;
     color: var(--ink-soft);
   }
 
   .stream-amount {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.86rem;
     font-weight: 600;
     color: var(--ink);
   }
 
   .stream-status {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.56rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.05em;
   }
 
   .stream-status.ok {
-    color: #588157;
+    color: #436b4f;
   }
-
-  .stream-item.item-flagged {
-    position: relative;
-    border-color: var(--signal);
-    background: rgba(201, 46, 62, 0.04);
-  }
-
   .stream-status.flag {
     color: var(--signal);
   }
 
-  .stream-radar {
-    position: absolute;
-    inset: -5px;
-    border: 1.5px solid var(--signal);
-    border-radius: var(--radius-sm);
-    animation: radar-pulse 2s infinite;
+  .item-flagged {
+    position: relative;
+    border-color: var(--signal);
+    background: rgba(201, 46, 62, 0.05);
   }
 
-  @keyframes radar-pulse {
+  .stream-radar {
+    position: absolute;
+    inset: -3px;
+    border: 1.5px solid var(--signal);
+    border-radius: var(--radius-sm);
+    animation: sonar 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  @keyframes sonar {
     0% {
-      transform: scale(0.96);
+      transform: scale(0.97);
       opacity: 1;
     }
     100% {
-      transform: scale(1.16);
+      transform: scale(1.12);
       opacity: 0;
     }
   }
@@ -557,11 +855,16 @@
     pointer-events: none;
   }
 
-  /* ------------------- EXHIBIT 2: Routing Coordinates ------------------- */
-
+  /* ------------------- Route Optimization SVG ------------------- */
   .routing-svg {
-    width: 90%;
+    width: 100%;
     height: auto;
+    max-height: 180px;
+    display: block;
+    background: var(--paper-soft);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    padding: 0.4rem;
   }
 
   .routing-grid line {
@@ -571,131 +874,445 @@
 
   .route-converged {
     fill: none;
-    stroke-width: 2.5;
+    stroke-width: 2.2;
     stroke-linecap: round;
     stroke-linejoin: round;
+    transition:
+      opacity 280ms var(--ease-standard),
+      stroke-width 280ms var(--ease-standard);
   }
 
-  .path-1 {
+  .loop-1 {
     stroke: var(--signal);
-    opacity: 0.95;
   }
-  .path-2 {
+  .loop-2 {
     stroke: var(--ink);
-    opacity: 0.8;
+    stroke-width: 1.8;
   }
-  .path-3 {
-    stroke: var(--ink-soft);
-    opacity: 0.6;
+  .loop-3 {
+    stroke: var(--signal);
+    stroke-dasharray: 5 3;
   }
 
   .node-depot {
     fill: var(--signal);
+    stroke: #ffffff;
+    stroke-width: 1.5;
+  }
+
+  .node-text {
+    font-family: var(--font-mono);
+    font-size: 7px;
+    font-weight: 700;
+    fill: var(--signal-deep);
+    letter-spacing: 0.08em;
   }
 
   .node-point {
     fill: var(--ink);
+    stroke: #ffffff;
+    stroke-width: 1;
   }
 
-  /* ------------------- EXHIBIT 3: Time Series Forecast ------------------- */
-
+  /* ------------------- Demand Forecasting SVG ------------------- */
   .forecast-svg {
-    width: 90%;
+    width: 100%;
     height: auto;
+    max-height: 180px;
+    display: block;
+    background: var(--paper-soft);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    padding: 0.4rem;
   }
 
   .forecast-area {
-    fill: rgba(201, 46, 62, 0.06);
+    fill: rgba(201, 46, 62, 0.08);
+    stroke: rgba(201, 46, 62, 0.25);
+    stroke-dasharray: 3 3;
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .forecast-history {
     fill: none;
     stroke: var(--ink);
-    stroke-width: 2.5;
+    stroke-width: 2.2;
     stroke-linecap: round;
   }
 
   .forecast-projected {
     fill: none;
     stroke: var(--signal);
-    stroke-width: 2.5;
-    stroke-dasharray: 5 4;
+    stroke-width: 2.2;
+    stroke-dasharray: 4 3;
     stroke-linecap: round;
+    transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .today-marker {
-    stroke: var(--line-strong);
-    stroke-dasharray: 3 3;
+    stroke: var(--signal);
     stroke-width: 1.5;
+    stroke-dasharray: 3 3;
   }
 
   .today-text {
     font-family: var(--font-mono);
-    font-size: 8px;
-    fill: var(--ink-soft);
-    letter-spacing: 0.1em;
+    font-size: 7px;
+    font-weight: 700;
+    fill: var(--signal-deep);
+    letter-spacing: 0.08em;
   }
 
   .forecast-pivot {
     fill: var(--signal);
-    animation: pivot-ping 2s infinite ease-in-out;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    transform-origin: 190px 95px;
+    transform-box: view-box;
+    will-change: transform;
+    animation: pivot-pulse 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
   }
 
-  @keyframes pivot-ping {
-    0% {
-      r: 4px;
+  @keyframes pivot-pulse {
+    0%,
+    100% {
+      transform: scale(1);
     }
     50% {
-      r: 6px;
-    }
-    100% {
-      r: 4px;
+      transform: scale(1.4);
     }
   }
 
-  /* ---------------------------- Exhibits Footer ---------------------------- */
-
-  .exhibits-footer {
+  /* ------------------- Lab Control Bars ------------------- */
+  .lab-control-bar {
     display: flex;
-    justify-content: center;
-    margin-top: clamp(3rem, 6vw, 5rem);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    padding-top: 0.4rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .lab-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #ffffff;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.3rem 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .lab-action-btn:hover {
+    border-color: var(--signal);
+    color: var(--signal-deep);
+    background: rgba(201, 46, 62, 0.04);
+  }
+
+  .btn-icon {
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .lab-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+  }
+
+  .status-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: #436b4f;
+  }
+
+  .cluster-pill-group,
+  .horizon-pill-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .cluster-pill,
+  .horizon-pill {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    padding: 0.15rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .cluster-pill:hover,
+  .horizon-pill:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .cluster-pill.is-active,
+  .horizon-pill.is-active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .lab-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  /* ------------------- Copy Area ------------------- */
+  .exhibit-copy {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .copy-badge {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .copy-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .title-link:hover {
+    color: var(--signal-deep);
+  }
+
+  .copy-desc {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  /* Metric Preview Row */
+  .metric-preview-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    padding: 0.75rem 0.85rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .metric-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .m-val {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    transition: all 240ms var(--ease-standard);
+  }
+
+  .m-lbl {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.55rem 1.05rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .cta-button:hover {
+    background: var(--signal-deep);
+    box-shadow: 0 4px 14px rgba(201, 46, 62, 0.25);
+  }
+
+  .cta-arrow {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .cta-button:hover .cta-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ------------------- Footer ------------------- */
+  .exhibits-footer {
+    margin-top: clamp(2rem, 4vw, 3.5rem);
+    text-align: center;
   }
 
   .all-projects-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--ink);
-    color: var(--paper);
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 500;
-    padding: 0.85rem 1.6rem;
-    border-radius: var(--radius-pill);
-    transition: all var(--motion-fast) var(--ease-standard);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.2rem;
+    transition: gap var(--motion-fast) var(--ease-out);
   }
 
   .all-projects-btn:hover {
-    background: var(--signal-deep);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(201, 46, 62, 0.2);
+    gap: 0.75rem;
   }
 
-  /* ------------------------------- Responsive ------------------------------- */
-
-  @media (max-width: 900px) {
-    .exhibit-link {
-      grid-template-columns: 1fr;
+  /* ------------------- Responsive ------------------- */
+  @media (max-width: 960px) {
+    .exhibit-inner {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
     }
 
     .exhibit-visual {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
       border-right: none;
       border-bottom: 1px solid var(--line);
-      min-height: 220px;
+    }
+
+    .visual-interactive-zone {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: clamp(1rem, 3.5vw, 1.35rem);
+    }
+
+    .stream-container {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
     }
 
     .exhibit-copy {
-      padding: clamp(1.5rem, 3.5vw, 2.25rem);
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+      padding: clamp(1.15rem, 3.8vw, 1.5rem);
+    }
+
+    .metric-preview-row {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .cta-button {
+      width: 100%;
+      justify-content: center;
+      min-height: 44px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .exhibits-header {
+      margin-bottom: 2rem;
+    }
+
+    .exhibits-title {
+      font-size: clamp(1.85rem, 7vw, 2.4rem);
+    }
+
+    .lab-control-bar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.55rem;
+    }
+
+    .lab-action-btn {
+      width: 100%;
+      justify-content: center;
+      min-height: 40px;
+    }
+
+    .cluster-pill-group,
+    .horizon-pill-group {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.35rem;
+    }
+
+    .cluster-pill,
+    .horizon-pill {
+      flex: 1 1 auto;
+      min-width: calc(33.333% - 0.35rem);
+      text-align: center;
+      padding-block: 0.35rem;
+    }
+
+    .lab-status-pill {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .m-val {
+      font-size: 1rem;
+    }
+
+    .copy-title {
+      font-size: 1.35rem;
     }
   }
 

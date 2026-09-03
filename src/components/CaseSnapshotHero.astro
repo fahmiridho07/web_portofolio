@@ -1,5 +1,5 @@
 ---
-import { getResponsiveImageSources } from "@lib/images";
+import ProjectHeroStage3D from "@components/ProjectHeroStage3D.astro";
 import { getCategoryMeta } from "@lib/projects";
 import type { CollectionEntry } from "astro:content";
 
@@ -9,76 +9,96 @@ interface Props {
 
 const { project } = Astro.props;
 const category = getCategoryMeta(project.data.category);
-const cover = getResponsiveImageSources(
-  project.data.coverImage,
-  "(max-width: 900px) 100vw, 1060px",
-);
-const wordCount = (project.body ?? "").split(/\s+/).filter(Boolean).length;
-const readingMinutes = Math.max(1, Math.round(wordCount / 200));
-const facts = [
+
+const telemetry = [
   { label: "Role", value: project.data.role },
   {
-    label: "Outcome",
+    label: "Key Outcome",
     value: project.data.metric ?? project.data.status,
     highlight: true,
   },
-  { label: "Status", value: `${project.data.status} / ${project.data.year}` },
-  { label: "Stack", value: project.data.stack.slice(0, 5).join(" · ") },
+  {
+    label: "Timeline",
+    value: `${project.data.year} \u00B7 ${project.data.status}`,
+  },
+  {
+    label: "Core Stack",
+    value: project.data.stack.slice(0, 4).join(" \u00B7 "),
+  },
 ];
 ---
 
 <header class="case-snapshot-hero">
-  <div class="container case-hero-inner">
-    <div class="case-copy" data-reveal>
-      <p class="section-label">
-        {category.title} / {project.data.year} &middot; {readingMinutes} min read
-      </p>
-      <h1 class="display">{project.data.title}</h1>
-      <p class="case-summary">{project.data.summary}</p>
+  <div class="container case-hero-container">
+    {/* 2-Column Responsive Kinetic Hero Stage */}
+    <div class="hero-split-stage">
+      {/* Column 1: Narrative & Direct Action */}
+      <div class="hero-copy-col" data-reveal>
+        <div class="hero-kicker-row">
+          <span class="hero-badge">{category.title}</span>
+          <span class="hero-year">{project.data.year}</span>
+        </div>
 
-      <div class="case-actions">
-        <a class="dark-cta dark-cta-primary" href="#case-study">
-          Read the case <span aria-hidden="true">&darr;</span>
-        </a>
+        <h1
+          class="display hero-title"
+          transition:name={`project-title-${project.data.slug}`}
+        >
+          {project.data.title}
+        </h1>
+
+        <p class="hero-summary">{project.data.summary}</p>
+
         {
-          project.data.links.map((link) => (
-            <a
-              class="dark-cta dark-cta-secondary dark-cta-compact"
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {link.label} <span aria-hidden="true">&nearr;</span>
-            </a>
-          ))
+          project.data.metric && (
+            <div class="hero-impact-strip">
+              <span class="impact-badge">OUTCOME</span>
+              <span class="impact-val">
+                <strong>{project.data.metric}</strong>
+              </span>
+            </div>
+          )
         }
+
+        {
+          project.data.links.length > 0 && (
+            <div class="hero-actions">
+              {project.data.links.map((link) => (
+                <a
+                  class="dark-cta dark-cta-primary dark-cta-compact"
+                  href={link.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {link.label} <span aria-hidden="true">&nearr;</span>
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      {/* Column 2: Interactive 3D Kinetic Metaphor */}
+      <div class="hero-3d-col" data-reveal data-reveal-delay="80">
+        <ProjectHeroStage3D
+          slug={project.data.slug}
+          title={project.data.title}
+          metric={project.data.metric}
+          category={category.title}
+        />
       </div>
     </div>
 
-    <figure class="case-cover" data-reveal data-reveal-delay="100">
-      <img
-        src={cover.src}
-        srcset={cover.srcset}
-        sizes={cover.srcset ? cover.sizes : undefined}
-        alt={`Cover image for ${project.data.title}`}
-        width={cover.width}
-        height={cover.height}
-        loading="eager"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </figure>
-
-    <dl class="case-facts" data-reveal data-reveal-delay="60">
+    {/* Bottom Telemetry Strip */}
+    <dl class="hero-telemetry-bar" data-reveal data-reveal-delay="120">
       {
-        facts.map((fact) => (
-          <div class="case-fact">
+        telemetry.map((item) => (
+          <div class="telemetry-cell">
             <dt>
-              {fact.highlight && <span class="fact-dot" aria-hidden="true" />}
-              {fact.label}
+              {item.highlight && <span class="cell-dot" aria-hidden="true" />}
+              {item.label}
             </dt>
-            <dd class:list={[fact.highlight && "is-highlight"]}>
-              {fact.value}
+            <dd class:list={[item.highlight && "is-highlight"]}>
+              {item.value}
             </dd>
           </div>
         ))
@@ -89,107 +109,195 @@ const facts = [
 
 <style>
   .case-snapshot-hero {
-    padding-block: clamp(4.5rem, 9vw, 7rem) clamp(1.5rem, 3vw, 2.5rem);
+    padding-block: clamp(4.5rem, 8vw, 6.5rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
   }
 
-  .case-hero-inner {
+  .case-hero-container {
     display: grid;
-    gap: clamp(1.75rem, 4vw, 2.75rem);
+    gap: clamp(2rem, 4vw, 3.5rem);
   }
 
-  .case-copy {
+  /* ---------------------- 2-Column Split Stage ---------------------- */
+  .hero-split-stage {
     display: grid;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
   }
 
-  .case-copy .display {
-    max-width: 900px;
-    font-size: clamp(2.2rem, 4.8vw, 4rem);
+  .hero-copy-col {
+    display: grid;
+    gap: 1.1rem;
   }
 
-  .case-summary {
-    max-width: 62ch;
+  .hero-kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .hero-badge {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--signal-deep);
+    background: var(--accent-dim);
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+  }
+
+  .hero-year {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  .hero-title {
+    margin: 0;
+    max-width: 800px;
+    font-family: var(--font-serif);
+    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    font-weight: 480;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+
+  .hero-summary {
+    max-width: 58ch;
     margin: 0;
     color: var(--ink-muted);
-    font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+    font-size: clamp(0.98rem, 1.4vw, 1.08rem);
     line-height: 1.65;
   }
 
-  .case-actions {
+  .hero-impact-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.95rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--signal);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+  }
+
+  .impact-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--signal-deep);
+    letter-spacing: 0.08em;
+  }
+
+  .impact-val {
+    font-size: 0.86rem;
+    color: var(--ink);
+  }
+
+  .impact-val strong {
+    font-weight: 600;
+  }
+
+  .hero-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.75rem;
-    margin-top: 0.35rem;
+    margin-top: 0.25rem;
   }
 
-  .case-facts {
+  .hero-3d-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+  }
+
+  /* ---------------------- Telemetry Bar ---------------------- */
+  .hero-telemetry-bar {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
     margin: 0;
     border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding-block: 1.1rem;
+    padding-top: 1.4rem;
   }
 
-  .case-fact {
+  .telemetry-cell {
     display: grid;
-    gap: 0.4rem;
+    gap: 0.35rem;
     align-content: start;
   }
 
-  .case-fact dt {
+  .telemetry-cell dt {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     color: var(--ink-soft);
     font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
     line-height: 1;
     text-transform: uppercase;
   }
 
-  .fact-dot {
-    width: 0.34rem;
-    height: 0.34rem;
+  .cell-dot {
+    width: 4px;
+    height: 4px;
     border-radius: 999px;
     background: var(--signal);
   }
 
-  .case-fact dd {
+  .telemetry-cell dd {
     margin: 0;
     color: var(--ink);
-    font-size: 0.85rem;
+    font-size: 0.86rem;
     font-weight: 500;
     line-height: 1.45;
   }
 
-  .case-fact dd.is-highlight {
+  .telemetry-cell dd.is-highlight {
     font-weight: 600;
+    color: var(--signal-deep);
   }
 
-  .case-cover {
-    margin: 0;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: #ffffff;
-  }
+  /* Responsive Stacking */
+  @media (max-width: 900px) {
+    .hero-split-stage {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
 
-  /* Contain, never crop: covers include diagrams whose edges carry meaning */
-  .case-cover img {
-    width: 100%;
-    max-height: clamp(20rem, 44vw, 30rem);
-    object-fit: contain;
-    padding: clamp(0.75rem, 2vw, 1.5rem);
-  }
-
-  @media (max-width: 720px) {
-    .case-facts {
+    .hero-telemetry-bar {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .hero-telemetry-bar {
+      grid-template-columns: 1fr;
       gap: 1rem;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.55rem;
+    }
+
+    .hero-actions .dark-cta {
+      width: 100%;
+      justify-content: center;
+      min-height: 42px;
     }
   }
 </style>

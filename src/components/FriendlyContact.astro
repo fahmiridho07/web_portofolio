@@ -20,8 +20,7 @@ const resumeAction = getResumeAction();
 
       <p class="contact-subhead">
         Whether you have an engineering role, a machine learning challenge, or
-        simply want to talk about coffee brewing & systems craft—I&rsquo;d love
-        to connect.
+        simply want to discuss systems architecture, I would love to connect.
       </p>
 
       <!-- Primary Action: Interactive Email Bar -->
@@ -334,13 +333,33 @@ const resumeAction = getResumeAction();
   @media (max-width: 580px) {
     .email-action-box {
       border-radius: var(--radius-md);
-      padding: 0.85rem;
-      justify-content: center;
+      padding: 1rem 0.85rem;
+      flex-direction: column;
+      align-items: stretch;
+      text-align: center;
+      gap: 0.85rem;
     }
+
+    .email-address {
+      word-break: break-all;
+      text-align: center;
+    }
+
     .action-buttons {
       width: 100%;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .copy-btn,
+    .send-btn {
+      width: 100%;
       justify-content: center;
-      margin-top: 0.4rem;
+      min-height: 42px;
+    }
+
+    .channels-list {
+      justify-content: center;
     }
   }
 </style>

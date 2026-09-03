@@ -53,9 +53,9 @@ I worked on constraint interpretation, Ant Colony Optimization implementation, r
     alt="Notebook convergence plot for cluster 0: best route distance drops from 52.06 km to 45.95 km, with the final improvement found at iteration 3,292"
   />
   <figcaption>
-    Notebook output: ACO convergence for the largest cluster — the best route
-    drops from 52.06 km to 45.95 km, with the winning move found deep in the
-    search at iteration 3,292.
+    Notebook output: ACO convergence for the largest cluster, where the best
+    route drops from 52.06 km to 45.95 km, with the winning move found deep in
+    the search at iteration 3,292.
   </figcaption>
 </figure>
 
@@ -68,7 +68,7 @@ Per-cluster results as printed by the optimization run:
 | 2       | 33.87 km         | 05:10:38   | 7,771      |
 | 3       | 36.04 km         | 04:43:14   | 7,854      |
 | 4       | 21.92 km         | 03:56:17   | 10,383     |
-| **All** | **153.34 km**    | —          | —          |
+| **All** | **153.34 km**    | N/A        | N/A        |
 
 <figure className="evidence-panel" data-artifact="Notebook artifact">
   <img
@@ -98,7 +98,7 @@ The project treated the constraints as part of the system, not as afterthoughts.
 
 ## Result
 
-The orphanages were grouped into five clusters, and ACO produced a feasible route for every cluster — 153.34 km combined, each route fitting the 09:00-17:00 working window with per-location service time included (route times range from 3h18m to 5h10m). The convergence behavior is honest about how heuristics work in practice: two clusters kept improving deep into the search (cluster 0 found its best route at iteration 3,292), while three settled on their first good solution immediately.
+The orphanages were grouped into five clusters, and ACO produced a feasible route for every cluster, totaling 153.34 km combined, each route fitting the 09:00-17:00 working window with per-location service time included (route times range from 3h18m to 5h10m). The convergence behavior is honest about how heuristics work in practice: two clusters kept improving deep into the search (cluster 0 found its best route at iteration 3,292), while three settled on their first good solution immediately.
 
 ## What I'd Improve
 
