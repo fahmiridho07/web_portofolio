@@ -1,10 +1,9 @@
 ---
-// about.astro: Minimalist, Video-Animated About Experience
-// Text is kept to the absolute bare minimum.
-// Driven by a cinematic 60fps generative video-like animation stage and clean portrait frame.
-// Zero contact duplication with Home. Zero text clutter or icon gimmicks.
+// about.astro: Top-Tier Minimalist Editorial Portfolio About Page
+// Inspired by Paco Coursey (paco.me), Brian Lovin (brianlovin.com), and Lee Robinson (leerob.io)
+// Focus: Restrained typography, authentic voice, generous whitespace, and zero artificial gimmicks.
 
-import { education } from "@data/profile";
+import { education, profile } from "@data/profile";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getProfilePageSchema } from "@lib/seo";
@@ -21,27 +20,44 @@ const profileImageSrcset =
 const profileImageMeta = getImageMeta(profileImage);
 const resumeAction = getResumeAction();
 
-const quickMilestones = [
+// Chronological experience & research history
+const experiences = [
+  {
+    period: "2025 &ndash; 2026",
+    role: "Undergraduate Thesis Researcher",
+    org: "ITS Surabaya",
+    desc: "Researching deep generative Autoencoders for extreme class imbalance in financial transaction datasets. Achieved 0.8547 PR-AUC through Bayesian-tuned latent representation oversampling.",
+  },
+  {
+    period: "2024 &ndash; 2025",
+    role: "Software Engineer Intern",
+    org: "PT Kaltim Prima Coal",
+    desc: "Engineered and stabilized enterprise innovation platform (IdeKU V3) on ASP.NET Core for 5,000+ mining employees. Implemented role-based access control and automated multi-tier approval workflows.",
+  },
+  {
+    period: "2022 &ndash; 2024",
+    role: "Teaching Assistant",
+    org: "ITS Surabaya",
+    desc: "Assisted undergraduate laboratory sessions in Enterprise Systems Architecture, Database Modeling, and Object-Oriented Software Design.",
+  },
+];
+
+// Engineering principles
+const principles = [
   {
     num: "01",
-    label: "ACADEMIC BASE",
-    title: "ITS Surabaya &middot; GPA " + gpaShort,
-    detail:
-      "Information Systems undergraduate, graduating 2026. Teaching assistant in enterprise systems.",
+    title: "Architecture Before Code",
+    desc: "I believe software should be modeled around clear domain boundaries and data contracts before writing business logic. Clean schemas prevent entire classes of production bugs.",
   },
   {
     num: "02",
-    label: "PRODUCTION SCALE",
-    title: "PT Kaltim Prima Coal",
-    detail:
-      "Full-stack ASP.NET Core platform & Power BI analytics deployed for 5,000+ mining employees.",
+    title: "Empirical Rigour in ML",
+    desc: "In skewed real-world data, accuracy is a vanity metric. I focus on leak-free validation, Precision-Recall AUC, and calibrated probability thresholds to solve genuine business problems.",
   },
   {
     num: "03",
-    label: "AI RESEARCH",
-    title: "Latent Autoencoders",
-    detail:
-      "Undergraduate thesis on extreme class imbalance fraud detection achieving 0.855 PR-AUC.",
+    title: "Craft in the Small Things",
+    desc: "Sub-millisecond backend latency, strict typing, thoughtful error messages, and accessible layouts are not extras—they are the definition of respectful engineering.",
   },
 ];
 ---
@@ -55,387 +71,235 @@ const quickMilestones = [
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <div class="about-page-wrap">
-    <!-- HERO HEADER: MINIMAL & BOLD -->
-    <header class="about-hero">
-      <div class="container" data-reveal>
-        <div class="hero-top-row">
-          <span class="hero-label">ACHMAD FAHMI AINUR RIDHO</span>
-          <span class="hero-status">
-            <span class="status-beacon"></span>
+  <main class="editorial-about">
+    <article class="container about-container" data-reveal>
+      <!-- HEADER MASTHEAD -->
+      <header class="about-header">
+        <div class="header-meta">
+          <span class="meta-label">ABOUT // ACHMAD FAHMI AINUR RIDHO</span>
+          <span class="status-indicator">
+            <span class="status-dot"></span>
             OPEN TO 2026 ROLES
           </span>
         </div>
 
-        <h1 class="display about-headline">
-          Building software with architectural care and training models with
-          scientific discipline.
+        <h1 class="display about-title">
+          Building resilient backends and researching machine learning for
+          complex data.
         </h1>
+      </header>
 
-        <p class="about-lead">
-          Final-year Information Systems student at ITS Surabaya moving deep
-          into AI engineering. Focused on production enterprise backends and
-          machine learning pipelines.
-        </p>
-      </div>
-    </header>
-
-    <!-- CINEMATIC VIDEO-ANIMATED REEL STAGE -->
-    <section class="reel-section" data-reveal>
-      <div class="container">
-        <div class="reel-stage" data-reel-stage>
-          <!-- Video Screen Bar -->
-          <div class="reel-screen-bar">
-            <div class="screen-lights">
-              <span class="light l-red"></span>
-              <span class="light l-yellow"></span>
-              <span class="light l-green"></span>
-            </div>
-            <span class="screen-title"
-              >neural_matrix_stream.mp4 &middot; 60 FPS</span
-            >
-            <span class="screen-tag">LIVE CANVAS REEL</span>
-          </div>
-
-          <!-- Video Canvas Simulation -->
-          <div class="canvas-viewport">
-            <canvas
-              id="latentReelCanvas"
-              class="reel-canvas"
-              width="960"
-              height="480"></canvas>
-
-            <!-- Minimal Widescreen Overlay HUD -->
-            <div class="canvas-hud" aria-hidden="true">
-              <span class="hud-item top-l">MODEL: AUTOENCODER_V3</span>
-              <span class="hud-item top-r">LATENT_DIM: 64 // OPTUNA</span>
-              <span class="hud-item bot-l">SURABAYA, ID // 2026</span>
-              <span class="hud-item bot-r">STATUS: CONVERGED</span>
-            </div>
-
-            <!-- Portrait Cutout Badge -->
-            <div class="portrait-badge" title="Achmad Fahmi Ainur Ridho">
+      <!-- BIO & PORTRAIT SECTION -->
+      <section class="about-bio-section">
+        <div class="bio-grid">
+          <div class="bio-portrait-wrap">
+            <figure class="portrait-figure">
               <img
                 src={profileImage}
                 srcset={profileImageSrcset}
-                sizes="120px"
+                sizes="(max-width: 700px) 100vw, 220px"
                 alt="Portrait of Achmad Fahmi Ainur Ridho"
                 width={profileImageMeta?.width}
                 height={profileImageMeta?.height}
                 loading="eager"
                 decoding="async"
-                class="badge-photo"
+                class="portrait-img"
               />
-            </div>
+              <figcaption class="portrait-caption">
+                Surabaya, ID &middot; Final Year
+              </figcaption>
+            </figure>
+          </div>
+
+          <div class="bio-prose">
+            <p class="lead-text">
+              I&rsquo;m a final-year Information Systems student at <strong
+                >Institut Teknologi Sepuluh Nopember (ITS Surabaya)</strong
+              > with an academic GPA of <strong>{gpaShort}/4.00</strong>,
+              bridging the gap between full-stack systems engineering and
+              applied AI research.
+            </p>
+            <p>
+              My engineering journey started in enterprise software, developing
+              and stabilizing large-scale applications with C# and ASP.NET Core
+              for 5,000+ staff at <strong>PT Kaltim Prima Coal</strong>. Working
+              with real production relational databases taught me to respect
+              system reliability, clean domain contracts, and thoughtful
+              performance tuning.
+            </p>
+            <p>
+              Over time, I found myself drawn deeper into what data can predict
+              rather than just how it is stored. Today, my primary research
+              focuses on tackling extreme class imbalance in fraud detection
+              using deep generative Autoencoders in latent space—combining
+              rigorous data science with production-minded engineering.
+            </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ULTRA-LEAN MILESTONES (3 CLEAN ROWS, MINIMAL TEXT) -->
-    <section class="milestones-section divider" data-reveal>
-      <div class="container">
-        <div class="milestones-grid">
+      <!-- NOW (CURRENT FOCUS & STATUS) -->
+      <section class="now-section">
+        <div class="now-card">
+          <div class="now-heading">
+            <span class="now-pulse"></span>
+            <h2 class="now-title">Now</h2>
+            <span class="now-date">Early 2026</span>
+          </div>
+          <ul class="now-list">
+            <li>
+              <strong>Thesis:</strong> Finalizing research on Bayesian-tuned latent
+              Autoencoders for fraud detection with zero data leakage.
+            </li>
+            <li>
+              <strong>Engineering:</strong> Exploring high-throughput distributed
+              microservices, Rust-based tooling, and low-latency web architecture.
+            </li>
+            <li>
+              <strong>Status:</strong> Graduating in 2026. Actively looking for full-time
+              Software Engineering and AI/ML roles where I can contribute to reliable
+              systems.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- EXPERIENCE & RESEARCH HISTORY -->
+      <section class="history-section">
+        <h2 class="section-label">Experience &amp; Research</h2>
+        <div class="experience-list">
           {
-            quickMilestones.map((m) => (
-              <div class="milestone-box">
-                <span class="m-num">{m.num}</span>
-                <span class="m-label">{m.label}</span>
-                <h2 class="m-title" set:html={m.title} />
-                <p class="m-detail">{m.detail}</p>
+            experiences.map((exp) => (
+              <div class="exp-item">
+                <div class="exp-meta">
+                  <span class="exp-period" set:html={exp.period} />
+                  <span class="exp-org">{exp.org}</span>
+                </div>
+                <div class="exp-body">
+                  <h3 class="exp-role">{exp.role}</h3>
+                  <p class="exp-desc">{exp.desc}</p>
+                </div>
               </div>
             ))
           }
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- EDITORIAL BRIDGE (NEXT STEPS & CREDENTIALS) -->
-    <section class="next-bridge divider" data-reveal>
-      <div class="container bridge-inner">
-        <div class="bridge-content">
-          <p class="bridge-tag">NEXT STEPS</p>
-          <h2 class="bridge-headline">Inspect the technical case studies.</h2>
-          <p class="bridge-sub">
-            Every project includes architecture diagrams, verified PR-AUC
-            benchmarks, and production learnings.
+      <!-- HOW I THINK / PRINCIPLES -->
+      <section class="principles-section">
+        <h2 class="section-label">Engineering Principles</h2>
+        <div class="principles-list">
+          {
+            principles.map((p) => (
+              <div class="principle-item">
+                <span class="p-num">{p.num}</span>
+                <div class="p-body">
+                  <h3 class="p-title">{p.title}</h3>
+                  <p class="p-desc">{p.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- FOOTER LINKS & CHANNELS -->
+      <footer class="about-footer-nav">
+        <div class="footer-cta-box">
+          <p class="cta-kicker">WORK WITH ME</p>
+          <h2 class="cta-title">Let&rsquo;s talk software or research.</h2>
+          <p class="cta-sub">
+            Whether you are building a resilient engineering team or exploring
+            applied machine learning, I&rsquo;d love to connect.
           </p>
 
-          <div class="bridge-links-row">
+          <div class="links-row">
+            <a href={profile.emailHref} class="link-btn primary-btn">
+              Send an Email <span aria-hidden="true">&nearr;</span>
+            </a>
+            <a
+              href="https://id.linkedin.com/in/fahmiridho"
+              target="_blank"
+              rel="noreferrer"
+              class="link-btn"
+            >
+              LinkedIn <span aria-hidden="true">&nearr;</span>
+            </a>
+            <a
+              href="https://github.com/fahmiridho07"
+              target="_blank"
+              rel="noreferrer"
+              class="link-btn"
+            >
+              GitHub <span aria-hidden="true">&nearr;</span>
+            </a>
+            <a
+              href={resumeAction.href}
+              download={resumeAction.download ? "" : undefined}
+              class="link-btn resume-btn"
+            >
+              {resumeAction.label}
+              <span aria-hidden="true">&darr;</span>
+            </a>
+          </div>
+
+          <div class="projects-bridge">
             <a
               href="/projects/"
-              class="cta-projects-btn"
+              class="bridge-link"
               data-astro-prefetch="hover"
             >
-              View All 11 Projects &amp; Case Studies <span aria-hidden="true"
-                >&rarr;</span
-              >
+              &larr; Browse All 11 Projects &amp; Case Studies
             </a>
-            <div class="credential-pills">
-              <a
-                href="https://id.linkedin.com/in/fahmiridho"
-                target="_blank"
-                rel="noreferrer"
-                class="cred-pill"
-              >
-                LinkedIn <span aria-hidden="true">&nearr;</span>
-              </a>
-              <a
-                href="https://github.com/fahmiridho07"
-                target="_blank"
-                rel="noreferrer"
-                class="cred-pill"
-              >
-                GitHub <span aria-hidden="true">&nearr;</span>
-              </a>
-              <a
-                href={resumeAction.href}
-                download={resumeAction.download ? "" : undefined}
-                class="cred-pill cred-resume"
-              >
-                {resumeAction.label}
-                <span aria-hidden="true">&darr;</span>
-              </a>
-            </div>
           </div>
         </div>
-      </div>
-    </section>
-  </div>
+      </footer>
+    </article>
+  </main>
 </BaseLayout>
 
-<script>
-  import { initOnPageLoad } from "@lib/page-script";
-
-  initOnPageLoad(() => {
-    const canvas = document.getElementById(
-      "latentReelCanvas",
-    ) as HTMLCanvasElement | null;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    // Resize canvas internal buffer to fit CSS display smoothly
-    const updateCanvasSize = () => {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(rect.width * dpr);
-      canvas.height = Math.floor(rect.height * dpr);
-    };
-    updateCanvasSize();
-    window.addEventListener("resize", updateCanvasSize, { passive: true });
-
-    // Generative Wave & Particle Network Simulation (Video-like animation loop)
-    const numPoints = 42;
-    const points: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      radius: number;
-      isAnomaly: boolean;
-    }> = [];
-
-    for (let i = 0; i < numPoints; i++) {
-      points.push({
-        x: Math.random(),
-        y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.0012,
-        vy: (Math.random() - 0.5) * 0.0012,
-        radius: Math.random() * 2 + 1.5,
-        isAnomaly: i === 0, // Primary highlighted anomaly node
-      });
-    }
-
-    let mouseX = 0.5;
-    let mouseY = 0.5;
-    let targetMouseX = 0.5;
-    let targetMouseY = 0.5;
-
-    canvas.addEventListener(
-      "mousemove",
-      (e) => {
-        const rect = canvas.getBoundingClientRect();
-        targetMouseX = (e.clientX - rect.left) / rect.width;
-        targetMouseY = (e.clientY - rect.top) / rect.height;
-      },
-      { passive: true },
-    );
-
-    let animationId = 0;
-    let t = 0;
-
-    const render = () => {
-      if (!ctx) return;
-      const w = canvas.width;
-      const h = canvas.height;
-
-      // Smooth mouse follow
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
-
-      // Dark obsidian background with subtle gradient
-      const bgGrad = ctx.createRadialGradient(
-        w * mouseX,
-        h * mouseY,
-        40,
-        w * 0.5,
-        h * 0.5,
-        Math.max(w, h) * 0.75,
-      );
-      bgGrad.addColorStop(0, "#1a1c23");
-      bgGrad.addColorStop(1, "#101114");
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, w, h);
-
-      // Fine architectural grid
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.035)";
-      ctx.lineWidth = 1;
-      const gridSize = Math.floor(w / 16);
-      for (let x = 0; x < w; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-        ctx.stroke();
-      }
-      for (let y = 0; y < h; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
-
-      // Sine wave manifold stream (Mathematical Latent Flow)
-      ctx.lineWidth = 1.5;
-      for (let layer = 0; layer < 3; layer++) {
-        ctx.beginPath();
-        const freq = 0.004 + layer * 0.002;
-        const amp = h * (0.12 + layer * 0.04);
-        const yBase = h * 0.5 + Math.sin(t * 0.5 + layer) * (h * 0.08);
-
-        ctx.strokeStyle =
-          layer === 0 ? "rgba(201, 46, 62, 0.45)" : "rgba(255, 255, 255, 0.12)";
-
-        for (let x = 0; x <= w; x += 6) {
-          const y = yBase + Math.sin(x * freq + t + layer * 1.5) * amp;
-          if (x === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
-      }
-
-      // Update and connect particle network
-      const maxDist = w * 0.18;
-      for (let i = 0; i < points.length; i++) {
-        const p = points[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Bounce boundaries
-        if (p.x < 0.02 || p.x > 0.98) p.vx *= -1;
-        if (p.y < 0.05 || p.y > 0.95) p.vy *= -1;
-
-        const px = p.x * w;
-        const py = p.y * h;
-
-        // Draw connections
-        for (let j = i + 1; j < points.length; j++) {
-          const p2 = points[j];
-          const p2x = p2.x * w;
-          const p2y = p2.y * h;
-          const dx = px - p2x;
-          const dy = py - p2y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * 0.18;
-            ctx.strokeStyle =
-              p.isAnomaly || p2.isAnomaly
-                ? `rgba(201, 46, 62, ${alpha * 2})`
-                : `rgba(255, 255, 255, ${alpha})`;
-            ctx.beginPath();
-            ctx.moveTo(px, py);
-            ctx.lineTo(p2x, p2y);
-            ctx.stroke();
-          }
-        }
-
-        // Draw node
-        ctx.beginPath();
-        if (p.isAnomaly) {
-          // Carmine Anomaly Beacon Node
-          const pulseR = p.radius * 2.5 + Math.sin(t * 3) * 3;
-          ctx.arc(px, py, pulseR, 0, Math.PI * 2);
-          ctx.fillStyle = "#c92e3e";
-          ctx.fill();
-
-          // Concentric pulse wave
-          ctx.beginPath();
-          ctx.arc(px, py, pulseR * 2, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(201, 46, 62, 0.4)";
-          ctx.stroke();
-        } else {
-          ctx.arc(px, py, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-          ctx.fill();
-        }
-      }
-
-      t += 0.015;
-      if (!reduceMotion) {
-        animationId = requestAnimationFrame(render);
-      }
-    };
-
-    render();
-
-    window.addEventListener(
-      "astro:before-swap",
-      () => {
-        if (animationId) cancelAnimationFrame(animationId);
-      },
-      { once: true },
-    );
-  });
-</script>
-
 <style>
-  /* ------------------------------- Layout Wrapper ------------------------------- */
+  /* ------------------------------- Editorial Container ------------------------------- */
 
-  .about-page-wrap {
+  .editorial-about {
     background: var(--paper);
-  }
-
-  /* ------------------------------- Hero Section ------------------------------- */
-
-  .about-hero {
     padding-top: var(--space-hero-top);
-    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
   }
 
-  .hero-top-row {
+  .about-container {
+    max-width: 780px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  /* ------------------------------- Header Masthead ------------------------------- */
+
+  .about-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .header-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
     flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
-  .hero-label {
+  .meta-label {
     font-family: var(--font-mono);
     font-size: 0.72rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
     font-weight: 600;
   }
 
-  .hero-status {
+  .status-indicator {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -446,363 +310,398 @@ const quickMilestones = [
     color: var(--ink);
     background: #ffffff;
     border: 1px solid var(--line);
-    padding: 0.28rem 0.75rem;
+    padding: 0.25rem 0.65rem;
     border-radius: var(--radius-pill);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
   }
 
-  .status-beacon {
+  .status-dot {
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: var(--signal);
-    box-shadow: 0 0 8px rgba(201, 46, 62, 0.8);
+    box-shadow: 0 0 6px rgba(201, 46, 62, 0.6);
   }
 
-  .about-headline {
-    margin: 0 0 1.25rem;
+  .about-title {
+    margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(2.3rem, 5vw, 4rem);
+    font-size: clamp(2.3rem, 4.8vw, 3.6rem);
     font-weight: 480;
-    line-height: 1.1;
+    line-height: 1.14;
     letter-spacing: -0.015em;
-    max-width: 26ch;
   }
 
-  .about-lead {
+  /* ------------------------------- Bio & Portrait ------------------------------- */
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: flex-start;
+  }
+
+  .bio-portrait-wrap {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .portrait-figure {
     margin: 0;
-    color: var(--ink-muted);
-    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
-    line-height: 1.65;
-    max-width: 54ch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
   }
 
-  /* ------------------------------- Reel Section (Video Screen) ------------------------------- */
-
-  .reel-section {
-    padding-bottom: clamp(3.5rem, 7vw, 6rem);
-  }
-
-  .reel-stage {
-    position: relative;
-    background: #101114;
+  .portrait-img {
+    width: 100%;
+    aspect-ratio: 0.88;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
     border: 1px solid var(--line-strong);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: 0 24px 60px rgba(22, 24, 29, 0.12);
+    background: var(--paper-soft);
+    box-shadow: 0 10px 24px rgba(22, 24, 29, 0.04);
   }
 
-  .reel-screen-bar {
-    height: 36px;
-    background: #181a20;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: 14px;
-  }
-
-  .screen-lights {
-    display: flex;
-    gap: 6px;
-  }
-
-  .light {
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-  }
-
-  .l-red {
-    background: #e63946;
-  }
-  .l-yellow {
-    background: #f4a261;
-  }
-  .l-green {
-    background: #2a9d8f;
-  }
-
-  .screen-title {
+  .portrait-caption {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    text-align: center;
     letter-spacing: 0.06em;
   }
 
-  .screen-tag {
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    font-weight: 700;
-    color: var(--signal);
-    background: rgba(201, 46, 62, 0.15);
-    border: 1px solid rgba(201, 46, 62, 0.4);
-    padding: 0.15rem 0.5rem;
-    border-radius: var(--radius-pill);
-    letter-spacing: 0.08em;
-  }
-
-  .canvas-viewport {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 520px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .reel-canvas {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  .canvas-hud {
-    position: absolute;
-    inset: 14px;
-    pointer-events: none;
-    font-family: var(--font-mono);
-    font-size: 0.58rem;
-    color: rgba(255, 255, 255, 0.35);
-    letter-spacing: 0.1em;
-  }
-
-  .hud-item {
-    position: absolute;
-  }
-
-  .top-l {
-    top: 0;
-    left: 0;
-  }
-  .top-r {
-    top: 0;
-    right: 0;
-  }
-  .bot-l {
-    bottom: 0;
-    left: 0;
-  }
-  .bot-r {
-    bottom: 0;
-    right: 0;
-  }
-
-  /* Floating Portrait Badge in Corner of Video Screen */
-  .portrait-badge {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
-    width: 90px;
-    height: 90px;
-    border-radius: var(--radius-sm);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    background: #16181d;
-    transition: transform var(--motion-fast) var(--ease-standard);
-  }
-
-  .portrait-badge:hover {
-    transform: scale(1.08);
-    border-color: var(--signal);
-  }
-
-  .badge-photo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* ------------------------------- Milestones Section ------------------------------- */
-
-  .milestones-section {
-    padding-block: clamp(3.5rem, 7vw, 5.5rem);
-    background: var(--paper);
-  }
-
-  .milestones-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-  }
-
-  .milestone-box {
+  .bio-prose {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    padding-top: 1rem;
-    border-top: 1.5px solid var(--line-strong);
+    gap: 1.25rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--ink-muted);
   }
 
-  .m-num {
-    font-family: var(--font-mono);
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--signal);
-    line-height: 1;
+  .bio-prose p {
+    margin: 0;
   }
 
-  .m-label {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    color: var(--ink-soft);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+  .bio-prose strong {
+    color: var(--ink);
+    font-weight: 600;
   }
 
-  .m-title {
-    margin: 0.25rem 0 0;
+  .lead-text {
+    font-size: 1.15rem;
+    color: var(--ink);
+    line-height: 1.65;
+  }
+
+  /* ------------------------------- Now Card ------------------------------- */
+
+  .now-section {
+    width: 100%;
+  }
+
+  .now-card {
+    background: #ffffff;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 4px 16px rgba(22, 24, 29, 0.03);
+  }
+
+  .now-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .now-pulse {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: #2e7d32;
+    box-shadow: 0 0 8px rgba(46, 125, 50, 0.6);
+  }
+
+  .now-title {
+    margin: 0;
     font-family: var(--font-serif);
     font-size: 1.3rem;
     font-weight: 500;
     color: var(--ink);
   }
 
-  .m-detail {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--ink-muted);
-    line-height: 1.6;
-  }
-
-  /* ------------------------------- Next Bridge Section ------------------------------- */
-
-  .next-bridge {
-    padding-block: clamp(4rem, 8vw, 6.5rem);
-    background: var(--paper);
-  }
-
-  .bridge-inner {
-    display: flex;
-    justify-content: center;
-  }
-
-  .bridge-content {
-    width: 100%;
-    max-width: 760px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .bridge-tag {
-    margin: 0 0 0.5rem;
+  .now-date {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin-left: auto;
+    letter-spacing: 0.06em;
+  }
+
+  .now-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+  }
+
+  .now-list strong {
+    color: var(--ink);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin-right: 0.35rem;
+  }
+
+  /* ------------------------------- Section Label ------------------------------- */
+
+  .section-label {
+    margin: 0 0 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.75rem;
+  }
+
+  /* ------------------------------- Experience List ------------------------------- */
+
+  .experience-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: baseline;
+  }
+
+  .exp-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .exp-period {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  .exp-org {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .exp-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .exp-role {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .exp-desc {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+  }
+
+  /* ------------------------------- Principles ------------------------------- */
+
+  .principles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .principle-item {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 1.25rem;
+    align-items: baseline;
+  }
+
+  .p-num {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--signal);
+  }
+
+  .p-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .p-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.18rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .p-desc {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--ink-muted);
+  }
+
+  /* ------------------------------- Footer Nav & CTA ------------------------------- */
+
+  .about-footer-nav {
+    border-top: 1px solid var(--line);
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .footer-cta-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .cta-kicker {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
   }
 
-  .bridge-headline {
-    margin: 0 0 0.75rem;
-    color: var(--ink);
+  .cta-title {
+    margin: 0;
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-size: clamp(1.8rem, 3.8vw, 2.5rem);
     font-weight: 480;
-    line-height: 1.15;
+    color: var(--ink);
+    line-height: 1.2;
   }
 
-  .bridge-sub {
-    margin: 0 0 2rem;
+  .cta-sub {
+    margin: 0 0 1rem;
+    font-size: 1.02rem;
     color: var(--ink-muted);
-    font-size: 1.05rem;
-    line-height: 1.6;
+    line-height: 1.65;
     max-width: 48ch;
   }
 
-  .bridge-links-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.75rem;
-    width: 100%;
-  }
-
-  .cta-projects-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 0.95rem 1.85rem;
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    transition: all var(--motion-fast) var(--ease-standard);
-  }
-
-  .cta-projects-btn:hover {
-    background: var(--signal-deep);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(201, 46, 62, 0.25);
-  }
-
-  .credential-pills {
+  .links-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.65rem;
+    gap: 0.75rem;
+    align-items: center;
   }
 
-  .cred-pill {
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-family: var(--font-mono);
-    font-size: 0.74rem;
-    color: var(--ink-muted);
+    font-size: 0.76rem;
+    color: var(--ink);
     background: #ffffff;
     border: 1px solid var(--line);
-    padding: 0.35rem 0.75rem;
+    padding: 0.5rem 0.95rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .cred-pill:hover {
+  .link-btn:hover {
     border-color: var(--ink);
-    color: var(--ink);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(22, 24, 29, 0.04);
   }
 
-  .cred-resume {
+  .primary-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+    font-weight: 600;
+  }
+
+  .primary-btn:hover {
+    background: var(--signal-deep);
+    border-color: var(--signal-deep);
+    color: #ffffff;
+  }
+
+  .resume-btn {
     color: var(--signal-deep);
     border-color: rgba(201, 46, 62, 0.25);
   }
 
-  .cred-resume:hover {
+  .resume-btn:hover {
     border-color: var(--signal);
     color: var(--signal);
   }
 
-  /* ------------------------------- Responsive ------------------------------- */
-
-  @media (max-width: 900px) {
-    .milestones-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .canvas-viewport {
-      aspect-ratio: 4 / 3;
-    }
-
-    .portrait-badge {
-      width: 65px;
-      height: 65px;
-      bottom: 14px;
-      right: 14px;
-    }
+  .projects-bridge {
+    margin-top: 1.5rem;
   }
 
-  @media (max-width: 600px) {
-    .hero-top-row {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
+  .bridge-link {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .bridge-link:hover {
+    color: var(--ink);
+  }
+
+  /* ------------------------------- Responsive ------------------------------- */
+
+  @media (max-width: 700px) {
+    .bio-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+
+    .bio-portrait-wrap {
+      position: static;
+      max-width: 180px;
+    }
+
+    .exp-item {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+    }
+
+    .principle-item {
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 0.75rem;
     }
   }
 </style>
