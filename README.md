@@ -45,7 +45,6 @@ sharp for the image pipeline · Cloudflare Pages
 /                   Hero, selected work, background, contact
 /projects/          Filterable archive of all case studies
 /projects/[slug]/   Case study pages (numbered sections, evidence panels, reading progress)
-/about/             Education, experience, skills, working style
 /404                The page that is an outlier
 ```
 

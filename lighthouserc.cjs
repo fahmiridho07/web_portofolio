@@ -4,7 +4,6 @@ module.exports = {
       staticDistDir: "./dist",
       url: [
         "http://localhost/",
-        "http://localhost/about/",
         "http://localhost/projects/",
         "http://localhost/projects/kpc-power-automate-po-automation/",
         "http://localhost/404.html",

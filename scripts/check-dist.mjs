@@ -15,7 +15,6 @@ function expectFile(pathname, description) {
 }
 
 expectFile("index.html", "homepage");
-expectFile("about/index.html", "about page");
 expectFile("projects/index.html", "project archive");
 expectFile("404.html", "404 page");
 expectFile("sitemap.xml", "sitemap");
