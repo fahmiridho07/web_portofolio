@@ -1,14 +1,12 @@
 ---
-// about.astro: Top-Tier Professional Journey & Engineering Methodology
-// Focus: "HOW I THINK + MY JOURNEY + MY CRAFT & PROCESS"
-// Zero redundancy with Home or Projects.
-// No standalone hobby section; 3D illustrations used purely as subtle ambient accents.
-// 1. Visual Dossier Hero with 3D tilted portrait, telemetry, and ambient craft decoration
+// about.astro: Creative Editorial Dossier & Engineering Methodology
+// Fully differentiated from Home.
+// 1. Creative, Animated, Fun Hero with Holographic Portrait Card, Spinning Emblem, and Live Local Clock
 // 2. Interactive Evolution Roadmap (4 Milestones across academic & enterprise career)
 // 3. The Engineering Pipeline Schematic (4-step build methodology)
-// 4. Fast-Action Sign-off with 1-click email copy & LinkedIn CTA
+// 4. Clean Editorial Next-Steps Bridge (Zero contact duplication with Home)
 
-import { education, profile } from "@data/profile";
+import { education } from "@data/profile";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { getProfilePageSchema } from "@lib/seo";
@@ -104,93 +102,125 @@ const pipelineSteps = [
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <!-- CHAPTER 1: VISUAL DOSSIER HERO -->
-  <section class="dossier-hero">
+  <!-- CHAPTER 1: CREATIVE ANIMATED DOSSIER HERO -->
+  <section class="creative-hero">
     <div class="container" data-reveal>
-      <div class="dossier-meta-bar">
-        <div class="dossier-id">
-          <span class="id-kicker">DOSSIER // PROFILE</span>
-          <span class="id-name">Achmad Fahmi Ainur Ridho &middot; Ridho</span>
+      <!-- Top Creative Meta Strip -->
+      <div class="hero-top-strip">
+        <div class="creator-chip">
+          <span class="chip-dot"></span>
+          <span>Achmad Fahmi Ainur Ridho &middot; Ridho</span>
         </div>
-        <div class="availability-pill">
-          <span class="pulse-beacon"></span>
-          OPEN TO 2026 ROLES
+
+        <div class="live-clock-pill" data-live-clock>
+          <span class="clock-icon">&bull;</span>
+          <span class="clock-city">Surabaya, ID</span>
+          <span class="clock-time" data-clock-time>--:-- WIB</span>
         </div>
       </div>
 
-      <div class="dossier-grid">
-        <div class="dossier-text">
-          <h1 class="display dossier-headline">
-            I build software with architectural care and train models with
-            scientific discipline.
-          </h1>
-          <p class="dossier-lead">
+      <div class="hero-creative-grid">
+        <!-- Left: Punchy Narrative & Live Attributes -->
+        <div class="hero-narrative-box">
+          <div class="headline-wrapper">
+            <h1 class="display hero-creative-title">
+              I build software with <span class="highlight-ink"
+                >architectural care</span
+              > and train models with <span class="highlight-carmine"
+                >scientific discipline<span class="dot-beacon"></span></span
+              >.
+            </h1>
+          </div>
+
+          <p class="hero-creative-lead">
             Final-year Information Systems student at ITS Surabaya moving deep
-            into AI engineering. My journey started with full-stack enterprise
+            into AI engineering. My journey began in full-stack .NET enterprise
             systems, but working with real production databases quickly revealed
             that what data predicts is even more interesting than the UI wrapped
             around it.
           </p>
 
-          <div class="dossier-tags">
-            <div class="dossier-tag-item">
-              <span class="tag-title">ACADEMIC BASE</span>
-              <span class="tag-val"
-                >ITS Surabaya &middot; GPA {gpaShort}/4.00</span
-              >
+          <!-- Interactive Curiosity Chips -->
+          <div class="curiosity-pills">
+            <div class="curiosity-pill" data-bounce-pill>
+              <span class="pill-emoji">🏛️</span>
+              <span>ITS Surabaya &middot; GPA {gpaShort}</span>
             </div>
-            <div class="dossier-tag-item">
-              <span class="tag-title">CORE PRACTICE</span>
-              <span class="tag-val"
-                >Full-Stack .NET &middot; AI/ML Research</span
-              >
+            <div class="curiosity-pill" data-bounce-pill>
+              <span class="pill-emoji">⚡</span>
+              <span>Full-Stack .NET &middot; C#</span>
             </div>
-            <div class="dossier-tag-item">
-              <span class="tag-title">LOCATION</span>
-              <span class="tag-val">Surabaya, Indonesia</span>
+            <div class="curiosity-pill" data-bounce-pill>
+              <span class="pill-emoji">🔬</span>
+              <span>AI Research &middot; Latent Oversampling</span>
             </div>
           </div>
         </div>
 
-        <div class="dossier-photo-wrap">
-          <figure class="portrait-card" data-portrait-card>
-            <!-- Tasteful Ambient 3D Decorative Accent in Backdrop -->
-            <div class="portrait-ambient-decor" aria-hidden="true">
-              <img
-                src="/assets/floating/code-laptop.webp"
-                alt=""
-                width="140"
-                height="140"
-                loading="lazy"
-                decoding="async"
-                class="ambient-laptop-img"
-              />
+        <!-- Right: Creative Holographic Portrait Stage with Spinning Emblem & Interactive Stickers -->
+        <div class="hero-stage-box">
+          <div class="holographic-stage" data-holo-stage>
+            <!-- Spinning Editorial Emblem -->
+            <div class="spinning-emblem" aria-hidden="true">
+              <svg viewBox="0 0 100 100" class="emblem-svg">
+                <path
+                  id="circlePath"
+                  d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                  fill="none"></path>
+                <text
+                  font-size="10.5"
+                  font-family="monospace"
+                  letter-spacing="2px"
+                  fill="currentColor"
+                >
+                  <textPath href="#circlePath">
+                    ✦ ARCHITECT ✦ RESEARCHER ✦ BUILDER
+                  </textPath>
+                </text>
+              </svg>
+              <div class="emblem-center-dot"></div>
             </div>
 
-            <div class="photo-container">
-              <img
-                src={profileImage}
-                srcset={profileImageSrcset}
-                sizes="(max-width: 900px) calc(100vw - 2rem), 320px"
-                alt="Portrait of Achmad Fahmi Ainur Ridho"
-                width={profileImageMeta?.width}
-                height={profileImageMeta?.height}
-                loading="eager"
-                decoding="async"
-                class="portrait-photo"
-              />
-              <div class="photo-reticle" aria-hidden="true">
-                <span class="reticle-corner c-tl"></span>
-                <span class="reticle-corner c-tr"></span>
-                <span class="reticle-corner c-bl"></span>
-                <span class="reticle-corner c-br"></span>
+            <!-- The Tactile ID Badge / Portrait Card -->
+            <div class="hologram-card" data-holo-card>
+              <div class="card-sheen" data-card-sheen></div>
+
+              <!-- Floating Interactive Sticker 1 (Top Left) -->
+              <div class="card-sticker sticker-role" data-sticker>
+                <span class="sticker-ping"></span>
+                <span>SYSTEMS &amp; AI</span>
+              </div>
+
+              <!-- Floating Interactive Sticker 2 (Bottom Right) -->
+              <div class="card-sticker sticker-thesis" data-sticker>
+                <span>0.855 PR-AUC &bull; THESIS</span>
+              </div>
+
+              <!-- Photo Viewfinder Frame -->
+              <div class="card-photo-frame">
+                <img
+                  src={profileImage}
+                  srcset={profileImageSrcset}
+                  sizes="(max-width: 900px) calc(100vw - 2rem), 320px"
+                  alt="Portrait of Achmad Fahmi Ainur Ridho"
+                  width={profileImageMeta?.width}
+                  height={profileImageMeta?.height}
+                  loading="eager"
+                  decoding="async"
+                  class="card-img"
+                />
+                <!-- Camera Crosshair Grid -->
+                <div class="camera-reticle" aria-hidden="true">
+                  <div class="reticle-target"></div>
+                </div>
+              </div>
+
+              <div class="card-footer-telemetry">
+                <span class="telemetry-tag">ID: RIDHO-2026</span>
+                <span class="telemetry-status">OPEN TO ROLES</span>
               </div>
             </div>
-            <figcaption class="photo-telemetry">
-              <span class="telemetry-item">LOC: SURABAYA, ID</span>
-              <span class="telemetry-item">STATUS: FINAL YEAR</span>
-            </figcaption>
-          </figure>
+          </div>
         </div>
       </div>
     </div>
@@ -284,62 +314,55 @@ const pipelineSteps = [
     </div>
   </section>
 
-  <!-- CHAPTER 4: FAST-ACTION SIGN-OFF -->
-  <section class="about-action-section divider" data-reveal>
-    <div class="container action-container">
-      <div class="action-card">
-        <div class="action-header">
-          <p class="action-kicker">WHAT&rsquo;S NEXT</p>
-          <h2 class="action-title">Let&rsquo;s create something remarkable.</h2>
-          <p class="action-lead">
-            Available for full-time Software Engineering and AI/ML roles
-            starting in 2026.
-          </p>
-        </div>
+  <!-- CHAPTER 4: EDITORIAL NEXT STEPS (Zero Redundancy with Home Contact) -->
+  <section class="editorial-bridge-section divider" data-reveal>
+    <div class="container bridge-container">
+      <div class="bridge-card">
+        <span class="bridge-kicker">WHAT NEXT</span>
+        <h2 class="bridge-title">Inspect the technical proof.</h2>
+        <p class="bridge-lead">
+          Every project includes architecture diagrams, verified metrics,
+          trade-off analyses, and production learnings.
+        </p>
 
-        <div class="action-box">
-          <div class="email-pill" data-email-box>
-            <span class="email-address">{profile.email}</span>
-            <button
-              type="button"
-              class="copy-btn"
-              data-copy-email
-              data-email={profile.email}
-              aria-label="Copy email address"
-            >
-              <span data-copy-label>Copy Email</span>
-            </button>
-            <a href={profile.emailHref} class="send-btn">
-              Direct Mail <span aria-hidden="true">&nearr;</span>
-            </a>
-          </div>
+        <div class="bridge-actions">
+          <a
+            href="/projects/"
+            class="primary-projects-btn"
+            data-astro-prefetch="hover"
+          >
+            Explore All 11 Projects &amp; Case Studies
+            <span aria-hidden="true">&rarr;</span>
+          </a>
 
-          <div class="external-links">
-            <a
-              href="https://id.linkedin.com/in/fahmiridho"
-              target="_blank"
-              rel="noreferrer"
-              class="ext-btn"
-            >
-              Complete Career History on LinkedIn
-              <span aria-hidden="true">&nearr;</span>
-            </a>
-            <a
-              href="https://github.com/fahmiridho07"
-              target="_blank"
-              rel="noreferrer"
-              class="ext-btn"
-            >
-              GitHub <span aria-hidden="true">&nearr;</span>
-            </a>
-            <a
-              href={resumeAction.href}
-              download={resumeAction.download ? "" : undefined}
-              class="ext-btn ext-resume"
-            >
-              {resumeAction.label}
-              <span aria-hidden="true">&darr;</span>
-            </a>
+          <div class="bridge-channels">
+            <span class="channels-label">Or explore credentials:</span>
+            <div class="channels-links">
+              <a
+                href="https://id.linkedin.com/in/fahmiridho"
+                target="_blank"
+                rel="noreferrer"
+                class="bridge-pill"
+              >
+                LinkedIn <span aria-hidden="true">&nearr;</span>
+              </a>
+              <a
+                href="https://github.com/fahmiridho07"
+                target="_blank"
+                rel="noreferrer"
+                class="bridge-pill"
+              >
+                GitHub <span aria-hidden="true">&nearr;</span>
+              </a>
+              <a
+                href={resumeAction.href}
+                download={resumeAction.download ? "" : undefined}
+                class="bridge-pill bridge-resume"
+              >
+                {resumeAction.label}
+                <span aria-hidden="true">&darr;</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -351,141 +374,171 @@ const pipelineSteps = [
   import { initOnPageLoad } from "@lib/page-script";
 
   initOnPageLoad(() => {
-    // 3D Portrait Card Tilt Parallax
-    const portrait = document.querySelector<HTMLElement>(
-      "[data-portrait-card]",
-    );
+    // 1. Real-Time Surabaya Clock (WIB = UTC+7)
+    const clockEl = document.querySelector<HTMLElement>("[data-clock-time]");
+    if (clockEl) {
+      const updateClock = () => {
+        const now = new Date();
+        const options: Intl.DateTimeFormatOptions = {
+          timeZone: "Asia/Jakarta",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        };
+        clockEl.textContent = `${now.toLocaleTimeString("en-GB", options)} WIB`;
+      };
+      updateClock();
+      const timer = window.setInterval(updateClock, 1000);
+      window.addEventListener("astro:before-swap", () => clearInterval(timer), {
+        once: true,
+      });
+    }
+
+    // 2. 3D Holographic Card Mouse Tilt & Sheen Reflection
+    const card = document.querySelector<HTMLElement>("[data-holo-card]");
+    const sheen = document.querySelector<HTMLElement>("[data-card-sheen]");
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    if (portrait && !reduceMotion) {
-      portrait.addEventListener("mousemove", (e) => {
-        const rect = portrait.getBoundingClientRect();
+    if (card && !reduceMotion) {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
         const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
         const y =
           (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-        portrait.style.transform = `perspective(1000px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateY(-4px)`;
-      });
+        const rotX = -y * 8;
+        const rotY = x * 8;
+        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
 
-      portrait.addEventListener("mouseleave", () => {
-        portrait.style.transform =
-          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-      });
-    }
-
-    // 1-Click Copy Email Logic
-    const copyBtn =
-      document.querySelector<HTMLButtonElement>("[data-copy-email]");
-    if (copyBtn) {
-      const copyLabel = copyBtn.querySelector<HTMLElement>("[data-copy-label]");
-      const email = copyBtn.dataset.email || "achmadridho.id@gmail.com";
-
-      copyBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(email);
-          if (copyLabel) copyLabel.textContent = "✓ Copied!";
-          copyBtn.classList.add("is-copied");
-
-          window.setTimeout(() => {
-            if (copyLabel) copyLabel.textContent = "Copy Email";
-            copyBtn.classList.remove("is-copied");
-          }, 2200);
-        } catch {
-          window.location.href = `mailto:${email}`;
+        if (sheen) {
+          const sheenX = ((e.clientX - rect.left) / rect.width) * 100;
+          const sheenY = ((e.clientY - rect.top) / rect.height) * 100;
+          sheen.style.background = `radial-gradient(circle at ${sheenX}% ${sheenY}%, rgba(255,255,255,0.45) 0%, transparent 60%)`;
         }
       });
+
+      card.addEventListener("mouseleave", () => {
+        card.style.transform =
+          "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+        if (sheen) sheen.style.background = "none";
+      });
+
+      // Interactive Click Squish
+      card.addEventListener("click", () => {
+        card.classList.add("is-squished");
+        window.setTimeout(() => card.classList.remove("is-squished"), 400);
+      });
     }
+
+    // 3. Interactive Bouncing Stickers and Curiosity Chips
+    const bounceElements = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        "[data-sticker], [data-bounce-pill]",
+      ),
+    );
+    bounceElements.forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        el.classList.add("is-bouncing");
+        window.setTimeout(() => el.classList.remove("is-bouncing"), 500);
+      });
+    });
   });
 </script>
 
 <style>
-  /* ------------------------------- Chapter 1: Dossier Hero ------------------------------- */
+  /* ------------------------------- Creative Dossier Hero ------------------------------- */
 
-  .dossier-hero {
-    padding-block: var(--space-hero-top) clamp(3.5rem, 6vw, 5.5rem);
+  .creative-hero {
+    padding-block: var(--space-hero-top) clamp(3.5rem, 7vw, 6rem);
     background: var(--paper);
+    position: relative;
+    overflow: hidden;
   }
 
-  .dossier-meta-bar {
+  .hero-top-strip {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    margin-bottom: clamp(1.8rem, 3.5vw, 2.75rem);
+    flex-wrap: wrap;
   }
 
-  .dossier-id {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .id-kicker {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.12em;
-    color: var(--signal-deep);
-    font-weight: 700;
-  }
-
-  .id-name {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--ink-soft);
-  }
-
-  .availability-pill {
+  .creator-chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
+    gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
     color: var(--ink);
     background: #ffffff;
     border: 1px solid var(--line);
-    padding: 0.28rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border-radius: var(--radius-pill);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   }
 
-  .pulse-beacon {
+  .chip-dot {
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: var(--signal);
-    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
-    animation: beacon-ping 2s infinite;
   }
 
-  @keyframes beacon-ping {
+  .live-clock-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.28rem 0.75rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .clock-icon {
+    color: #2e7d32;
+    animation: clock-pulse 1.8s infinite;
+  }
+
+  @keyframes clock-pulse {
     0% {
-      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
+      opacity: 1;
     }
-    70% {
-      box-shadow: 0 0 0 5px rgba(201, 46, 62, 0);
+    50% {
+      opacity: 0.3;
     }
     100% {
-      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0);
+      opacity: 1;
     }
   }
 
-  .dossier-grid {
+  .clock-time {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* Hero Grid */
+  .hero-creative-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
     gap: clamp(2.5rem, 5vw, 5.5rem);
     align-items: center;
   }
 
-  .dossier-text {
+  .hero-narrative-box {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.4rem;
   }
 
-  .dossier-headline {
+  .hero-creative-title {
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
@@ -495,7 +548,28 @@ const pipelineSteps = [
     letter-spacing: -0.015em;
   }
 
-  .dossier-lead {
+  .highlight-ink {
+    color: var(--ink);
+    border-bottom: 2px solid var(--line-strong);
+    padding-bottom: 1px;
+  }
+
+  .highlight-carmine {
+    color: var(--signal-deep);
+    position: relative;
+  }
+
+  .dot-beacon {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--signal);
+    margin-left: 4px;
+    box-shadow: 0 0 10px rgba(201, 46, 62, 0.6);
+  }
+
+  .hero-creative-lead {
     margin: 0;
     color: var(--ink-muted);
     font-size: clamp(1.02rem, 1.4vw, 1.15rem);
@@ -503,135 +577,242 @@ const pipelineSteps = [
     max-width: 52ch;
   }
 
-  .dossier-tags {
+  /* Curiosity Pills */
+  .curiosity-pills {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.25rem 2.25rem;
-    border-top: 1px solid var(--line);
-    padding-top: 1.5rem;
-    margin-top: 0.5rem;
+    gap: 0.65rem;
+    padding-top: 0.5rem;
   }
 
-  .dossier-tag-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .tag-title {
+  .curiosity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-pill);
     font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-soft);
-  }
-
-  .tag-val {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 600;
+    font-size: 0.72rem;
     color: var(--ink);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(22, 24, 29, 0.03);
+    transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  /* Portrait Card */
-  .dossier-photo-wrap {
+  .curiosity-pill:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(22, 24, 29, 0.06);
+  }
+
+  .curiosity-pill.is-bouncing {
+    animation: spring-squish 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Right Stage: Holographic Portrait */
+  .hero-stage-box {
     display: flex;
     justify-content: center;
+    position: relative;
   }
 
-  .portrait-card {
+  .holographic-stage {
     position: relative;
     width: 100%;
-    max-width: 320px;
+    max-width: 340px;
+  }
+
+  /* Spinning Emblem */
+  .spinning-emblem {
+    position: absolute;
+    top: -38px;
+    right: -38px;
+    width: 96px;
+    height: 96px;
+    color: var(--ink);
+    z-index: 10;
+    pointer-events: none;
+    animation: emblem-rotate 24s linear infinite;
+  }
+
+  @keyframes emblem-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .emblem-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .emblem-center-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--signal);
+  }
+
+  /* Hologram Card */
+  .hologram-card {
+    position: relative;
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: 10px;
-    box-shadow: 0 16px 36px rgba(22, 24, 29, 0.05);
-    margin: 0;
+    padding: 12px;
+    box-shadow: 0 20px 48px rgba(22, 24, 29, 0.08);
+    transform-style: preserve-3d;
+    transition: transform var(--motion-fast) var(--ease-standard);
+    cursor: pointer;
+  }
+
+  .hologram-card.is-squished {
+    animation: card-squish 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes card-squish {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(0.96) rotate(-1deg);
+    }
+    70% {
+      transform: scale(1.02) rotate(1deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .card-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    pointer-events: none;
+    z-index: 5;
+    transition: background 0.1s ease;
+  }
+
+  /* Card Stickers */
+  .card-sticker {
+    position: absolute;
+    z-index: 6;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.26rem 0.65rem;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
     transition: transform var(--motion-fast) var(--ease-standard);
   }
 
-  /* Ambient 3D Decorative Accent in Backdrop */
-  .portrait-ambient-decor {
-    position: absolute;
-    top: -25px;
-    right: -25px;
-    width: 90px;
-    height: 90px;
-    pointer-events: none;
-    opacity: 0.25;
-    transform: rotate(15deg);
-    z-index: 0;
+  .card-sticker:hover {
+    transform: scale(1.1) !important;
   }
 
-  .ambient-laptop-img {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1));
+  .card-sticker.is-bouncing {
+    animation: spring-squish 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .photo-container {
+  .sticker-role {
+    top: -10px;
+    left: -12px;
+    background: var(--ink);
+    color: #ffffff;
+    transform: rotate(-6deg);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .sticker-ping {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--signal);
+  }
+
+  .sticker-thesis {
+    bottom: 35px;
+    right: -14px;
+    background: #ffffff;
+    color: var(--signal-deep);
+    border: 1px solid rgba(201, 46, 62, 0.3);
+    transform: rotate(4deg);
+  }
+
+  @keyframes spring-squish {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.2) rotate(6deg);
+    }
+    70% {
+      transform: scale(0.92) rotate(-4deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  /* Photo Container & Reticle */
+  .card-photo-frame {
     position: relative;
     width: 100%;
     aspect-ratio: 0.88;
     overflow: hidden;
     border-radius: var(--radius-sm);
     background: var(--paper-soft);
-    z-index: 1;
   }
 
-  .portrait-photo {
+  .card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .photo-reticle {
+  .camera-reticle {
     position: absolute;
-    inset: 10px;
+    inset: 0;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .reticle-corner {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-color: rgba(255, 255, 255, 0.7);
-    border-style: solid;
+  .reticle-target {
+    width: 24px;
+    height: 24px;
+    border: 1px dashed rgba(255, 255, 255, 0.5);
+    border-radius: 999px;
   }
 
-  .c-tl {
-    top: 0;
-    left: 0;
-    border-width: 1.5px 0 0 1.5px;
-  }
-  .c-tr {
-    top: 0;
-    right: 0;
-    border-width: 1.5px 1.5px 0 0;
-  }
-  .c-bl {
-    bottom: 0;
-    left: 0;
-    border-width: 0 0 1.5px 1.5px;
-  }
-  .c-br {
-    bottom: 0;
-    right: 0;
-    border-width: 0 1.5px 1.5px 0;
-  }
-
-  .photo-telemetry {
-    position: relative;
-    z-index: 1;
+  .card-footer-telemetry {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 8px;
+    padding-top: 10px;
     padding-inline: 4px;
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.64rem;
     color: var(--ink-soft);
+  }
+
+  .telemetry-status {
+    color: var(--signal-deep);
+    font-weight: 700;
   }
 
   /* ------------------------------- Section Common Headers ------------------------------- */
@@ -919,25 +1100,25 @@ const pipelineSteps = [
     z-index: 2;
   }
 
-  /* --------------------- Chapter 4: Fast-Action Sign-off --------------------- */
+  /* --------------------- Chapter 4: Editorial Bridge Section --------------------- */
 
-  .about-action-section {
-    padding-block: clamp(4rem, 8vw, 7rem);
+  .editorial-bridge-section {
+    padding-block: clamp(4.5rem, 9vw, 7.5rem);
     background: var(--paper);
   }
 
-  .action-container {
+  .bridge-container {
     display: flex;
     justify-content: center;
   }
 
-  .action-card {
+  .bridge-card {
     width: 100%;
-    max-width: 760px;
+    max-width: 780px;
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: clamp(2.25rem, 5vw, 3.75rem);
+    padding: clamp(2.5rem, 5vw, 4rem);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -945,19 +1126,16 @@ const pipelineSteps = [
     box-shadow: 0 16px 40px rgba(22, 24, 29, 0.04);
   }
 
-  .action-header {
-    margin-bottom: 2rem;
-  }
-
-  .action-kicker {
-    margin: 0 0 0.5rem;
+  .bridge-kicker {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.12em;
     color: var(--ink-soft);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
   }
 
-  .action-title {
+  .bridge-title {
     margin: 0 0 0.75rem;
     color: var(--ink);
     font-family: var(--font-serif);
@@ -966,118 +1144,92 @@ const pipelineSteps = [
     line-height: 1.12;
   }
 
-  .action-lead {
-    margin: 0;
+  .bridge-lead {
+    margin: 0 0 2.25rem;
     color: var(--ink-muted);
-    font-size: 1.02rem;
+    font-size: 1.05rem;
     line-height: 1.6;
-    max-width: 46ch;
+    max-width: 48ch;
   }
 
-  .action-box {
+  .bridge-actions {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
     width: 100%;
   }
 
-  .email-pill {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    background: var(--paper-soft);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-pill);
-    padding: 0.4rem 0.5rem 0.4rem 1.25rem;
-    width: 100%;
-    max-width: 500px;
-  }
-
-  .email-address {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    color: var(--ink);
-    font-weight: 500;
-  }
-
-  .copy-btn {
-    border: 1px solid var(--line);
-    background: #ffffff;
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    color: var(--ink);
-    padding: 0.45rem 0.85rem;
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: all var(--motion-fast) var(--ease-standard);
-  }
-
-  .copy-btn:hover {
-    border-color: var(--ink);
-  }
-
-  .copy-btn.is-copied {
-    border-color: #2e7d32;
-    color: #2e7d32;
-    background: rgba(46, 125, 50, 0.08);
-  }
-
-  .send-btn {
+  .primary-projects-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.6rem;
     background: var(--ink);
     color: var(--paper);
     font-family: var(--font-mono);
-    font-size: 0.74rem;
-    font-weight: 500;
-    padding: 0.45rem 0.95rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.95rem 1.8rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .send-btn:hover {
+  .primary-projects-btn:hover {
     background: var(--signal-deep);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(201, 46, 62, 0.25);
   }
 
-  .external-links {
+  .bridge-channels {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 0.75rem;
     border-top: 1px solid var(--line);
     padding-top: 1.5rem;
     width: 100%;
   }
 
-  .ext-btn {
+  .channels-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .channels-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+  }
+
+  .bridge-pill {
     font-family: var(--font-mono);
     font-size: 0.74rem;
     color: var(--ink-muted);
     background: var(--paper-soft);
     border: 1px solid var(--line);
-    padding: 0.4rem 0.85rem;
+    padding: 0.35rem 0.75rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .ext-btn:hover {
+  .bridge-pill:hover {
     border-color: var(--ink);
     color: var(--ink);
     background: #ffffff;
   }
 
-  .ext-resume {
+  .bridge-resume {
     color: var(--signal-deep);
     border-color: rgba(201, 46, 62, 0.25);
   }
 
-  .ext-resume:hover {
+  .bridge-resume:hover {
     border-color: var(--signal);
     color: var(--signal);
   }
@@ -1094,16 +1246,16 @@ const pipelineSteps = [
   }
 
   @media (max-width: 900px) {
-    .dossier-grid {
+    .hero-creative-grid {
       grid-template-columns: 1fr;
       text-align: center;
     }
 
-    .dossier-lead {
+    .hero-creative-lead {
       margin-inline: auto;
     }
 
-    .dossier-tags {
+    .curiosity-pills {
       justify-content: center;
     }
 
@@ -1132,8 +1284,11 @@ const pipelineSteps = [
       height: 18px;
     }
 
-    .portrait-ambient-decor {
-      display: none;
+    .spinning-emblem {
+      right: 0;
+      top: -30px;
+      width: 76px;
+      height: 76px;
     }
   }
 
@@ -1141,11 +1296,14 @@ const pipelineSteps = [
     .pipeline-grid {
       grid-template-columns: 1fr;
     }
-
-    .email-pill {
-      border-radius: var(--radius-md);
-      padding: 0.85rem;
+    .hero-top-strip {
       justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinning-emblem {
+      animation: none;
     }
   }
 </style>
