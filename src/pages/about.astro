@@ -1,7 +1,12 @@
 ---
-// about.astro: Editorial Storytelling & Design Showcase
-// Focused on personal character, engineering principles, the meta-craft of this portfolio,
-// and the three pillars of practice. Full detailed resume history is linked to LinkedIn.
+// about.astro: Top-Tier Visual Storytelling About Page
+// Purpose: "HOW I THINK + MY JOURNEY + MY CRAFT & PROCESS"
+// Replaces resume text walls with interactive visual storytelling:
+// 1. Visual Dossier Hero with 3D tilted portrait and telemetry
+// 2. Interactive Evolution Roadmap (4 Phases with visual path)
+// 3. The Engineering Blueprint (4-step visual build pipeline)
+// 4. The Offline Workbench (Interactive tactile craft cards)
+// 5. Fast-Action Sign-off with 1-click email copy & LinkedIn CTA
 
 import { education, profile } from "@data/profile";
 import { pageSeo } from "@data/seo";
@@ -20,86 +25,104 @@ const profileImageSrcset =
 const profileImageMeta = getImageMeta(profileImage);
 const resumeAction = getResumeAction();
 
-const designSystemSpecs = [
+// Chapter 2: Evolution Milestones
+const evolutionPhases = [
   {
-    label: "Engine",
-    value: "Astro Static Generator",
-    desc: "Zero client-side runtime bloat. 100/100 Lighthouse performance by default.",
+    phase: "PHASE 01",
+    period: "2022 &ndash; 2023",
+    title: "Foundations & Systems Architecture",
+    badge: "ITS SURABAYA",
+    desc: "Mastered algorithmic complexity, relational database modeling, and software patterns. Explored how raw data flows through backend pipelines.",
+    highlight:
+      "Academic GPA 3.62 &middot; Teaching Assistant in Enterprise Systems",
   },
   {
-    label: "Kinetic Motion",
-    value: "Pure CSS 3D Transforms",
-    desc: "GPU-accelerated perspective matrices running at locked 60fps without heavy WebGL libraries.",
+    phase: "PHASE 02",
+    period: "2024",
+    title: "Production Enterprise Engineering",
+    badge: "PT KALTIM PRIMA COAL",
+    desc: "Deployed enterprise ASP.NET Core platform (IdeKU V3) serving 5,000+ mining employees. Engineered RBAC permissions, Power BI analytics, and automated workflows.",
+    highlight: "Enterprise Scale &middot; Zero Production Downtime",
   },
   {
-    label: "Typography",
-    value: "Fraunces + Inter + SFMono",
-    desc: "Variable optical serif for human warmth paired with geometric sans and monospace telemetry.",
+    phase: "PHASE 03",
+    period: "2025 &ndash; 2026",
+    title: "Machine Learning & Latent Research",
+    badge: "UNDERGRADUATE THESIS",
+    desc: "Tackled extreme class imbalance in credit card fraud detection. Designed deep generative Autoencoders to oversample latent representations without data leakage.",
+    highlight: "0.8547 PR-AUC &middot; Bayesian Optuna Tuning",
   },
   {
-    label: "Palette",
-    value: "The Anomaly System",
-    desc: "Warm paper ground (#f7f7f6), carbon ink (#16181d), and carmine red (#c92e3e) reserved strictly for signal.",
+    phase: "PHASE 04",
+    period: "2026 &amp; BEYOND",
+    title: "The Horizon: Systems + Intelligence",
+    badge: "OPEN TO ROLES",
+    desc: "Bridging the gap between scalable enterprise infrastructure and intelligent machine learning systems. Ready to ship high-impact software from 2026.",
+    highlight: "Software Engineering &middot; AI/ML Engineering",
   },
 ];
 
-const pillars = [
+// Chapter 3: Engineering Pipeline Steps
+const pipelineSteps = [
   {
     num: "01",
-    tag: "ENGINEERING",
-    title: "Production Software",
-    lead: "Building backend systems that hold up under real-world usage.",
-    points: [
-      "Enterprise ASP.NET Core & C# APIs built with clean separation of concerns.",
-      "Relational database design, query optimization, and RBAC security enforcement.",
-      "Automated operational pipelines that eliminate hundreds of manual hours.",
-    ],
+    step: "SCHEMA & BOUNDARIES",
+    title: "Architecture First",
+    desc: "Establish domain models, strict type contracts, and database constraints before writing business logic.",
+    pill: "Domain-Driven Design",
   },
   {
     num: "02",
-    tag: "RESEARCH",
-    title: "Machine Learning Depth",
-    lead: "Scientific rigor from data preprocessing to deployed model inference.",
-    points: [
-      "Specialized in extreme class imbalance (1:99 fraud detection datasets).",
-      "Latent-space Autoencoder oversampling with Bayesian-tuned LightGBM (Optuna).",
-      "Zero data leakage: strict cross-validation and evaluation on precision-recall curves.",
-    ],
+    step: "RESILIENT CORE",
+    title: "Clean API Execution",
+    desc: "Build lightweight ASP.NET Core services with dependency injection, RBAC security, and automated error handling.",
+    pill: "C# &middot; ASP.NET Core",
   },
   {
     num: "03",
-    tag: "DISCIPLINE",
-    title: "Everyday Rituals",
-    lead: "The same obsession with craft and iteration outside the screen.",
-    points: [
-      "Manual V60 pour-over: 92°C extraction, 1:16 brew ratio, and origin bean notes.",
-      "Competitive court badminton: 28 lbs BG66 Ultimax stringing, rear-court attack.",
-      "Road running cadence: 178 SPM target, negative splits, and aerobic discipline.",
-      "Cinematic storytelling: studying 35mm composition, editing rhythm, and direction.",
-    ],
+    step: "EMPIRICAL MODELING",
+    title: "Zero-Leakage ML",
+    desc: "Strict cross-validation splits, latent space oversampling, and precision-recall optimization for skewed data.",
+    pill: "LightGBM &middot; PyTorch",
+  },
+  {
+    num: "04",
+    step: "PRODUCTION POLISH",
+    title: "Verified Delivery",
+    desc: "Sub-millisecond API response benchmarking, automated test suites, and sub-second web render times.",
+    pill: "100/100 Lighthouse",
   },
 ];
 
-const timelineSnapshot = [
+// Chapter 4: Offline Workbench
+const workbenchItems = [
   {
-    year: "2024 &ndash; 2025",
-    org: "PT Kaltim Prima Coal",
-    role: "Full-Stack Software Engineering Intern",
-    summary:
-      "Stabilized enterprise innovation platform (IdeKU V3) on ASP.NET Core for 5,000+ mining employees. Delivered 7 core features, embedded Power BI analytics, and automated supervisor appointment workflows.",
+    icon: "☕",
+    title: "V60 Extraction",
+    subtitle: "Daily Morning Ritual",
+    desc: "Manual pour-over with 92°C water, 1:16 ratio, and 45s bloom. Trains precision, patience, and sensory calibration.",
+    tag: "92&deg;C Bloom &middot; Single Origin",
   },
   {
-    year: "2023 &ndash; 2024",
-    org: "Institut Teknologi Sepuluh Nopember",
-    role: "Teaching Assistant & Enterprise Systems Lab",
-    summary:
-      "Mentored 50+ undergraduate students on enterprise resource planning (Odoo ERP), business process re-engineering, and IT strategic alignment.",
+    icon: "🏸",
+    title: "Court Badminton",
+    subtitle: "Competitive Athletics",
+    desc: "Rear-court attack play with 28 lbs BG66 Ultimax stringing. Demands lightning-quick footwork and instant tactical decisions.",
+    tag: "28 lbs Tension &middot; Rear Attack",
   },
   {
-    year: "2022 &ndash; 2026",
-    org: "Institut Teknologi Sepuluh Nopember",
-    role: "Bachelor of Information Systems",
-    summary: `Expected graduation 2026 with GPA ${gpaShort}/4.00. Undergraduate thesis on latent-space generative oversampling for credit card fraud detection (0.855 PR-AUC).`,
+    icon: "⚡",
+    title: "Road Miles",
+    subtitle: "Aerobic Discipline",
+    desc: "Distance road running focused on 178 SPM cadence and negative split pacing. Builds mental resilience and aerobic stamina.",
+    tag: "178 SPM Cadence &middot; Negative Splits",
+  },
+  {
+    icon: "🎬",
+    title: "Cinema & 35mm",
+    subtitle: "Visual Storytelling",
+    desc: "Studying cinematographic composition, natural lighting, and pacing rhythm. Informs how visual software is staged and experienced.",
+    tag: "35mm Framing &middot; Visual Rhythm",
   },
 ];
 ---
@@ -113,70 +136,78 @@ const timelineSnapshot = [
   ogImageWidth={aboutOgImage?.width}
   ogImageHeight={aboutOgImage?.height}
 >
-  <!-- HERO / PROFILE ESSAY -->
-  <section class="about-hero">
+  <!-- CHAPTER 1: VISUAL DOSSIER HERO -->
+  <section class="dossier-hero">
     <div class="container" data-reveal>
-      <div class="hero-identity-bar">
-        <p class="hero-kicker">Achmad Fahmi Ainur Ridho &middot; Ridho</p>
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          OPEN FOR 2026 ROLES
+      <div class="dossier-meta-bar">
+        <div class="dossier-id">
+          <span class="id-kicker">DOSSIER // ARCHIVE</span>
+          <span class="id-name">Achmad Fahmi Ainur Ridho &middot; Ridho</span>
+        </div>
+        <div class="availability-pill">
+          <span class="pulse-beacon"></span>
+          OPEN TO 2026 ROLES
         </div>
       </div>
 
-      <div class="about-hero-grid">
-        <div class="hero-text-col">
-          <h1 class="display hero-display">
+      <div class="dossier-grid">
+        <div class="dossier-text">
+          <h1 class="display dossier-headline">
             I build software with architectural care and train models with
             scientific discipline.
           </h1>
-          <p class="hero-narrative">
-            I&rsquo;m a final-year Information Systems student at ITS Surabaya
-            moving deep into AI engineering. My journey began with full-stack
-            .NET enterprise development, but working with real production
-            databases quickly revealed that what data predicts is even more
-            interesting than the UI wrapped around it.
-          </p>
-          <p class="hero-narrative">
-            Today, I treat software engineering and machine learning as two
-            sides of the same coin: reliable code makes models deployable, while
-            rigorous modeling turns raw data into actionable foresight.
+          <p class="dossier-lead">
+            Final-year Information Systems student at ITS Surabaya moving deep
+            into AI engineering. My journey started with full-stack enterprise
+            systems, but working with real production databases quickly revealed
+            that what data predicts is even more interesting than the UI wrapped
+            around it.
           </p>
 
-          <div class="hero-facts-row">
-            <div class="fact-item">
-              <span class="fact-label">FORMATION</span>
-              <span class="fact-val">ITS Surabaya &middot; GPA {gpaShort}</span>
+          <div class="dossier-tags">
+            <div class="dossier-tag-item">
+              <span class="tag-title">ACADEMIC BASE</span>
+              <span class="tag-val"
+                >ITS Surabaya &middot; GPA {gpaShort}/4.00</span
+              >
             </div>
-            <div class="fact-item">
-              <span class="fact-label">FOCUS</span>
-              <span class="fact-val">Full-Stack .NET &middot; AI/ML</span>
+            <div class="dossier-tag-item">
+              <span class="tag-title">CORE PRACTICE</span>
+              <span class="tag-val"
+                >Full-Stack .NET &middot; AI/ML Research</span
+              >
             </div>
-            <div class="fact-item">
-              <span class="fact-label">LOCATION</span>
-              <span class="fact-val">Surabaya, Indonesia</span>
+            <div class="dossier-tag-item">
+              <span class="tag-title">LOCATION</span>
+              <span class="tag-val">Surabaya, Indonesia</span>
             </div>
           </div>
         </div>
 
-        <div class="hero-photo-col">
+        <div class="dossier-photo-wrap">
           <figure class="portrait-card" data-portrait-card>
-            <div class="photo-frame">
+            <div class="photo-container">
               <img
                 src={profileImage}
                 srcset={profileImageSrcset}
-                sizes="(max-width: 900px) calc(100vw - 2rem), 340px"
+                sizes="(max-width: 900px) calc(100vw - 2rem), 320px"
                 alt="Portrait of Achmad Fahmi Ainur Ridho"
                 width={profileImageMeta?.width}
                 height={profileImageMeta?.height}
                 loading="eager"
                 decoding="async"
-                class="portrait-img"
+                class="portrait-photo"
               />
+              <div class="photo-reticle" aria-hidden="true">
+                <span class="reticle-corner c-tl"></span>
+                <span class="reticle-corner c-tr"></span>
+                <span class="reticle-corner c-bl"></span>
+                <span class="reticle-corner c-br"></span>
+              </div>
             </div>
-            <figcaption class="photo-caption">
-              <span class="caption-name">Achmad Fahmi Ainur Ridho</span>
-              <span class="caption-meta">Surabaya, ID &middot; 2026</span>
+            <figcaption class="photo-telemetry">
+              <span class="telemetry-item">LOC: SURABAYA, ID</span>
+              <span class="telemetry-item">STATUS: FINAL YEAR</span>
             </figcaption>
           </figure>
         </div>
@@ -184,105 +215,87 @@ const timelineSnapshot = [
     </div>
   </section>
 
-  <!-- THE META-CRAFT: WEBSITE ARCHITECTURE & DESIGN SYSTEM -->
-  <section class="meta-section divider" data-reveal>
+  <!-- CHAPTER 2: INTERACTIVE EVOLUTION ROADMAP -->
+  <section class="roadmap-section divider" data-reveal>
     <div class="container">
-      <div class="section-heading">
-        <p class="section-kicker">THE META-CRAFT</p>
-        <h2 class="section-title">How this website was engineered.</h2>
-        <p class="section-lead">
-          A personal portfolio is the clearest proof of how someone designs,
-          codes, and thinks. Every detail here is intentional.
-        </p>
-      </div>
-
-      <div class="specs-grid">
-        {
-          designSystemSpecs.map((spec, idx) => (
-            <div class="spec-card">
-              <span class="spec-num">0{idx + 1}</span>
-              <h3 class="spec-label">{spec.label}</h3>
-              <p class="spec-value">{spec.value}</p>
-              <p class="spec-desc">{spec.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- THE THREE PILLARS OF PRACTICE -->
-  <section class="pillars-section divider" data-reveal>
-    <div class="container">
-      <div class="section-heading">
-        <p class="section-kicker">CORE PILLARS</p>
-        <h2 class="section-title">What I care about &amp; how I build.</h2>
-        <p class="section-lead">
-          Three core practices that shape how I write code, evaluate machine
-          learning experiments, and live daily life.
-        </p>
-      </div>
-
-      <div class="pillars-stack">
-        {
-          pillars.map((p) => (
-            <article class="pillar-card-detailed">
-              <div class="pillar-side">
-                <span class="pillar-num">{p.num}</span>
-                <span class="pillar-tag">{p.tag}</span>
-              </div>
-              <div class="pillar-main">
-                <h3 class="pillar-heading">{p.title}</h3>
-                <p class="pillar-lead-text">{p.lead}</p>
-                <ul class="pillar-points">
-                  {p.points.map((pt) => (
-                    <li>
-                      <span class="point-bullet" aria-hidden="true">
-                        &bull;
-                      </span>
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- CAREER & ACADEMIC SNAPSHOT (Clean & Non-Bloated) -->
-  <section class="timeline-section divider" data-reveal>
-    <div class="container">
-      <div class="timeline-header">
-        <div>
-          <p class="section-kicker">EXPERIENCE SNAPSHOT</p>
-          <h2 class="section-title">Where I&rsquo;ve delivered results.</h2>
+      <div class="section-header">
+        <div class="header-badge">
+          <span class="badge-num">01</span>
+          <span class="badge-title">THE JOURNEY</span>
         </div>
-        <a
-          href="https://id.linkedin.com/in/fahmiridho"
-          target="_blank"
-          rel="noreferrer"
-          class="linkedin-cta-btn"
-        >
-          View Complete History on LinkedIn
-          <span aria-hidden="true">&nearr;</span>
-        </a>
+        <h2 class="section-heading">How I got here: 4 phases of evolution.</h2>
+        <p class="section-subhead">
+          From algorithmic fundamentals to enterprise mining production and
+          generative AI research.
+        </p>
       </div>
 
-      <div class="timeline-stream">
+      <div class="roadmap-timeline">
+        <!-- Connecting Line Visual -->
+        <div class="roadmap-spine" aria-hidden="true"></div>
+
+        <div class="roadmap-nodes">
+          {
+            evolutionPhases.map((phase, idx) => (
+              <div class="roadmap-card" data-phase-index={idx}>
+                <div class="card-marker">
+                  <span class="marker-dot" />
+                  <span class="marker-pulse" />
+                </div>
+                <div class="card-content">
+                  <div class="card-meta">
+                    <span class="phase-code">{phase.phase}</span>
+                    <span class="phase-period" set:html={phase.period} />
+                    <span class="phase-badge">{phase.badge}</span>
+                  </div>
+                  <h3 class="phase-title">{phase.title}</h3>
+                  <p class="phase-desc">{phase.desc}</p>
+                  <div class="phase-highlight">
+                    <span class="highlight-bullet" aria-hidden="true">
+                      &bull;
+                    </span>
+                    <span set:html={phase.highlight} />
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 3: THE ENGINEERING PIPELINE SCHEMATIC -->
+  <section class="pipeline-section divider" data-reveal>
+    <div class="container">
+      <div class="section-header">
+        <div class="header-badge">
+          <span class="badge-num">02</span>
+          <span class="badge-title">THE METHODOLOGY</span>
+        </div>
+        <h2 class="section-heading">How I build systems that endure.</h2>
+        <p class="section-subhead">
+          A disciplined 4-stage pipeline that ensures code is maintainable,
+          models are sound, and delivery is verified.
+        </p>
+      </div>
+
+      <div class="pipeline-grid">
         {
-          timelineSnapshot.map((item) => (
-            <div class="timeline-row">
-              <div class="timeline-time">
-                <span class="time-badge" set:html={item.year} />
+          pipelineSteps.map((s, idx) => (
+            <div class="pipeline-card">
+              <div class="pipeline-card-head">
+                <span class="pipeline-num">{s.num}</span>
+                <span class="pipeline-step-name">{s.step}</span>
               </div>
-              <div class="timeline-body">
-                <h3 class="timeline-org">{item.org}</h3>
-                <p class="timeline-role">{item.role}</p>
-                <p class="timeline-summary">{item.summary}</p>
-              </div>
+              <h3 class="pipeline-title">{s.title}</h3>
+              <p class="pipeline-desc">{s.desc}</p>
+              <div class="pipeline-pill" set:html={s.pill} />
+              {idx < 3 && (
+                <div class="pipeline-arrow" aria-hidden="true">
+                  &rarr;
+                </div>
+              )}
             </div>
           ))
         }
@@ -290,57 +303,91 @@ const timelineSnapshot = [
     </div>
   </section>
 
-  <!-- MINIMAL CONTACT SIGN-OFF -->
-  <section class="about-contact-section divider" data-reveal>
-    <div class="container contact-mini-container">
-      <div class="contact-mini-card">
-        <p class="section-kicker">GET IN TOUCH</p>
-        <h2 class="contact-mini-title">
-          Let&rsquo;s talk software, AI, or coffee.
-        </h2>
-        <p class="contact-mini-lead">
-          Open for software engineering and AI/ML opportunities starting in
-          2026.
+  <!-- CHAPTER 4: THE OFFLINE WORKBENCH -->
+  <section class="workbench-section divider" data-reveal>
+    <div class="container">
+      <div class="section-header">
+        <div class="header-badge">
+          <span class="badge-num">03</span>
+          <span class="badge-title">OFFLINE DISCIPLINE</span>
+        </div>
+        <h2 class="section-heading">Craft outside the terminal.</h2>
+        <p class="section-subhead">
+          Engineering is a mindset. The same obsession with variable control and
+          continuous iteration translates to daily rituals.
         </p>
+      </div>
 
-        <div class="contact-mini-actions">
-          <div class="email-copy-pill" data-email-box>
-            <span class="email-text">{profile.email}</span>
+      <div class="workbench-grid">
+        {
+          workbenchItems.map((item) => (
+            <div class="workbench-card" data-workbench-card>
+              <div class="card-icon-bar">
+                <span class="wb-icon">{item.icon}</span>
+                <span class="wb-tag" set:html={item.tag} />
+              </div>
+              <h3 class="wb-title">{item.title}</h3>
+              <p class="wb-subtitle">{item.subtitle}</p>
+              <p class="wb-desc">{item.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTER 5: FAST-ACTION SIGN-OFF -->
+  <section class="about-action-section divider" data-reveal>
+    <div class="container action-container">
+      <div class="action-card">
+        <div class="action-header">
+          <p class="action-kicker">WHAT&rsquo;S NEXT</p>
+          <h2 class="action-title">Let&rsquo;s create something remarkable.</h2>
+          <p class="action-lead">
+            Available for full-time Software Engineering and AI/ML roles
+            starting in 2026.
+          </p>
+        </div>
+
+        <div class="action-box">
+          <div class="email-pill" data-email-box>
+            <span class="email-address">{profile.email}</span>
             <button
               type="button"
-              class="copy-pill-btn"
+              class="copy-btn"
               data-copy-email
               data-email={profile.email}
               aria-label="Copy email address"
             >
-              <span data-copy-label>Copy</span>
+              <span data-copy-label>Copy Email</span>
             </button>
-            <a href={profile.emailHref} class="send-pill-btn">
-              Email Me <span aria-hidden="true">&nearr;</span>
+            <a href={profile.emailHref} class="send-btn">
+              Direct Mail <span aria-hidden="true">&nearr;</span>
             </a>
           </div>
 
-          <div class="channels-row">
+          <div class="external-links">
             <a
               href="https://id.linkedin.com/in/fahmiridho"
               target="_blank"
               rel="noreferrer"
-              class="ch-link"
+              class="ext-btn"
             >
-              LinkedIn <span aria-hidden="true">&nearr;</span>
+              Complete Career History on LinkedIn
+              <span aria-hidden="true">&nearr;</span>
             </a>
             <a
               href="https://github.com/fahmiridho07"
               target="_blank"
               rel="noreferrer"
-              class="ch-link"
+              class="ext-btn"
             >
               GitHub <span aria-hidden="true">&nearr;</span>
             </a>
             <a
               href={resumeAction.href}
               download={resumeAction.download ? "" : undefined}
-              class="ch-link ch-resume"
+              class="ext-btn ext-resume"
             >
               {resumeAction.label}
               <span aria-hidden="true">&darr;</span>
@@ -356,7 +403,7 @@ const timelineSnapshot = [
   import { initOnPageLoad } from "@lib/page-script";
 
   initOnPageLoad(() => {
-    // 3D Portrait Card Tilt
+    // 3D Portrait Card Tilt Parallax
     const portrait = document.querySelector<HTMLElement>(
       "[data-portrait-card]",
     );
@@ -389,11 +436,11 @@ const timelineSnapshot = [
       copyBtn.addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText(email);
-          if (copyLabel) copyLabel.textContent = "Copied!";
+          if (copyLabel) copyLabel.textContent = "✓ Copied!";
           copyBtn.classList.add("is-copied");
 
           window.setTimeout(() => {
-            if (copyLabel) copyLabel.textContent = "Copy";
+            if (copyLabel) copyLabel.textContent = "Copy Email";
             copyBtn.classList.remove("is-copied");
           }, 2200);
         } catch {
@@ -401,18 +448,29 @@ const timelineSnapshot = [
         }
       });
     }
+
+    // Workbench Card Bounce on Click
+    const wbCards = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-workbench-card]"),
+    );
+    wbCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.add("is-bouncing");
+        window.setTimeout(() => card.classList.remove("is-bouncing"), 500);
+      });
+    });
   });
 </script>
 
 <style>
-  /* ------------------------------- Hero Section ------------------------------- */
+  /* ------------------------------- Chapter 1: Dossier Hero ------------------------------- */
 
-  .about-hero {
-    padding-block: var(--space-hero-top) clamp(3rem, 6vw, 5rem);
+  .dossier-hero {
+    padding-block: var(--space-hero-top) clamp(3.5rem, 6vw, 5.5rem);
     background: var(--paper);
   }
 
-  .hero-identity-bar {
+  .dossier-meta-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -420,16 +478,27 @@ const timelineSnapshot = [
     margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
-  .hero-kicker {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    color: var(--ink-soft);
-    text-transform: uppercase;
+  .dossier-id {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
   }
 
-  .status-pill {
+  .id-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--signal-deep);
+    font-weight: 700;
+  }
+
+  .id-name {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+  }
+
+  .availability-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
@@ -438,22 +507,23 @@ const timelineSnapshot = [
     font-weight: 600;
     letter-spacing: 0.08em;
     color: var(--ink);
-    background: var(--paper-soft);
+    background: #ffffff;
     border: 1px solid var(--line);
-    padding: 0.25rem 0.65rem;
+    padding: 0.28rem 0.75rem;
     border-radius: var(--radius-pill);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   }
 
-  .status-dot {
+  .pulse-beacon {
     width: 6px;
     height: 6px;
     border-radius: 999px;
     background: var(--signal);
-    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.4);
-    animation: status-ring 2s infinite;
+    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
+    animation: beacon-ping 2s infinite;
   }
 
-  @keyframes status-ring {
+  @keyframes beacon-ping {
     0% {
       box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
     }
@@ -465,68 +535,68 @@ const timelineSnapshot = [
     }
   }
 
-  .about-hero-grid {
+  .dossier-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 5vw, 5.5rem);
     align-items: center;
   }
 
-  .hero-text-col {
+  .dossier-text {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
   }
 
-  .hero-display {
+  .dossier-headline {
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(2.3rem, 4.6vw, 3.8rem);
+    font-size: clamp(2.4rem, 4.8vw, 3.8rem);
     font-weight: 480;
-    line-height: 1.12;
+    line-height: 1.1;
     letter-spacing: -0.015em;
   }
 
-  .hero-narrative {
+  .dossier-lead {
     margin: 0;
     color: var(--ink-muted);
-    font-size: clamp(1.02rem, 1.4vw, 1.14rem);
-    line-height: 1.72;
+    font-size: clamp(1.02rem, 1.4vw, 1.15rem);
+    line-height: 1.7;
     max-width: 52ch;
   }
 
-  .hero-facts-row {
+  .dossier-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.5rem 2.5rem;
+    gap: 1.25rem 2.25rem;
     border-top: 1px solid var(--line);
     padding-top: 1.5rem;
     margin-top: 0.5rem;
   }
 
-  .fact-item {
+  .dossier-tag-item {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
 
-  .fact-label {
+  .tag-title {
     font-family: var(--font-mono);
     font-size: 0.62rem;
     letter-spacing: 0.12em;
     color: var(--ink-soft);
   }
 
-  .fact-val {
+  .tag-val {
     font-family: var(--font-mono);
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--ink);
   }
 
-  /* Portrait Card (3D Tilt) */
-  .hero-photo-col {
+  /* Portrait Card */
+  .dossier-photo-wrap {
     display: flex;
     justify-content: center;
   }
@@ -534,17 +604,18 @@ const timelineSnapshot = [
   .portrait-card {
     position: relative;
     width: 100%;
-    max-width: 340px;
+    max-width: 320px;
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 10px;
-    box-shadow: 0 12px 32px rgba(22, 24, 29, 0.05);
+    box-shadow: 0 16px 36px rgba(22, 24, 29, 0.05);
     margin: 0;
     transition: transform var(--motion-fast) var(--ease-standard);
   }
 
-  .photo-frame {
+  .photo-container {
+    position: relative;
     width: 100%;
     aspect-ratio: 0.88;
     overflow: hidden;
@@ -552,368 +623,504 @@ const timelineSnapshot = [
     background: var(--paper-soft);
   }
 
-  .portrait-img {
+  .portrait-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .photo-caption {
+  .photo-reticle {
+    position: absolute;
+    inset: 10px;
+    pointer-events: none;
+  }
+
+  .reticle-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: rgba(255, 255, 255, 0.7);
+    border-style: solid;
+  }
+
+  .c-tl {
+    top: 0;
+    left: 0;
+    border-width: 1.5px 0 0 1.5px;
+  }
+  .c-tr {
+    top: 0;
+    right: 0;
+    border-width: 1.5px 1.5px 0 0;
+  }
+  .c-bl {
+    bottom: 0;
+    left: 0;
+    border-width: 0 0 1.5px 1.5px;
+  }
+  .c-br {
+    bottom: 0;
+    right: 0;
+    border-width: 0 1.5px 1.5px 0;
+  }
+
+  .photo-telemetry {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-top: 8px;
     padding-inline: 4px;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     color: var(--ink-soft);
   }
 
-  .caption-name {
-    font-weight: 600;
-    color: var(--ink);
-  }
+  /* ------------------------------- Section Common Headers ------------------------------- */
 
-  /* -------------------------- Section Headings -------------------------- */
-
-  .section-heading {
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  .section-header {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.65rem;
   }
 
-  .section-kicker {
-    margin: 0;
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
-    text-transform: uppercase;
   }
 
-  .section-title {
+  .badge-num {
+    color: var(--signal);
+    font-weight: 700;
+  }
+
+  .section-heading {
     margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(2.1rem, 4.2vw, 3.4rem);
     font-weight: 480;
-    line-height: 1.15;
+    line-height: 1.14;
     letter-spacing: -0.01em;
   }
 
-  .section-lead {
+  .section-subhead {
     margin: 0;
     color: var(--ink-muted);
-    font-size: 1.05rem;
+    font-size: clamp(1rem, 1.4vw, 1.1rem);
     line-height: 1.65;
-    max-width: 54ch;
+    max-width: 56ch;
   }
 
-  /* --------------------- Meta-Craft Design System Grid --------------------- */
+  /* ---------------------- Chapter 2: Interactive Roadmap ---------------------- */
 
-  .meta-section {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
+  .roadmap-section {
+    padding-block: clamp(4rem, 8vw, 6.5rem);
     background: var(--paper);
   }
 
-  .specs-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 2.5vw, 2rem);
+  .roadmap-timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
-  .spec-card {
+  .roadmap-spine {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .roadmap-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+
+  .roadmap-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .card-marker {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .marker-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    border: 3px solid var(--ink);
+    z-index: 2;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .roadmap-card:hover .marker-dot {
+    border-color: var(--signal);
+    background: var(--signal);
+  }
+
+  .marker-pulse {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    z-index: 1;
+  }
+
+  .card-content {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: clamp(1.5rem, 3vw, 2.25rem);
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.65rem;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .spec-card:hover {
+  .roadmap-card:hover .card-content {
     border-color: var(--ink);
-    transform: translateY(-2px);
+    transform: translateX(4px);
     box-shadow: 0 8px 24px rgba(22, 24, 29, 0.04);
   }
 
-  .spec-num {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: var(--signal);
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1rem;
   }
 
-  .spec-label {
+  .phase-code {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--signal-deep);
+    letter-spacing: 0.08em;
+  }
+
+  .phase-period {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+  }
+
+  .phase-badge {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .phase-title {
     margin: 0;
     font-family: var(--font-serif);
-    font-size: 1.35rem;
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
     font-weight: 500;
     color: var(--ink);
+    line-height: 1.25;
   }
 
-  .spec-value {
+  .phase-desc {
     margin: 0;
+    font-size: 0.96rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+
+  .phase-highlight {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: 0.25rem;
     font-family: var(--font-mono);
-    font-size: 0.84rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: var(--signal-deep);
   }
 
-  .spec-desc {
-    margin: 0;
-    font-size: 0.9rem;
+  .highlight-bullet {
+    color: var(--signal);
+  }
+
+  /* ------------------- Chapter 3: Engineering Pipeline ------------------- */
+
+  .pipeline-section {
+    padding-block: clamp(4rem, 8vw, 6.5rem);
+    background: var(--paper);
+  }
+
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .pipeline-card {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: clamp(1.4rem, 2.5vw, 1.85rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 240px;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .pipeline-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(22, 24, 29, 0.05);
+  }
+
+  .pipeline-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .pipeline-num {
+    font-family: var(--font-mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--signal);
+    line-height: 1;
+  }
+
+  .pipeline-step-name {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+
+  .pipeline-title {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .pipeline-desc {
+    margin: 0 0 1rem;
+    font-size: 0.88rem;
     color: var(--ink-muted);
     line-height: 1.6;
   }
 
-  /* --------------------------- Core Pillars Stack --------------------------- */
+  .pipeline-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-pill);
+    display: inline-block;
+    align-self: flex-start;
+  }
 
-  .pillars-section {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
+  .pipeline-arrow {
+    position: absolute;
+    top: 50%;
+    right: -16px;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    z-index: 2;
+  }
+
+  /* --------------------- Chapter 4: Offline Workbench --------------------- */
+
+  .workbench-section {
+    padding-block: clamp(4rem, 8vw, 6.5rem);
     background: var(--paper);
   }
 
-  .pillars-stack {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(1.25rem, 2.5vw, 2rem);
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
   }
 
-  .pillar-card-detailed {
+  .workbench-card {
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: clamp(1.75rem, 3.5vw, 2.75rem);
-    display: grid;
-    grid-template-columns: 140px minmax(0, 1fr);
-    gap: 2rem;
-    align-items: baseline;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    cursor: pointer;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .pillar-card-detailed:hover {
+  .workbench-card:hover {
     border-color: var(--ink);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(22, 24, 29, 0.04);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(22, 24, 29, 0.05);
   }
 
-  .pillar-side {
+  .workbench-card.is-bouncing {
+    animation: wb-bounce 0.5s ease-out;
+  }
+
+  @keyframes wb-bounce {
+    0% {
+      transform: scale(1);
+    }
+    40% {
+      transform: scale(1.04) rotate(1deg);
+    }
+    70% {
+      transform: scale(0.98) rotate(-1deg);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .card-icon-bar {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
   }
 
-  .pillar-side .pillar-num {
-    font-family: var(--font-mono);
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: var(--signal);
+  .wb-icon {
+    font-size: 1.75rem;
     line-height: 1;
   }
 
-  .pillar-side .pillar-tag {
+  .wb-tag {
     font-family: var(--font-mono);
     font-size: 0.65rem;
-    letter-spacing: 0.08em;
-    color: var(--ink-soft);
-  }
-
-  .pillar-main {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .pillar-heading {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
-    font-weight: 490;
-    color: var(--ink);
-  }
-
-  .pillar-lead-text {
-    margin: 0;
-    font-size: 1.02rem;
-    font-weight: 500;
-    color: var(--ink);
-    line-height: 1.55;
-  }
-
-  .pillar-points {
-    margin: 0.5rem 0 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .pillar-points li {
-    display: flex;
-    align-items: baseline;
-    gap: 0.6rem;
-    font-size: 0.92rem;
-    color: var(--ink-muted);
-    line-height: 1.65;
-  }
-
-  .point-bullet {
-    color: var(--signal);
-    font-size: 1rem;
-    line-height: 1;
-  }
-
-  /* ---------------------------- Timeline Snapshot ---------------------------- */
-
-  .timeline-section {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
-    background: var(--paper);
-  }
-
-  .timeline-header {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 1.5rem;
-    margin-bottom: clamp(2rem, 4vw, 3.5rem);
-  }
-
-  .linkedin-cta-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
     font-weight: 600;
     color: var(--signal-deep);
-    background: #ffffff;
-    border: 1px solid var(--line-strong);
-    padding: 0.55rem 1.15rem;
+    background: rgba(201, 46, 62, 0.04);
+    border: 1px solid rgba(201, 46, 62, 0.2);
+    padding: 0.22rem 0.6rem;
     border-radius: var(--radius-pill);
-    text-decoration: none;
-    transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .linkedin-cta-btn:hover {
-    background: var(--ink);
-    color: #ffffff;
-    border-color: var(--ink);
-  }
-
-  .timeline-stream {
-    display: flex;
-    flex-direction: column;
-    border-top: 1px solid var(--line);
-  }
-
-  .timeline-row {
-    display: grid;
-    grid-template-columns: 160px minmax(0, 1fr);
-    gap: 2rem;
-    padding-block: clamp(1.5rem, 3vw, 2.25rem);
-    border-bottom: 1px solid var(--line);
-  }
-
-  .time-badge {
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: var(--ink-soft);
-    background: var(--paper-soft);
-    border: 1px solid var(--line);
-    padding: 0.25rem 0.65rem;
-    border-radius: var(--radius-pill);
-    display: inline-block;
-  }
-
-  .timeline-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .timeline-org {
+  .wb-title {
     margin: 0;
     font-family: var(--font-serif);
-    font-size: 1.35rem;
+    font-size: 1.4rem;
     font-weight: 500;
     color: var(--ink);
   }
 
-  .timeline-role {
+  .wb-subtitle {
     margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--signal-deep);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
-  .timeline-summary {
-    margin: 0.35rem 0 0;
+  .wb-desc {
+    margin: 0;
     font-size: 0.92rem;
     color: var(--ink-muted);
-    line-height: 1.65;
-    max-width: 64ch;
+    line-height: 1.6;
   }
 
-  /* -------------------------- Minimal Contact Card -------------------------- */
+  /* --------------------- Chapter 5: Fast-Action Sign-off --------------------- */
 
-  .about-contact-section {
-    padding-block: clamp(3.5rem, 7vw, 6rem);
+  .about-action-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
     background: var(--paper);
   }
 
-  .contact-mini-container {
+  .action-container {
     display: flex;
     justify-content: center;
   }
 
-  .contact-mini-card {
+  .action-card {
     width: 100%;
-    max-width: 740px;
+    max-width: 760px;
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
-    padding: clamp(2rem, 4.5vw, 3.5rem);
+    padding: clamp(2.25rem, 5vw, 3.75rem);
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 12px 32px rgba(22, 24, 29, 0.04);
+    box-shadow: 0 16px 40px rgba(22, 24, 29, 0.04);
   }
 
-  .contact-mini-title {
-    margin: 0.5rem 0 0.65rem;
+  .action-header {
+    margin-bottom: 2rem;
+  }
+
+  .action-kicker {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .action-title {
+    margin: 0 0 0.75rem;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
     font-weight: 480;
-    line-height: 1.15;
+    line-height: 1.12;
   }
 
-  .contact-mini-lead {
-    margin: 0 0 1.75rem;
+  .action-lead {
+    margin: 0;
     color: var(--ink-muted);
-    font-size: 1rem;
+    font-size: 1.02rem;
     line-height: 1.6;
-    max-width: 44ch;
+    max-width: 46ch;
   }
 
-  .contact-mini-actions {
+  .action-box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.25rem;
+    gap: 1.5rem;
     width: 100%;
   }
 
-  .email-copy-pill {
+  .email-pill {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -922,132 +1129,158 @@ const timelineSnapshot = [
     background: var(--paper-soft);
     border: 1px solid var(--line);
     border-radius: var(--radius-pill);
-    padding: 0.35rem 0.45rem 0.35rem 1.15rem;
+    padding: 0.4rem 0.5rem 0.4rem 1.25rem;
     width: 100%;
-    max-width: 480px;
+    max-width: 500px;
   }
 
-  .email-text {
+  .email-address {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: var(--ink);
     font-weight: 500;
   }
 
-  .copy-pill-btn {
+  .copy-btn {
     border: 1px solid var(--line);
     background: #ffffff;
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--ink);
-    padding: 0.42rem 0.75rem;
+    padding: 0.45rem 0.85rem;
     border-radius: var(--radius-pill);
     cursor: pointer;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .copy-pill-btn:hover {
+  .copy-btn:hover {
     border-color: var(--ink);
   }
 
-  .copy-pill-btn.is-copied {
+  .copy-btn.is-copied {
     border-color: #2e7d32;
     color: #2e7d32;
     background: rgba(46, 125, 50, 0.08);
   }
 
-  .send-pill-btn {
+  .send-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
+    gap: 0.35rem;
     background: var(--ink);
     color: var(--paper);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     font-weight: 500;
-    padding: 0.45rem 0.85rem;
+    padding: 0.45rem 0.95rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .send-pill-btn:hover {
+  .send-btn:hover {
     background: var(--signal-deep);
   }
 
-  .channels-row {
+  .external-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.5rem;
+    width: 100%;
   }
 
-  .ch-link {
+  .ext-btn {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--ink-muted);
     background: var(--paper-soft);
     border: 1px solid var(--line);
-    padding: 0.3rem 0.65rem;
+    padding: 0.4rem 0.85rem;
     border-radius: var(--radius-pill);
     text-decoration: none;
     transition: all var(--motion-fast) var(--ease-standard);
   }
 
-  .ch-link:hover {
+  .ext-btn:hover {
     border-color: var(--ink);
     color: var(--ink);
     background: #ffffff;
   }
 
-  .ch-resume {
+  .ext-resume {
     color: var(--signal-deep);
     border-color: rgba(201, 46, 62, 0.25);
   }
 
-  .ch-resume:hover {
+  .ext-resume:hover {
     border-color: var(--signal);
     color: var(--signal);
   }
 
   /* ------------------------------- Responsive ------------------------------- */
 
+  @media (max-width: 990px) {
+    .pipeline-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .pipeline-arrow {
+      display: none;
+    }
+  }
+
   @media (max-width: 900px) {
-    .about-hero-grid {
+    .dossier-grid {
       grid-template-columns: 1fr;
       text-align: center;
     }
 
-    .hero-narrative {
+    .dossier-lead {
       margin-inline: auto;
     }
 
-    .hero-facts-row {
+    .dossier-tags {
       justify-content: center;
     }
 
-    .specs-grid {
+    .workbench-grid {
       grid-template-columns: 1fr;
     }
 
-    .pillar-card-detailed {
-      grid-template-columns: 1fr;
+    .roadmap-spine {
+      left: 14px;
+    }
+
+    .roadmap-card {
+      grid-template-columns: 30px minmax(0, 1fr);
       gap: 1rem;
     }
 
-    .timeline-row {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
+    .card-marker {
+      width: 30px;
+      height: 30px;
     }
 
-    .timeline-header {
-      flex-direction: column;
-      align-items: flex-start;
+    .marker-dot {
+      width: 10px;
+      height: 10px;
+      border-width: 2px;
+    }
+
+    .marker-pulse {
+      width: 18px;
+      height: 18px;
     }
   }
 
-  @media (max-width: 580px) {
-    .email-copy-pill {
+  @media (max-width: 600px) {
+    .pipeline-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .email-pill {
       border-radius: var(--radius-md);
       padding: 0.85rem;
       justify-content: center;
