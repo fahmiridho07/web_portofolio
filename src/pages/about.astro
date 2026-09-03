@@ -1,12 +1,12 @@
 ---
-// about.astro: Top-Tier Visual Storytelling About Page
-// Purpose: "HOW I THINK + MY JOURNEY + MY CRAFT & PROCESS"
-// Replaces resume text walls with interactive visual storytelling:
-// 1. Visual Dossier Hero with 3D tilted portrait and telemetry
-// 2. Interactive Evolution Roadmap (4 Phases with visual path)
-// 3. The Engineering Blueprint (4-step visual build pipeline)
-// 4. The Offline Workbench (Interactive tactile craft cards)
-// 5. Fast-Action Sign-off with 1-click email copy & LinkedIn CTA
+// about.astro: Top-Tier Professional Journey & Engineering Methodology
+// Focus: "HOW I THINK + MY JOURNEY + MY CRAFT & PROCESS"
+// Zero redundancy with Home or Projects.
+// No standalone hobby section; 3D illustrations used purely as subtle ambient accents.
+// 1. Visual Dossier Hero with 3D tilted portrait, telemetry, and ambient craft decoration
+// 2. Interactive Evolution Roadmap (4 Milestones across academic & enterprise career)
+// 3. The Engineering Pipeline Schematic (4-step build methodology)
+// 4. Fast-Action Sign-off with 1-click email copy & LinkedIn CTA
 
 import { education, profile } from "@data/profile";
 import { pageSeo } from "@data/seo";
@@ -25,14 +25,14 @@ const profileImageSrcset =
 const profileImageMeta = getImageMeta(profileImage);
 const resumeAction = getResumeAction();
 
-// Chapter 2: Evolution Milestones
+// Evolution Milestones (Chronological Career & Research Roadmap)
 const evolutionPhases = [
   {
     phase: "PHASE 01",
     period: "2022 &ndash; 2023",
     title: "Foundations & Systems Architecture",
     badge: "ITS SURABAYA",
-    desc: "Mastered algorithmic complexity, relational database modeling, and software patterns. Explored how raw data flows through backend pipelines.",
+    desc: "Mastered algorithmic complexity, relational database modeling, and software design patterns. Explored how raw data flows through backend pipelines.",
     highlight:
       "Academic GPA 3.62 &middot; Teaching Assistant in Enterprise Systems",
   },
@@ -41,7 +41,7 @@ const evolutionPhases = [
     period: "2024",
     title: "Production Enterprise Engineering",
     badge: "PT KALTIM PRIMA COAL",
-    desc: "Deployed enterprise ASP.NET Core platform (IdeKU V3) serving 5,000+ mining employees. Engineered RBAC permissions, Power BI analytics, and automated workflows.",
+    desc: "Engineered and stabilized enterprise innovation platform (IdeKU V3) on ASP.NET Core for 5,000+ mining employees. Delivered RBAC security, embedded Power BI analytics, and automated supervisor approval workflows.",
     highlight: "Enterprise Scale &middot; Zero Production Downtime",
   },
   {
@@ -49,7 +49,7 @@ const evolutionPhases = [
     period: "2025 &ndash; 2026",
     title: "Machine Learning & Latent Research",
     badge: "UNDERGRADUATE THESIS",
-    desc: "Tackled extreme class imbalance in credit card fraud detection. Designed deep generative Autoencoders to oversample latent representations without data leakage.",
+    desc: "Tackled extreme class imbalance in financial transaction datasets. Designed deep generative Autoencoders to oversample latent representations without data leakage, paired with Bayesian-tuned LightGBM.",
     highlight: "0.8547 PR-AUC &middot; Bayesian Optuna Tuning",
   },
   {
@@ -57,12 +57,12 @@ const evolutionPhases = [
     period: "2026 &amp; BEYOND",
     title: "The Horizon: Systems + Intelligence",
     badge: "OPEN TO ROLES",
-    desc: "Bridging the gap between scalable enterprise infrastructure and intelligent machine learning systems. Ready to ship high-impact software from 2026.",
+    desc: "Bridging the gap between scalable enterprise infrastructure and intelligent machine learning models. Ready to ship high-impact software starting from 2026.",
     highlight: "Software Engineering &middot; AI/ML Engineering",
   },
 ];
 
-// Chapter 3: Engineering Pipeline Steps
+// Engineering Pipeline Steps (Mental Model & Build Methodology)
 const pipelineSteps = [
   {
     num: "01",
@@ -93,38 +93,6 @@ const pipelineSteps = [
     pill: "100/100 Lighthouse",
   },
 ];
-
-// Chapter 4: Offline Workbench
-const workbenchItems = [
-  {
-    icon: "☕",
-    title: "V60 Extraction",
-    subtitle: "Daily Morning Ritual",
-    desc: "Manual pour-over with 92°C water, 1:16 ratio, and 45s bloom. Trains precision, patience, and sensory calibration.",
-    tag: "92&deg;C Bloom &middot; Single Origin",
-  },
-  {
-    icon: "🏸",
-    title: "Court Badminton",
-    subtitle: "Competitive Athletics",
-    desc: "Rear-court attack play with 28 lbs BG66 Ultimax stringing. Demands lightning-quick footwork and instant tactical decisions.",
-    tag: "28 lbs Tension &middot; Rear Attack",
-  },
-  {
-    icon: "⚡",
-    title: "Road Miles",
-    subtitle: "Aerobic Discipline",
-    desc: "Distance road running focused on 178 SPM cadence and negative split pacing. Builds mental resilience and aerobic stamina.",
-    tag: "178 SPM Cadence &middot; Negative Splits",
-  },
-  {
-    icon: "🎬",
-    title: "Cinema & 35mm",
-    subtitle: "Visual Storytelling",
-    desc: "Studying cinematographic composition, natural lighting, and pacing rhythm. Informs how visual software is staged and experienced.",
-    tag: "35mm Framing &middot; Visual Rhythm",
-  },
-];
 ---
 
 <BaseLayout
@@ -141,7 +109,7 @@ const workbenchItems = [
     <div class="container" data-reveal>
       <div class="dossier-meta-bar">
         <div class="dossier-id">
-          <span class="id-kicker">DOSSIER // ARCHIVE</span>
+          <span class="id-kicker">DOSSIER // PROFILE</span>
           <span class="id-name">Achmad Fahmi Ainur Ridho &middot; Ridho</span>
         </div>
         <div class="availability-pill">
@@ -186,6 +154,19 @@ const workbenchItems = [
 
         <div class="dossier-photo-wrap">
           <figure class="portrait-card" data-portrait-card>
+            <!-- Tasteful Ambient 3D Decorative Accent in Backdrop -->
+            <div class="portrait-ambient-decor" aria-hidden="true">
+              <img
+                src="/assets/floating/code-laptop.webp"
+                alt=""
+                width="140"
+                height="140"
+                loading="lazy"
+                decoding="async"
+                class="ambient-laptop-img"
+              />
+            </div>
+
             <div class="photo-container">
               <img
                 src={profileImage}
@@ -221,12 +202,12 @@ const workbenchItems = [
       <div class="section-header">
         <div class="header-badge">
           <span class="badge-num">01</span>
-          <span class="badge-title">THE JOURNEY</span>
+          <span class="badge-title">CAREER &amp; ACADEMIC EVOLUTION</span>
         </div>
-        <h2 class="section-heading">How I got here: 4 phases of evolution.</h2>
+        <h2 class="section-heading">How I got here: 4 key milestones.</h2>
         <p class="section-subhead">
           From algorithmic fundamentals to enterprise mining production and
-          generative AI research.
+          generative AI thesis research.
         </p>
       </div>
 
@@ -303,40 +284,7 @@ const workbenchItems = [
     </div>
   </section>
 
-  <!-- CHAPTER 4: THE OFFLINE WORKBENCH -->
-  <section class="workbench-section divider" data-reveal>
-    <div class="container">
-      <div class="section-header">
-        <div class="header-badge">
-          <span class="badge-num">03</span>
-          <span class="badge-title">OFFLINE DISCIPLINE</span>
-        </div>
-        <h2 class="section-heading">Craft outside the terminal.</h2>
-        <p class="section-subhead">
-          Engineering is a mindset. The same obsession with variable control and
-          continuous iteration translates to daily rituals.
-        </p>
-      </div>
-
-      <div class="workbench-grid">
-        {
-          workbenchItems.map((item) => (
-            <div class="workbench-card" data-workbench-card>
-              <div class="card-icon-bar">
-                <span class="wb-icon">{item.icon}</span>
-                <span class="wb-tag" set:html={item.tag} />
-              </div>
-              <h3 class="wb-title">{item.title}</h3>
-              <p class="wb-subtitle">{item.subtitle}</p>
-              <p class="wb-desc">{item.desc}</p>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- CHAPTER 5: FAST-ACTION SIGN-OFF -->
+  <!-- CHAPTER 4: FAST-ACTION SIGN-OFF -->
   <section class="about-action-section divider" data-reveal>
     <div class="container action-container">
       <div class="action-card">
@@ -448,17 +396,6 @@ const workbenchItems = [
         }
       });
     }
-
-    // Workbench Card Bounce on Click
-    const wbCards = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-workbench-card]"),
-    );
-    wbCards.forEach((card) => {
-      card.addEventListener("click", () => {
-        card.classList.add("is-bouncing");
-        window.setTimeout(() => card.classList.remove("is-bouncing"), 500);
-      });
-    });
   });
 </script>
 
@@ -614,6 +551,25 @@ const workbenchItems = [
     transition: transform var(--motion-fast) var(--ease-standard);
   }
 
+  /* Ambient 3D Decorative Accent in Backdrop */
+  .portrait-ambient-decor {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    width: 90px;
+    height: 90px;
+    pointer-events: none;
+    opacity: 0.25;
+    transform: rotate(15deg);
+    z-index: 0;
+  }
+
+  .ambient-laptop-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.1));
+  }
+
   .photo-container {
     position: relative;
     width: 100%;
@@ -621,6 +577,7 @@ const workbenchItems = [
     overflow: hidden;
     border-radius: var(--radius-sm);
     background: var(--paper-soft);
+    z-index: 1;
   }
 
   .portrait-photo {
@@ -665,6 +622,8 @@ const workbenchItems = [
   }
 
   .photo-telemetry {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -960,104 +919,7 @@ const workbenchItems = [
     z-index: 2;
   }
 
-  /* --------------------- Chapter 4: Offline Workbench --------------------- */
-
-  .workbench-section {
-    padding-block: clamp(4rem, 8vw, 6.5rem);
-    background: var(--paper);
-  }
-
-  .workbench-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(1.25rem, 2.5vw, 1.75rem);
-  }
-
-  .workbench-card {
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: clamp(1.5rem, 3vw, 2.25rem);
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    cursor: pointer;
-    transition: all var(--motion-fast) var(--ease-standard);
-  }
-
-  .workbench-card:hover {
-    border-color: var(--ink);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(22, 24, 29, 0.05);
-  }
-
-  .workbench-card.is-bouncing {
-    animation: wb-bounce 0.5s ease-out;
-  }
-
-  @keyframes wb-bounce {
-    0% {
-      transform: scale(1);
-    }
-    40% {
-      transform: scale(1.04) rotate(1deg);
-    }
-    70% {
-      transform: scale(0.98) rotate(-1deg);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-
-  .card-icon-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.4rem;
-  }
-
-  .wb-icon {
-    font-size: 1.75rem;
-    line-height: 1;
-  }
-
-  .wb-tag {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 600;
-    color: var(--signal-deep);
-    background: rgba(201, 46, 62, 0.04);
-    border: 1px solid rgba(201, 46, 62, 0.2);
-    padding: 0.22rem 0.6rem;
-    border-radius: var(--radius-pill);
-  }
-
-  .wb-title {
-    margin: 0;
-    font-family: var(--font-serif);
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: var(--ink);
-  }
-
-  .wb-subtitle {
-    margin: 0;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--ink-soft);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .wb-desc {
-    margin: 0;
-    font-size: 0.92rem;
-    color: var(--ink-muted);
-    line-height: 1.6;
-  }
-
-  /* --------------------- Chapter 5: Fast-Action Sign-off --------------------- */
+  /* --------------------- Chapter 4: Fast-Action Sign-off --------------------- */
 
   .about-action-section {
     padding-block: clamp(4rem, 8vw, 7rem);
@@ -1245,10 +1107,6 @@ const workbenchItems = [
       justify-content: center;
     }
 
-    .workbench-grid {
-      grid-template-columns: 1fr;
-    }
-
     .roadmap-spine {
       left: 14px;
     }
@@ -1272,6 +1130,10 @@ const workbenchItems = [
     .marker-pulse {
       width: 18px;
       height: 18px;
+    }
+
+    .portrait-ambient-decor {
+      display: none;
     }
   }
 
