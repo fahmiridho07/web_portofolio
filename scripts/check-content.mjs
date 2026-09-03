@@ -53,7 +53,7 @@ function recordAsset(file, assetPath) {
     return;
   }
 
-  const diskPath = join(publicDir, assetPath.slice(1).replaceAll("/", "\\"));
+  const diskPath = join(publicDir, ...assetPath.slice(1).split("/"));
   if (!existsSync(diskPath)) {
     addError(file, `missing public asset ${assetPath}`);
     return;

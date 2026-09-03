@@ -9,7 +9,15 @@ module.exports = {
         "http://localhost/404.html",
       ],
       settings: {
-        preset: "mobile",
+        formFactor: "mobile",
+        screenEmulation: {
+          mobile: true,
+          width: 412,
+          height: 823,
+          deviceScaleFactor: 1.75,
+          disabled: false,
+        },
+        throttlingMethod: "simulate",
       },
       numberOfRuns: 1,
     },
