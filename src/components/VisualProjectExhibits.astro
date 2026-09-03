@@ -10,11 +10,14 @@
   <div class="container">
     <!-- Header -->
     <div class="exhibits-header" data-reveal>
-      <p class="section-kicker">SCENE 06 &middot; DISCOVERY</p>
+      <div class="header-tag">
+        <span class="tag-num">06</span>
+        <span class="tag-title">DISCOVERY</span>
+      </div>
       <h2 class="exhibits-title">Ideas turned into working systems.</h2>
       <p class="exhibits-subhead">
-        Visual glimpses into real projects. Click any exhibit to inspect the
-        full engineering case study.
+        Visual glimpses into real engineering projects. Click any exhibit to
+        inspect the full case study and code architecture.
       </p>
     </div>
 
@@ -28,43 +31,67 @@
           data-astro-prefetch="hover"
         >
           <div class="exhibit-visual">
+            <div class="visual-backdrop" aria-hidden="true">
+              <div class="grid-mesh"></div>
+            </div>
+
             <div class="stream-container" data-stream>
               <div class="stream-track">
                 <div class="stream-item item-ok">
-                  <span class="stream-id">TX #4820</span>
-                  <span class="stream-status ok">CLEARED</span>
+                  <div class="item-head">
+                    <span class="stream-id">TX #4820</span>
+                    <span class="stream-amount">$124.50</span>
+                  </div>
+                  <span class="stream-status ok">&bull; CLEARED</span>
                 </div>
                 <div class="stream-item item-ok">
-                  <span class="stream-id">TX #4821</span>
-                  <span class="stream-status ok">CLEARED</span>
+                  <div class="item-head">
+                    <span class="stream-id">TX #4821</span>
+                    <span class="stream-amount">$89.00</span>
+                  </div>
+                  <span class="stream-status ok">&bull; CLEARED</span>
                 </div>
                 <div class="stream-item item-flagged">
-                  <span class="stream-id">TX #4822</span>
-                  <span class="stream-status flag">ANOMALY CAUGHT</span>
+                  <div class="item-head">
+                    <span class="stream-id">TX #4822</span>
+                    <span class="stream-amount">$4,920.00</span>
+                  </div>
+                  <span class="stream-status flag">&bull; ANOMALY CAUGHT</span>
                   <span class="stream-radar"></span>
                 </div>
                 <div class="stream-item item-ok">
-                  <span class="stream-id">TX #4823</span>
-                  <span class="stream-status ok">CLEARED</span>
+                  <div class="item-head">
+                    <span class="stream-id">TX #4823</span>
+                    <span class="stream-amount">$32.10</span>
+                  </div>
+                  <span class="stream-status ok">&bull; CLEARED</span>
                 </div>
                 <div class="stream-item item-ok">
-                  <span class="stream-id">TX #4824</span>
-                  <span class="stream-status ok">CLEARED</span>
+                  <div class="item-head">
+                    <span class="stream-id">TX #4824</span>
+                    <span class="stream-amount">$215.80</span>
+                  </div>
+                  <span class="stream-status ok">&bull; CLEARED</span>
                 </div>
               </div>
-              <div class="scanner-line"></div>
+              <div class="scanner-laser" aria-hidden="true"></div>
             </div>
+            <span class="exhibit-pill"
+              >Live Inference &middot; Latent Oversampling</span
+            >
           </div>
 
           <div class="exhibit-copy">
             <div class="copy-badge">01 &middot; Machine Learning</div>
             <h3 class="copy-title">Fraud Detection</h3>
             <p class="copy-desc">
-              Teaching machines to spot suspicious transactions.
+              Teaching machines to spot suspicious transactions before they
+              settle.
             </p>
-            <span class="copy-cta">
-              Explore Case Study <span aria-hidden="true">&rarr;</span>
-            </span>
+            <div class="copy-action">
+              <span class="cta-text">Explore Case Study</span>
+              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            </div>
           </div>
         </a>
       </article>
@@ -77,12 +104,19 @@
           data-astro-prefetch="hover"
         >
           <div class="exhibit-visual">
-            <svg class="routing-svg" viewBox="0 0 360 220" aria-hidden="true">
+            <div class="visual-backdrop" aria-hidden="true">
+              <div class="grid-mesh"></div>
+            </div>
+
+            <svg class="routing-svg" viewBox="0 0 380 240" aria-hidden="true">
               <!-- Coordinates Grid -->
               <g class="routing-grid">
-                <line x1="20" y1="50" x2="340" y2="50"></line>
-                <line x1="20" y1="110" x2="340" y2="110"></line>
-                <line x1="20" y1="170" x2="340" y2="170"></line>
+                <line x1="20" y1="60" x2="360" y2="60"></line>
+                <line x1="20" y1="120" x2="360" y2="120"></line>
+                <line x1="20" y1="180" x2="360" y2="180"></line>
+                <line x1="100" y1="20" x2="100" y2="220"></line>
+                <line x1="200" y1="20" x2="200" y2="220"></line>
+                <line x1="300" y1="20" x2="300" y2="220"></line>
               </g>
 
               <!-- Converging Optimal Route Paths -->
@@ -94,10 +128,10 @@
                 d="M140,140 L200,80 L250,110 L210,160 Z"></path>
               <path
                 class="route-converged path-3"
-                d="M200,80 L270,40 L320,80 L290,120 Z"></path>
+                d="M200,80 L270,40 L330,80 L290,130 Z"></path>
 
               <!-- Map Nodes -->
-              <circle cx="40" cy="160" r="4" class="node-depot"></circle>
+              <circle cx="40" cy="160" r="5" class="node-depot"></circle>
               <circle cx="90" cy="110" r="3.5" class="node-point"></circle>
               <circle cx="140" cy="140" r="3.5" class="node-point"></circle>
               <circle cx="80" cy="180" r="3.5" class="node-point"></circle>
@@ -105,21 +139,24 @@
               <circle cx="250" cy="110" r="3.5" class="node-point"></circle>
               <circle cx="210" cy="160" r="3.5" class="node-point"></circle>
               <circle cx="270" cy="40" r="3.5" class="node-point"></circle>
-              <circle cx="320" cy="80" r="3.5" class="node-point"></circle>
-              <circle cx="290" cy="120" r="3.5" class="node-point"></circle>
+              <circle cx="330" cy="80" r="3.5" class="node-point"></circle>
+              <circle cx="290" cy="130" r="3.5" class="node-point"></circle>
             </svg>
-            <span class="route-live-tag">Converged: 5 loops</span>
+            <span class="exhibit-pill"
+              >Ant Colony &middot; 5 Optimal Clusters</span
+            >
           </div>
 
           <div class="exhibit-copy">
             <div class="copy-badge">02 &middot; Algorithms</div>
             <h3 class="copy-title">Route Optimization</h3>
             <p class="copy-desc">
-              Finding better paths with algorithms inspired by ants.
+              Finding better paths with algorithms inspired by nature and ants.
             </p>
-            <span class="copy-cta">
-              Explore Case Study <span aria-hidden="true">&rarr;</span>
-            </span>
+            <div class="copy-action">
+              <span class="cta-text">Explore Case Study</span>
+              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            </div>
           </div>
         </a>
       </article>
@@ -132,40 +169,49 @@
           data-astro-prefetch="hover"
         >
           <div class="exhibit-visual">
-            <svg class="forecast-svg" viewBox="0 0 360 220" aria-hidden="true">
+            <div class="visual-backdrop" aria-hidden="true">
+              <div class="grid-mesh"></div>
+            </div>
+
+            <svg class="forecast-svg" viewBox="0 0 380 240" aria-hidden="true">
               <!-- Confidence Envelope Area -->
               <polygon
-                points="200,90 270,60 340,40 340,160 270,140 200,90"
+                points="200,100 270,65 350,45 350,175 270,155 200,100"
                 class="forecast-area"></polygon>
 
               <!-- Historical Solid Curve -->
               <path
                 class="forecast-history"
-                d="M30,150 Q70,170 110,130 T170,110 T200,90"></path>
+                d="M30,165 Q70,185 110,140 T170,120 T200,100"></path>
 
               <!-- Predicted Dotted Curve -->
               <path
                 class="forecast-projected"
-                d="M200,90 Q240,75 280,95 T340,85"></path>
+                d="M200,100 Q240,80 280,105 T350,90"></path>
 
               <!-- Today Separator Marker -->
-              <line x1="200" y1="20" x2="200" y2="200" class="today-marker"
+              <line x1="200" y1="25" x2="200" y2="215" class="today-marker"
               ></line>
-              <text x="204" y="36" class="today-text">PROJECTED</text>
+              <text x="206" y="42" class="today-text">PROJECTED &rarr;</text>
 
-              <!-- Glowing Tip -->
-              <circle cx="200" cy="90" r="5" class="forecast-pivot"></circle>
+              <!-- Glowing Pivot Point -->
+              <circle cx="200" cy="100" r="5" class="forecast-pivot"></circle>
             </svg>
-            <span class="forecast-live-tag">Model Projection</span>
+            <span class="exhibit-pill"
+              >Time Series &middot; SARIMA &amp; LSTM</span
+            >
           </div>
 
           <div class="exhibit-copy">
-            <div class="copy-badge">03 &middot; Time Series</div>
+            <div class="copy-badge">03 &middot; Data Science</div>
             <h3 class="copy-title">Forecasting</h3>
-            <p class="copy-desc">Trying to predict what comes next.</p>
-            <span class="copy-cta">
-              Explore Case Study <span aria-hidden="true">&rarr;</span>
-            </span>
+            <p class="copy-desc">
+              Trying to predict what comes next so teams can prepare ahead.
+            </p>
+            <div class="copy-action">
+              <span class="cta-text">Explore Case Study</span>
+              <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            </div>
           </div>
         </a>
       </article>
@@ -174,7 +220,7 @@
     <!-- Archive Action -->
     <div class="exhibits-footer" data-reveal>
       <a href="/projects/" class="all-projects-btn" data-astro-prefetch="hover">
-        Browse all 11 projects & case studies
+        Browse all 11 projects &amp; case studies
         <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
@@ -182,46 +228,59 @@
 </section>
 
 <style>
+  /* ------------------------------- Section & Header ------------------------------- */
+
   .exhibits-section {
-    padding-block: clamp(4rem, 8vw, 7rem);
+    padding-block: clamp(4.5rem, 9vw, 7.5rem);
     background: var(--paper);
   }
 
   .exhibits-header {
     margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .section-kicker {
-    margin: 0 0 0.5rem;
+  .header-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
     color: var(--ink-soft);
   }
 
+  .tag-num {
+    color: var(--signal);
+    font-weight: 700;
+  }
+
   .exhibits-title {
-    margin: 0 0 0.75rem;
+    margin: 0;
     color: var(--ink);
     font-family: var(--font-serif);
-    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-    font-weight: 470;
-    line-height: 1.15;
+    font-size: clamp(2.2rem, 4.8vw, 3.8rem);
+    font-weight: 480;
+    line-height: 1.12;
     letter-spacing: -0.015em;
   }
 
   .exhibits-subhead {
     margin: 0;
     color: var(--ink-muted);
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: clamp(1rem, 1.4vw, 1.12rem);
+    line-height: 1.65;
     max-width: 52ch;
   }
 
-  /* Exhibits Stack */
+  /* ------------------------------- Exhibits Stack ------------------------------- */
+
   .exhibits-stack {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
+    gap: clamp(1.75rem, 3.5vw, 2.75rem);
   }
 
   .exhibit-card {
@@ -240,31 +299,63 @@
 
   .exhibit-link {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
     color: inherit;
     text-decoration: none;
     height: 100%;
   }
 
-  /* Visual Container */
+  /* ------------------------------- Visual Area ------------------------------- */
+
   .exhibit-visual {
     position: relative;
-    background: #fdfdfc;
+    background: #fcfcfb;
     border-right: 1px solid var(--line);
-    min-height: 240px;
+    min-height: 280px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 2rem;
   }
 
-  /* Copy Container */
+  .visual-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .grid-mesh {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(22, 24, 29, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(22, 24, 29, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .exhibit-pill {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid var(--line);
+    padding: 0.22rem 0.55rem;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  /* -------------------------------- Copy Area -------------------------------- */
+
   .exhibit-copy {
-    padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    padding: clamp(2rem, 4vw, 3.25rem);
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 0.6rem;
+    gap: 0.75rem;
   }
 
   .copy-badge {
@@ -278,8 +369,8 @@
   .copy-title {
     margin: 0;
     font-family: var(--font-serif);
-    font-size: clamp(1.6rem, 2.6vw, 2.2rem);
-    font-weight: 480;
+    font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+    font-weight: 500;
     color: var(--ink);
     letter-spacing: -0.01em;
     transition: color var(--motion-fast) var(--ease-standard);
@@ -290,45 +381,54 @@
   }
 
   .copy-desc {
-    margin: 0 0 1rem;
-    font-size: 1rem;
+    margin: 0 0 0.75rem;
+    font-size: 1.02rem;
     color: var(--ink-muted);
-    line-height: 1.55;
-    max-width: 36ch;
+    line-height: 1.6;
+    max-width: 38ch;
   }
 
-  .copy-cta {
+  .copy-action {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.45rem;
     font-family: var(--font-mono);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: var(--signal-deep);
     transition: transform var(--motion-fast) var(--ease-standard);
   }
 
-  .exhibit-card:hover .copy-cta {
+  .exhibit-card:hover .copy-action {
     transform: translateX(4px);
     color: var(--signal);
   }
 
-  /* ---------------- EXHIBIT 1: Transaction Stream ---------------- */
+  .cta-arrow {
+    transition: transform var(--motion-fast) var(--ease-out);
+  }
+
+  .exhibit-card:hover .cta-arrow {
+    transform: translateX(3px);
+  }
+
+  /* ------------------- EXHIBIT 1: Transaction Stream ------------------- */
+
   .stream-container {
     position: relative;
     width: 100%;
-    padding-inline: 1rem;
     overflow: hidden;
+    padding-block: 0.5rem;
   }
 
   .stream-track {
     display: flex;
-    gap: 12px;
-    animation: conveyor 14s linear infinite;
+    gap: 14px;
+    animation: conveyor-scroll 16s linear infinite;
     width: max-content;
   }
 
-  @keyframes conveyor {
+  @keyframes conveyor-scroll {
     0% {
       transform: translateX(0);
     }
@@ -341,17 +441,31 @@
     background: #ffffff;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    padding: 0.75rem 1rem;
+    padding: 0.85rem 1.15rem;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    box-shadow: 0 4px 12px rgba(22, 24, 29, 0.04);
+    gap: 6px;
+    min-width: 130px;
+    box-shadow: 0 4px 14px rgba(22, 24, 29, 0.04);
+  }
+
+  .item-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .stream-id {
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--ink-soft);
+  }
+
+  .stream-amount {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--ink);
   }
 
   .stream-status {
@@ -362,13 +476,13 @@
   }
 
   .stream-status.ok {
-    color: var(--ink-muted);
+    color: #588157;
   }
 
   .stream-item.item-flagged {
     position: relative;
     border-color: var(--signal);
-    background: rgba(201, 46, 62, 0.03);
+    background: rgba(201, 46, 62, 0.04);
   }
 
   .stream-status.flag {
@@ -377,7 +491,7 @@
 
   .stream-radar {
     position: absolute;
-    inset: -4px;
+    inset: -5px;
     border: 1.5px solid var(--signal);
     border-radius: var(--radius-sm);
     animation: radar-pulse 2s infinite;
@@ -385,21 +499,21 @@
 
   @keyframes radar-pulse {
     0% {
-      transform: scale(0.95);
+      transform: scale(0.96);
       opacity: 1;
     }
     100% {
-      transform: scale(1.15);
+      transform: scale(1.16);
       opacity: 0;
     }
   }
 
-  .scanner-line {
+  .scanner-laser {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 50%;
-    width: 1.5px;
+    width: 2px;
     background: linear-gradient(
       to bottom,
       transparent,
@@ -409,9 +523,10 @@
     pointer-events: none;
   }
 
-  /* ---------------- EXHIBIT 2: Routing Coordinates ---------------- */
+  /* ------------------- EXHIBIT 2: Routing Coordinates ------------------- */
+
   .routing-svg {
-    width: 85%;
+    width: 90%;
     height: auto;
   }
 
@@ -429,11 +544,11 @@
 
   .path-1 {
     stroke: var(--signal);
-    opacity: 0.9;
+    opacity: 0.95;
   }
   .path-2 {
     stroke: var(--ink);
-    opacity: 0.75;
+    opacity: 0.8;
   }
   .path-3 {
     stroke: var(--ink-soft);
@@ -448,22 +563,10 @@
     fill: var(--ink);
   }
 
-  .route-live-tag {
-    position: absolute;
-    bottom: 12px;
-    right: 14px;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    color: var(--ink-soft);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid var(--line);
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--radius-pill);
-  }
+  /* ------------------- EXHIBIT 3: Time Series Forecast ------------------- */
 
-  /* ---------------- EXHIBIT 3: Time Series Forecast ---------------- */
   .forecast-svg {
-    width: 85%;
+    width: 90%;
     height: auto;
   }
 
@@ -516,24 +619,12 @@
     }
   }
 
-  .forecast-live-tag {
-    position: absolute;
-    bottom: 12px;
-    right: 14px;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    color: var(--signal-deep);
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(201, 46, 62, 0.25);
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--radius-pill);
-  }
+  /* ---------------------------- Exhibits Footer ---------------------------- */
 
-  /* Exhibits Footer */
   .exhibits-footer {
     display: flex;
     justify-content: center;
-    margin-top: clamp(2.5rem, 5vw, 4rem);
+    margin-top: clamp(3rem, 6vw, 5rem);
   }
 
   .all-projects-btn {
@@ -556,14 +647,21 @@
     box-shadow: 0 8px 24px rgba(201, 46, 62, 0.2);
   }
 
+  /* ------------------------------- Responsive ------------------------------- */
+
   @media (max-width: 900px) {
     .exhibit-link {
       grid-template-columns: 1fr;
     }
+
     .exhibit-visual {
       border-right: none;
       border-bottom: 1px solid var(--line);
-      min-height: 200px;
+      min-height: 220px;
+    }
+
+    .exhibit-copy {
+      padding: clamp(1.5rem, 3.5vw, 2.25rem);
     }
   }
 
