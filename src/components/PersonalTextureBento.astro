@@ -1,0 +1,713 @@
+---
+// PersonalTextureBento.astro: Analog Rituals & Craft Bento Grid
+// Replaces generic abstract shapes and dry text with real personal texture:
+// Manual brew coffee (V60), badminton craft, road running telemetry, and cinema/systems analysis.
+// Built with responsive WebP images, riso-print styling, and interactive micro-widgets.
+---
+
+<section class="bento-section divider" id="analog-craft" data-reveal>
+  <div class="container">
+    <div class="bento-head">
+      <div>
+        <p class="section-label">Analog Rituals & Craft</p>
+        <h2 class="bento-title">Obsessive craft outside the terminal.</h2>
+      </div>
+      <p class="bento-lead">
+        The same curiosity that tunes neural net bottlenecks applies to water
+        temperature, racket tension, running splits, and narrative architecture.
+      </p>
+    </div>
+
+    <div class="bento-grid">
+      <!-- Quadrant 1: Manual Brew Coffee (V60) -->
+      <article class="bento-card card-coffee">
+        <div class="card-visual">
+          <picture>
+            <source
+              srcset="/assets/bento/coffee-v60-640.webp 640w, /assets/bento/coffee-v60-960.webp 960w, /assets/bento/coffee-v60.webp 1200w"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              type="image/webp"
+            />
+            <img
+              src="/assets/bento/coffee-v60.webp"
+              alt="Technical patent illustration of manual V60 coffee pour-over ritual with scale, timer, and gooseneck kettle"
+              width="600"
+              height="450"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <span class="card-tag">RITUAL 01 &middot; EXTRACTION</span>
+        </div>
+
+        <div class="card-content">
+          <div class="card-meta-row">
+            <h3 class="card-heading">V60 Manual Extraction</h3>
+            <span class="card-pill">92&deg;C Bloom</span>
+          </div>
+          <p class="card-description">
+            Dialing in single-origin beans with a ceramic Hario V60. Repeatable
+            variables: grind size distribution, water chemistry, and laminar
+            flow pouring.
+          </p>
+
+          <!-- Interactive Brew Ratio Widget -->
+          <div class="coffee-widget" data-coffee-widget>
+            <div class="widget-header">
+              <span class="widget-label">Ratio Dial-In:</span>
+              <span class="widget-value" data-coffee-ratio-val
+                >1:16 (Standard)</span
+              >
+            </div>
+            <div class="ratio-buttons">
+              <button type="button" class="ratio-btn" data-ratio="15"
+                >1:15 &middot; Heavy Body</button
+              >
+              <button type="button" class="ratio-btn is-active" data-ratio="16"
+                >1:16 &middot; Balanced</button
+              >
+              <button type="button" class="ratio-btn" data-ratio="17"
+                >1:17 &middot; High Clarity</button
+              >
+            </div>
+            <div class="pour-schedule">
+              <div class="pour-step">
+                <span class="step-time">0:00 &ndash; 0:45</span>
+                <span class="step-desc" data-coffee-bloom
+                  >45g bloom degassing</span
+                >
+              </div>
+              <div class="pour-step">
+                <span class="step-time">0:45 &ndash; 1:30</span>
+                <span class="step-desc">Spiral laminar pour</span>
+              </div>
+              <div class="pour-step">
+                <span class="step-time">1:30 &ndash; 2:30</span>
+                <span class="step-desc" data-coffee-total
+                  >240g total &middot; flat bed</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Quadrant 2: Badminton Craft -->
+      <article class="bento-card card-badminton">
+        <div class="card-visual">
+          <picture>
+            <source
+              srcset="/assets/bento/badminton-craft-640.webp 640w, /assets/bento/badminton-craft-960.webp 960w, /assets/bento/badminton-craft.webp 1200w"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              type="image/webp"
+            />
+            <img
+              src="/assets/bento/badminton-craft.webp"
+              alt="Technical patent schematic of competitive badminton racket with 28 lbs BG66 Ultimax stringing and court boundary line"
+              width="600"
+              height="450"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <span class="card-tag">RITUAL 02 &middot; PRECISION</span>
+        </div>
+
+        <div class="card-content">
+          <div class="card-meta-row">
+            <h3 class="card-heading">Competitive Badminton</h3>
+            <span class="card-pill">28 lbs Stringing</span>
+          </div>
+          <p class="card-description">
+            Offensive rear-court doubles player. The physical balance between
+            steep attack angles, wrist pronation, and explosive court
+            transitions.
+          </p>
+
+          <div class="spec-grid">
+            <div class="spec-item">
+              <span class="spec-k">RACKET SPEC</span>
+              <span class="spec-v">Head-Heavy Balance</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-k">STRING TENSION</span>
+              <span class="spec-v">28 lbs BG66 Ultimax</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-k">SMASH VELOCITY</span>
+              <span class="spec-v highlight-carmine">310+ km/h Terminal</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-k">ROLE</span>
+              <span class="spec-v">Rear Court Attack</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Quadrant 3: Road Running Telemetry -->
+      <article class="bento-card card-running">
+        <div class="card-visual">
+          <picture>
+            <source
+              srcset="/assets/bento/running-telemetry-640.webp 640w, /assets/bento/running-telemetry-960.webp 960w, /assets/bento/running-telemetry.webp 1200w"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              type="image/webp"
+            />
+            <img
+              src="/assets/bento/running-telemetry.webp"
+              alt="Technical blueprint of distance running telemetry with 4:48/km pace split chart, shoe geometry, and cadence stats"
+              width="600"
+              height="450"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <span class="card-tag">RITUAL 03 &middot; ENDURANCE</span>
+        </div>
+
+        <div class="card-content">
+          <div class="card-meta-row">
+            <h3 class="card-heading">Road Running Telemetry</h3>
+            <span class="card-pill">4:48 /km Target</span>
+          </div>
+          <p class="card-description">
+            Early morning road miles in Surabaya. Training on heart-rate zones,
+            maintaining an efficient 178 spm cadence, and negative-split
+            execution.
+          </p>
+
+          <div class="run-telemetry">
+            <div class="telemetry-stat">
+              <span class="run-k">CADENCE</span>
+              <span class="run-v">178 <small>SPM</small></span>
+            </div>
+            <div class="telemetry-stat">
+              <span class="run-k">EFFORT</span>
+              <span class="run-v">Zone 3/4</span>
+            </div>
+            <div class="telemetry-stat">
+              <span class="run-k">SPLIT STRATEGY</span>
+              <span class="run-v highlight-carmine">Negative Split</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Quadrant 4: Cinema & Systems Literature -->
+      <article class="bento-card card-cinema">
+        <div class="card-visual">
+          <picture>
+            <source
+              srcset="/assets/bento/cinema-systems-640.webp 640w, /assets/bento/cinema-systems-960.webp 960w, /assets/bento/cinema-systems.webp 1200w"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              type="image/webp"
+            />
+            <img
+              src="/assets/bento/cinema-systems.webp"
+              alt="Editorial patent schematic of 35mm widescreen film strip and open systems architecture engineer notebook"
+              width="600"
+              height="450"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <span class="card-tag">RITUAL 04 &middot; NARRATIVE & SYSTEMS</span>
+        </div>
+
+        <div class="card-content">
+          <div class="card-meta-row">
+            <h3 class="card-heading">Cinema & Systems Craft</h3>
+            <span class="card-pill">2.39:1 Scope</span>
+          </div>
+          <p class="card-description">
+            Studying how directors control attention and how systems engineers
+            build consensus under failure.
+          </p>
+
+          <!-- Interactive Study Tabs -->
+          <div class="cinema-widget" data-cinema-widget>
+            <div class="cinema-tabs">
+              <button
+                type="button"
+                class="cinema-tab is-active"
+                data-cinema-tab="cinema">Direction & Film</button
+              >
+              <button type="button" class="cinema-tab" data-cinema-tab="systems"
+                >Core Literature</button
+              >
+            </div>
+
+            <div class="cinema-panel" data-panel="cinema">
+              <ul class="dossier-list">
+                <li>
+                  <strong>Christopher Nolan:</strong> Cross-cutting multiple timelines
+                  to heighten structural urgency.
+                </li>
+                <li>
+                  <strong>Denis Villeneuve:</strong> Brutalist architectural scale
+                  and sonic space shaping tension.
+                </li>
+                <li>
+                  <strong>Bong Joon-ho:</strong> Precise vertical spatial blocking
+                  mapping class hierarchy.
+                </li>
+              </ul>
+            </div>
+
+            <div class="cinema-panel" data-panel="systems" hidden>
+              <ul class="dossier-list">
+                <li>
+                  <strong
+                    >Designing Data-Intensive Applications (Kleppmann):</strong
+                  > Unifying storage engines, partitioning, and consensus algorithms.
+                </li>
+                <li>
+                  <strong>Crafting Interpreters (Nystrom):</strong> Walking the bridge
+                  from AST representation to bytecode VM dispatch.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    // 1. Coffee Ratio Calculator
+    const coffeeWidget = document.querySelector<HTMLElement>(
+      "[data-coffee-widget]",
+    );
+    if (coffeeWidget) {
+      const ratioBtns = Array.from(
+        coffeeWidget.querySelectorAll<HTMLButtonElement>("[data-ratio]"),
+      );
+      const ratioVal = coffeeWidget.querySelector<HTMLElement>(
+        "[data-coffee-ratio-val]",
+      );
+      const totalEl = coffeeWidget.querySelector<HTMLElement>(
+        "[data-coffee-total]",
+      );
+      const bloomEl = coffeeWidget.querySelector<HTMLElement>(
+        "[data-coffee-bloom]",
+      );
+
+      const DOSE = 15; // 15g coffee
+
+      ratioBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          ratioBtns.forEach((b) => b.classList.remove("is-active"));
+          btn.classList.add("is-active");
+
+          const ratio = parseInt(btn.dataset.ratio || "16", 10);
+          const totalWater = DOSE * ratio;
+          const bloomWater = DOSE * 3;
+
+          if (ratioVal) {
+            const label =
+              ratio === 15
+                ? "1:15 (Heavy Body)"
+                : ratio === 16
+                  ? "1:16 (Balanced)"
+                  : "1:17 (High Clarity)";
+            ratioVal.textContent = label;
+          }
+          if (bloomEl) bloomEl.textContent = `${bloomWater}g bloom degassing`;
+          if (totalEl) totalEl.textContent = `${totalWater}g total · flat bed`;
+        });
+      });
+    }
+
+    // 2. Cinema & Systems Dossier Switcher
+    const cinemaWidget = document.querySelector<HTMLElement>(
+      "[data-cinema-widget]",
+    );
+    if (cinemaWidget) {
+      const tabs = Array.from(
+        cinemaWidget.querySelectorAll<HTMLButtonElement>("[data-cinema-tab]"),
+      );
+      const panels = Array.from(
+        cinemaWidget.querySelectorAll<HTMLElement>("[data-panel]"),
+      );
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          const target = tab.dataset.cinemaTab;
+          tabs.forEach((t) => t.classList.remove("is-active"));
+          tab.classList.add("is-active");
+
+          panels.forEach((p) => {
+            p.hidden = p.dataset.panel !== target;
+          });
+        });
+      });
+    }
+  });
+</script>
+
+<style>
+  .bento-section {
+    padding-block: var(--space-section-before) var(--space-section-after);
+    background: var(--paper);
+  }
+
+  .bento-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 1.5rem 3rem;
+    align-items: baseline;
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+
+  .bento-title {
+    margin: 0.5rem 0 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(1.9rem, 3.8vw, 2.9rem);
+    font-weight: 470;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .bento-lead {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+
+  .bento-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition:
+      border-color var(--motion-fast) var(--ease-standard),
+      box-shadow var(--motion-fast) var(--ease-standard);
+  }
+
+  .bento-card:hover {
+    border-color: var(--line-strong);
+    box-shadow: 0 4px 16px rgba(22, 24, 29, 0.04);
+  }
+
+  .card-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.45;
+    background: var(--paper-soft);
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .card-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--motion-slow) var(--ease-out);
+  }
+
+  .bento-card:hover .card-visual img {
+    transform: scale(1.02);
+  }
+
+  .card-tag {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    background: rgba(247, 247, 246, 0.92);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.55rem;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(8px);
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1.2rem, 2.2vw, 1.6rem);
+    flex-grow: 1;
+  }
+
+  .card-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.45rem;
+  }
+
+  .card-heading {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1.28rem;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+
+  .card-pill {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--signal);
+    background: var(--accent-dim);
+    border: 1px solid rgba(201, 46, 62, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+  }
+
+  .card-description {
+    margin: 0 0 1.25rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink-muted);
+  }
+
+  /* Coffee Widget */
+  .coffee-widget {
+    margin-top: auto;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+  }
+
+  .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .widget-label {
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .widget-value {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .ratio-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ratio-btn {
+    border: 1px solid var(--line);
+    background: #ffffff;
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-standard);
+    text-align: center;
+  }
+
+  .ratio-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .ratio-btn.is-active {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  .pour-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    border-top: 1px solid var(--line);
+    padding-top: 0.55rem;
+  }
+
+  .pour-step {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+  }
+
+  .step-time {
+    color: var(--ink-soft);
+  }
+
+  .step-desc {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Badminton Spec Grid */
+  .spec-grid {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .spec-k {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .spec-v {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .highlight-carmine {
+    color: var(--signal) !important;
+  }
+
+  /* Running Telemetry */
+  .run-telemetry {
+    margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+  }
+
+  .telemetry-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .run-k {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+  }
+
+  .run-v {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .run-v small {
+    font-size: 0.6em;
+    color: var(--ink-soft);
+  }
+
+  /* Cinema Widget */
+  .cinema-widget {
+    margin-top: auto;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+  }
+
+  .cinema-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.4rem;
+  }
+
+  .cinema-tab {
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 0.2rem 0;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .cinema-tab:hover {
+    color: var(--ink);
+  }
+
+  .cinema-tab.is-active {
+    color: var(--signal);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+  }
+
+  .dossier-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .dossier-list li {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--ink-muted);
+  }
+
+  .dossier-list strong {
+    color: var(--ink);
+  }
+
+  @media (max-width: 900px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+    .bento-head {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>
