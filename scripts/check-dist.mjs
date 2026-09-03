@@ -8,7 +8,7 @@ const distDir = join(root, "dist");
 const errors = [];
 
 function expectFile(pathname, description) {
-  const diskPath = join(distDir, pathname.replaceAll("/", "\\"));
+  const diskPath = join(distDir, ...pathname.split("/"));
   if (!existsSync(diskPath)) {
     errors.push(`missing ${description}: ${pathname}`);
   }
