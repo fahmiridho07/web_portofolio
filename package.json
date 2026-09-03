@@ -8,8 +8,10 @@
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
-    "format": "prettier --write \"src/**/*.{ts,css,mdx}\" \"docs/**/*.mdx\" \"README.md\" \"public/assets/**/*.md\"",
-    "validate": "astro check && astro build",
+    "format": "prettier --plugin=prettier-plugin-astro --write \"src/**/*.{astro,ts,css,mdx}\" \"scripts/**/*.{mjs,cjs}\" \"docs/**/*.mdx\" \"README.md\" \"public/assets/**/*.md\"",
+    "content:check": "node scripts/check-content.mjs",
+    "dist:check": "node scripts/check-dist.mjs",
+    "validate": "npm run content:check && astro check && astro build && npm run dist:check",
     "images:covers": "node scripts/generate-cover-variants.mjs",
     "lighthouse": "npm run build && npx --yes @lhci/cli@0.14.0 autorun"
   },
@@ -19,6 +21,8 @@
     "@tailwindcss/vite": "4.1.17",
     "@types/node": "^25.9.2",
     "astro": "6.3.7",
+    "prettier": "3.8.3",
+    "prettier-plugin-astro": "0.14.1",
     "sharp": "^0.34.3",
     "tailwindcss": "4.1.17",
     "typescript": "6.0.3"
@@ -28,6 +32,8 @@
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.2.9",
-    "@fontsource/inter": "^5.2.8"
+    "@fontsource/inter": "^5.2.8",
+    "@types/three": "^0.185.4",
+    "three": "^0.185.1"
   }
 }
