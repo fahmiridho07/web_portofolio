@@ -58,50 +58,24 @@ const storySteps = [
           <div class="narrative-pane pane-1 active" data-pane="1">
             <p class="pane-kicker">Achmad Fahmi Ainur Ridho</p>
             <h1 class="pane-title display">Hey, I&rsquo;m Ridho.</h1>
-            <p class="pane-lead">
-              Full-stack engineer & AI researcher based in Surabaya, Indonesia.
-              I turn complex ideas into software that ships and works reliably.
-            </p>
-            <div class="scroll-cue">
-              <span class="cue-mouse">
-                <span class="cue-wheel"></span>
-              </span>
-              <span class="cue-text">Scroll to explore</span>
-            </div>
+            <p class="pane-lead">Full-stack engineer &amp; AI researcher.</p>
           </div>
 
           <!-- Scene 2 Text -->
           <div class="narrative-pane pane-2" data-pane="2">
-            <p class="pane-kicker">01 &middot; Drive</p>
             <h2 class="pane-title display">I like building things.</h2>
-            <p class="pane-lead">
-              From back-end architecture and distributed databases to polished
-              user interfaces, turning complex concepts into tangible, working
-              systems.
-            </p>
           </div>
 
           <!-- Scene 3 Text -->
           <div class="narrative-pane pane-3" data-pane="3">
-            <p class="pane-kicker">02 &middot; Engineering</p>
             <h2 class="pane-title display">Software.</h2>
-            <p class="pane-lead">
-              Enterprise ASP.NET Core, robust APIs, and workflow automation
-              designed to endure heavy production usage without breaking.
-            </p>
           </div>
 
           <!-- Scene 4 Text -->
           <div class="narrative-pane pane-4" data-pane="4">
-            <p class="pane-kicker">03 &middot; Exploration</p>
             <h2 class="pane-title display">
               And lately, I&rsquo;ve been curious about AI.
             </h2>
-            <p class="pane-lead">
-              Finding order in massive data. Teaching algorithms to detect
-              subtle anomalies, forecast demand, and recognize patterns humans
-              miss.
-            </p>
           </div>
         </div>
 
@@ -329,11 +303,18 @@ const storySteps = [
     ).matches;
 
     // Desktop Pointer Parallax for 3D stages and ambient decorations
+    // Uses damped spring physics for organic, physical movement
     let mouseX = 0;
     let mouseY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
     let targetX = 0;
     let targetY = 0;
+    let lastTime = performance.now();
     let raf = 0;
+
+    // Cursor-reactive ambient lighting
+    const stickyEl = track.querySelector<HTMLElement>(".story-sticky");
 
     const onPointerMove = (e: PointerEvent) => {
       if (reduceMotion || !stage) return;
@@ -343,12 +324,34 @@ const storySteps = [
       targetX = Math.max(-1, Math.min(1, x));
       targetY = Math.max(-1, Math.min(1, y));
 
+      // Update cursor lighting position
+      if (stickyEl) {
+        const stickyRect = stickyEl.getBoundingClientRect();
+        const mxPct = ((e.clientX - stickyRect.left) / stickyRect.width) * 100;
+        const myPct = ((e.clientY - stickyRect.top) / stickyRect.height) * 100;
+        stickyEl.style.setProperty("--mx", `${mxPct}%`);
+        stickyEl.style.setProperty("--my", `${myPct}%`);
+      }
+
       if (!raf) raf = requestAnimationFrame(updateParallax);
     };
 
     const updateParallax = () => {
-      mouseX += (targetX - mouseX) * 0.08;
-      mouseY += (targetY - mouseY) * 0.08;
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 0.05); // Cap delta to avoid jumps
+      lastTime = now;
+
+      // Damped spring physics: stiffness controls snap, damping controls settle
+      const stiffness = 120;
+      const damping = 14;
+
+      velocityX += (targetX - mouseX) * stiffness * dt;
+      velocityX *= Math.exp(-damping * dt);
+      mouseX += velocityX * dt;
+
+      velocityY += (targetY - mouseY) * stiffness * dt;
+      velocityY *= Math.exp(-damping * dt);
+      mouseY += velocityY * dt;
 
       // 3D Scene 1: Creator & Floating Cube
       if (creatorPhoto) {
@@ -383,16 +386,19 @@ const storySteps = [
         neuralStage.style.transform = `rotateX(${nRotX}deg) rotateY(${nRotY}deg)`;
       }
 
-      // Ambient 3D Decorations Parallax
+      // Ambient 3D Decorations Parallax with multi-layer depth
       decorItems.forEach((decor) => {
         const factor = parseFloat(decor.dataset.parallax || "0.1");
-        decor.style.transform = `translate(${mouseX * factor * 50}px, ${mouseY * factor * 50}px)`;
+        decor.style.transform = `translate3d(${mouseX * factor * 75}px, ${mouseY * factor * 75}px, 0)`;
       });
 
-      if (
+      const settling =
         Math.abs(targetX - mouseX) > 0.001 ||
-        Math.abs(targetY - mouseY) > 0.001
-      ) {
+        Math.abs(targetY - mouseY) > 0.001 ||
+        Math.abs(velocityX) > 0.01 ||
+        Math.abs(velocityY) > 0.01;
+
+      if (settling) {
         raf = requestAnimationFrame(updateParallax);
       } else {
         raf = 0;
@@ -403,6 +409,26 @@ const storySteps = [
       passive: true,
       signal,
     });
+
+    // Mobile Gyroscope Tilt: 3D art responds organically to device orientation
+    if (typeof window !== "undefined" && "DeviceOrientationEvent" in window) {
+      const onDeviceOrientation = (e: DeviceOrientationEvent) => {
+        if (reduceMotion || !stage) return;
+        if (e.gamma === null || e.beta === null) return;
+        // gamma: tilt left-to-right [-90, 90]
+        // beta: tilt front-to-back [-180, 180], baseline holding angle ~45 deg
+        const x = Math.max(-1, Math.min(1, (e.gamma || 0) / 32));
+        const y = Math.max(-1, Math.min(1, ((e.beta || 0) - 45) / 32));
+        targetX = x;
+        targetY = y;
+        if (!raf) raf = requestAnimationFrame(updateParallax);
+      };
+
+      window.addEventListener("deviceorientation", onDeviceOrientation, {
+        passive: true,
+        signal,
+      });
+    }
 
     // Interactive Click Squish for Scene 1 Cube
     if (coreCube) {
@@ -548,6 +574,26 @@ const storySteps = [
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+
+  /* Cursor-reactive ambient lighting: subtle carmine warmth follows pointer */
+  .story-sticky::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      800px circle at var(--mx, 50%) var(--my, 50%),
+      rgba(201, 46, 62, 0.035),
+      transparent 50%
+    );
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 600ms ease;
+  }
+
+  .story-sticky:hover::before {
+    opacity: 1;
   }
 
   /* ------------------------------ Ambient Backdrop ------------------------------ */
@@ -771,10 +817,10 @@ const storySteps = [
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transform: scale(0.95) translateY(14px);
+    transform: scale(0.92) translateY(12px);
     transition:
-      opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.34, 1.35, 0.64, 1);
     pointer-events: none;
     will-change: opacity, transform;
   }

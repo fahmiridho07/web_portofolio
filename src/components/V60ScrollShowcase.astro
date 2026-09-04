@@ -96,14 +96,8 @@ const projectStories = showcaseData
 <section class="v60-showcase-section" id="projects" data-v60-showcase>
   <div class="container">
     <div class="v60-section-header" data-reveal>
-      <div class="header-tag-row">
-        <span class="header-kicker">SELECTED SHIPPED WORK</span>
-        <span class="header-separator">&middot;</span>
-        <span class="header-sub">SCROLL-DRIVEN EXTRACTION</span>
-      </div>
-      <h2 class="section-display-title">
-        Crafted systems, interface design &amp; intelligence.
-      </h2>
+      <span class="header-kicker">SELECTED WORK</span>
+      <h2 class="section-display-title">Crafted systems &amp; intelligence.</h2>
     </div>
 
     <!-- MAIN TWO-COLUMN EDITORIAL LAYOUT -->
@@ -202,17 +196,7 @@ const projectStories = showcaseData
                 class="card-inner-link"
                 data-astro-prefetch="hover"
               >
-                {/* Card Header */}
-                <div class="card-meta-bar">
-                  <div class="card-num-badge">
-                    <span class="num-text">{story.number}</span>
-                    <span class="slash">/</span>
-                    <span class="total">05</span>
-                  </div>
-                  <span class="card-discipline">{story.discipline}</span>
-                </div>
-
-                {/* Visual Cover Mockup */}
+                {/* Visual Cover */}
                 <div class="card-visual-frame">
                   <img
                     src={story.image.src}
@@ -228,40 +212,18 @@ const projectStories = showcaseData
                   <div class="visual-hover-sheen" aria-hidden="true" />
                 </div>
 
-                {/* Story Narrative */}
+                {/* Minimal Info */}
                 <div class="card-narrative">
+                  <span class="card-num-badge">{story.number}</span>
                   <h3 class="card-title">
                     {story.title}
                     <span class="title-arrow" aria-hidden="true">
                       &rarr;
                     </span>
                   </h3>
-                  <p class="card-lead">{story.headline}</p>
-                  <p class="card-impact">{story.impact}</p>
-
-                  <div class="card-stack-pills">
-                    {story.tags.map((tag) => (
-                      <span class="stack-pill">{tag}</span>
-                    ))}
-                  </div>
-
-                  <div class="card-cta-row">
-                    <span class="cta-label">Explore Full Case Study</span>
-                    <span class="cta-arrow-box" aria-hidden="true">
-                      <svg
-                        viewBox="0 0 16 16"
-                        width="12"
-                        height="12"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <path d="M3 8h10M9 4l4 4-4 4" />
-                      </svg>
-                    </span>
-                  </div>
+                  <span class="card-discipline">
+                    {story.discipline} &middot; {story.proj.data.year}
+                  </span>
                 </div>
               </a>
             </article>
@@ -272,7 +234,12 @@ const projectStories = showcaseData
 
     <!-- Section Bottom CTA -->
     <div class="v60-bottom-action" data-reveal>
-      <a href="/projects/" class="catalogue-btn" data-astro-prefetch="hover">
+      <a
+        href="/projects/"
+        class="catalogue-btn"
+        data-astro-prefetch="hover"
+        data-magnetic
+      >
         <span
           >Browse All {allProjects.length} Shipped Projects &amp; Lab Code</span
         >

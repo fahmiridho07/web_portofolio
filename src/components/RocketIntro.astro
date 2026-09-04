@@ -166,12 +166,12 @@
       // Reveal the navbar smoothly sliding down from top
       window.setTimeout(() => {
         document.documentElement.classList.remove("intro-active");
-      }, 200);
+      }, 150);
 
-      // Clean up overlay when upward sweep finishes (700ms)
+      // Clean up overlay when upward sweep finishes (500ms)
       window.setTimeout(() => {
         stage.style.display = "none";
-      }, 720);
+      }, 500);
     };
 
     // User instant bypass (click or scroll or ESC key)
@@ -232,7 +232,7 @@
         if (isDismissed || videoIsPlaying) return;
         stage.classList.add("is-ignited");
         if (exhaust) exhaust.classList.add("ignited");
-      }, 750),
+      }, 300),
     );
 
     // Stage 3 (1.45s): Blast off! Upward acceleration & shockwave burst
@@ -242,7 +242,7 @@
         stage.classList.add("is-launching");
         if (rocketVessel) rocketVessel.classList.add("flying-up");
         if (shadow) shadow.classList.add("shadow-fade");
-      }, 1450),
+      }, 900),
     );
 
     // Stage 4 (2.6s): Rocket pierces through ceiling, pulling stage up into Scene 1
@@ -250,7 +250,7 @@
       window.setTimeout(() => {
         if (isDismissed) return;
         dismissIntro(false);
-      }, 2600),
+      }, 1800),
     );
 
     // Replay helper
@@ -292,8 +292,8 @@
     pointer-events: auto;
     will-change: transform, opacity;
     transition:
-      transform 720ms cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 720ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 500ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Fun Upward Screen Pull Reveal */
@@ -371,7 +371,7 @@
 
   /* High-energy liftoff acceleration */
   .rocket-vessel.flying-up {
-    animation: launchAscend 1.35s cubic-bezier(0.5, 0, 0.15, 1) forwards !important;
+    animation: launchAscend 1s cubic-bezier(0.5, 0, 0.15, 1) forwards !important;
   }
 
   @keyframes launchAscend {
@@ -619,6 +619,29 @@
 
   .is-launching .ring-2 {
     animation: shockwaveBurst 0.9s cubic-bezier(0.1, 0.8, 0.3, 1) 0.15s forwards;
+  }
+
+  .is-launching .rocket-scene {
+    animation: sceneShake 0.5s ease-out;
+  }
+
+  @keyframes sceneShake {
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    10% {
+      transform: translate(-3px, 2px);
+    }
+    30% {
+      transform: translate(3px, -2px);
+    }
+    50% {
+      transform: translate(-2px, 1px);
+    }
+    70% {
+      transform: translate(2px, -1px);
+    }
   }
 
   @keyframes shockwaveBurst {

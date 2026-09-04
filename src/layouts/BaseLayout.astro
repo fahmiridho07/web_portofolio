@@ -219,6 +219,80 @@ const structuredData = [
         return () => revealObserver.disconnect();
       });
     </script>
+
+    <script>
+      // Magnetic hover: buttons gently drift toward cursor within proximity
+      import { initOnPageLoad } from "@lib/page-script";
+
+      initOnPageLoad(() => {
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        if (reduceMotion || window.matchMedia("(hover: none)").matches) return;
+
+        const magnets = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-magnetic]"),
+        );
+        if (!magnets.length) return;
+
+        const threshold = 60; // px proximity
+        const pull = 0.25; // pull strength
+
+        magnets.forEach((el) => {
+          el.addEventListener("pointermove", (e) => {
+            const rect = el.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            const dx = e.clientX - cx;
+            const dy = e.clientY - cy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const strength = Math.max(0, 1 - dist / threshold);
+            el.style.transform = `translate(${dx * strength * pull}px, ${dy * strength * pull}px)`;
+          });
+
+          el.addEventListener("pointerleave", () => {
+            el.style.transition =
+              "transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1)";
+            el.style.transform = "translate(0, 0)";
+            window.setTimeout(() => {
+              el.style.transition = "";
+            }, 420);
+          });
+        });
+      });
+    </script>
+
+    <script>
+      // Lenis smooth momentum scroll with reduced motion respect
+      import Lenis from "lenis";
+      import { initOnPageLoad } from "@lib/page-script";
+
+      initOnPageLoad(() => {
+        const reduceMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        ).matches;
+        if (reduceMotion) return;
+
+        const lenis = new Lenis({
+          duration: 1.1,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          touchMultiplier: 1.2,
+        });
+
+        let rafId = 0;
+        function raf(time: number) {
+          lenis.raf(time);
+          rafId = requestAnimationFrame(raf);
+        }
+        rafId = requestAnimationFrame(raf);
+
+        return () => {
+          cancelAnimationFrame(rafId);
+          lenis.destroy();
+        };
+      });
+    </script>
   </body>
 </html>
 

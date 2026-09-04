@@ -18,11 +18,6 @@ const resumeAction = getResumeAction();
 
       <h2 class="contact-heading">Let&rsquo;s build something great.</h2>
 
-      <p class="contact-subhead">
-        Whether you have an engineering role, a machine learning challenge, or
-        simply want to discuss systems architecture, I would love to connect.
-      </p>
-
       <!-- Primary Action: Interactive Email Bar -->
       <div class="email-action-box" data-email-box>
         <span class="email-address">{profile.email}</span>
@@ -50,7 +45,7 @@ const resumeAction = getResumeAction();
             <span class="copy-label" data-copy-label>Copy</span>
           </button>
 
-          <a href={profile.emailHref} class="send-btn">
+          <a href={profile.emailHref} class="send-btn" data-magnetic>
             Send Email
             <span aria-hidden="true">&nearr;</span>
           </a>
@@ -182,21 +177,13 @@ const resumeAction = getResumeAction();
   }
 
   .contact-heading {
-    margin: 0 0 0.85rem;
+    margin: 0 0 1.75rem;
     color: var(--ink);
     font-family: var(--font-serif);
     font-size: clamp(2.2rem, 5vw, 3.6rem);
     font-weight: 480;
     letter-spacing: -0.015em;
     line-height: 1.1;
-  }
-
-  .contact-subhead {
-    max-width: 48ch;
-    margin: 0 0 2rem;
-    color: var(--ink-muted);
-    font-size: 1.02rem;
-    line-height: 1.65;
   }
 
   /* Interactive Email Box */
