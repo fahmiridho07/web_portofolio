@@ -1,0 +1,1841 @@
+---
+// CloserLookShowcase.astro: Apple-Style "Take a closer look." Interactive Inspector
+// Replaces the arbitrary V60 coffee showcase with a dedicated, product-focused showcase
+// of Fahmi's 4 flagship engineering & AI projects.
+//
+// UX Architecture:
+// - Left: Inspector Stack with stepper navigation, dormant + pills, and active capsule card.
+// - Right: 3D Floating Hardware Studio Slate with pointer parallax, 3-phase recoil & spring emerge,
+//   and live interactive project simulations (including clickable MediMate prescription checklist!).
+// - Strict adherence to "The Anomaly" design system (Paper, Ink, Carmine accent).
+
+import { getSortedProjects } from "@lib/projects";
+
+const allProjects = await getSortedProjects();
+
+interface ShowcaseItem {
+  id: string;
+  slug: string;
+  number: string;
+  discipline: string;
+  title: string;
+  thesis: string;
+  metricBadge: string;
+  caseStudyHref: string;
+}
+
+const showcaseItems: ShowcaseItem[] = [
+  {
+    id: "fraud-ai",
+    slug: "fraud-detection-ml-pipeline",
+    number: "01",
+    discipline: "Machine Learning & Research",
+    title: "Fraud Detection AI",
+    thesis:
+      "Detecting payment fraud under extreme 1:590 class imbalance using latent oversampling and LightGBM on the IEEE-CIS benchmark.",
+    metricBadge: "0.855 PR-AUC · 74.7% Recall",
+    caseStudyHref: "/projects/fraud-detection-ml-pipeline/",
+  },
+  {
+    id: "mining-dotnet",
+    slug: "kpc-ideku-v3-dotnet-stabilization",
+    number: "02",
+    discipline: "Enterprise Software Architecture",
+    title: "Mining Operations Platform",
+    thesis:
+      "Stabilizing mission-critical ASP.NET Core workflows, hardening role-based access control, and tuning query latency for 5,000+ mining personnel.",
+    metricBadge: "5,000+ Personnel · 42ms Query",
+    caseStudyHref: "/projects/kpc-ideku-v3-dotnet-stabilization/",
+  },
+  {
+    id: "medimate-mobile",
+    slug: "medimate-medicine-reminder-app",
+    number: "03",
+    discipline: "Mobile Product Engineering",
+    title: "MediMate Healthcare",
+    thesis:
+      "A calm, resilient Flutter prescription companion with zero-latency SQLite persistence and reliable background notification alarm scheduling.",
+    metricBadge: "Flutter · Zero Latency SQLite",
+    caseStudyHref: "/projects/medimate-medicine-reminder-app/",
+  },
+  {
+    id: "route-aco",
+    slug: "orphanage-inspection-route-optimization",
+    number: "04",
+    discipline: "Operations Research & Heuristics",
+    title: "Social Inspection Routing",
+    thesis:
+      "Ant Colony Optimization compressing social welfare inspection travel across 24 orphanages down to 153.34 km within strict working-hour constraints.",
+    metricBadge: "153.34 km Optimum · -38.3% Travel",
+    caseStudyHref: "/projects/orphanage-inspection-route-optimization/",
+  },
+];
+---
+
+<section class="closer-look-section divider" id="projects" data-closer-look>
+  <div class="container">
+    {/* Section Header */}
+    <div class="section-header-block" data-reveal>
+      <div class="header-badge-row">
+        <span class="header-kicker">THE WORKBENCH</span>
+        <span class="header-sep" aria-hidden="true">&middot;</span>
+        <span class="header-sub">SELECTED SHIPPED WORK</span>
+      </div>
+      <h2 class="display section-headline">Take a closer look.</h2>
+      <p class="section-lead">
+        Interactive demonstrations of core software systems, machine learning
+        pipelines, and algorithmic architectures.
+      </p>
+    </div>
+
+    {/* Master Inspector Frame */}
+    <div class="inspector-card" data-reveal>
+      {/* -------------------- LEFT: INSPECTOR STACK -------------------- */}
+      <div class="inspector-sidebar">
+        {/* Stepper Navigation Buttons */}
+        <div class="stepper-bar" aria-label="Exhibit sequencing">
+          <button
+            type="button"
+            class="stepper-btn"
+            data-stepper="prev"
+            aria-label="Previous project"
+            title="Previous project (ArrowUp)"
+          >
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+              <path
+                d="M8 3.5l5 5-.7.7L8 4.9 3.7 9.2l-.7-.7 5-5z"
+                fill-rule="evenodd"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            class="stepper-btn"
+            data-stepper="next"
+            aria-label="Next project"
+            title="Next project (ArrowDown)"
+          >
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+              <path
+                d="M8 12.5l-5-5 .7-.7L8 11.1l4.3-4.3.7.7-5 5z"
+                fill-rule="evenodd"></path>
+            </svg>
+          </button>
+          <span class="stepper-counter" data-stepper-counter>01 / 04</span>
+        </div>
+
+        {/* The Tabs / Pills List */}
+        <div
+          class="pill-stack"
+          role="tablist"
+          aria-label="Select project to inspect"
+        >
+          {
+            showcaseItems.map((item, idx) => (
+              <div
+                class:list={["pill-item-wrapper", idx === 0 && "is-active"]}
+                data-item-index={idx}
+                data-item-id={item.id}
+              >
+                {/* Dormant Pill (shown when not active) */}
+                <button
+                  type="button"
+                  class="dormant-pill"
+                  role="tab"
+                  aria-selected={idx === 0 ? "true" : "false"}
+                  aria-controls={`panel-${item.id}`}
+                  data-pill-trigger={idx}
+                >
+                  <span class="pill-plus" aria-hidden="true">
+                    +
+                  </span>
+                  <span class="pill-name">{item.title}</span>
+                  <span class="pill-discipline">{item.discipline}</span>
+                </button>
+
+                {/* Expanded Capsule Card (shown when active) */}
+                <div
+                  class="active-capsule"
+                  role="tabpanel"
+                  id={`panel-${item.id}`}
+                  aria-hidden={idx === 0 ? "false" : "true"}
+                >
+                  <div class="capsule-kicker-row">
+                    <span class="capsule-num">{item.number}</span>
+                    <span class="capsule-discipline">{item.discipline}</span>
+                  </div>
+
+                  <h3 class="capsule-title">{item.title}</h3>
+                  <p class="capsule-thesis">{item.thesis}</p>
+
+                  <div class="capsule-footer">
+                    <span class="capsule-metric">{item.metricBadge}</span>
+                    <a
+                      href={item.caseStudyHref}
+                      class="capsule-cta-link"
+                      data-astro-prefetch="hover"
+                    >
+                      <span>Explore Case Study</span>
+                      <span class="cta-arrow" aria-hidden="true">
+                        &rarr;
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      {
+        /* -------------------- RIGHT: 3D STUDIO SLATE VIEWPORT -------------------- */
+      }
+      <div class="inspector-viewport-col">
+        <div class="slate-perspective-wrapper" data-slate-rig>
+          {/* Floating 3D Hardware Studio Slate */}
+          <div class="slate-chassis" data-slate-chassis>
+            {/* Top Glass Slate Status Bar */}
+            <div class="slate-hardware-bar">
+              <div class="bar-left-lights">
+                <span class="slate-dot red" aria-hidden="true"></span>
+                <span class="slate-dot yellow" aria-hidden="true"></span>
+                <span class="slate-dot green" aria-hidden="true"></span>
+              </div>
+              <div class="slate-title-label" data-slate-header-title>
+                SYSTEM RUNTIME // FRAUD_DETECTION_AI
+              </div>
+              <div class="bar-status-chip">
+                <span class="live-pulse-dot" aria-hidden="true"></span>
+                <span class="status-chip-text" data-slate-header-status
+                  >ACTIVE</span
+                >
+              </div>
+            </div>
+
+            {/* Viewport Screen Surface (Hosts the 4 Live Project Exhibits) */}
+            <div class="slate-screen" data-slate-screen>
+              {/* EXHIBIT 1: FRAUD DETECTION AI (Active by default) */}
+              <div
+                class="exhibit-panel exhibit-fraud is-visible"
+                data-exhibit-panel="0"
+                aria-label="Fraud Detection Live Simulation"
+              >
+                <div class="radar-hud-bar">
+                  <span class="hud-tag">LATENT SIGNAL DETECTOR</span>
+                  <span class="hud-metric"
+                    >THRESHOLD: 0.942 · IMBALANCE: 1:590</span
+                  >
+                </div>
+
+                <div class="tx-stream-container">
+                  <div class="tx-item tx-clean">
+                    <span class="tx-time">10:42:01</span>
+                    <span class="tx-id">TX-94021</span>
+                    <span class="tx-amount">$42.50</span>
+                    <span class="tx-badge clean">CLEARED</span>
+                  </div>
+                  <div class="tx-item tx-clean">
+                    <span class="tx-time">10:42:03</span>
+                    <span class="tx-id">TX-94022</span>
+                    <span class="tx-amount">$18.90</span>
+                    <span class="tx-badge clean">CLEARED</span>
+                  </div>
+                  {/* The Anomaly Outlier */}
+                  <div
+                    class="tx-item tx-anomaly"
+                    data-anomaly-card
+                    title="Outlier flagged by Autoencoder"
+                  >
+                    <div class="anomaly-sonar-waves" aria-hidden="true">
+                      <span class="sonar-ring wave-1"></span>
+                      <span class="sonar-ring wave-2"></span>
+                    </div>
+                    <span class="tx-time">10:42:05</span>
+                    <span class="tx-id">TX-94023</span>
+                    <span class="tx-amount">$1,294.00</span>
+                    <span class="tx-badge anomaly">&bull; ANOMALY DETECTED</span
+                    >
+                  </div>
+                  <div class="tx-item tx-clean">
+                    <span class="tx-time">10:42:08</span>
+                    <span class="tx-id">TX-94024</span>
+                    <span class="tx-amount">$7.25</span>
+                    <span class="tx-badge clean">CLEARED</span>
+                  </div>
+                </div>
+
+                <div class="exhibit-telemetry-bar">
+                  <div class="telemetry-stat">
+                    <span class="t-label">TEST PR-AUC</span>
+                    <span class="t-value highlight">0.855</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">RECALL @ 89% PRECISION</span>
+                    <span class="t-value">74.7%</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">MODEL STACK</span>
+                    <span class="t-value">Autoencoder + LightGBM</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* EXHIBIT 2: MINING OPERATIONS PLATFORM (.NET) */}
+              <div
+                class="exhibit-panel exhibit-mining"
+                data-exhibit-panel="1"
+                aria-label="Enterprise Mining Operations Console"
+              >
+                <div class="radar-hud-bar">
+                  <span class="hud-tag"
+                    >KPC IdeKU V3 // ASP.NET CORE RUNTIME</span
+                  >
+                  <span class="hud-metric">ACTIVE PERSONNEL: 5,240</span>
+                </div>
+
+                <div class="mining-console-split">
+                  {/* Left Blade: RBAC Matrix */}
+                  <div class="console-blade blade-rbac">
+                    <span class="blade-kicker">RBAC SECURITY MATRIX</span>
+                    <div class="rbac-rows">
+                      <div class="rbac-cell on">
+                        <span class="rbac-dot"></span>
+                        <span class="rbac-role">Operations Dispatcher</span>
+                        <span class="rbac-perm">WRITE / APPROVE</span>
+                      </div>
+                      <div class="rbac-cell on">
+                        <span class="rbac-dot"></span>
+                        <span class="rbac-role">Site Engineer</span>
+                        <span class="rbac-perm">TELEMETRY_LOG</span>
+                      </div>
+                      <div class="rbac-cell warn">
+                        <span class="rbac-dot"></span>
+                        <span class="rbac-role">External Auditor</span>
+                        <span class="rbac-perm">RESTRICTED_READ</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Blade: Live Query Latency Telemetry */}
+                  <div class="console-blade blade-perf">
+                    <span class="blade-kicker">SYSTEM TELEMETRY</span>
+                    <div class="perf-metric-box">
+                      <span class="perf-num">42<small>ms</small></span>
+                      <span class="perf-sub">P95 Database Query Latency</span>
+                    </div>
+                    <div class="perf-pipe-track">
+                      <div class="perf-pipe-fill" style="width: 78%;"></div>
+                    </div>
+                    <span class="perf-note"
+                      >Task.WhenAll Parallel Pipeline &middot; Zero Bottlenecks</span
+                    >
+                  </div>
+                </div>
+
+                <div class="exhibit-telemetry-bar">
+                  <div class="telemetry-stat">
+                    <span class="t-label">USER CONCURRENCY</span>
+                    <span class="t-value highlight">5,000+ Active</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">ARCHITECTURE</span>
+                    <span class="t-value">ASP.NET Core &amp; SQL Server</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">STABILIZATION</span>
+                    <span class="t-value">RBAC Hardening + Power BI</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* EXHIBIT 3: MEDIMATE HEALTHCARE APP */}
+              <div
+                class="exhibit-panel exhibit-medimate"
+                data-exhibit-panel="2"
+                aria-label="MediMate Mobile Healthcare Companion"
+              >
+                <div class="medimate-phone-frame">
+                  <div class="phone-screen-header">
+                    <span class="phone-time">09:41</span>
+                    <span class="phone-notch"></span>
+                    <span class="phone-net">100% 5G</span>
+                  </div>
+
+                  <div class="medimate-header-row">
+                    <div>
+                      <span class="med-greeting">Today&rsquo;s Regimen</span>
+                      <span class="med-day">Thursday, Sep 17</span>
+                    </div>
+                    <span class="med-streak-pill">34 Day Streak &bull;</span>
+                  </div>
+
+                  {/* Interactive Prescription Items */}
+                  <div class="med-items-list" data-med-list>
+                    <div class="med-card is-taken">
+                      <div class="med-info">
+                        <span class="med-name">Amoxicillin 500mg</span>
+                        <span class="med-schedule"
+                          >08:00 AM &middot; After breakfast</span
+                        >
+                      </div>
+                      <span class="med-check taken" aria-label="Dose completed"
+                        >✓</span
+                      >
+                    </div>
+
+                    <div class="med-card current" data-interactive-med>
+                      <div class="med-info">
+                        <span class="med-name">Vitamin D3 1000 IU</span>
+                        <span class="med-schedule"
+                          >01:00 PM &middot; Take with water</span
+                        >
+                      </div>
+                      <button
+                        type="button"
+                        class="med-check action-btn"
+                        data-med-toggle
+                        aria-label="Mark Vitamin D3 as taken"
+                        title="Click to record dose!"
+                      >
+                        <span class="check-icon">✓</span>
+                        <span class="check-label" data-med-label>Take</span>
+                      </button>
+                    </div>
+
+                    <div class="med-card upcoming">
+                      <div class="med-info">
+                        <span class="med-name">Metformin 500mg</span>
+                        <span class="med-schedule"
+                          >08:00 PM &middot; With dinner</span
+                        >
+                      </div>
+                      <span class="med-check pending" aria-label="Upcoming dose"
+                        >&bull;&bull;&bull;</span
+                      >
+                    </div>
+                  </div>
+
+                  <span class="phone-footer-caption">
+                    Background SQLite Alarm &middot; Zero Network Latency
+                  </span>
+                </div>
+              </div>
+
+              {/* EXHIBIT 4: SOCIAL INSPECTION ROUTING (ACO) */}
+              <div
+                class="exhibit-panel exhibit-route"
+                data-exhibit-panel="3"
+                aria-label="Ant Colony Optimization Routing Graph"
+              >
+                <div class="radar-hud-bar">
+                  <span class="hud-tag"
+                    >ANT COLONY OPTIMIZATION // GRAPH ENGINE</span
+                  >
+                  <span class="hud-metric"
+                    >24 ORPHANAGES &middot; 5 DISTRICTS</span
+                  >
+                </div>
+
+                <div class="route-topology-canvas" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 460 220"
+                    width="100%"
+                    height="100%"
+                    class="route-svg-mesh"
+                  >
+                    {/* Background District Geometries */}
+                    <polygon
+                      points="40,30 140,20 120,90 30,80"
+                      class="district-poly d-1"></polygon>
+                    <polygon
+                      points="160,25 280,35 260,110 150,95"
+                      class="district-poly d-2"></polygon>
+                    <polygon
+                      points="310,40 430,30 420,120 300,105"
+                      class="district-poly d-3"></polygon>
+                    <polygon
+                      points="60,120 180,115 160,195 50,185"
+                      class="district-poly d-4"></polygon>
+                    <polygon
+                      points="260,130 390,125 410,200 270,205"
+                      class="district-poly d-5"></polygon>
+
+                    {/* Central Depot Hub */}
+                    <circle cx="230" cy="110" r="8" class="depot-hub"></circle>
+                    <circle cx="230" cy="110" r="16" class="depot-pulse"
+                    ></circle>
+                    <text x="230" y="98" class="depot-text" text-anchor="middle"
+                      >DEPOT HUB</text
+                    >
+
+                    {/* Ant Pheromone Optimized Loop Path */}
+                    <path
+                      d="M230,110 L85,55 L210,60 L365,75 L335,165 L110,155 Z"
+                      class="route-loop-trail"></path>
+
+                    {/* District Inspection Nodes */}
+                    <circle cx="85" cy="55" r="5" class="route-node"></circle>
+                    <circle cx="210" cy="60" r="5" class="route-node"></circle>
+                    <circle cx="365" cy="75" r="5" class="route-node"></circle>
+                    <circle cx="335" cy="165" r="5" class="route-node"></circle>
+                    <circle cx="110" cy="155" r="5" class="route-node"></circle>
+                  </svg>
+                </div>
+
+                <div class="exhibit-telemetry-bar">
+                  <div class="telemetry-stat">
+                    <span class="t-label">OPTIMAL ROUTE</span>
+                    <span class="t-value highlight">153.34 km</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">DISTANCE COMPRESSION</span>
+                    <span class="t-value">-38.3% vs Baseline</span>
+                  </div>
+                  <div class="telemetry-stat">
+                    <span class="t-label">HEURISTIC PARADIGM</span>
+                    <span class="t-value">Ant Colony Optimization</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Dynamic Ground Ambient Shadow underneath the 3D Slate */}
+          <div class="slate-ground-shadow" aria-hidden="true" data-slate-shadow>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Section Bottom CTA */}
+    <div class="closer-look-bottom-action" data-reveal>
+      <a
+        href="/projects/"
+        class="catalogue-btn"
+        data-astro-prefetch="hover"
+        data-magnetic
+      >
+        <span
+          >Browse All {allProjects.length} Shipped Projects &amp; Lab Code</span
+        >
+        <span class="btn-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initOnPageLoad } from "@lib/page-script";
+
+  initOnPageLoad(() => {
+    const root = document.querySelector<HTMLElement>("[data-closer-look]");
+    if (!root) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Component DOM references
+    const wrappers = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-item-index]"),
+    );
+    const pillTriggers = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-pill-trigger]"),
+    );
+    const panels = Array.from(
+      root.querySelectorAll<HTMLElement>("[data-exhibit-panel]"),
+    );
+    const chassis = root.querySelector<HTMLElement>("[data-slate-chassis]");
+    const shadow = root.querySelector<HTMLElement>("[data-slate-shadow]");
+    const counterText = root.querySelector<HTMLElement>(
+      "[data-stepper-counter]",
+    );
+    const headerTitle = root.querySelector<HTMLElement>(
+      "[data-slate-header-title]",
+    );
+    const prevBtn = root.querySelector<HTMLButtonElement>(
+      '[data-stepper="prev"]',
+    );
+    const nextBtn = root.querySelector<HTMLButtonElement>(
+      '[data-stepper="next"]',
+    );
+
+    let activeIndex = 0;
+    let isTransitioning = false;
+
+    const titles = [
+      "SYSTEM RUNTIME // FRAUD_DETECTION_AI",
+      "KPC IdeKU V3 // ASP.NET CORE RUNTIME",
+      "MEDIMATE MOBILE // PRESCRIPTION COMPANION",
+      "ANT COLONY OPTIMIZATION // GRAPH ENGINE",
+    ];
+
+    // -------------------------------------------------------------
+    // 1. 3-PHASE RECOIL & SPRING EMERGE STATE SWITCHER
+    // -------------------------------------------------------------
+    const switchExhibit = (newIndex: number) => {
+      if (newIndex === activeIndex || isTransitioning) return;
+      isTransitioning = true;
+
+      // Update stepper counter
+      if (counterText) {
+        counterText.textContent = `0${newIndex + 1} / 04`;
+      }
+
+      // Update sidebar pill states
+      wrappers.forEach((wrap, i) => {
+        const isActive = i === newIndex;
+        wrap.classList.toggle("is-active", isActive);
+
+        const dormantBtn =
+          wrap.querySelector<HTMLButtonElement>(".dormant-pill");
+        if (dormantBtn) {
+          dormantBtn.setAttribute("aria-selected", isActive ? "true" : "false");
+        }
+
+        const capsule = wrap.querySelector<HTMLElement>(".active-capsule");
+        if (capsule) {
+          capsule.setAttribute("aria-hidden", isActive ? "false" : "true");
+        }
+      });
+
+      if (reduceMotion || !chassis) {
+        // Instant switch for reduced motion
+        panels.forEach((p, i) => {
+          p.classList.toggle("is-visible", i === newIndex);
+        });
+        if (headerTitle) headerTitle.textContent = titles[newIndex];
+        activeIndex = newIndex;
+        isTransitioning = false;
+        return;
+      }
+
+      // Phase 1: Recoil & Egress (140ms)
+      chassis.classList.add("is-recoiling");
+      chassis.classList.remove("is-emerging");
+
+      window.setTimeout(() => {
+        // Phase 2: State Swap (instant under motion blur)
+        panels.forEach((p, i) => {
+          p.classList.toggle("is-visible", i === newIndex);
+        });
+        if (headerTitle) headerTitle.textContent = titles[newIndex];
+
+        // Phase 3: Spring Emerge & Snap (320ms)
+        chassis.classList.remove("is-recoiling");
+        chassis.classList.add("is-emerging");
+
+        activeIndex = newIndex;
+
+        window.setTimeout(() => {
+          chassis.classList.remove("is-emerging");
+          isTransitioning = false;
+        }, 340);
+      }, 140);
+    };
+
+    // Pill trigger click events
+    pillTriggers.forEach((btn, idx) => {
+      btn.addEventListener("click", () => switchExhibit(idx));
+    });
+
+    const totalItems = wrappers.length || 4;
+
+    // Stepper navigation
+    if (prevBtn) {
+      prevBtn.addEventListener("click", () => {
+        const target = (activeIndex - 1 + totalItems) % totalItems;
+        switchExhibit(target);
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener("click", () => {
+        const target = (activeIndex + 1) % totalItems;
+        switchExhibit(target);
+      });
+    }
+
+    // Keyboard support (ArrowUp, ArrowDown)
+    const onKeyDown = (e: KeyboardEvent) => {
+      const activeEl = document.activeElement;
+      if (!root.contains(activeEl)) return;
+
+      if (e.key === "ArrowDown" || e.key === "ArrowRight") {
+        e.preventDefault();
+        const target = (activeIndex + 1) % totalItems;
+        switchExhibit(target);
+      } else if (e.key === "ArrowUp" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        const target = (activeIndex - 1 + totalItems) % totalItems;
+        switchExhibit(target);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+
+    // -------------------------------------------------------------
+    // 2. INTERACTIVE MEDIMATE CHECKMARK TOGGLE
+    // -------------------------------------------------------------
+    const medToggleBtn =
+      root.querySelector<HTMLButtonElement>("[data-med-toggle]");
+    const medLabel = root.querySelector<HTMLElement>("[data-med-label]");
+    const medCard = root.querySelector<HTMLElement>("[data-interactive-med]");
+
+    if (medToggleBtn) {
+      medToggleBtn.addEventListener("click", () => {
+        const isDone = medToggleBtn.classList.toggle("completed");
+        if (medCard) medCard.classList.toggle("is-taken", isDone);
+        if (medLabel) medLabel.textContent = isDone ? "Taken!" : "Take";
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 3. DESKTOP POINTER PARALLAX FOR 3D HARDWARE SLATE
+    // -------------------------------------------------------------
+    let mouseX = 0;
+    let mouseY = 0;
+    let velocityX = 0;
+    let velocityY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let lastTime = performance.now();
+    let raf = 0;
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (
+        reduceMotion ||
+        !chassis ||
+        window.matchMedia("(hover: none)").matches
+      )
+        return;
+
+      const rect = chassis.getBoundingClientRect();
+      const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+      const y = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+      targetX = Math.max(-1, Math.min(1, x));
+      targetY = Math.max(-1, Math.min(1, y));
+
+      if (!raf) raf = requestAnimationFrame(updateSlateParallax);
+    };
+
+    const updateSlateParallax = () => {
+      const now = performance.now();
+      const dt = Math.min((now - lastTime) / 1000, 0.05);
+      lastTime = now;
+
+      // Damped spring physics
+      const stiffness = 90;
+      const damping = 12;
+
+      velocityX += (targetX - mouseX) * stiffness * dt;
+      velocityX *= Math.exp(-damping * dt);
+      mouseX += velocityX * dt;
+
+      velocityY += (targetY - mouseY) * stiffness * dt;
+      velocityY *= Math.exp(-damping * dt);
+      mouseY += velocityY * dt;
+
+      if (chassis && !chassis.classList.contains("is-recoiling")) {
+        const rotY = mouseX * 8; // subtle tilt
+        const rotX = -mouseY * 8;
+        chassis.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+      }
+
+      if (shadow) {
+        const sX = mouseX * -18;
+        const sY = mouseY * -12;
+        shadow.style.transform = `translate3d(${sX.toFixed(1)}px, ${sY.toFixed(1)}px, 0)`;
+      }
+
+      const settling =
+        Math.abs(targetX - mouseX) > 0.001 ||
+        Math.abs(targetY - mouseY) > 0.001 ||
+        Math.abs(velocityX) > 0.01 ||
+        Math.abs(velocityY) > 0.01;
+
+      if (settling) {
+        raf = requestAnimationFrame(updateSlateParallax);
+      } else {
+        raf = 0;
+      }
+    };
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  });
+</script>
+
+<style>
+  /* ---------------------------------------------------------------------------
+     SECTION STRUCTURE & THE ANOMALY INTEGRATION
+  --------------------------------------------------------------------------- */
+
+  .closer-look-section {
+    padding-block: clamp(3.5rem, 6.5vw, 6rem);
+    background: var(--paper);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-header-block {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .header-badge-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .header-sep {
+    color: var(--line-strong);
+  }
+
+  .section-headline {
+    margin: 0 0 0.85rem;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: clamp(2.4rem, 5.2vw, 4.2rem);
+    font-weight: 480;
+    letter-spacing: -0.015em;
+    line-height: 1.08;
+  }
+
+  .section-lead {
+    margin: 0;
+    max-width: 58ch;
+    color: var(--ink-muted);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.65;
+  }
+
+  /* ---------------------------------------------------------------------------
+     MASTER INSPECTOR CARD (Apple-Style 2-Column Canvas)
+  --------------------------------------------------------------------------- */
+
+  .inspector-card {
+    display: grid;
+    grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+    gap: clamp(2rem, 4.5vw, 4rem);
+    align-items: center;
+    padding: clamp(1.75rem, 3.5vw, 3rem);
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: clamp(18px, 2.5vw, 28px);
+    box-shadow: 0 16px 48px rgba(22, 24, 29, 0.04);
+  }
+
+  /* ---------------------------------------------------------------------------
+     LEFT: SIDEBAR & INSPECTOR STACK
+  --------------------------------------------------------------------------- */
+
+  .inspector-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
+  .stepper-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .stepper-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    background: var(--paper-soft);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .stepper-btn:hover {
+    border-color: var(--ink);
+    background: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .stepper-counter {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+  }
+
+  .pill-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pill-item-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Dormant Pill (Inactive State) */
+  .dormant-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    padding: 0.68rem 1.1rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--line);
+    background: var(--paper-soft);
+    color: var(--ink-muted);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: left;
+    transition:
+      background var(--motion-fast) var(--ease-standard),
+      border-color var(--motion-fast) var(--ease-standard),
+      color var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-spring);
+  }
+
+  .dormant-pill:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+    background: #ffffff;
+    transform: translateX(4px);
+  }
+
+  .pill-plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(22, 24, 29, 0.08);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1;
+    color: var(--ink);
+    transition: transform var(--motion-fast) var(--ease-spring);
+  }
+
+  .dormant-pill:hover .pill-plus {
+    transform: rotate(90deg);
+  }
+
+  .pill-name {
+    font-weight: 520;
+    color: var(--ink);
+  }
+
+  .pill-discipline {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* Active Capsule Card (Expanded Active State) */
+  .active-capsule {
+    display: none;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.5rem;
+    background: var(--paper-soft);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 18px;
+    box-shadow: 0 4px 16px rgba(22, 24, 29, 0.04);
+    animation: capsuleSlideIn 320ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes capsuleSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .pill-item-wrapper.is-active .dormant-pill {
+    display: none;
+  }
+
+  .pill-item-wrapper.is-active .active-capsule {
+    display: flex;
+  }
+
+  .capsule-kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    color: var(--signal-deep);
+    text-transform: uppercase;
+  }
+
+  .capsule-num {
+    font-weight: 700;
+  }
+
+  .capsule-title {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 520;
+    line-height: 1.15;
+  }
+
+  .capsule-thesis {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .capsule-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .capsule-metric {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--signal-deep);
+    background: rgba(201, 46, 62, 0.08);
+    padding: 0.28rem 0.65rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .capsule-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .capsule-cta-link:hover {
+    color: var(--signal);
+  }
+
+  .capsule-cta-link .cta-arrow {
+    transition: transform var(--motion-fast) var(--ease-spring);
+  }
+
+  .capsule-cta-link:hover .cta-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ---------------------------------------------------------------------------
+     RIGHT: 3D STUDIO SLATE VIEWPORT
+  --------------------------------------------------------------------------- */
+
+  .inspector-viewport-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    min-height: 480px;
+  }
+
+  .slate-perspective-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 580px;
+    perspective: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* The Floating 3D Hardware Slate Chassis */
+  .slate-chassis {
+    position: relative;
+    width: 100%;
+    border-radius: 20px;
+    background: #ffffff;
+    border: 1.5px solid var(--line-strong);
+    box-shadow:
+      0 20px 48px rgba(22, 24, 29, 0.09),
+      inset 0 1px 1px rgba(255, 255, 255, 0.9);
+    transform-style: preserve-3d;
+    overflow: hidden;
+    transform: rotateX(0deg) rotateY(0deg);
+    will-change: transform, opacity, filter;
+    transition: transform 120ms ease-out;
+  }
+
+  /* 3-Phase Morphing Animations */
+  .slate-chassis.is-recoiling {
+    transform: scale3d(0.95, 0.95, 0.95) translateZ(-28px) !important;
+    opacity: 0.35 !important;
+    filter: blur(3px) !important;
+    transition:
+      transform 140ms ease-in,
+      opacity 140ms ease-in,
+      filter 140ms ease-in !important;
+  }
+
+  .slate-chassis.is-emerging {
+    transform: scale3d(1, 1, 1) translateZ(0px) !important;
+    opacity: 1 !important;
+    filter: blur(0px) !important;
+    transition:
+      transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 220ms ease-out,
+      filter 220ms ease-out !important;
+  }
+
+  /* Top Hardware Bar */
+  .slate-hardware-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1.15rem;
+    background: var(--paper-soft);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .bar-left-lights {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .slate-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .slate-dot.red {
+    background: #ff5f56;
+  }
+  .slate-dot.yellow {
+    background: #ffbd2e;
+  }
+  .slate-dot.green {
+    background: #27c93f;
+  }
+
+  .slate-title-label {
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  .bar-status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--signal-deep);
+    font-weight: 600;
+  }
+
+  .live-pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.4);
+    animation: dotPulse 2s infinite;
+  }
+
+  @keyframes dotPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0.5);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba(201, 46, 62, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(201, 46, 62, 0);
+    }
+  }
+
+  /* Slate Screen Surface */
+  .slate-screen {
+    position: relative;
+    min-height: 380px;
+    background: #ffffff;
+  }
+
+  .exhibit-panel {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 380px;
+    padding: 1.5rem;
+    animation: panelFade 240ms ease-out forwards;
+  }
+
+  .exhibit-panel.is-visible {
+    display: flex;
+  }
+
+  @keyframes panelFade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .radar-hud-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+
+  .hud-tag {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .exhibit-telemetry-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .telemetry-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .t-value {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .t-value.highlight {
+    color: var(--signal-deep);
+  }
+
+  /* ---------------- EXHIBIT 1: FRAUD DETECTION SIMULATION ---------------- */
+
+  .tx-stream-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 1.25rem 0;
+  }
+
+  .tx-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.95rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+    background: var(--paper-soft);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    transition: transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .tx-time {
+    color: var(--ink-soft);
+  }
+  .tx-id {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .tx-amount {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .tx-badge {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .tx-badge.clean {
+    background: rgba(46, 125, 50, 0.08);
+    color: #2e7d32;
+  }
+
+  /* The Anomaly Transaction */
+  .tx-item.tx-anomaly {
+    background: rgba(201, 46, 62, 0.08);
+    border-color: var(--signal);
+    transform: scale(1.02);
+    box-shadow: 0 4px 18px rgba(201, 46, 62, 0.15);
+  }
+
+  .tx-badge.anomaly {
+    background: var(--signal);
+    color: #ffffff;
+  }
+
+  .anomaly-sonar-waves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .sonar-ring {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--signal);
+    border-radius: var(--radius-md);
+    opacity: 0;
+    animation: sonarPulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+
+  .wave-2 {
+    animation-delay: 1.1s;
+  }
+
+  @keyframes sonarPulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1.06, 1.35);
+      opacity: 0;
+    }
+  }
+
+  /* ---------------- EXHIBIT 2: MINING CONSOLE ---------------- */
+
+  .mining-console-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.25rem 0;
+  }
+
+  .console-blade {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    padding: 0.95rem;
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+
+  .blade-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .rbac-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .rbac-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 4px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+  }
+
+  .rbac-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .rbac-cell.on .rbac-dot {
+    background: #2e7d32;
+  }
+  .rbac-cell.warn .rbac-dot {
+    background: #ff9800;
+  }
+
+  .rbac-perm {
+    margin-left: auto;
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .perf-metric-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .perf-num {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 550;
+    line-height: 1;
+    color: var(--signal-deep);
+  }
+
+  .perf-num small {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    margin-left: 2px;
+  }
+
+  .perf-sub {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--ink-muted);
+  }
+
+  .perf-pipe-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(22, 24, 29, 0.08);
+    overflow: hidden;
+  }
+
+  .perf-pipe-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--signal);
+  }
+
+  .perf-note {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------------- EXHIBIT 3: MEDIMATE MOBILE FRAME ---------------- */
+
+  .medimate-phone-frame {
+    width: min(320px, 100%);
+    margin: 0 auto;
+    background: var(--paper-soft);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 26px;
+    padding: 0.85rem 1.15rem 1.15rem;
+    box-shadow: 0 8px 24px rgba(22, 24, 29, 0.06);
+  }
+
+  .phone-screen-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    color: var(--ink-soft);
+    padding-bottom: 0.65rem;
+  }
+
+  .phone-notch {
+    width: 44px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .medimate-header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.85rem;
+  }
+
+  .med-greeting {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 520;
+    color: var(--ink);
+  }
+
+  .med-day {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+  }
+
+  .med-streak-pill {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    background: rgba(201, 46, 62, 0.1);
+    color: var(--signal-deep);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-pill);
+  }
+
+  .med-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .med-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 0.75rem;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    transition: all var(--motion-fast) var(--ease-standard);
+  }
+
+  .med-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .med-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .med-schedule {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--ink-soft);
+  }
+
+  .med-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+  }
+
+  .med-check.taken {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    font-weight: 700;
+  }
+
+  .med-check.pending {
+    color: var(--ink-soft);
+  }
+
+  /* Interactive Button */
+  .med-check.action-btn {
+    gap: 0.25rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-pill);
+    border: 1.5px solid var(--signal);
+    background: #ffffff;
+    color: var(--signal);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--motion-fast) var(--ease-spring);
+  }
+
+  .med-check.action-btn:hover {
+    background: var(--signal);
+    color: #ffffff;
+    transform: scale(1.05);
+  }
+
+  .med-check.action-btn.completed {
+    background: #2e7d32;
+    border-color: #2e7d32;
+    color: #ffffff;
+  }
+
+  .phone-footer-caption {
+    display: block;
+    text-align: center;
+    margin-top: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------------- EXHIBIT 4: ROUTE OPTIMIZATION ---------------- */
+
+  .route-topology-canvas {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    margin: 1.25rem 0;
+    background: var(--paper-soft);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .district-poly {
+    fill: rgba(22, 24, 29, 0.03);
+    stroke: var(--line);
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
+  }
+
+  .depot-hub {
+    fill: var(--signal);
+  }
+
+  .depot-pulse {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 1.5;
+    opacity: 0.6;
+    animation: depotRing 2.4s infinite;
+  }
+
+  @keyframes depotRing {
+    0% {
+      r: 8;
+      opacity: 0.8;
+    }
+    100% {
+      r: 32;
+      opacity: 0;
+    }
+  }
+
+  .depot-text {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    font-weight: 700;
+    fill: var(--ink);
+    letter-spacing: 0.08em;
+  }
+
+  .route-loop-trail {
+    fill: none;
+    stroke: var(--signal-deep);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 320;
+    stroke-dashoffset: 320;
+    animation: drawRoute 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes drawRoute {
+    0% {
+      stroke-dashoffset: 320;
+    }
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .route-node {
+    fill: #ffffff;
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+
+  /* Dynamic Ground Shadow */
+  .slate-ground-shadow {
+    width: 85%;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse,
+      rgba(22, 24, 29, 0.18) 0%,
+      transparent 70%
+    );
+    margin-top: 1.25rem;
+    filter: blur(8px);
+    will-change: transform;
+    transition: transform 120ms ease-out;
+  }
+
+  /* ---------------------------------------------------------------------------
+     BOTTOM ACTION BUTTON
+  --------------------------------------------------------------------------- */
+
+  .closer-look-bottom-action {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .catalogue-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.95rem 1.65rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition:
+      background var(--motion-fast) var(--ease-standard),
+      transform var(--motion-fast) var(--ease-spring);
+  }
+
+  .catalogue-btn:hover {
+    background: var(--signal-deep);
+    border-color: var(--signal-deep);
+  }
+
+  .catalogue-btn .btn-arrow {
+    transition: transform var(--motion-fast) var(--ease-spring);
+  }
+
+  .catalogue-btn:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  /* ---------------------------------------------------------------------------
+     RESPONSIVE BREAKPOINTS (Mobile-First Ergonomics)
+  --------------------------------------------------------------------------- */
+
+  @media (max-width: 960px) {
+    .inspector-card {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+      padding: 1.5rem;
+    }
+
+    .pill-stack {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: inline mandatory;
+      padding-bottom: 0.5rem;
+      gap: 0.5rem;
+      scrollbar-width: thin;
+    }
+
+    .pill-item-wrapper {
+      scroll-snap-align: start;
+      min-width: 260px;
+    }
+
+    .stepper-bar {
+      display: none;
+    }
+
+    .inspector-viewport-col {
+      min-height: 400px;
+    }
+
+    .mining-console-split {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .inspector-card {
+      padding: 1.15rem;
+      border-radius: 16px;
+    }
+
+    .slate-screen {
+      min-height: 340px;
+    }
+
+    .exhibit-panel {
+      padding: 1rem;
+      min-height: 340px;
+    }
+
+    .exhibit-telemetry-bar {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .catalogue-btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slate-chassis {
+      transform: none !important;
+      transition: none !important;
+    }
+    .sonar-ring,
+    .route-loop-trail,
+    .depot-pulse,
+    .live-pulse-dot {
+      animation: none !important;
+    }
+  }
+</style>

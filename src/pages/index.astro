@@ -3,14 +3,14 @@
 // Story Architecture:
 // Scene 0: Fullscreen 3D Rocket Launch Video Intro (RocketIntro.astro)
 // Scenes 1-4: Pinned Continuous Storytelling Stage (ScrollStoryStage.astro)
-// Scene 5: 3D V60 Coffee Dripper & Scroll-Driven Project Showcase (V60ScrollShowcase.astro)
+// Scene 5: Apple-Style "Take a closer look." Interactive Inspector (CloserLookShowcase.astro)
 // Scene 6: Warm Minimalist Sign-off & Contact (FriendlyContact.astro)
 
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import RocketIntro from "@components/RocketIntro.astro";
 import ScrollStoryStage from "@components/ScrollStoryStage.astro";
-import V60ScrollShowcase from "@components/V60ScrollShowcase.astro";
+import CloserLookShowcase from "@components/CloserLookShowcase.astro";
 import FriendlyContact from "@components/FriendlyContact.astro";
 ---
 
@@ -21,8 +21,8 @@ import FriendlyContact from "@components/FriendlyContact.astro";
   {/* SCENES 1 to 4: Pinned Scroll-Driven Storytelling Stage */}
   <ScrollStoryStage />
 
-  {/* SCENE 5: 3D V60 Coffee Dripper & Scroll-Driven Project Showcase */}
-  <V60ScrollShowcase />
+  {/* SCENE 5: Apple-Style "Take a closer look." Interactive Inspector */}
+  <CloserLookShowcase />
 
   {/* SCENE 6: Warm Minimal Sign-off & Contact */}
   <FriendlyContact />
