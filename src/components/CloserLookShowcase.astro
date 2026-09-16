@@ -465,7 +465,7 @@ const showcaseItems: ShowcaseItem[] = [
         {/* Mobile Swipe Cue */}
         <div class="mobile-swipe-cue" aria-hidden="true">
           <span class="swipe-arrow">&larr;</span>
-          <span class="swipe-text">Swipe to explore systems</span>
+          <span class="swipe-text">Swipe slate or pills to switch</span>
           <span class="swipe-arrow">&rarr;</span>
         </div>
       </div>
@@ -563,9 +563,6 @@ const showcaseItems: ShowcaseItem[] = [
     const nextBtn = root.querySelector<HTMLButtonElement>(
       '[data-stepper="next"]',
     );
-    const touchViewport = root.querySelector<HTMLElement>(
-      "[data-touch-viewport]",
-    );
 
     const totalItems = pillTriggers.length || 4;
     let activeIndex = 0;
@@ -599,11 +596,19 @@ const showcaseItems: ShowcaseItem[] = [
 
       // Smoothly auto-center active pill on mobile horizontal rail
       const activePill = pillTriggers[newIndex];
-      if (activePill && window.innerWidth <= 960) {
-        activePill.scrollIntoView({
+      const pillTrackEl = root.querySelector<HTMLElement>("[data-pill-track]");
+      if (activePill && pillTrackEl && window.innerWidth <= 960) {
+        const trackRect = pillTrackEl.getBoundingClientRect();
+        const pillRect = activePill.getBoundingClientRect();
+        const targetScroll =
+          pillTrackEl.scrollLeft +
+          (pillRect.left - trackRect.left) -
+          (trackRect.width / 2) +
+          (pillRect.width / 2);
+
+        pillTrackEl.scrollTo({
+          left: Math.max(0, targetScroll),
           behavior: "smooth",
-          block: "nearest",
-          inline: "center",
         });
       }
 
@@ -687,42 +692,38 @@ const showcaseItems: ShowcaseItem[] = [
     window.addEventListener("keydown", onKeyDown);
 
     // -------------------------------------------------------------
-    // 2. MOBILE TOUCH SWIPE GESTURES ON 3D VIEWPORT
+    // 2. MOBILE TOUCH SWIPE GESTURES (3D VIEWPORT & PILL RAIL)
     // -------------------------------------------------------------
     let touchStartX = 0;
     let touchStartY = 0;
 
-    if (touchViewport) {
-      touchViewport.addEventListener(
-        "touchstart",
-        (e: TouchEvent) => {
-          touchStartX = e.changedTouches[0].clientX;
-          touchStartY = e.changedTouches[0].clientY;
-        },
-        { passive: true },
-      );
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    };
 
-      touchViewport.addEventListener(
-        "touchend",
-        (e: TouchEvent) => {
-          const dx = e.changedTouches[0].clientX - touchStartX;
-          const dy = e.changedTouches[0].clientY - touchStartY;
+    const onTouchEnd = (e: TouchEvent) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
 
-          // Horizontal swipe detected (threshold: 45px and predominantly horizontal)
-          if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-            if (dx < 0) {
-              // Swipe Left -> Next project
-              const target = (activeIndex + 1) % totalItems;
-              switchExhibit(target);
-            } else {
-              // Swipe Right -> Previous project
-              const target = (activeIndex - 1 + totalItems) % totalItems;
-              switchExhibit(target);
-            }
-          }
-        },
-        { passive: true },
-      );
+      // Horizontal swipe detected (threshold: 35px, predominantly horizontal)
+      if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        if (dx < 0) {
+          // Swipe Left -> next project opens
+          const target = (activeIndex + 1) % totalItems;
+          switchExhibit(target);
+        } else {
+          // Swipe Right -> previous project opens
+          const target = (activeIndex - 1 + totalItems) % totalItems;
+          switchExhibit(target);
+        }
+      }
+    };
+
+    const inspectorCard = root.querySelector<HTMLElement>(".inspector-card");
+    if (inspectorCard) {
+      inspectorCard.addEventListener("touchstart", onTouchStart, { passive: true });
+      inspectorCard.addEventListener("touchend", onTouchEnd, { passive: true });
     }
 
     // -------------------------------------------------------------
@@ -1862,61 +1863,17 @@ const showcaseItems: ShowcaseItem[] = [
     .inspector-card {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      padding: 1.35rem;
+      gap: 1.25rem;
+      padding: 1.25rem;
       border-radius: 20px;
     }
 
-    /* 1. Controller: Top Segmented Pill Rail */
-    .inspector-nav {
-      order: 1;
-      width: 100%;
-    }
-
-    .stepper-bar {
-      display: none;
-    }
-
-    .pill-track {
-      flex-direction: row;
-      overflow-x: auto;
-      scroll-snap-type: inline mandatory;
-      padding: 0.25rem 0.15rem 0.65rem;
-      gap: 0.5rem;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .pill-track::-webkit-scrollbar {
-      display: none;
-    }
-
-    .inspector-pill {
-      flex: 0 0 auto;
-      scroll-snap-align: center;
-      padding: 0.55rem 0.95rem;
-      font-size: 0.82rem;
-      gap: 0.45rem;
-    }
-
-    .pill-text-desktop {
-      display: none;
-    }
-
-    .pill-text-mobile {
-      display: inline;
-    }
-
-    .pill-indicator {
-      display: none;
-    }
-
-    /* 2. Middle: 3D Hardware Slate Viewport */
+    /* 1. TOP: 3D Hardware Studio Slate Viewport */
     .inspector-viewport-col {
-      order: 2;
+      order: 1;
       min-height: auto;
       width: 100%;
-      padding: 0.5rem 0;
+      padding: 0;
     }
 
     .slate-perspective-wrapper {
@@ -1983,61 +1940,236 @@ const showcaseItems: ShowcaseItem[] = [
 
     .mobile-swipe-cue {
       display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      margin-top: 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.64rem;
+      letter-spacing: 0.05em;
+      color: var(--ink-soft);
+      opacity: 0.85;
     }
 
-    /* 3. Bottom: Active Capsule Detail Card */
+    /* 2. MIDDLE: Horizontal Segmented Pill Dock */
+    .inspector-nav {
+      order: 2;
+      width: 100%;
+      margin: 0.15rem 0 0;
+    }
+
+    .stepper-bar {
+      display: none;
+    }
+
+    .pill-track {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 0.35rem 0.5rem 0.65rem;
+      gap: 0.5rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      mask-image: linear-gradient(to right, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, black 16px, black calc(100% - 16px), transparent 100%);
+    }
+
+    .pill-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .inspector-pill {
+      flex: 0 0 auto;
+      scroll-snap-align: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.46rem 0.8rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.8rem;
+      background: var(--paper-soft);
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+      white-space: nowrap;
+      transition:
+        background var(--motion-fast) var(--ease-standard),
+        border-color var(--motion-fast) var(--ease-standard),
+        color var(--motion-fast) var(--ease-standard),
+        transform var(--motion-fast) var(--ease-spring),
+        padding var(--motion-fast) var(--ease-standard);
+      cursor: pointer;
+    }
+
+    .inspector-pill .pill-badge {
+      font-size: 0.64rem;
+      padding: 0.12rem 0.4rem;
+      background: rgba(22, 24, 29, 0.06);
+      color: var(--ink-soft);
+      border-radius: var(--radius-pill);
+      transition: background var(--motion-fast) var(--ease-standard), color var(--motion-fast) var(--ease-standard);
+    }
+
+    /* Dormant pill shows short title */
+    .inspector-pill .pill-text-desktop {
+      display: none;
+    }
+
+    .inspector-pill .pill-text-mobile {
+      display: inline;
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .inspector-pill .pill-indicator {
+      display: none;
+    }
+
+    /* Active Pill: EXPANDS / OPENS ("terbuka") */
+    .inspector-pill.is-active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #ffffff;
+      padding: 0.5rem 1.05rem;
+      box-shadow: 0 4px 16px rgba(22, 24, 29, 0.16);
+      transform: scale(1.02);
+    }
+
+    .inspector-pill.is-active .pill-badge {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    .inspector-pill.is-active .pill-text-mobile {
+      display: none;
+    }
+
+    .inspector-pill.is-active .pill-text-desktop {
+      display: inline;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #ffffff;
+      animation: pillFadeIn 220ms ease-out forwards;
+    }
+
+    .inspector-pill.is-active .pill-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--signal);
+      box-shadow: 0 0 6px var(--signal);
+      margin-left: 0.2rem;
+    }
+
+    /* 3. BOTTOM: Compact Active Capsule Detail Card */
     .inspector-details {
       order: 3;
       width: 100%;
     }
 
     .active-capsule {
-      padding: 1.25rem;
+      padding: 1.15rem 1.25rem;
       border-radius: 16px;
-      gap: 0.75rem;
+      gap: 0.65rem;
+      background: var(--paper-soft);
+      border: 1px solid var(--line);
+    }
+
+    .capsule-kicker-row {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
     }
 
     .capsule-title {
-      font-size: 1.28rem;
+      font-size: 1.18rem;
+      line-height: 1.25;
+      margin: 0;
     }
 
     .capsule-thesis {
-      font-size: 0.84rem;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      margin: 0;
     }
 
     .capsule-footer {
       flex-direction: column;
       align-items: stretch;
-      gap: 0.65rem;
+      gap: 0.6rem;
+      margin-top: 0.25rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--line);
     }
 
     .capsule-metric {
       text-align: center;
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      background: rgba(22, 24, 29, 0.04);
+      border-radius: var(--radius-pill);
+      color: var(--ink);
+      font-weight: 550;
     }
 
     .capsule-cta-link {
+      display: inline-flex;
       justify-content: center;
-      padding: 0.65rem;
-      background: #ffffff;
-      border: 1px solid var(--line);
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1rem;
+      background: var(--ink);
+      color: var(--paper);
+      border: 1px solid var(--ink);
       border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity var(--motion-fast) var(--ease-standard);
+    }
+
+    .capsule-cta-link:hover {
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes pillFadeIn {
+    from {
+      opacity: 0;
+      transform: translateX(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
   @media (max-width: 480px) {
     .inspector-card {
-      padding: 0.95rem;
+      padding: 0.9rem;
       border-radius: 16px;
-      gap: 1.15rem;
+      gap: 1rem;
+    }
+
+    .inspector-pill {
+      padding: 0.42rem 0.7rem;
+      font-size: 0.76rem;
+    }
+
+    .inspector-pill.is-active {
+      padding: 0.46rem 0.9rem;
     }
 
     .slate-screen {
-      min-height: 330px;
+      min-height: 320px;
     }
 
     .exhibit-panel {
       padding: 0.85rem;
-      min-height: 330px;
+      min-height: 320px;
     }
 
     .medimate-phone-frame {
@@ -2060,6 +2192,14 @@ const showcaseItems: ShowcaseItem[] = [
 
     .telemetry-stat:last-child {
       grid-column: span 1;
+    }
+
+    .capsule-title {
+      font-size: 1.05rem;
+    }
+
+    .capsule-thesis {
+      font-size: 0.78rem;
     }
 
     .catalogue-btn {
