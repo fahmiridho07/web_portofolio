@@ -22,6 +22,7 @@ interface ShowcaseItem {
   thesis: string;
   metricBadge: string;
   caseStudyHref: string;
+  mobileSummary: string;
 }
 
 const showcaseItems: ShowcaseItem[] = [
@@ -36,6 +37,8 @@ const showcaseItems: ShowcaseItem[] = [
       "Detecting payment fraud under extreme 1:590 class imbalance using latent oversampling and LightGBM on the IEEE-CIS benchmark.",
     metricBadge: "0.855 PR-AUC · 74.7% Recall",
     caseStudyHref: "/projects/fraud-detection-ml-pipeline/",
+    mobileSummary:
+      "Catches 3,087 anomalous transactions under severe 1:590 class imbalance with LightGBM.",
   },
   {
     id: "mining-dotnet",
@@ -48,6 +51,8 @@ const showcaseItems: ShowcaseItem[] = [
       "Stabilizing mission-critical ASP.NET Core workflows, hardening role-based access control, and tuning query latency for 5,000+ mining personnel.",
     metricBadge: "5,000+ Personnel · 42ms Query",
     caseStudyHref: "/projects/kpc-ideku-v3-dotnet-stabilization/",
+    mobileSummary:
+      "Hardened enterprise RBAC security and tuned query latency to 42ms for 5,000+ personnel.",
   },
   {
     id: "medimate-mobile",
@@ -60,6 +65,8 @@ const showcaseItems: ShowcaseItem[] = [
       "A calm, resilient Flutter prescription companion with zero-latency SQLite persistence and reliable background notification alarm scheduling.",
     metricBadge: "Flutter · Zero Latency SQLite",
     caseStudyHref: "/projects/medimate-medicine-reminder-app/",
+    mobileSummary:
+      "Calm Flutter prescription companion with zero-latency offline SQLite and notifications.",
   },
   {
     id: "route-aco",
@@ -72,6 +79,8 @@ const showcaseItems: ShowcaseItem[] = [
       "Ant Colony Optimization compressing social welfare inspection travel across 24 orphanages down to 153.34 km within strict working-hour constraints.",
     metricBadge: "153.34 km Optimum · -38.3% Travel",
     caseStudyHref: "/projects/orphanage-inspection-route-optimization/",
+    mobileSummary:
+      "Ant Colony Optimization compressing 24 inspection stops down to 153.34 km (-38.3% travel).",
   },
 ];
 ---
@@ -152,7 +161,8 @@ const showcaseItems: ShowcaseItem[] = [
                   <span class="pill-plus" aria-hidden="true">
                     +
                   </span>
-                  <span class="pill-name">{item.title}</span>
+                  <span class="pill-name desktop-title">{item.title}</span>
+                  <span class="pill-name mobile-title">{item.shortTitle}</span>
                   <span class="pill-discipline">{item.discipline}</span>
                 </button>
 
@@ -163,6 +173,7 @@ const showcaseItems: ShowcaseItem[] = [
                   id={`panel-${item.id}`}
                   aria-hidden={idx === 0 ? "false" : "true"}
                 >
+                  {/* Desktop Layout */}
                   <div class="capsule-kicker-row">
                     <span class="capsule-num">{item.number}</span>
                     <span class="capsule-sep">&middot;</span>
@@ -193,6 +204,46 @@ const showcaseItems: ShowcaseItem[] = [
                     <a
                       href={item.caseStudyHref}
                       class="capsule-cta-link"
+                      data-astro-prefetch="hover"
+                    >
+                      <span>Explore Case Study</span>
+                      <span class="cta-arrow" aria-hidden="true">
+                        &rarr;
+                      </span>
+                    </a>
+                  </div>
+
+                  {/* Mobile Apple-Clean Layout */}
+                  <div class="mobile-apple-card">
+                    <div class="mobile-apple-header">
+                      <p class="mobile-apple-prose">
+                        <strong class="mobile-apple-title">
+                          {item.title}.
+                        </strong>{" "}
+                        <span class="mobile-apple-desc">
+                          {item.mobileSummary}
+                        </span>
+                      </p>
+                      <button
+                        type="button"
+                        class="mobile-apple-close"
+                        data-capsule-close
+                        aria-label="Close details"
+                        title="Close details"
+                      >
+                        <svg
+                          viewBox="0 0 16 16"
+                          width="11"
+                          height="11"
+                          fill="currentColor"
+                        >
+                          <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z" />
+                        </svg>
+                      </button>
+                    </div>
+                    <a
+                      href={item.caseStudyHref}
+                      class="mobile-apple-cta"
                       data-astro-prefetch="hover"
                     >
                       <span>Explore Case Study</span>
@@ -746,6 +797,12 @@ const showcaseItems: ShowcaseItem[] = [
         wrappers.forEach((wrap, i) => {
           wrap.classList.toggle("is-active", i === activeIndex);
         });
+      } else if (
+        window.innerWidth <= 960 &&
+        pillStack &&
+        !pillStack.hasAttribute("data-mobile-expanded")
+      ) {
+        pillStack.setAttribute("data-mobile-expanded", "false");
       }
     };
     window.addEventListener("resize", onResize, { passive: true });
@@ -767,14 +824,16 @@ const showcaseItems: ShowcaseItem[] = [
 
       // Horizontal swipe detected (threshold: 35px, predominantly horizontal)
       if (Math.abs(dx) > 35 && Math.abs(dx) > Math.abs(dy) * 1.3) {
+        const isExpanded =
+          pillStack?.getAttribute("data-mobile-expanded") === "true";
         if (dx < 0) {
-          // Swipe Left -> next project opens
+          // Swipe Left -> next project
           const target = (activeIndex + 1) % totalItems;
-          switchExhibit(target, true, true);
+          switchExhibit(target, true, isExpanded);
         } else {
-          // Swipe Right -> previous project opens
+          // Swipe Right -> previous project
           const target = (activeIndex - 1 + totalItems) % totalItems;
-          switchExhibit(target, true, true);
+          switchExhibit(target, true, isExpanded);
         }
       }
     };
@@ -1067,12 +1126,28 @@ const showcaseItems: ShowcaseItem[] = [
     color: var(--ink);
   }
 
+  .desktop-title {
+    display: inline;
+  }
+
+  .mobile-title {
+    display: none;
+  }
+
   .pill-discipline {
     margin-left: auto;
     font-family: var(--font-mono);
     font-size: 0.68rem;
     color: var(--ink-soft);
     letter-spacing: 0.04em;
+  }
+
+  .mobile-apple-card {
+    display: none;
+  }
+
+  .capsule-close-btn {
+    display: none;
   }
 
   /* Active Capsule Card (Expanded Active State) */
@@ -2026,19 +2101,34 @@ const showcaseItems: ShowcaseItem[] = [
       display: none;
     }
 
+    .desktop-title {
+      display: none;
+    }
+
+    .mobile-title {
+      display: inline;
+    }
+
     .pill-item-wrapper {
+      flex: 0 0 148px;
+      width: 148px;
       flex-shrink: 0;
       scroll-snap-align: center;
-      transition: width 380ms cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition:
+        flex-basis 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        width 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Dormant Pill on Mobile */
     .dormant-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.55rem;
+      gap: 0.5rem;
+      width: 100%;
+      height: 46px;
       min-height: 46px;
-      padding: 0.65rem 1.15rem;
+      padding: 0 1.05rem;
       font-size: 0.86rem;
       font-weight: 550;
       color: var(--ink);
@@ -2052,6 +2142,18 @@ const showcaseItems: ShowcaseItem[] = [
         transform 200ms var(--ease-spring),
         background 200ms var(--ease-standard),
         border-color 200ms var(--ease-standard);
+      animation: dormantPillFade 260ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes dormantPillFade {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     .dormant-pill:hover,
@@ -2065,12 +2167,12 @@ const showcaseItems: ShowcaseItem[] = [
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       border-radius: 50%;
       background: rgba(22, 24, 29, 0.08);
       font-family: var(--font-mono);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       line-height: 1;
       color: var(--ink);
     }
@@ -2084,16 +2186,23 @@ const showcaseItems: ShowcaseItem[] = [
     }
 
     /* Initial state: when NOT expanded on mobile, all pills are dormant */
+    .pill-stack:not([data-mobile-expanded="true"]) .pill-item-wrapper {
+      flex: 0 0 auto !important;
+      width: auto !important;
+    }
+
     .pill-stack:not([data-mobile-expanded="true"]) .dormant-pill {
       display: inline-flex !important;
     }
+
     .pill-stack:not([data-mobile-expanded="true"]) .active-capsule {
       display: none !important;
     }
 
     /* Expanded state on mobile */
     .pill-stack[data-mobile-expanded="true"] .pill-item-wrapper.is-active {
-      width: clamp(285px, 82vw, 360px);
+      flex: 0 0 clamp(285px, 80vw, 350px);
+      width: clamp(285px, 80vw, 350px);
     }
 
     .pill-stack[data-mobile-expanded="true"]
@@ -2102,47 +2211,80 @@ const showcaseItems: ShowcaseItem[] = [
       display: none;
     }
 
+    /* Hide desktop editorial content inside active-capsule on mobile */
+    .capsule-kicker-row,
+    .capsule-title,
+    .capsule-thesis,
+    .capsule-footer {
+      display: none !important;
+    }
+
     .pill-stack[data-mobile-expanded="true"]
       .pill-item-wrapper.is-active
       .active-capsule {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
       width: 100%;
-      padding: 1.25rem 1.35rem 1.2rem;
+      padding: 1.15rem 1.25rem 1.1rem;
       background: var(--paper-soft);
       border: 1.5px solid var(--line-strong);
       border-radius: 22px;
-      box-shadow: 0 12px 32px rgba(22, 24, 29, 0.08);
-      animation: mobileCapsuleExpand 360ms cubic-bezier(0.34, 1.56, 0.64, 1)
-        forwards;
+      box-shadow: 0 10px 30px rgba(22, 24, 29, 0.08);
+      animation: mobileCardSpring 360ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    @keyframes mobileCapsuleExpand {
-      from {
+    @keyframes mobileCardSpring {
+      0% {
         opacity: 0;
-        transform: scale(0.95);
+        transform: scale(0.96) translateY(4px);
       }
-      to {
+      100% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(0);
       }
     }
 
-    .capsule-kicker-row {
+    /* Apple-Grade Minimal Mobile Card */
+    .mobile-apple-card {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.66rem;
+      flex-direction: column;
+      gap: 0.85rem;
+      width: 100%;
     }
 
-    .capsule-close-btn {
+    .mobile-apple-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .mobile-apple-prose {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      line-height: 1.48;
+      color: var(--ink-soft);
+      flex: 1;
+    }
+
+    .mobile-apple-title {
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .mobile-apple-desc {
+      color: var(--ink-muted);
+    }
+
+    .mobile-apple-close {
+      flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 28px;
-      height: 28px;
-      margin-left: auto;
+      width: 26px;
+      height: 26px;
+      margin-top: 1px;
       border-radius: 50%;
       border: 1px solid var(--line);
       background: #ffffff;
@@ -2151,49 +2293,44 @@ const showcaseItems: ShowcaseItem[] = [
       transition: all 180ms ease;
     }
 
-    .capsule-close-btn:active {
-      transform: scale(0.9);
+    .mobile-apple-close:hover,
+    .mobile-apple-close:active {
       background: var(--ink);
       color: #ffffff;
+      border-color: var(--ink);
+      transform: scale(0.92);
     }
 
-    .capsule-title {
-      font-size: 1.28rem;
-    }
-
-    .capsule-thesis {
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-
-    .capsule-footer {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.65rem;
-      margin-top: 0.35rem;
-      padding-top: 0.75rem;
-    }
-
-    .capsule-metric {
-      text-align: center;
-      font-size: 0.7rem;
-      padding: 0.25rem 0.55rem;
-    }
-
-    .capsule-cta-link {
-      justify-content: center;
-      padding: 0.65rem 1rem;
+    .mobile-apple-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      align-self: flex-start;
+      font-family: var(--font-mono);
       font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+      padding: 0.35rem 0.75rem;
+      background: rgba(22, 24, 29, 0.05);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      transition: all 200ms ease;
+    }
+
+    .mobile-apple-cta:active {
       background: var(--ink);
       color: var(--paper);
-      border: 1px solid var(--ink);
-      border-radius: var(--radius-pill);
-      width: 100%;
+      border-color: var(--ink);
     }
 
-    .capsule-cta-link:hover {
-      background: #000000;
-      color: #ffffff;
+    .mobile-apple-cta .cta-arrow {
+      transition: transform 200ms ease;
+    }
+
+    .mobile-apple-cta:active .cta-arrow {
+      transform: translateX(3px);
     }
   }
 
@@ -2236,27 +2373,25 @@ const showcaseItems: ShowcaseItem[] = [
     }
 
     .pill-stack[data-mobile-expanded="true"] .pill-item-wrapper.is-active {
+      flex: 0 0 clamp(270px, 86vw, 340px);
       width: clamp(270px, 86vw, 340px);
     }
 
     .pill-stack[data-mobile-expanded="true"]
       .pill-item-wrapper.is-active
       .active-capsule {
-      padding: 1.1rem 1.15rem 1rem;
-      border-radius: 18px;
+      padding: 1.05rem 1.15rem 1rem;
+      border-radius: 20px;
     }
 
-    .capsule-title {
-      font-size: 1.18rem;
-    }
-
-    .capsule-thesis {
-      font-size: 0.78rem;
+    .mobile-apple-prose {
+      font-size: 0.82rem;
     }
 
     .dormant-pill {
+      height: 44px;
       min-height: 44px;
-      padding: 0.55rem 0.95rem;
+      padding: 0 0.95rem;
       font-size: 0.82rem;
     }
 
