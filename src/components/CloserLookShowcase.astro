@@ -505,8 +505,6 @@ const showcaseItems: ShowcaseItem[] = [
           <span class="swipe-arrow">&rarr;</span>
         </div>
       </div>
-
-
     </div>
 
     {/* Section Bottom CTA */}
@@ -576,7 +574,7 @@ const showcaseItems: ShowcaseItem[] = [
     // -------------------------------------------------------------
     // 1. STATE SWITCHER (3-PHASE RECOIL & SPRING EMERGE)
     // -------------------------------------------------------------
-    const switchExhibit = (newIndex: number) => {
+    const switchExhibit = (newIndex: number, isSwipe = false) => {
       if (newIndex === activeIndex || isTransitioning) return;
       isTransitioning = true;
 
@@ -602,9 +600,9 @@ const showcaseItems: ShowcaseItem[] = [
         }
       });
 
-      // Smoothly scroll active pill into view on mobile if needed
+      // Smoothly scroll active pill into view on mobile only if triggered by tap (not during swipe)
       const activeWrap = wrappers[newIndex];
-      if (activeWrap && window.innerWidth <= 960) {
+      if (activeWrap && window.innerWidth <= 960 && !isSwipe) {
         activeWrap.scrollIntoView({
           behavior: "smooth",
           block: "nearest",
@@ -703,18 +701,20 @@ const showcaseItems: ShowcaseItem[] = [
         if (dx < 0) {
           // Swipe Left -> next project opens
           const target = (activeIndex + 1) % totalItems;
-          switchExhibit(target);
+          switchExhibit(target, true);
         } else {
           // Swipe Right -> previous project opens
           const target = (activeIndex - 1 + totalItems) % totalItems;
-          switchExhibit(target);
+          switchExhibit(target, true);
         }
       }
     };
 
     const inspectorCard = root.querySelector<HTMLElement>(".inspector-card");
     if (inspectorCard) {
-      inspectorCard.addEventListener("touchstart", onTouchStart, { passive: true });
+      inspectorCard.addEventListener("touchstart", onTouchStart, {
+        passive: true,
+      });
       inspectorCard.addEventListener("touchend", onTouchEnd, { passive: true });
     }
 
@@ -810,6 +810,10 @@ const showcaseItems: ShowcaseItem[] = [
     return () => {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("pointermove", onPointerMove);
+      if (inspectorCard) {
+        inspectorCard.removeEventListener("touchstart", onTouchStart);
+        inspectorCard.removeEventListener("touchend", onTouchEnd);
+      }
       if (raf) cancelAnimationFrame(raf);
     };
   });
@@ -1942,6 +1946,7 @@ const showcaseItems: ShowcaseItem[] = [
     }
 
     .dormant-pill {
+      min-height: 44px;
       padding: 0.65rem 0.95rem;
       font-size: 0.82rem;
       width: 100%;
@@ -2050,6 +2055,7 @@ const showcaseItems: ShowcaseItem[] = [
     }
 
     .dormant-pill {
+      min-height: 44px;
       padding: 0.55rem 0.85rem;
       font-size: 0.78rem;
     }

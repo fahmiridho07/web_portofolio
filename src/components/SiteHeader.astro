@@ -153,15 +153,21 @@ const isActive = (href: string) => {
     const progressFill = document.querySelector<HTMLElement>(
       "[data-header-progress]",
     );
+    let scrollRafId = 0;
     const updateScrollProgress = () => {
-      const scrollY = window.scrollY;
-      const maxScroll =
-        document.documentElement.scrollHeight - window.innerHeight;
-      if (maxScroll > 0 && progressFill) {
-        const p = Math.min(1, Math.max(0, scrollY / maxScroll));
-        progressFill.style.transform = `scaleX(${p})`;
-      } else if (progressFill) {
-        progressFill.style.transform = "scaleX(0)";
+      if (!scrollRafId) {
+        scrollRafId = window.requestAnimationFrame(() => {
+          const scrollY = window.scrollY;
+          const maxScroll =
+            document.documentElement.scrollHeight - window.innerHeight;
+          if (maxScroll > 0 && progressFill) {
+            const p = Math.min(1, Math.max(0, scrollY / maxScroll));
+            progressFill.style.transform = `scaleX(${p})`;
+          } else if (progressFill) {
+            progressFill.style.transform = "scaleX(0)";
+          }
+          scrollRafId = 0;
+        });
       }
     };
 
@@ -170,6 +176,7 @@ const isActive = (href: string) => {
 
     return () => {
       window.removeEventListener("scroll", updateScrollProgress);
+      if (scrollRafId) cancelAnimationFrame(scrollRafId);
     };
   });
 </script>
