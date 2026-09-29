@@ -2030,8 +2030,21 @@ const showcaseItems: ShowcaseItem[] = [
     }
 
     .tx-item {
+      flex-wrap: wrap;
+      gap: 0.3rem 0.6rem;
       padding: 0.45rem 0.65rem;
       font-size: 0.7rem;
+    }
+
+    .tx-time,
+    .tx-id,
+    .tx-amount,
+    .tx-badge {
+      white-space: nowrap;
+    }
+
+    .tx-badge.anomaly {
+      margin-left: auto;
     }
 
     .mining-console-split {
