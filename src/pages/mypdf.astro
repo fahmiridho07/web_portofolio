@@ -1,0 +1,358 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+const title = "MyPDF, offline PDF toolbox for Windows";
+const description =
+  "MyPDF is a free, open source Windows app for everyday PDF work. Merge, split, compress, convert, OCR and more, fully offline. No uploads, no accounts, no tracking.";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "MyPDF",
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Windows 10, Windows 11",
+  softwareVersion: "0.3.0",
+  license: "https://www.gnu.org/licenses/agpl-3.0.html",
+  downloadUrl: "https://github.com/fahmiridho07/mypdf/releases/latest",
+  offers: { "@type": "Offer", price: "0" },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+  ogImagePath="/mypdf/home.png"
+  ogImageAlt="MyPDF home screen on Windows, dark mode"
+>
+  <section class="mypdf-hero">
+    <div class="container" data-reveal>
+      <p class="section-label">MyPDF &middot; free offline PDF toolbox</p>
+      <h1 class="display">
+        Every PDF chore, <em>handled on your own machine</em>.
+      </h1>
+      <p class="lede">
+        MyPDF is a small Windows app for the everyday PDF workflow you would
+        normally take to an online converter, except nothing ever leaves your
+        laptop. No uploads, no accounts, no limits, no tracking. Free and open
+        source under AGPL 3.0.
+      </p>
+      <div class="mypdf-actions dark-cta-row">
+        <a
+          class="dark-cta dark-cta-primary"
+          href="https://github.com/fahmiridho07/mypdf/releases/latest"
+          data-magnetic
+        >
+          Download for Windows <span aria-hidden="true">-&gt;</span>
+        </a>
+        <a
+          class="dark-cta dark-cta-secondary"
+          href="https://github.com/fahmiridho07/mypdf"
+        >
+          Source code
+        </a>
+      </div>
+      <p class="mypdf-meta">
+        Windows 10/11, 64-bit &middot; English and Bahasa Indonesia &middot;
+        Built in public by GitHub Actions
+      </p>
+    </div>
+  </section>
+
+  <section class="mypdf-shot">
+    <div class="container" data-reveal>
+      <figure>
+        <img
+          src="/mypdf/home.png"
+          alt="MyPDF home screen on Windows: tool sidebar, greeting, and quick actions for Merge, Arrange, and Compress"
+          width="1550"
+          height="830"
+          loading="eager"
+        />
+        <figcaption>
+          The real app on Windows: pick a tool on the left, or drag files
+          anywhere onto the window.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
+      <p class="section-label">What it does</p>
+      <h2 class="display-sm">Seventeen tools, one window.</h2>
+      <dl class="mypdf-tools">
+        <div>
+          <dt>Organize</dt>
+          <dd>
+            Merge, Arrange, Split, Pick Pages, Rotate, Page Numbers. The page
+            organizer shows every page as a thumbnail: drag to reorder, rotate,
+            duplicate, or remove.
+          </dd>
+        </div>
+        <div>
+          <dt>Shrink</dt>
+          <dd>
+            Compress with presets, full manual control, or a target size: tell
+            it the MB limit and it finds settings that fit.
+          </dd>
+        </div>
+        <div>
+          <dt>Convert</dt>
+          <dd>
+            PDF to Images, Images to PDF, Office to PDF via LibreOffice, PDF
+            back to editable Word.
+          </dd>
+        </div>
+        <div>
+          <dt>Protect</dt>
+          <dd>
+            Password lock and unlock for your own files, plus a faint text
+            watermark across every page.
+          </dd>
+        </div>
+        <div>
+          <dt>Text</dt>
+          <dd>
+            OCR to make scans searchable with live per page progress, text
+            extraction, and a metadata editor.
+          </dd>
+        </div>
+      </dl>
+      <p class="mypdf-note">
+        Most tools accept many files at once with a Cancel button for long jobs.
+        Output files never overwrite existing ones.
+      </p>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
+      <p class="section-label">Requirements</p>
+      <h2 class="display-sm">Runs out of the box.</h2>
+      <p>
+        The installer bundles its own Python runtime and every engine library,
+        so there is nothing else to set up. Three features use free external
+        helpers that are not bundled; the app tells you exactly what is missing
+        before you run anything.
+      </p>
+      <dl class="mypdf-tools">
+        <div>
+          <dt>Strong compression</dt>
+          <dd>
+            Ghostscript. Without it, compression still works but stays mild.
+          </dd>
+        </div>
+        <div>
+          <dt>Office to PDF</dt>
+          <dd>LibreOffice. Required for this tool.</dd>
+        </div>
+        <div>
+          <dt>OCR</dt>
+          <dd>
+            Tesseract. English works immediately; other languages need their
+            language data file in the Tesseract tessdata folder.
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
+      <p class="section-label">Privacy</p>
+      <h2 class="display-sm">Offline means offline.</h2>
+      <p>
+        Everything runs locally. The app makes no network requests: fonts are
+        bundled, processing is on device, and your files stay in your folders.
+      </p>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
+      <p class="section-label">Install</p>
+      <h2 class="display-sm">Two steps, one warning.</h2>
+      <ol class="mypdf-steps">
+        <li>
+          Download the setup file from the
+          <a href="https://github.com/fahmiridho07/mypdf/releases/latest">
+            releases page
+          </a> and run it.
+        </li>
+        <li>
+          Windows SmartScreen may warn about an unrecognized app because the
+          installer is not code signed. Click <strong>More info</strong>, then
+          <strong>Run anyway</strong>. Every release is built from public source
+          by GitHub Actions, so you can verify exactly what you are running.
+        </li>
+      </ol>
+      <p class="mypdf-note">
+        Open source under AGPL 3.0. Built on PyMuPDF, pikepdf, Pillow, pdf2docx,
+        and ocrmypdf, which keep their own licenses. Found a bug?
+        <a href="https://github.com/fahmiridho07/mypdf/issues">
+          Open an issue
+        </a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
+      <p class="section-label">Roadmap</p>
+      <h2 class="display-sm">No AI inside. Yet, maybe, one careful one.</h2>
+      <p>
+        The app today contains no AI features, and the offline core stays that
+        way. The only idea on the table is one optional, explicitly consented
+        cloud feature, such as asking questions about a document, with the file
+        sent only when you ask. Nothing is promised and nothing is collected.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .mypdf-hero {
+    padding-top: var(--space-hero-top);
+    padding-bottom: var(--space-hero-bottom);
+  }
+
+  .mypdf-hero .display {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    max-width: 20ch;
+  }
+
+  .mypdf-hero .display em {
+    color: var(--rust-deep);
+    font-style: italic;
+    font-weight: 450;
+  }
+
+  .lede {
+    max-width: 58ch;
+    color: var(--ink-muted);
+    font-size: 1.02rem;
+    line-height: 1.7;
+  }
+
+  .mypdf-actions {
+    margin-top: 1.4rem;
+  }
+
+  .mypdf-meta {
+    margin-top: 1rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+
+  .mypdf-shot figure {
+    margin: 0;
+    border-top: 1px solid var(--line-strong);
+    padding-top: var(--space-block-inner);
+  }
+
+  .mypdf-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .mypdf-shot figcaption {
+    margin-top: 0.7rem;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+  }
+
+  .mypdf-block {
+    padding-block: var(--space-section-before);
+    border-top: 1px solid var(--line);
+  }
+
+  .mypdf-block:last-of-type {
+    padding-bottom: var(--space-section-end);
+  }
+
+  .display-sm {
+    font-family: var(--font-serif);
+    font-weight: 480;
+    font-size: clamp(1.6rem, 3.6vw, 2.3rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+  }
+
+  .mypdf-block p {
+    max-width: 62ch;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+
+  .mypdf-tools {
+    margin: 1.6rem 0 0;
+    padding: 0;
+  }
+
+  .mypdf-tools > div {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 1rem;
+    padding-block: 0.9rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .mypdf-tools dt {
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+
+  .mypdf-tools dd {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .mypdf-note {
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .mypdf-steps {
+    margin: 1.2rem 0 0;
+    padding-left: 1.2rem;
+    max-width: 62ch;
+    color: var(--ink-muted);
+    line-height: 1.7;
+  }
+
+  .mypdf-steps li + li {
+    margin-top: 0.6rem;
+  }
+
+  .mypdf-block a {
+    color: var(--rust-deep);
+    text-underline-offset: 0.18em;
+  }
+
+  @media (max-width: 640px) {
+    .mypdf-tools > div {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+
+    .mypdf-actions {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 0.55rem;
+    }
+
+    .mypdf-actions .dark-cta {
+      width: 100%;
+      justify-content: center;
+      min-height: 42px;
+    }
+  }
+</style>
