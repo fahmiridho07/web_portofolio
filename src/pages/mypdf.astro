@@ -128,6 +128,41 @@ const jsonLd = {
 
   <section class="mypdf-block">
     <div class="container" data-reveal>
+      <p class="section-label">Experiment, not in the app</p>
+      <h2 class="display-sm">Smart Intake: a pile of invoices, one CSV.</h2>
+      <p>
+        Alongside the app, an open experiment explores the next step: drop in
+        a batch of invoices and get structured data back. Local text
+        extraction with an OCR fallback for scans, field extraction through a
+        swappable provider, validation flags for missing or inconsistent
+        numbers, then you review and correct before anything is exported.
+        Approved rows become one CSV plus consistently named copies.
+        Originals are never touched and failed extractions are never
+        organized.
+      </p>
+      <ol class="mypdf-steps">
+        <li>Batch of PDFs in, text extracted on your machine.</li>
+        <li>Invoice number, vendor, date, totals out as structured fields.</li>
+        <li>Validation flags what is missing or does not add up.</li>
+        <li>You accept, edit, or skip each flagged row.</li>
+        <li>CSV plus organized copies, only for approved rows.</li>
+      </ol>
+      <p class="mypdf-note">
+        The default provider runs fully offline. Cloud providers are strictly
+        opt in with explicit consent about what leaves the machine. Tested on
+        synthetic invoices so far; live cloud accuracy is still unmeasured.
+        Follow along in
+        <a
+          href="https://github.com/fahmiridho07/mypdf/tree/main/experiments/smart-intake"
+        >
+          experiments/smart-intake
+        </a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="mypdf-block">
+    <div class="container" data-reveal>
       <p class="section-label">Requirements</p>
       <h2 class="display-sm">Runs out of the box.</h2>
       <p>
