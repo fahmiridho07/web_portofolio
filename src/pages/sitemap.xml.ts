@@ -25,6 +25,7 @@ export async function GET() {
   const urls = [
     entry("/", "1.0"),
     entry("/projects/", "0.9"),
+    entry("/mypdf/", "0.8"),
     ...projects.map((project) =>
       entry(
         `/projects/${project.data.slug}/`,
