@@ -9,6 +9,7 @@
 // - Strict adherence to "The Anomaly" design system (Paper #f7f7f6, Ink #16181d, Carmine #c92e3e).
 
 import { getSortedProjects } from "@lib/projects";
+import { fraudDisplay } from "@data/fraud-research";
 
 const allProjects = await getSortedProjects();
 
@@ -22,6 +23,7 @@ interface ShowcaseItem {
   thesis: string;
   metricBadge: string;
   caseStudyHref: string;
+  demoUrl?: string;
   mobileSummary: string;
 }
 
@@ -34,11 +36,13 @@ const showcaseItems: ShowcaseItem[] = [
     title: "Fraud Detection AI",
     shortTitle: "Fraud AI",
     thesis:
-      "Detecting payment fraud under extreme 1:590 class imbalance using latent oversampling and LightGBM on the IEEE-CIS benchmark.",
-    metricBadge: "0.855 PR-AUC · 74.7% Recall",
+      "Explore how a model flags suspicious payments, and how its threshold changes what gets caught.",
+    metricBadge: fraudDisplay.metric,
+    demoUrl: allProjects.find(
+      (p) => p.data.slug === "fraud-detection-ml-pipeline",
+    )?.data.demoUrl,
     caseStudyHref: "/projects/fraud-detection-ml-pipeline/",
-    mobileSummary:
-      "Catches 3,087 anomalous transactions under severe 1:590 class imbalance with LightGBM.",
+    mobileSummary: `Catches ${fraudDisplay.caught} frauds in held-out research evaluation. Try the interactive examples.`,
   },
   {
     id: "mining-dotnet",
@@ -99,6 +103,18 @@ const showcaseItems: ShowcaseItem[] = [
         Interactive demonstrations of core software systems, machine learning
         pipelines, and algorithmic architectures.
       </p>
+      {
+        showcaseItems[0].demoUrl && (
+          <a
+            href={showcaseItems[0].demoUrl}
+            class="section-demo-link demo-cta"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Try Fraud Detection demo ↗
+          </a>
+        )
+      }
     </div>
 
     {/* Master Inspector Card Frame */}
@@ -201,12 +217,26 @@ const showcaseItems: ShowcaseItem[] = [
 
                   <div class="capsule-footer">
                     <span class="capsule-metric">{item.metricBadge}</span>
+                    {item.demoUrl && (
+                      <a
+                        href={item.demoUrl}
+                        class="capsule-cta-link demo-cta"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Try demo ↗
+                      </a>
+                    )}
                     <a
                       href={item.caseStudyHref}
                       class="capsule-cta-link"
                       data-astro-prefetch="hover"
                     >
-                      <span>Explore Case Study</span>
+                      <span>
+                        {item.demoUrl
+                          ? "Read case study"
+                          : "Explore Case Study"}
+                      </span>
                       <span class="cta-arrow" aria-hidden="true">
                         &rarr;
                       </span>
@@ -241,12 +271,26 @@ const showcaseItems: ShowcaseItem[] = [
                         </svg>
                       </button>
                     </div>
+                    {item.demoUrl && (
+                      <a
+                        href={item.demoUrl}
+                        class="mobile-apple-cta demo-cta"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Try demo ↗
+                      </a>
+                    )}
                     <a
                       href={item.caseStudyHref}
                       class="mobile-apple-cta"
                       data-astro-prefetch="hover"
                     >
-                      <span>Explore Case Study</span>
+                      <span>
+                        {item.demoUrl
+                          ? "Read case study"
+                          : "Explore Case Study"}
+                      </span>
                       <span class="cta-arrow" aria-hidden="true">
                         &rarr;
                       </span>
@@ -288,11 +332,13 @@ const showcaseItems: ShowcaseItem[] = [
               <div
                 class="exhibit-panel exhibit-fraud is-visible"
                 data-exhibit-panel="0"
-                aria-label="Fraud Detection Live Simulation"
+                aria-label="Illustration of a fraud detection interface"
               >
                 <div class="radar-hud-bar">
-                  <span class="hud-tag">LATENT SIGNAL DETECTOR</span>
-                  <span class="hud-metric">1:590 IMBALANCE</span>
+                  <span class="hud-tag">ILLUSTRATIVE PAYMENT STREAM</span>
+                  <span class="hud-metric"
+                    >{fraudDisplay.prevalence} FRAUD IN DATASET</span
+                  >
                 </div>
 
                 <div class="tx-stream-container">
@@ -312,7 +358,7 @@ const showcaseItems: ShowcaseItem[] = [
                   <div
                     class="tx-item tx-anomaly"
                     data-anomaly-card
-                    title="Outlier flagged by Autoencoder"
+                    title="Illustration: LightGBM flags a payment; the Autoencoder is used during training"
                   >
                     <div class="anomaly-sonar-waves" aria-hidden="true">
                       <span class="sonar-ring wave-1"></span>
@@ -335,11 +381,13 @@ const showcaseItems: ShowcaseItem[] = [
                 <div class="exhibit-telemetry-bar">
                   <div class="telemetry-stat">
                     <span class="t-label">TEST PR-AUC</span>
-                    <span class="t-value highlight">0.855</span>
+                    <span class="t-value highlight">{fraudDisplay.ap}</span>
                   </div>
                   <div class="telemetry-stat">
-                    <span class="t-label">RECALL @ 89% PRECISION</span>
-                    <span class="t-value">74.7%</span>
+                    <span class="t-label"
+                      >RECALL @ {fraudDisplay.precision} PRECISION</span
+                    >
+                    <span class="t-value">{fraudDisplay.recall}</span>
                   </div>
                   <div class="telemetry-stat">
                     <span class="t-label">MODEL ARCHITECTURE</span>
@@ -2427,5 +2475,28 @@ const showcaseItems: ShowcaseItem[] = [
     .live-pulse-dot {
       animation: none !important;
     }
+  }
+  .section-demo-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .capsule-cta-link,
+  .mobile-apple-cta {
+    min-height: 44px;
+  }
+  .demo-cta {
+    padding: 0.45rem 0.8rem;
+    border-radius: var(--radius-pill);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .demo-cta:hover {
+    color: white;
+    background: var(--signal);
   }
 </style>

@@ -9,11 +9,12 @@
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
     "format": "prettier --plugin=prettier-plugin-astro --write \"src/**/*.{astro,ts,css,mdx}\" \"scripts/**/*.{mjs,cjs}\" \"docs/**/*.mdx\" \"README.md\" \"public/assets/**/*.md\"",
-    "content:check": "node scripts/check-content.mjs",
+    "content:check": "node scripts/check-content.mjs && npm run research:check",
     "dist:check": "node scripts/check-dist.mjs",
     "validate": "npm run content:check && astro check && astro build && npm run dist:check",
     "images:covers": "node scripts/generate-cover-variants.mjs",
-    "lighthouse": "npm run build && npx --yes @lhci/cli@0.14.0 autorun"
+    "lighthouse": "npm run build && npx --yes @lhci/cli@0.14.0 autorun",
+    "research:check": "node scripts/check-research.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.9",

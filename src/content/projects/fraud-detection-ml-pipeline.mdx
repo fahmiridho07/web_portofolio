@@ -1,7 +1,7 @@
 ---
 title: "Fraud Detection ML Pipeline (Undergraduate Thesis)"
 slug: "fraud-detection-ml-pipeline"
-summary: "An Autoencoder-based latent-space oversampling pipeline for extreme class imbalance, paired with Bayesian-tuned LightGBM, on the IEEE-CIS fraud dataset."
+summary: "A research pipeline that uses an Autoencoder to generate fraud training examples, then LightGBM to score payments. Try recorded cases and explore the detection threshold."
 category: "machine-learning-data-science"
 status: "Completed"
 year: 2026
@@ -14,17 +14,138 @@ stack:
   - Bayesian Optimization
   - Scikit-learn
   - Pandas
-links: []
+demoUrl: "https://demo.fahmiridho.me/fraud-detection/"
+links:
+  - label: "Explore research"
+    href: "https://demo.fahmiridho.me/fraud-detection/research/"
+  - label: "Research code"
+    href: "https://github.com/fahmiridho07/ecommerce_fraud_detection"
 coverImage: "/covers/fraud-detection-ml-pipeline.svg"
 logo: "/assets/logos/scikitlearn.svg"
-result: "AE latent-space oversampling reached 0.855 test PR-AUC after Bayesian-tuned LightGBM, beating a tuned plain-LightGBM baseline (0.850) and a matched SMOTE-NC control (0.850), and catching 41 more fraud cases than the baseline at the chosen operating threshold."
-metric: "0.855 PR-AUC (AP) · 74.7% recall @ 89% precision"
+result: "The active experiment reaches 0.856187 test PR-AUC, catching 3,048 of 4,132 frauds at the validation-selected threshold of 0.16."
+metric: "0.856 PR-AUC · 73.8% recall @ 89.9% precision"
 proof:
-  - "0.855 test PR-AUC vs. 0.850 tuned baseline and 0.850 tuned SMOTE-NC"
-  - "Autoencoder as a latent-space oversampler, not a feature extractor (that variant was tested and rejected)"
-  - "Bayesian Optimization (Optuna/TPE) beat random search by +0.004 validation PR-AUC at matched compute"
+  - "0.856187 test PR-AUC, compared with 0.854378 for tuned LightGBM"
+  - "Autoencoder generates training examples; LightGBM scores payments at inference"
+  - "Threshold selected on validation; 118,108 held-out test transactions replayed in the demo"
 priority: 0
 ---
+
+import research from "../../data/fraud-research.json";
+
+## Context
+
+Fraud is rare: about 3.5% of the 590,540 IEEE-CIS transactions have a fraud label. Passing every payment already achieves about 96.5% accuracy, so this project evaluates average precision (PR-AUC) and the cost of missed fraud and false alerts instead.
+
+The interactive demo replays saved predictions from the final methodology experiment. It lets visitors change the decision threshold on real test examples without submitting payments or pretending to run a production fraud service.
+
+## Approach
+
+Split the data into stratified training, validation, and test partitions (60/20/20, seed 42) before fitting preprocessing. Frequency encoding, median imputation, and z-score scaling are fitted on training only.
+
+An Autoencoder learns an 8-dimensional representation of training frauds. Interpolation in that latent space and decoding create 25,594 additional fraud examples, reaching a 10% fraud target in training. Validation selects these settings. LightGBM learns from the augmented data; the Autoencoder is not an inference-time detector.
+
+The comparison includes plain LightGBM, feature-space SMOTE, and latent oversampling, with and without 10-trial Optuna tuning. The threshold is locked at 0.16 by validation F1, then evaluated on the held-out test split.
+
+## Evidence
+
+These figures are plotted from the active experiment's recorded evaluation outputs, identified by the source hashes on the Research page. Earlier paper figures are retained separately below.
+
+<div className="evidence-grid evidence-grid-2">
+  <figure
+    className="evidence-panel"
+    data-artifact="Active run: test average precision"
+  >
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/current-pr-auc.png"
+      width="1395"
+      height="855"
+      loading="lazy"
+      decoding="async"
+      alt="Recorded held-out test average precision for the six active model configurations"
+    />
+    <figcaption>
+      Active run: six configurations on the same held-out test split.
+    </figcaption>
+  </figure>
+  <figure
+    className="evidence-panel"
+    data-artifact="Active run: recorded precision recall curves"
+  >
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/current-pr-curve.png"
+      width="1395"
+      height="855"
+      loading="lazy"
+      decoding="async"
+      alt="Precision-recall curves calculated from recorded test predictions for three tuned models"
+    />
+    <figcaption>
+      Active run: precision–recall curves from the test prediction CSV.
+    </figcaption>
+  </figure>
+  <figure
+    className="evidence-panel"
+    data-artifact="Active run: test confusion matrix"
+  >
+    <img
+      src="/assets/projects/fraud-detection-ml-pipeline/current-confusion.png"
+      width="1395"
+      height="855"
+      loading="lazy"
+      decoding="async"
+      alt="Active test confusion matrix: 113634 true negatives, 342 false positives, 1084 false negatives, and 3048 true positives"
+    />
+    <figcaption>
+      Active run at threshold 0.16: 3,048 frauds caught, 1,084 missed, and 342
+      false alerts.
+    </figcaption>
+  </figure>
+</div>
+
+## Result
+
+<p>
+  The active run reaches{" "}
+  <strong>{research.averagePrecision.toFixed(6)} test PR-AUC</strong>, with{" "}
+  {(research.recall * 100).toFixed(2)}% recall and{" "}
+  {(research.precision * 100).toFixed(2)}% precision at the validation-selected
+  threshold. This catches {research.confusion.tp.toLocaleString("en-US")} of{" "}
+  {research.testFraud.toLocaleString("en-US")} recorded frauds.
+</p>
+
+<table>
+  <caption>Active experiment · held-out test average precision</caption>
+  <thead>
+    <tr>
+      <th>Configuration</th>
+      <th>PR-AUC</th>
+    </tr>
+  </thead>
+  <tbody>
+    {research.models.map((model) => (
+      <tr>
+        <td>{model.name}</td>
+        <td>{model.averagePrecision.toFixed(6)}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+The gain over tuned LightGBM is modest. These values describe this experiment and do not establish statistical significance. The demo's slider explores operational trade-offs; it does not re-optimize the research threshold on test data.
+
+## What I'd Improve
+
+- Evaluate with a future-time holdout to test deployment behaviour under drift.
+- Test statistical uncertainty for this exact checkpoint rather than borrowing significance from earlier experiments.
+- Evaluate score calibration and operating costs before choosing a production threshold.
+
+## Earlier Paper Version (Archived)
+
+The submitted paper figures below report an earlier experiment: approximately 0.8547 PR-AUC and 64 latent dimensions. They are preserved as historical evidence and are not the source of the active demo's metrics.
+
+<details>
+<summary>Read the earlier paper version and its original figures</summary>
 
 ## Context
 
@@ -132,3 +253,5 @@ The tuned AE latent-oversampling pipeline reaches **0.8547 test PR-AUC (Average 
 - Run paired-bootstrap significance testing on this exact final checkpoint. An earlier iteration of the same method had a bootstrap-tested AE-vs-baseline gap (p&lt;0.001), but I didn't re-run that test on the final submitted numbers, and I'd rather say so than imply a stats test that wasn't done.
 - Add a temporal/chronological validation split to check for concept drift. Under a naive chronological split the baseline PR-AUC collapses to ~0.5, which I currently attribute to entity leakage across train/test under the stratified split rather than a real drift signal, but that's a limitation worth closing out properly.
 - Extend the latent oversampler with the clustering-enhanced variant from nDeepSMOTEc (Fan et al., 2025) rather than plain k=5 interpolation.
+
+</details>

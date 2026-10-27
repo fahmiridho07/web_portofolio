@@ -1,0 +1,93 @@
+{
+  "runId": "ieee-cis-final-40659c4c12c7",
+  "modelKey": "ae_oversample_tuned",
+  "sourceRepository": "https://github.com/fahmiridho07/ecommerce_fraud_detection",
+  "sourceHashes": {
+    "final_oversampling_results.json": "40659c4c12c7ab578662c75c35c1d06b299d2c9e4f1cd533adb094b5559742cd",
+    "test_scores.csv": "83229cf706676d6dce66487083d7b8c4fa84a7e42dbb3f4a7839fcdb7f425eeb",
+    "validation_scores.csv": "a150a92f5fbeb5b040a652b11d7f3a890f93d8eeee1d5f5079561ee3b520f798"
+  },
+  "splitProtocol": "stratified_holdout_60_20_20",
+  "seed": 42,
+  "thresholdSelection": "validation_f1",
+  "configuration": {
+    "seed": 42,
+    "split": "stratified_holdout_60_20_20",
+    "latent_grid": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "rate_grid": [
+      0.1,
+      0.15,
+      0.2,
+      0.3,
+      0.5
+    ],
+    "sensitivity_objective": "validation_average_precision",
+    "locked_latent_dim": 8,
+    "locked_target_fraud_rate": 0.1,
+    "k_neighbors": 5,
+    "ae_epochs": 60,
+    "ae_batch_size": 256,
+    "ae_patience": 8,
+    "n_estimators": 2000,
+    "sensitivity_n_estimators": 800,
+    "early_stopping_rounds": 100,
+    "n_trials": 10,
+    "main_metric": "average_precision_pr_auc",
+    "threshold_selection": "validation_f1"
+  },
+  "totalTransactions": 590540,
+  "totalFraud": 20663,
+  "testRows": 118108,
+  "testFraud": 4132,
+  "selectedThreshold": 0.16,
+  "averagePrecision": 0.8561873858527473,
+  "precision": 0.8991150442477877,
+  "recall": 0.7376573088092934,
+  "confusion": {
+    "tp": 3048,
+    "fp": 342,
+    "tn": 113634,
+    "fn": 1084
+  },
+  "models": [
+    {
+      "key": "baseline",
+      "name": "Baseline LightGBM",
+      "averagePrecision": 0.8100735984377354
+    },
+    {
+      "key": "baseline_tuned",
+      "name": "Baseline + Optuna",
+      "averagePrecision": 0.8543775679142616
+    },
+    {
+      "key": "smote",
+      "name": "SMOTE + LightGBM",
+      "averagePrecision": 0.8244176317716059
+    },
+    {
+      "key": "smote_tuned",
+      "name": "SMOTE + Optuna",
+      "averagePrecision": 0.8541200568125811
+    },
+    {
+      "key": "ae_oversample",
+      "name": "AE Latent Oversampling",
+      "averagePrecision": 0.8271531994038129
+    },
+    {
+      "key": "ae_oversample_tuned",
+      "name": "AE Latent + Optuna (Proposed)",
+      "averagePrecision": 0.8561873858527473
+    }
+  ],
+  "demoUrl": "https://demo.fahmiridho.me/fraud-detection/",
+  "researchUrl": "https://demo.fahmiridho.me/fraud-detection/research/",
+  "caseStudyUrl": "https://fahmiridho.me/projects/fraud-detection-ml-pipeline/",
+  "checksum": "06579711024e72d98f63ec1569c40084d2730a2b9d8266bbe0cefb33e7c8597e"
+}

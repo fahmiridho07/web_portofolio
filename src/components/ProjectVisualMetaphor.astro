@@ -3,6 +3,7 @@
 // Adheres strictly to "The Anomaly" design system (Paper #f7f7f6, Ink #16181d, Carmine #c92e3e).
 // Communicates the core idea of each project through visual interaction before technical text.
 
+import { fraudDisplay } from "@data/fraud-research";
 interface Props {
   slug: string;
   mode?: "hero" | "stage" | "mobile";
@@ -26,7 +27,9 @@ const { slug, mode = "stage", class: className } = Astro.props;
     slug === "fraud-detection-ml-pipeline" && (
       <div class="metaphor-canvas canvas-fraud">
         <div class="canvas-kicker-bar">
-          <span class="kicker-concept">Signal Detection</span>
+          <span class="kicker-concept">
+            Illustrative payment stream · LightGBM scoring
+          </span>
         </div>
 
         <div class="fraud-stream-wrapper">
@@ -84,24 +87,25 @@ const { slug, mode = "stage", class: className } = Astro.props;
         <div class="stage-footer-split">
           <div class="narrative-climax">
             <div class="climax-num-group">
-              <span class="climax-val">0.855</span>
+              <span class="climax-val">{fraudDisplay.ap}</span>
               <span class="climax-unit">PR-AUC</span>
             </div>
             <p class="climax-desc">
-              74.7% recall at 89% precision &middot; 3,087 fraud caught
+              {fraudDisplay.recall} recall at {fraudDisplay.precision} precision
+              &middot; {fraudDisplay.caught} fraud caught
             </p>
           </div>
 
           <figure class="evidence-box">
             <img
-              src="/assets/projects/fraud-detection-ml-pipeline/pr-auc-comparison-640.webp"
-              alt="Thesis PR-AUC comparison curves"
+              src="/assets/projects/fraud-detection-ml-pipeline/current-pr-auc.png"
+              alt="Recorded test PR-AUC for all six configurations of the active experiment"
               width="280"
               height="130"
               loading="lazy"
               decoding="async"
             />
-            <figcaption>Latent oversampling vs. SMOTE-NC baseline</figcaption>
+            <figcaption>Active run · test average precision</figcaption>
           </figure>
         </div>
       </div>
