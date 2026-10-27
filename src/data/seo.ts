@@ -1,3 +1,5 @@
+import { fraudDisplay } from "./fraud-research";
+
 export const siteBrand = "Achmad Fahmi Ainur Ridho";
 
 export const defaultOg = {
@@ -31,8 +33,7 @@ export const personEntity = {
 export const pageSeo = {
   home: {
     title: "Achmad Fahmi Ainur Ridho | Software Engineering & AI/ML Portfolio",
-    description:
-      "Portfolio of Achmad Fahmi Ainur Ridho, a full-stack .NET engineer going deep into machine learning: production ASP.NET Core work, workflow automation, and a fraud detection ML pipeline at 0.855 PR-AUC.",
+    description: `Portfolio of Achmad Fahmi Ainur Ridho, a full-stack .NET engineer going deep into machine learning: production ASP.NET Core work, workflow automation, and a fraud detection ML pipeline at ${fraudDisplay.ap} PR-AUC.`,
   },
   about: {
     title: "About",

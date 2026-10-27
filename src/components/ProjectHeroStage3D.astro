@@ -4,6 +4,7 @@
 // Adheres strictly to "The Anomaly" design system (Paper #f7f7f6, Ink #16181d, Carmine #c92e3e).
 // Pure CSS 3D transforms, mouse pointer parallax, tactile squish on click, zero heavy runtime.
 
+import { fraudResearch } from "@data/fraud-research";
 interface Props {
   slug: string;
   title: string;
@@ -48,7 +49,11 @@ const isTactile = !isML && !isRoute && !isForecast && !isSoftware && !isNLP;
           </div>
           <div class="cube-facet f-back" />
           <div class="cube-facet f-right">
-            <span class="facet-tag">DIM:64</span>
+            <span class="facet-tag">
+              {slug === "fraud-detection-ml-pipeline"
+                ? `DIM:${fraudResearch.configuration.locked_latent_dim}`
+                : "LATENT"}
+            </span>
           </div>
           <div class="cube-facet f-left" />
           <div class="cube-facet f-top">

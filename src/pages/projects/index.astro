@@ -1,4 +1,5 @@
 ---
+import { fraudDisplay } from "@data/fraud-research";
 import { pageSeo } from "@data/seo";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { heroProjectSlug, projectCategories } from "@data/profile";
@@ -72,40 +73,42 @@ const initialDiscipline = getCategoryMeta(
           </h2>
 
           <p class="hero-concept-prose">
-            Detecting payment fraud under 1:590 class imbalance using latent
-            oversampling and LightGBM on the IEEE-CIS benchmark.
+            Explore payment fraud detection with real evaluation examples and an
+            adjustable flagging threshold.
           </p>
 
           <div class="hero-climax-box">
             <div class="hero-climax-stat">
-              <span class="hero-climax-val">0.855</span>
+              <span class="hero-climax-val">{fraudDisplay.ap}</span>
               <span class="hero-climax-unit">PR-AUC</span>
             </div>
             <p class="hero-climax-note">
-              74.7% recall at 89% precision &middot; 3,087 caught
+              {fraudDisplay.recall} recall at {fraudDisplay.precision} precision &middot;
+              {fraudDisplay.caught} caught
             </p>
           </div>
-
           <a
-            href={`/projects/${flagship.data.slug}/`}
-            class="dark-cta dark-cta-primary hero-cta-btn desktop-hero-cta"
-            data-astro-prefetch="hover"
+            href={flagship.data.demoUrl ?? `/projects/${flagship.data.slug}/`}
+            target={flagship.data.demoUrl ? "_blank" : undefined}
+            rel={flagship.data.demoUrl ? "noopener noreferrer" : undefined}
+            class="dark-cta dark-cta-primary hero-cta-btn direct-demo-action"
           >
-            View Case Study
-            <span aria-hidden="true">&rarr;</span>
+            {flagship.data.demoUrl ? "Try demo" : "Read case study"}
+            <span aria-hidden="true">{flagship.data.demoUrl ? "↗" : "→"}</span>
           </a>
+          {
+            flagship.data.demoUrl && (
+              <a
+                href={`/projects/${flagship.data.slug}/`}
+                class="demo-entry-link"
+              >
+                Read case study →
+              </a>
+            )
+          }
         </div>
-
         <div class="hero-visual-col">
           <ProjectVisualMetaphor slug={flagship.data.slug} mode="hero" />
-          <a
-            href={`/projects/${flagship.data.slug}/`}
-            class="dark-cta dark-cta-primary hero-cta-btn mobile-hero-cta"
-            data-astro-prefetch="hover"
-          >
-            View Case Study
-            <span aria-hidden="true">&rarr;</span>
-          </a>
         </div>
       </div>
     </div>
@@ -227,6 +230,16 @@ const initialDiscipline = getCategoryMeta(
 
                   {/* Mobile Ergonomic Tap-to-Inspect Toggle */}
                   <div class="mobile-card-controls">
+                    {project.data.demoUrl && (
+                      <a
+                        class="demo-entry-link"
+                        href={project.data.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Try demo ↗
+                      </a>
+                    )}
                     <button
                       type="button"
                       class="mobile-inspect-btn"
@@ -681,6 +694,16 @@ const initialDiscipline = getCategoryMeta(
 </BaseLayout>
 
 <style>
+  .demo-entry-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--signal);
+    margin-block: 0.25rem;
+  }
+
   /* ------------------- GLOBAL EXHIBITION CONTAINER ------------------- */
   .exhibition-container {
     width: min(100% - 2.5rem, 1220px);
@@ -1598,5 +1621,9 @@ const initialDiscipline = getCategoryMeta(
     .stage-pane-item {
       animation: none;
     }
+  }
+  .direct-demo-action {
+    display: inline-flex;
+    min-height: 44px;
   }
 </style>

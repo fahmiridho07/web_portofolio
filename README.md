@@ -48,6 +48,12 @@ sharp for the image pipeline · Cloudflare Pages
 /404                The page that is an outlier
 ```
 
+## Interactive demos
+
+The Fraud Detection project links directly to [the interactive playground](https://demo.fahmiridho.me/fraud-detection/) and [its research notes](https://demo.fahmiridho.me/fraud-detection/research/). Demo URLs are optional project frontmatter; other projects retain their existing actions. The global Demos link opens the demo directory.
+
+Active Fraud Detection figures come from a source-hashed research summary in `src/data/fraud-research.json`, shared with the demo at build time. `npm run research:check` verifies its checksum and the case-study metadata. Regenerate it with the demo repository exporter when research artifacts change. Earlier paper evidence is preserved in a labelled archive inside the case study.
+
 ## Develop
 
 ```bash

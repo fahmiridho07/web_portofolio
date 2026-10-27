@@ -1,3 +1,5 @@
+import { fraudDisplay } from "./fraud-research";
+
 export const profile = {
   name: "Achmad Fahmi Ainur Ridho",
   shortName: "Achmad Fahmi Ainur Ridho",
@@ -16,8 +18,7 @@ export const profile = {
   availability: "Open to software engineering and AI/ML roles from 2026",
   roleSignal:
     "Full-stack .NET engineer going deep into machine learning. Looking for software engineering or AI/ML roles.",
-  currentFocus:
-    "Latest: fraud detection thesis, 0.855 PR-AUC (Autoencoder + LightGBM + Optuna) · graduating 2026",
+  currentFocus: `Latest: fraud detection thesis, ${fraudDisplay.ap} PR-AUC (Autoencoder + LightGBM + Optuna) · graduating 2026`,
   contactPrompt:
     "Best fit for teams shipping production software or ML systems that have to hold up in the real world.",
   aboutHook:

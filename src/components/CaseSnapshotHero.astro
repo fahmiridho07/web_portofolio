@@ -60,14 +60,24 @@ const telemetry = [
         }
 
         {
-          project.data.links.length > 0 && (
+          (project.data.demoUrl || project.data.links.length > 0) && (
             <div class="hero-actions">
+              {project.data.demoUrl && (
+                <a
+                  class="dark-cta dark-cta-primary dark-cta-compact"
+                  href={project.data.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Try demo <span aria-hidden="true">↗</span>
+                </a>
+              )}
               {project.data.links.map((link) => (
                 <a
                   class="dark-cta dark-cta-primary dark-cta-compact"
                   href={link.href}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                 >
                   {link.label} <span aria-hidden="true">&nearr;</span>
                 </a>
